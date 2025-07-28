@@ -80,23 +80,23 @@ export default function AboutPage() {
       
       <main>
         {/* Hero Section */}
-        <section className="bg-white py-20">
+        <section className="bg-white py-10">
           <div className="container">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl font-bold text-gray-900 mb-6">
+              <h1 className="text-5xl font-poppins font-bold text-gray-900 mb-6">
                 À propos de <span className="text-teal-600">TechPulse</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl font-poppins text-gray-600 mb-8 leading-relaxed">
                 Votre source de référence pour rester à la pointe de la technologie. 
                 Nous partageons les dernières tendances, tutoriels et analyses dans le monde du développement, 
                 de l'intelligence artificielle et de la cybersécurité.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/articles" className="btn-primary flex items-center">
+                <a href="/articles" className="btn-primary flex items-center font-poppins">
                   Découvrir nos articles
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </a>
-                <a href="/contact" className="btn-secondary">
+                <a href="/contact" className="btn-secondary font-poppins">
                   Nous contacter
                 </a>
               </div>
@@ -110,7 +110,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">
+                  <div className="text-4xl font-bold text-gray-900 mb-2">
                     {stat.value}
                   </div>
                   <div className="text-gray-600">{stat.label}</div>
@@ -124,7 +124,7 @@ export default function AboutPage() {
         <section className="py-20 bg-white">
           <div className="container">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              <h2 className="text-3xl font-poppins font-bold text-gray-900 mb-8 text-center">
                 Notre Mission
               </h2>
               <div className="prose prose-lg mx-auto text-gray-700">
@@ -135,7 +135,7 @@ export default function AboutPage() {
                 </p>
                 <div className="grid md:grid-cols-2 gap-8 mt-12">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    <h3 className="text-xl font-poppins font-semibold text-gray-900 mb-4">
                       Ce que nous faisons
                     </h3>
                     <ul className="space-y-3 text-gray-700">
@@ -158,7 +158,7 @@ export default function AboutPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    <h3 className="text-xl font-poppins font-semibold text-gray-900 mb-4">
                       Nos domaines d'expertise
                     </h3>
                     <ul className="space-y-3 text-gray-700">
@@ -189,7 +189,7 @@ export default function AboutPage() {
         {/* Values Section */}
         <section className="py-20 bg-gray-50">
           <div className="container">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
+            <h2 className="text-3xl font-poppins font-bold text-gray-900 mb-12 text-center">
               Nos Valeurs
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -198,7 +198,7 @@ export default function AboutPage() {
                   <div className="mb-4 flex justify-center">
                     {value.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  <h3 className="text-lg font-poppins font-semibold text-gray-900 mb-3">
                     {value.title}
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
@@ -213,7 +213,7 @@ export default function AboutPage() {
         {/* Team Section */}
         <section className="py-20 bg-white">
           <div className="container">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
+            <h2 className="text-3xl font-poppins font-bold text-gray-900 mb-12 text-center">
               Notre Équipe
             </h2>
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -224,13 +224,13 @@ export default function AboutPage() {
                       {member.avatar}
                     </span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-poppins font-semibold text-gray-900 mb-2">
                     {member.name}
                   </h3>
-                  <p className="text-teal-600 font-medium mb-3">
+                  <p className="text-teal-600 font-poppins font-medium mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                  <p className="text-gray-600 font-poppins text-sm leading-relaxed mb-4">
                     {member.bio}
                   </p>
                   <div className="flex justify-center space-x-3">
@@ -253,18 +253,18 @@ export default function AboutPage() {
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-teal-500 to-orange-500">
           <div className="container text-center">
-            <h2 className="text-3xl font-bold text-white mb-6">
+            <h2 className="text-3xl font-poppins font-bold text-white mb-6">
               Rejoignez la Communauté TechPulse
             </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl font-poppins text-white/90 mb-8 max-w-2xl mx-auto">
               Restez informé des dernières tendances technologiques et 
               accédez à du contenu exclusif en rejoignant notre communauté.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="/signup" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+              <a href="/signup" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-poppins font-medium hover:bg-gray-100 transition-colors">
                 Créer un compte
               </a>
-              <a href="/articles" className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900 transition-colors">
+              <a href="/articles" className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white font-poppins hover:text-gray-900 transition-colors">
                 Découvrir les articles
               </a>
             </div>

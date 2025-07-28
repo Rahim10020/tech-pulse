@@ -13,13 +13,13 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="py-20">
+      <main className="py-7">
         <div className="container max-w-6xl">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-6">
               Contactez-nous
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl font-poppins text-gray-600 max-w-2xl mx-auto">
               Une question, une suggestion ou envie de collaborer ? Nous serions
               ravis d'échanger avec vous !
             </p>
@@ -28,7 +28,7 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div className="card p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
                 Envoyez-nous un message
               </h2>
               <form className="space-y-6">
@@ -79,7 +79,7 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div className="space-y-8">
               <div className="card p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
                   Informations de contact
                 </h2>
                 <div className="space-y-6">
@@ -112,7 +112,7 @@ export default function ContactPage() {
               </div>
 
               <div className="card p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-poppins font-bold text-gray-900 mb-4">
                   Temps de réponse
                 </h3>
                 <p className="text-gray-600 mb-4">

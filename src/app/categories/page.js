@@ -24,16 +24,16 @@ export default function CategoriesPage() {
       <Header />
       <div className="container-sm py-6">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
             Catégories
           </h1>
-          <p className="text-md text-start text-gray-600">
+          <p className="text-md font-poppins text-start text-gray-600">
             Explorez nos articles par domaine d'expertise technologique.
           </p>
         </div>
         
         {/* Layout en grille comme sur la deuxième image */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((category) => {
             const IconComponent = iconMap[category.icon] || Code;
             
@@ -41,9 +41,9 @@ export default function CategoriesPage() {
               <Link 
                 key={category.id} 
                 href={`/articles?category=${category.slug}`}
-                className="block group"
+                className="block group h-full"
               >
-                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300">
+                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300 h-full flex flex-col">
                   {/* Icône en haut à gauche */}
                   <div className="mb-4">
                     <IconComponent className="w-6 h-6 text-gray-700" />
@@ -55,7 +55,7 @@ export default function CategoriesPage() {
                   </h3>
                   
                   {/* Description */}
-                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 flex-grow">
                     {category.description}
                   </p>
                 </div>

@@ -9,7 +9,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        // Inter comme police par défaut
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        // Poppins comme police alternative
+        poppins: ['var(--font-poppins)', 'Poppins', 'sans-serif'],
+        // Ou vice versa si vous préférez Poppins par défaut
+        // sans: ['var(--font-poppins)', 'Poppins', 'system-ui', 'sans-serif'],
+        // inter: ['var(--font-inter)', 'Inter', 'sans-serif'],
+      },
+      fontWeight: {
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
       },
       colors: {
         primary: {

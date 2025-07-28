@@ -2,7 +2,7 @@
 export default function CategoryCard({ icon, title, description, href }) {
   return (
     <Link href={href} className="block group">
-      <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300 h-full">
+      <div className="bg-white rounded-lg h-full border border-gray-200 p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300">
         {/* Icône en haut */}
         <div className="mb-4">
           <div className="text-gray-700">

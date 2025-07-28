@@ -15,7 +15,7 @@ export default function ArticlesPage({ searchParams }) {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <div className="container-sm py-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-10">
+        <h1 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
           Derniers Articles
         </h1>
         

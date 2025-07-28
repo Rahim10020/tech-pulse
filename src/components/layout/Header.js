@@ -1,6 +1,6 @@
 // src/components/layout/Header.js - Header simple
-import Link from 'next/link';
-import { Search, Bell, Menu } from 'lucide-react';
+import Link from "next/link";
+import { Search, Bell, Menu } from "lucide-react";
 
 export default function Header() {
   return (
@@ -10,23 +10,39 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
-              <span className="text-white font-bold text-sm">TP</span>
+              <span className="text-white font-poppins font-bold text-sm">
+                TP
+              </span>
             </div>
-            <span className="text-xl font-bold text-gray-900">TechPulse</span>
+            <span className="text-xl font-poppins font-bold text-gray-900 uppercase">
+              Tech<span className="text-teal-600">Pulse</span>{" "}
+            </span>
           </Link>
-          
+
           {/* Navigation Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
+            <Link
+              href="/"
+              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+            >
               Accueil
             </Link>
-            <Link href="/articles" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
+            <Link
+              href="/articles"
+              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+            >
               Articles
             </Link>
-            <Link href="/categories" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
+            <Link
+              href="/categories"
+              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+            >
               Catégories
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
+            <Link
+              href="/about"
+              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+            >
               À propos
             </Link>
           </nav>
@@ -39,16 +55,16 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
+                className="bg-gray-100 font-poppins rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
               />
             </div>
-            
+
             <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
-            
-            <Link href="/login" className="btn-primary">
+
+            <Link href="/login" className="btn-primary font-poppins">
               Connexion
             </Link>
-            
+
             {/* Mobile menu button */}
             <button className="md:hidden p-2">
               <Menu className="w-5 h-5" />

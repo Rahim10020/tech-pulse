@@ -17,7 +17,7 @@ export default function HomePage() {
           className="mb-6"
         />
 
-        <h2 className="text-2xl font-bold ml-2 text-gray-900 mb-4">
+        <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
           Articles récents
         </h2>
 
