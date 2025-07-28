@@ -4,8 +4,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/useToast';
+import { useAuth } from '@/context/AuthProvider';
+import { useToast } from '@/context/ToastProvider';
 import SignupForm from '@/components/forms/SignupForm';
 
 export default function SignupPage() {

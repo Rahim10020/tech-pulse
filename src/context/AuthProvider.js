@@ -1,7 +1,8 @@
-// src/context/AuthProvider.js - Provider d'authentification
+// src/context/AuthProvider.js - Système d'auth complet
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext();
 
@@ -9,43 +10,109 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Simulation de vérification d'auth
+  // Vérifier l'authentification au chargement
   useEffect(() => {
-    // Simuler une vérification d'authentification
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    checkAuth();
   }, []);
 
-  const login = async (email, password) => {
+  const checkAuth = async () => {
     try {
-      // Simulation de login
-      if (email === 'test@test.com' && password === '123456') {
+      // Vérifier s'il y a un token dans localStorage
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Vous pouvez vérifier le token avec votre API
+        // Pour l'instant, on simule un utilisateur
         const mockUser = {
           id: 1,
           name: 'Test User',
-          email: 'test@test.com',
+          email: 'test@techpulse.com',
           username: 'testuser'
         };
         setUser(mockUser);
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login = async (email, password) => {
+    try {
+      setLoading(true);
+      
+      // Simulation de connexion (remplacez par votre API)
+      if (email === 'test@techpulse.com' && password === '123456') {
+        const user = {
+          id: 1,
+          name: 'Test User',
+          email: 'test@techpulse.com',
+          username: 'testuser'
+        };
+        
+        // Sauvegarder le token
+        localStorage.setItem('token', 'fake-jwt-token');
+        setUser(user);
+        
         return { success: true };
       } else {
         return { success: false, error: 'Identifiants invalides' };
       }
     } catch (error) {
       return { success: false, error: 'Erreur de connexion' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signup = async (username, email, password) => {
+    try {
+      setLoading(true);
+      
+      // Simulation d'inscription (remplacez par votre API)
+      const user = {
+        id: Date.now(),
+        name: username,
+        email: email,
+        username: username
+      };
+      
+      localStorage.setItem('token', 'fake-jwt-token');
+      setUser(user);
+      
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'Erreur lors de la création du compte' };
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
     setUser(null);
+  };
+
+  const updateProfile = async (profileData) => {
+    try {
+      // Simulation de mise à jour (remplacez par votre API)
+      const updatedUser = { ...user, ...profileData };
+      setUser(updatedUser);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'Erreur lors de la mise à jour' };
+    }
   };
 
   const value = {
     user,
     loading,
     login,
-    logout
+    signup,
+    logout,
+    updateProfile,
+    checkAuth
   };
 
   return (
@@ -55,6 +122,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// Hook useAuth dans le même fichier
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

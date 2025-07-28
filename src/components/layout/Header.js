@@ -1,8 +1,20 @@
 // src/components/layout/Header.js - Header simple
+'use client';
+
 import Link from "next/link";
-import { Search, Bell, Menu } from "lucide-react";
+import { Search, Bell, Menu, User, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/context/AuthProvider";
+import { useState } from "react";
 
 export default function Header() {
+  const { user, logout } = useAuth();
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    setIsProfileMenuOpen(false);
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
@@ -59,11 +71,71 @@ export default function Header() {
               />
             </div>
 
-            <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
+            {user ? (
+              <>
+                <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
 
-            <Link href="/login" className="btn-primary font-poppins">
-              Connexion
-            </Link>
+                {/* Profile Menu */}
+                <div className="relative">
+                  <button
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 focus:outline-none focus:ring-2 focus:ring-gray-300 flex items-center justify-center"
+                  >
+                    <span className="text-white font-medium text-sm font-poppins">
+                      {user.name?.charAt(0) || "U"}
+                    </span>
+                  </button>
+
+                  {isProfileMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="text-sm font-medium text-gray-900 font-poppins">
+                          {user.name}
+                        </p>
+                        <p className="text-xs text-gray-500 font-sans">
+                          {user.email}
+                        </p>
+                      </div>
+                      <Link
+                        href="/profile"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        <User className="w-4 h-4 mr-3" />
+                        Voir le profil
+                      </Link>
+                      <Link
+                        href="/profile/edit"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        <Settings className="w-4 h-4 mr-3" />
+                        Paramètres
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                      >
+                        <LogOut className="w-4 h-4 mr-3" />
+                        Déconnexion
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-gray-700 hover:text-gray-900 font-poppins font-medium"
+                >
+                  Connexion
+                </Link>
+                <Link href="/signup" className="btn-primary font-poppins">
+                  Inscription
+                </Link>
+              </>
+            )}
 
             {/* Mobile menu button */}
             <button className="md:hidden p-2">

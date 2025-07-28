@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import ProfileForm from '@/components/forms/ProfileForm';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/useToast';
+import { useAuth } from '@/context/AuthProvider';
+import { useToast } from '@/context/ToastProvider';
 
 export default function EditProfilePage() {
   const router = useRouter();
