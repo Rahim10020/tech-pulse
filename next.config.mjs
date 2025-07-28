@@ -1,20 +1,21 @@
-// next.config.mjs - MODIFIÉ pour TechPulse
+// next.config.mjs - MODIFIEZ votre fichier existant
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Optimisations pour App Router
     optimizePackageImports: ['lucide-react'],
   },
   images: {
-    // Configuration pour les images optimisées
     domains: ['images.unsplash.com', 'via.placeholder.com'],
   },
-  // Support pour les imports absolus
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': '.',
-    };
+  // Configuration importante pour Tailwind
+  transpilePackages: [],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
     return config;
   },
 };

@@ -1,4 +1,4 @@
-// components/LoadingSpinner.js - Composant de chargement
+// src/components/shared/LoadingSpinner.js - Composant de chargement
 export default function LoadingSpinner({ size = 'md', className = '' }) {
   const sizeClasses = {
     sm: 'w-4 h-4',

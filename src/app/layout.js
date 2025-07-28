@@ -1,8 +1,7 @@
-// app/layout.js - Layout AVEC les providers (à utiliser après avoir créé les fichiers)
+// src/app/layout.js - Layout AVEC AuthProvider
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/context/AuthProvider'
-import { ToastProvider } from '@/context/ToastProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,9 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="fr" className={inter.className}>
       <body className="bg-gray-50 text-gray-900 antialiased">
         <AuthProvider>
-          <ToastProvider>
-            {children}
-          </ToastProvider>
+          {children}
         </AuthProvider>
       </body>
     </html>

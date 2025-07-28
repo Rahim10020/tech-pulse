@@ -1,4 +1,4 @@
-// context/AuthProvider.js - Provider d'authentification
+// src/context/AuthProvider.js - Provider d'authentification
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -9,66 +9,43 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Vérifier l'authentification au chargement
+  // Simulation de vérification d'auth
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    try {
-      const response = await fetch('/api/auth/me');
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      setUser(null);
-    } finally {
+    // Simuler une vérification d'authentification
+    setTimeout(() => {
       setLoading(false);
-    }
-  };
+    }, 1000);
+  }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setUser(data.user);
+      // Simulation de login
+      if (email === 'test@test.com' && password === '123456') {
+        const mockUser = {
+          id: 1,
+          name: 'Test User',
+          email: 'test@test.com',
+          username: 'testuser'
+        };
+        setUser(mockUser);
         return { success: true };
       } else {
-        return { success: false, error: data.error };
+        return { success: false, error: 'Identifiants invalides' };
       }
     } catch (error) {
       return { success: false, error: 'Erreur de connexion' };
     }
   };
 
-  const logout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      setUser(null);
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+  const logout = () => {
+    setUser(null);
   };
 
   const value = {
     user,
     loading,
     login,
-    logout,
-    checkAuth
+    logout
   };
 
   return (

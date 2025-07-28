@@ -1,460 +1,73 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Variables CSS globales pour TechPulse */
+
+/* Variables CSS pour TechPulse */
 :root {
-  /* Couleurs primaires */
-  --color-primary-50: #f8fafc;
-  --color-primary-100: #f1f5f9;
-  --color-primary-200: #e2e8f0;
-  --color-primary-300: #cbd5e1;
-  --color-primary-400: #94a3b8;
-  --color-primary-500: #64748b;
-  --color-primary-600: #475569;
-  --color-primary-700: #334155;
-  --color-primary-800: #1e293b;
-  --color-primary-900: #0f172a;
-  
-  /* Couleurs d'accent pour TechPulse */
-  --color-orange-100: #fed7aa;
-  --color-orange-400: #fb923c;
-  --color-orange-500: #f97316;
-  
-  --color-teal-100: #ccfbf1;
-  --color-teal-400: #2dd4bf;
-  --color-teal-500: #14b8a6;
-  --color-teal-600: #0d9488;
-  
-  --color-green-100: #dcfce7;
-  --color-green-500: #22c55e;
-  --color-green-600: #16a34a;
-  
-  /* Couleurs système */
-  --color-red-50: #fef2f2;
-  --color-red-500: #ef4444;
-  --color-red-600: #dc2626;
-  
-  /* Backgrounds et textes */
   --background: #fafafa;
   --foreground: #0f172a;
-  --card-background: #ffffff;
-  --border-color: #e2e8f0;
-  
-  /* Typographie */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  
-  /* Radius */
-  --radius: 0.5rem;
-  --radius-lg: 0.75rem;
+  --font-sans: "Inter", system-ui, sans-serif;
 }
 
-/* Reset et styles de base */
+/* Reset de base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  text-size-adjust: 100%;
-}
-
 body {
-  min-height: 100vh;
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Styles pour les liens */
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-
-/* Styles pour les images */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Styles pour les boutons */
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
-}
-
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Focus styles pour l'accessibilité */
-*:focus-visible {
-  outline: 2px solid var(--color-primary-600);
-  outline-offset: 2px;
-}
-
-/* Scrollbar personnalisée */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-primary-100);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-primary-300);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-400);
-}
-
-/* Composants personnalisés pour TechPulse */
+/* Composants TechPulse */
 @layer components {
-  /* Boutons */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200;
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors;
   }
-  
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200;
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors;
   }
-  
-  .btn-ghost {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200;
-  }
-  
-  /* Cards */
+
   .card {
-    @apply bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow;
   }
-  
-  .card-header {
-    @apply px-6 py-4 border-b border-gray-200;
-  }
-  
-  .card-content {
-    @apply px-6 py-4;
-  }
-  
-  .card-footer {
-    @apply px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg;
-  }
-  
-  /* Inputs */
+
   .input-field {
-    @apply w-full px-4 py-3 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent transition-colors duration-200;
+    @apply w-full px-4 py-3 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300;
   }
-  
-  .input-error {
-    @apply border-red-300 focus:ring-red-500 focus:border-red-500;
-  }
-  
-  .input-success {
-    @apply border-green-300 focus:ring-green-500 focus:border-green-500;
-  }
-  
-  /* Labels */
-  .label {
-    @apply block text-sm font-medium text-gray-900 mb-2;
-  }
-  
-  .label-error {
-    @apply text-red-600;
-  }
-  
-  /* Navigation */
-  .nav-link {
-    @apply text-gray-700 hover:text-gray-900 transition-colors duration-200;
-  }
-  
-  .nav-link-active {
-    @apply text-gray-900 font-medium;
-  }
-  
-  /* Articles */
+
   .article-card {
-    @apply bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all duration-300;
+    @apply bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all;
   }
-  
-  .article-meta {
-    @apply flex items-center text-sm text-gray-500;
-  }
-  
+
   .article-title {
-    @apply text-lg font-semibold text-gray-900 mb-2 leading-tight hover:text-gray-700 transition-colors;
+    @apply text-lg font-semibold text-gray-900 mb-2 leading-tight;
   }
-  
+
   .article-description {
     @apply text-gray-600 text-sm leading-relaxed;
   }
-  
-  /* Badges */
+
   .badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
-  
+
   .badge-primary {
     @apply bg-gray-100 text-gray-800;
   }
-  
-  .badge-success {
-    @apply bg-green-100 text-green-800;
-  }
-  
-  .badge-warning {
-    @apply bg-yellow-100 text-yellow-800;
-  }
-  
-  .badge-error {
-    @apply bg-red-100 text-red-800;
-  }
-  
-  .badge-teal {
-    @apply bg-teal-100 text-teal-800;
-  }
-  
-  .badge-orange {
-    @apply bg-orange-100 text-orange-800;
-  }
-  
-  /* Containers */
+
   .container {
     @apply max-w-7xl mx-auto px-6;
   }
-  
+
   .container-sm {
     @apply max-w-4xl mx-auto px-6;
   }
-  
-  .container-xs {
-    @apply max-w-2xl mx-auto px-6;
-  }
-  
-  /* Header */
-  .header {
-    @apply bg-white border-b border-gray-200 sticky top-0 z-50;
-  }
-  
-  /* Dividers */
-  .divider {
-    @apply border-t border-gray-200 my-6;
-  }
-  
-  .divider-vertical {
-    @apply border-l border-gray-200 mx-4 h-4;
-  }
-  
-  /* Loading states */
-  .skeleton {
-    @apply animate-pulse bg-gray-200 rounded;
-  }
-  
-  .skeleton-text {
-    @apply skeleton h-4 w-full mb-2;
-  }
-  
-  .skeleton-title {
-    @apply skeleton h-6 w-3/4 mb-4;
-  }
-  
-  .skeleton-avatar {
-    @apply skeleton h-10 w-10 rounded-full;
-  }
 }
-
-/* Utilitaires personnalisés */
-@layer utilities {
-  /* Text balance pour les titres */
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  /* Masquer la scrollbar */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Animations */
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out;
-  }
-  
-  .animate-scale-in {
-    animation: scaleIn 0.2s ease-out;
-  }
-  
-  .animate-slide-down {
-    animation: slideDown 0.3s ease-out;
-  }
-  
-  /* Hover effects */
-  .hover-lift {
-    @apply transition-transform duration-200 hover:-translate-y-1;
-  }
-  
-  .hover-grow {
-    @apply transition-transform duration-200 hover:scale-105;
-  }
-  
-  /* Glass effect */
-  .glass {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-  }
-  
-  /* Gradients avec les couleurs TechPulse */
-  .gradient-orange {
-    background: linear-gradient(135deg, #fb923c, #f97316);
-  }
-  
-  .gradient-teal {
-    background: linear-gradient(135deg, #2dd4bf, #0d9488);
-  }
-  
-  .gradient-primary {
-    background: linear-gradient(135deg, #64748b, #334155);
-  }
-  
-  /* Borders spéciaux */
-  .border-gradient {
-    background: linear-gradient(white, white) padding-box,
-                linear-gradient(135deg, #2dd4bf, #f97316) border-box;
-    border: 2px solid transparent;
-  }
-  
-  /* States */
-  .state-loading {
-    @apply pointer-events-none opacity-50;
-  }
-  
-  .state-disabled {
-    @apply pointer-events-none opacity-40;
-  }
-}
-
-/* Animations keyframes */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Responsive breakpoints helpers */
-@media (max-width: 640px) {
-  .container,
-  .container-sm,
-  .container-xs {
-    @apply px-4;
-  }
-}
-
-/* States pour les interactions */
-.interactive {
-  @apply transition-all duration-200 ease-in-out;
-}
-
-.interactive:hover {
-  @apply transform -translate-y-0.5;
-}
-
-/* Print styles */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  
-  .card {
-    @apply shadow-none border border-gray-300;
-  }
-}
-
-/* Dark mode support (optionnel) */
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --card-background: #1a1a1a;
-    --border-color: #333333;
-  }
-  
-  .card {
-    @apply bg-gray-800 border-gray-700 text-white;
-  }
-  
-  .input-field {
-    @apply bg-gray-800 border-gray-700 text-white;
-  }
-  
-  .btn-secondary {
-    @apply bg-gray-800 border-gray-700 text-white hover:bg-gray-700;
-  }
-} */

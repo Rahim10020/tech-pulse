@@ -1,4 +1,4 @@
-// app/articles/page.js - Page des articles
+// src/app/articles/page.js - MODIFIÉ pour utiliser le layout horizontal
 import Header from '@/components/layout/Header';
 import ArticleList from '@/components/articles/ArticleList';
 import CategoryFilter from '@/components/articles/CategoryFilter';
@@ -14,11 +14,15 @@ export default function ArticlesPage({ searchParams }) {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Derniers Articles</h1>
+      <div className="container py-12">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          Derniers Articles
+        </h1>
         
         <CategoryFilter activeCategory={category} />
-        <ArticleList category={category} />
+        
+        {/* Utilise le layout horizontal */}
+        <ArticleList category={category} layout="horizontal" />
       </div>
     </div>
   );
