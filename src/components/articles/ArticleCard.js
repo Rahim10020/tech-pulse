@@ -16,8 +16,8 @@ export default function ArticleCard({
   if (horizontal) {
     // Layout horizontal (liste)
     return (
-      <Link href={href} className="block group">
-        <article className="bg-white border-b border-gray-200 py-8 hover:bg-gray-50 transition-colors">
+      <Link href={href} className="block group w-full">
+        <article className="bg-white border-b w-full border-gray-200 p-8 transition-colors">
           <div className="flex items-start space-x-6">
             {/* Content */}
             <div className="flex-1">

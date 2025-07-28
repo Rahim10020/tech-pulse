@@ -17,16 +17,16 @@ export default function Header() {
           
           {/* Navigation Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link href="/" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
               Accueil
             </Link>
-            <Link href="/articles" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link href="/articles" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
               Articles
             </Link>
-            <Link href="/categories" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link href="/categories" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
               Catégories
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-gray-900 transition-colors">
+            <Link href="/about" className="text-gray-700 hover:text-gray-900 text-sm transition-colors">
               À propos
             </Link>
           </nav>

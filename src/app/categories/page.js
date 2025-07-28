@@ -1,4 +1,4 @@
-// src/app/categories/page.js - Page catégories (bonus)
+// src/app/categories/page.js - Page catégories avec layout en grille
 import Header from '@/components/layout/Header';
 import Link from 'next/link';
 import { Code, Database, Cloud, Brain, Smartphone, Globe } from 'lucide-react';
@@ -22,17 +22,18 @@ export default function CategoriesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="container py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <div className="container-sm py-6">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
             Catégories
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-md text-start text-gray-600">
             Explorez nos articles par domaine d'expertise technologique.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Layout en grille comme sur la deuxième image */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {categories.map((category) => {
             const IconComponent = iconMap[category.icon] || Code;
             
@@ -42,21 +43,21 @@ export default function CategoriesPage() {
                 href={`/articles?category=${category.slug}`}
                 className="block group"
               >
-                <div className="card p-8 text-center hover:shadow-lg transition-all group-hover:-translate-y-1">
-                  <div className={`w-16 h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                    <IconComponent className="w-8 h-8 text-gray-700" />
+                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300">
+                  {/* Icône en haut à gauche */}
+                  <div className="mb-4">
+                    <IconComponent className="w-6 h-6 text-gray-700" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-teal-600 transition-colors">
+                  
+                  {/* Titre */}
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
                     {category.name}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
                     {category.description}
                   </p>
-                  <div className="flex items-center justify-center">
-                    <span className={`badge ${category.textColor} ${category.color}`}>
-                      {category.count} articles
-                    </span>
-                  </div>
                 </div>
               </Link>
             );

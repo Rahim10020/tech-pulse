@@ -25,6 +25,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+
+/* Dans globals.css ou tailwind.css */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+
 /* Composants TechPulse */
 @layer components {
   .btn-primary {

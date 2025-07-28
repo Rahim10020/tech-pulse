@@ -26,7 +26,7 @@ export default function SearchBar({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-white border border-gray-200 rounded-lg pl-12 pr-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+        className="w-full bg-white border border-gray-200 rounded-lg pl-12 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
       />
     </form>
   );
