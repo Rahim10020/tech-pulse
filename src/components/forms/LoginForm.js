@@ -26,7 +26,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-2">
       <Input
         label="Email"
         type="email"
@@ -53,7 +53,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
         </Link>
       </div>
 
-      <Button type="submit" disabled={isLoading} className="w-full">
+      <Button type="submit" disabled={isLoading} className="w-full font-poppins">
         {isLoading ? 'Connecting...' : 'Log in'}
       </Button>
     </form>

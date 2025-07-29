@@ -34,17 +34,17 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto pt-24 px-6">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h1>
+    <div className="max-w-md mx-auto pt-6 px-6">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-2">Create your account</h1>
       </div>
 
       <SignupForm onSubmit={handleSignup} isLoading={isLoading} />
 
-      <div className="text-center mt-6">
-        <span className="text-sm text-gray-500">
+      <div className="text-center mt-4">
+        <span className="text-sm font-poppins text-gray-500">
           Already have an account?{' '}
-          <Link href="/login" className="text-gray-700 hover:text-gray-900 underline">
+          <Link href="/login" className="text-gray-700 hover:text-gray-900 font-poppins underline">
             Sign in
           </Link>
         </span>
