@@ -97,7 +97,7 @@ export default function Header() {
                         </p>
                       </div>
                       <Link
-                        href="/profile"
+                        href={`/profile/${user.id}`}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
