@@ -28,12 +28,12 @@ export default function ArticleDetail({ article }) {
 
         {/* Article Header */}
         <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight font-poppins">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight font-sans">
             {article.title}
           </h1>
           
           {/* Author & Meta */}
-          <div className="flex items-center text-sm text-gray-600 mb-6 font-poppins">
+          <div className="flex items-center text-sm text-gray-600 mb-6 font-sans">
             <span>Publié par </span>
             <Link 
               href={`/author/${article.author.id}`}
@@ -50,7 +50,7 @@ export default function ArticleDetail({ article }) {
 
         {/* Article Image */}
         <div className="mb-8">
-          <div className="w-full h-96 bg-gradient-to-br from-teal-400 via-teal-500 to-green-600 rounded-lg flex items-center justify-center">
+          <div className="w-full h-96 bg-gradient-to-br from-teal-400 via-teal-500 to-green-600 rounded-md flex items-center justify-center">
             {/* Placeholder pour l'image de l'article */}
             <div className="text-white text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-lg flex items-center justify-center">
@@ -63,13 +63,13 @@ export default function ArticleDetail({ article }) {
         </div>
 
         {/* Article Content */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
+        <div className="bg-transparent p-8 mb-8">
           <div className="prose prose-lg max-w-none">
-            <p className="text-gray-700 leading-relaxed mb-6 font-poppins">
+            <p className="text-gray-700 leading-relaxed mb-6 font-sans">
               {article.description}
             </p>
             
-            <div className="space-y-6 text-gray-700 font-poppins">
+            <div className="space-y-6 text-gray-700 font-sans">
               <p className="leading-relaxed">
                 L'intelligence artificielle (IA) est en train de remodeler le paysage technologique à un rythme sans précédent. De l'automatisation des tâches routinières à la création de solutions innovantes, l'IA a le potentiel de transformer radicalement de nombreux secteurs. Cet article explore les tendances actuelles de l'IA et leurs impacts potentiels sur l'industrie.
               </p>
@@ -94,14 +94,14 @@ export default function ArticleDetail({ article }) {
         </div>
 
         {/* Actions & Comments */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-transparent p-6">
           {/* Actions */}
           <div className="flex items-center space-x-6 mb-8 pb-6 border-b border-gray-200">
-            <button className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors font-poppins">
+            <button className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors font-sans">
               <Heart className="w-5 h-5" />
               <span>{article.likes}</span>
             </button>
-            <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500 transition-colors font-poppins">
+            <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500 transition-colors font-sans">
               <MessageCircle className="w-5 h-5" />
               <span>{article.comments?.length || 0}</span>
             </button>
@@ -109,7 +109,7 @@ export default function ArticleDetail({ article }) {
 
           {/* Comments Section */}
           <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-6 font-poppins">
+            <h3 className="text-xl font-bold text-gray-900 mb-6 font-sans">
               Commentaires
             </h3>
             
@@ -118,14 +118,14 @@ export default function ArticleDetail({ article }) {
               {/* Comment 1 */}
               <div className="flex space-x-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex-shrink-0 flex items-center justify-center">
-                  <span className="text-white font-medium text-sm font-poppins">J</span>
+                  <span className="text-white font-medium text-sm font-sans">J</span>
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <span className="font-medium text-gray-900 font-poppins">Jean Dupont</span>
-                    <span className="text-sm text-gray-500 font-poppins">2 jours</span>
+                    <span className="font-medium text-gray-900 font-sans">Jean Dupont</span>
+                    <span className="text-sm text-gray-500 font-sans">2 jours</span>
                   </div>
-                  <p className="text-gray-700 text-sm leading-relaxed font-poppins">
+                  <p className="text-gray-700 text-sm leading-relaxed font-sans">
                     Excellent article, Sophie ! J'ai particulièrement apprécié la clarté avec laquelle vous avez expliqué les différentes tendances de l'IA.
                   </p>
                 </div>
@@ -138,10 +138,10 @@ export default function ArticleDetail({ article }) {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <span className="font-medium text-gray-900 font-poppins">Marie Dubois</span>
-                    <span className="text-sm text-gray-500 font-poppins">1 jour</span>
+                    <span className="font-medium text-gray-900 font-sans">Marie Dubois</span>
+                    <span className="text-sm text-gray-500 font-sans">1 jour</span>
                   </div>
-                  <p className="text-gray-700 text-sm leading-relaxed font-poppins">
+                  <p className="text-gray-700 text-sm leading-relaxed font-sans">
                     Merci pour cet aperçu complet. Je suis curieuse de voir comment l'IA va continuer à évoluer dans les années à venir.
                   </p>
                 </div>
@@ -157,11 +157,11 @@ export default function ArticleDetail({ article }) {
                 <div className="flex-1">
                   <textarea
                     placeholder="Ajouter un commentaire..."
-                    className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-poppins"
+                    className="w-full p-3 border-2 border-gray-200 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-sans"
                     rows="3"
                   />
                   <div className="mt-3 flex justify-end">
-                    <button className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-poppins">
+                    <button className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors text-sm font-poppins">
                       Envoyer
                     </button>
                   </div>
