@@ -1,22 +1,22 @@
 // components/forms/LoginForm.js - Composant formulaire de connexion
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 export default function LoginForm({ onSubmit, isLoading }) {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -48,13 +48,20 @@ export default function LoginForm({ onSubmit, isLoading }) {
       />
 
       <div className="text-left">
-        <Link href="/forgot-password" className="text-sm text-gray-500 hover:text-gray-700 underline">
+        <Link
+          href="/forgot-password"
+          className="text-sm text-gray-500 hover:text-gray-700 underline"
+        >
           Forgot password?
         </Link>
       </div>
 
-      <Button type="submit" disabled={isLoading} className="w-full font-poppins">
-        {isLoading ? 'Connecting...' : 'Log in'}
+      <Button
+        type="submit"
+        disabled={isLoading}
+        className="w-full font-poppins"
+      >
+        {isLoading ? "Connecting..." : "Log in"}
       </Button>
     </form>
   );
