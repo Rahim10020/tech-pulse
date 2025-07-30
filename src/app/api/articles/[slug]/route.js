@@ -1,6 +1,6 @@
 // app/api/articles/[slug]/route.js
 import { NextResponse } from 'next/server';
-import { getArticleBySlug } from '@/lib/server/articles';
+import { getArticleBySlug } from '@/lib/articles';
 
 export async function GET(request, { params }) {
   try {

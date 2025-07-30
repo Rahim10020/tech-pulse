@@ -1,9 +1,9 @@
-// app/api/auth/me/route.js - Version PostgreSQL
+// app/api/auth/profile/route.js - Mise à jour du profil
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
-import { getUserById } from '@/lib/auth-db';
+import { updateUserProfile } from '@/lib/auth-db';
 
-export async function GET(request) {
+export async function PUT(request) {
   try {
     const token = request.cookies.get('token')?.value;
 
@@ -22,22 +22,23 @@ export async function GET(request) {
       );
     }
 
-    // Récupérer les données utilisateur depuis PostgreSQL
-    const user = await getUserById(decoded.userId);
+    const profileData = await request.json();
+    const result = await updateUserProfile(decoded.userId, profileData);
 
-    if (!user) {
+    if (result.success) {
+      return NextResponse.json({
+        success: true,
+        user: result.user,
+        message: 'Profil mis à jour avec succès'
+      });
+    } else {
       return NextResponse.json(
-        { error: 'Utilisateur non trouvé' },
-        { status: 404 }
+        { error: result.error },
+        { status: 400 }
       );
     }
-
-    return NextResponse.json({
-      success: true,
-      user
-    });
   } catch (error) {
-    console.error('Auth verification error:', error);
+    console.error('Profile update error:', error);
     return NextResponse.json(
       { error: 'Erreur interne du serveur' },
       { status: 500 }

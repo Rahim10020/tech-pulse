@@ -1,4 +1,4 @@
-// src/context/AuthProvider.js - Système d'auth complet
+// src/context/AuthProvider.js - Système d'auth avec PostgreSQL
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -16,18 +16,19 @@ export function AuthProvider({ children }) {
 
   const checkAuth = async () => {
     try {
-      // Vérifier s'il y a un token dans localStorage
-      const token = localStorage.getItem('token');
-      if (token) {
-        // Vous pouvez vérifier le token avec votre API
-        // Pour l'instant, on simule un utilisateur
-        const mockUser = {
-          id: 1,
-          name: 'Test User',
-          email: 'test@techpulse.com',
-          username: 'testuser'
-        };
-        setUser(mockUser);
+      setLoading(true);
+      
+      // Appeler l'API /me pour vérifier le token dans les cookies
+      const response = await fetch('/api/auth/me', {
+        method: 'GET',
+        credentials: 'include' // Important pour inclure les cookies
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        setUser(null);
       }
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -41,66 +42,161 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
       
-      // Simulation de connexion (remplacez par votre API)
-      if (email === 'test@techpulse.com' && password === '123456') {
-        const user = {
-          id: 1,
-          name: 'Test User',
-          email: 'test@techpulse.com',
-          username: 'testuser'
-        };
-        
-        // Sauvegarder le token
-        localStorage.setItem('token', 'fake-jwt-token');
-        setUser(user);
-        
-        return { success: true };
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Important pour les cookies
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUser(data.user);
+        return { success: true, message: data.message };
       } else {
-        return { success: false, error: 'Identifiants invalides' };
+        return { success: false, error: data.error };
       }
     } catch (error) {
-      return { success: false, error: 'Erreur de connexion' };
+      console.error('Login error:', error);
+      return { success: false, error: 'Erreur de connexion au serveur' };
     } finally {
       setLoading(false);
     }
   };
 
-  const signup = async (username, email, password) => {
+  const signup = async (name, username, email, password) => {
     try {
       setLoading(true);
       
-      // Simulation d'inscription (remplacez par votre API)
-      const user = {
-        id: Date.now(),
-        name: username,
-        email: email,
-        username: username
-      };
-      
-      localStorage.setItem('token', 'fake-jwt-token');
-      setUser(user);
-      
-      return { success: true };
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Important pour les cookies
+        body: JSON.stringify({ name, username, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUser(data.user);
+        return { success: true, message: data.message };
+      } else {
+        return { success: false, error: data.error };
+      }
     } catch (error) {
+      console.error('Signup error:', error);
       return { success: false, error: 'Erreur lors de la création du compte' };
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+  const logout = async () => {
+    try {
+      setLoading(true);
+      
+      // Appeler l'API de déconnexion
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include' // Important pour les cookies
+      });
+
+      setUser(null);
+      
+      // Optionnel : rediriger vers la page d'accueil
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Même en cas d'erreur, déconnecter localement
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateProfile = async (profileData) => {
     try {
-      // Simulation de mise à jour (remplacez par votre API)
-      const updatedUser = { ...user, ...profileData };
-      setUser(updatedUser);
-      return { success: true };
+      setLoading(true);
+      
+      const response = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUser(data.user);
+        return { success: true, message: 'Profil mis à jour avec succès' };
+      } else {
+        return { success: false, error: data.error };
+      }
     } catch (error) {
-      return { success: false, error: 'Erreur lors de la mise à jour' };
+      console.error('Profile update error:', error);
+      return { success: false, error: 'Erreur lors de la mise à jour du profil' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      setLoading(true);
+      
+      const response = await fetch('/api/auth/change-password', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        return { success: true, message: data.message };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      console.error('Password change error:', error);
+      return { success: false, error: 'Erreur lors du changement de mot de passe' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fonction pour vérifier la disponibilité d'un email
+  const checkEmailAvailability = async (email) => {
+    try {
+      const response = await fetch(`/api/auth/check-availability?email=${encodeURIComponent(email)}`);
+      const data = await response.json();
+      return data.available;
+    } catch (error) {
+      console.error('Error checking email availability:', error);
+      return false;
+    }
+  };
+
+  // Fonction pour vérifier la disponibilité d'un username
+  const checkUsernameAvailability = async (username) => {
+    try {
+      const response = await fetch(`/api/auth/check-availability?username=${encodeURIComponent(username)}`);
+      const data = await response.json();
+      return data.available;
+    } catch (error) {
+      console.error('Error checking username availability:', error);
+      return false;
     }
   };
 
@@ -111,7 +207,10 @@ export function AuthProvider({ children }) {
     signup,
     logout,
     updateProfile,
-    checkAuth
+    changePassword,
+    checkAuth,
+    checkEmailAvailability,
+    checkUsernameAvailability
   };
 
   return (

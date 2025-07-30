@@ -1,9 +1,9 @@
-// src/components/layout/Header.js - Header simple
+// src/components/layout/Header.js - Header avec icône de publication
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Bell, Menu, User, Settings, LogOut } from "lucide-react";
+import { Search, Bell, Menu, User, Settings, LogOut, Plus, PenTool } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { useState } from "react";
 
@@ -98,6 +98,15 @@ export default function Header() {
 
             {user ? (
               <>
+                {/* Bouton Publier - Visible seulement si connecté */}
+                <Link
+                  href="/create"
+                  className="flex items-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors font-poppins text-sm font-medium"
+                >
+                  <PenTool className="w-4 h-4" />
+                  <span className="hidden sm:inline">Publier</span>
+                </Link>
+
                 <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
 
                 {/* Profile Menu */}
@@ -122,12 +131,20 @@ export default function Header() {
                         </p>
                       </div>
                       <Link
-                        href={`/profile/${user.id}`}
+                        href={`/author/${user.username}`}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <User className="w-4 h-4 mr-3" />
                         Voir le profil
+                      </Link>
+                      <Link
+                        href="/create"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        <PenTool className="w-4 h-4 mr-3" />
+                        Publier un article
                       </Link>
                       <Link
                         href="/profile/edit"

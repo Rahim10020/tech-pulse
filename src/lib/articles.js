@@ -570,3 +570,77 @@ export async function addComment(articleId, userId, content, parentId = null) {
 export async function disconnectPrisma() {
   await prisma.$disconnect();
 }
+
+// 
+export async function createArticle(articleData) {
+  try {
+    const { title, content, description, category, readTime, featured, authorId } = articleData;
+
+    // Générer un slug unique
+    const baseSlug = title
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    // Vérifier l'unicité du slug
+    let slug = baseSlug;
+    let counter = 1;
+    
+    while (true) {
+      const existingArticle = await prisma.article.findUnique({
+        where: { slug }
+      });
+      
+      if (!existingArticle) break;
+      
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
+    // Trouver la catégorie par slug
+    let categoryId = null;
+    if (category) {
+      const categoryRecord = await prisma.category.findUnique({
+        where: { slug: category }
+      });
+      categoryId = categoryRecord?.id;
+    }
+
+    // Créer l'article
+    const article = await prisma.article.create({
+      data: {
+        title,
+        slug,
+        description: description || '',
+        content,
+        readTime: readTime || '5 min',
+        featured: featured || false,
+        authorId: parseInt(authorId),
+        categoryId: categoryId,
+        published: true,
+        publishedAt: new Date()
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+            username: true
+          }
+        },
+        category: {
+          select: {
+            name: true,
+            slug: true
+          }
+        }
+      }
+    });
+
+    return { success: true, article };
+  } catch (error) {
+    console.error('Error creating article:', error);
+    return { success: false, error: 'Erreur lors de la création de l\'article' };
+  }
+}

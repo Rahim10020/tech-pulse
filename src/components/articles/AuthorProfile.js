@@ -1,11 +1,14 @@
-// src/components/profile/AuthorProfile.js - Composant profil auteur (même design que UserProfile)
+// src/components/profile/AuthorProfile.js - Composant profil auteur corrigé
 'use client';
 
 import { useState } from 'react';
 import { Calendar, MapPin, Globe, Twitter, Linkedin, Github } from 'lucide-react';
 
-export default function AuthorProfile({ author, articles = [] }) {
+export default function AuthorProfile({ author }) {
   const [activeTab, setActiveTab] = useState('articles');
+
+  // Articles viennent maintenant d'author.articles (depuis l'API)
+  const articles = author.articles || [];
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-4">
@@ -47,60 +50,56 @@ export default function AuthorProfile({ author, articles = [] }) {
               </div>
               <div className="border-2 border-gray-200 rounded-lg p-4">
                 <div className="text-xl font-bold text-gray-900 font-sans">
-                  {author.stats?.followers || 0}
+                  {author.stats?.comments || 0}
                 </div>
                 <div className="text-xs text-gray-500 font-poppins">
-                  Abonnés
+                  Commentaires
                 </div>
               </div>
               <div className="border-2 border-gray-200 rounded-lg p-4">
                 <div className="text-xl font-bold text-gray-900 font-sans">
-                  {author.stats?.following || 0}
+                  {/* Calculer les likes totaux des articles */}
+                  {articles.reduce((total, article) => total + (article.likes || 0), 0)}
                 </div>
                 <div className="text-xs text-gray-500 font-poppins">
-                  Abonnements
+                  Likes reçus
                 </div>
               </div>
             </div>
 
-            {/* Social Links */}
-            {author.social && (
-              <div className="flex border-2 border-gray-200 rounded-md p-4 justify-center space-x-3">
-                {author.social.twitter && (
-                  <a
-                    href={`https://twitter.com/${author.social.twitter.replace(
-                      "@",
-                      ""
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 text-gray-500 hover:text-blue-500 transition-colors"
-                  >
-                    <Twitter className="w-4 h-4" />
-                  </a>
-                )}
-                {author.social.linkedin && (
-                  <a
-                    href={`https://linkedin.com/in/${author.social.linkedin}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                  </a>
-                )}
-                {author.social.github && (
-                  <a
-                    href={`https://github.com/${author.social.github}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
-                  >
-                    <Github className="w-4 h-4" />
-                  </a>
-                )}
-              </div>
-            )}
+            {/* Social Links - Nouveau format PostgreSQL */}
+            <div className="flex border-2 border-gray-200 rounded-md p-4 justify-center space-x-3">
+              {author.twitter && (
+                <a
+                  href={`https://twitter.com/${author.twitter.replace("@", "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-500 hover:text-blue-500 transition-colors"
+                >
+                  <Twitter className="w-4 h-4" />
+                </a>
+              )}
+              {author.linkedin && (
+                <a
+                  href={`https://linkedin.com/in/${author.linkedin}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </a>
+              )}
+              {author.github && (
+                <a
+                  href={`https://github.com/${author.github}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  <Github className="w-4 h-4" />
+                </a>
+              )}
+            </div>
 
             {/* Info */}
             <div className="flex items-center justify-center gap-4 mb-4 mt-7">
@@ -130,25 +129,6 @@ export default function AuthorProfile({ author, articles = [] }) {
                 </div>
               )}
             </div>
-
-            {/* Specialties */}
-            {author.specialties && author.specialties.length > 0 && (
-              <div className="mt-7 text-center">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3 font-poppins">
-                  Spécialités
-                </h3>
-                <div className="flex justify-center flex-wrap gap-2">
-                  {author.specialties.map((specialty, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-poppins"
-                    >
-                      {specialty}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -175,7 +155,7 @@ export default function AuthorProfile({ author, articles = [] }) {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                Likes
+                Likes reçus
               </button>
               <button
                 onClick={() => setActiveTab('comments')}
@@ -185,7 +165,7 @@ export default function AuthorProfile({ author, articles = [] }) {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                Commentaires
+                Commentaires ({author.stats?.comments || 0})
               </button>
             </nav>
           </div>
@@ -200,6 +180,9 @@ export default function AuthorProfile({ author, articles = [] }) {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center text-sm text-gray-500 mb-2 font-poppins">
+                            <span className={`inline-block px-2 py-1 rounded-full text-xs ${article.category?.color || 'bg-gray-100'} ${article.category?.textColor || 'text-gray-600'} mr-3`}>
+                              {article.category?.name || 'Sans catégorie'}
+                            </span>
                             <span>{article.readTime} de lecture</span>
                           </div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2 font-poppins hover:text-teal-600 transition-colors">
@@ -211,12 +194,26 @@ export default function AuthorProfile({ author, articles = [] }) {
                             {article.description}
                           </p>
                           <div className="flex items-center space-x-4 text-sm text-gray-500 font-poppins">
-                            <span>{article.likes} likes</span>
-                            <span>{article.comments} commentaires</span>
+                            <span>{article.likes || 0} likes</span>
+                            <span>{article.commentsCount || 0} commentaires</span>
                             <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
                           </div>
+                          
+                          {/* Tags si disponibles */}
+                          {article.tags && article.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-3">
+                              {article.tags.map((tag, index) => (
+                                <span
+                                  key={tag.id || `tag-${article.id}-${index}`}
+                                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-poppins"
+                                >
+                                  {tag.name}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                        <div className={`w-20 h-20 ${article.imageColor} rounded-lg ml-6 flex-shrink-0`}>
+                        <div className={`w-20 h-20 ${article.imageColor || 'bg-gray-200'} rounded-lg ml-6 flex-shrink-0`}>
                           {/* Placeholder pour image */}
                         </div>
                       </div>
@@ -232,13 +229,19 @@ export default function AuthorProfile({ author, articles = [] }) {
 
             {activeTab === 'likes' && (
               <div className="text-center py-12">
-                <p className="text-gray-500 font-poppins">Aucun like pour le moment.</p>
+                <div className="text-4xl font-bold text-gray-900 mb-2">
+                  {articles.reduce((total, article) => total + (article.likes || 0), 0)}
+                </div>
+                <p className="text-gray-500 font-poppins">Likes reçus au total sur tous les articles</p>
               </div>
             )}
 
             {activeTab === 'comments' && (
               <div className="text-center py-12">
-                <p className="text-gray-500 font-poppins">Aucun commentaire pour le moment.</p>
+                <div className="text-4xl font-bold text-gray-900 mb-2">
+                  {author.stats?.comments || 0}
+                </div>
+                <p className="text-gray-500 font-poppins">Commentaires écrits sur le blog</p>
               </div>
             )}
           </div>

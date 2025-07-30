@@ -1,6 +1,7 @@
-// app/api/auth/login/route.js - API Route pour la connexion (exemple)
+// app/api/auth/login/route.js - Version PostgreSQL
 import { NextResponse } from 'next/server';
 import { createToken } from '@/lib/auth';
+import { verifyCredentials } from '@/lib/auth-db';
 
 export async function POST(request) {
   try {
@@ -14,44 +15,41 @@ export async function POST(request) {
       );
     }
 
-    // TODO: Vérifier les identifiants dans votre base de données
-    // Pour l'exemple, on accepte email: test@test.com, password: 123456
-    if (email === 'test@test.com' && password === '123456') {
-      const user = {
-        id: 1,
-        name: 'Test User',
-        email: 'test@test.com',
-        username: 'testuser'
-      };
+    // Vérifier les identifiants dans PostgreSQL
+    const result = await verifyCredentials(email, password);
 
-      // Créer le token JWT
-      const token = createToken({ 
-        userId: user.id, 
-        email: user.email 
-      });
-
-      // Créer la réponse avec le token dans un cookie httpOnly
-      const response = NextResponse.json({
-        success: true,
-        user,
-        message: 'Connexion réussie'
-      });
-
-      response.cookies.set('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60, // 7 jours
-        path: '/'
-      });
-
-      return response;
-    } else {
+    if (!result.success) {
       return NextResponse.json(
-        { error: 'Identifiants invalides' },
+        { error: result.error },
         { status: 401 }
       );
     }
+
+    const user = result.user;
+
+    // Créer le token JWT
+    const token = createToken({ 
+      userId: user.id, 
+      email: user.email,
+      username: user.username
+    });
+
+    // Créer la réponse avec le token dans un cookie httpOnly
+    const response = NextResponse.json({
+      success: true,
+      user,
+      message: 'Connexion réussie'
+    });
+
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60, // 7 jours
+      path: '/'
+    });
+
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

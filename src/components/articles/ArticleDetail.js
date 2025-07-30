@@ -1,4 +1,4 @@
-// src/components/articles/ArticleDetail.js - Refait selon l'image
+// src/components/articles/ArticleDetail.js - Corrigé avec données dynamiques
 import Link from 'next/link';
 import { Heart, MessageCircle } from 'lucide-react';
 
@@ -36,7 +36,7 @@ export default function ArticleDetail({ article }) {
           <div className="flex items-center text-sm text-gray-600 mb-6 font-sans">
             <span>Publié par </span>
             <Link 
-              href={`/author/${article.author.id}`}
+              href={`/author/${article.author.username}`}
               className="mx-1 text-gray-900 hover:text-teal-600 transition-colors font-medium"
             >
               {article.author.name}
@@ -50,7 +50,7 @@ export default function ArticleDetail({ article }) {
 
         {/* Article Image */}
         <div className="mb-8">
-          <div className="w-full h-96 bg-gradient-to-br from-teal-400 via-teal-500 to-green-600 rounded-md flex items-center justify-center">
+          <div className={`w-full h-96 ${article.imageColor || 'bg-gradient-to-br from-teal-400 via-teal-500 to-green-600'} rounded-md flex items-center justify-center`}>
             {/* Placeholder pour l'image de l'article */}
             <div className="text-white text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-lg flex items-center justify-center">
@@ -69,27 +69,11 @@ export default function ArticleDetail({ article }) {
               {article.description}
             </p>
             
-            <div className="space-y-6 text-gray-700 font-sans">
-              <p className="leading-relaxed">
-                L'intelligence artificielle (IA) est en train de remodeler le paysage technologique à un rythme sans précédent. De l'automatisation des tâches routinières à la création de solutions innovantes, l'IA a le potentiel de transformer radicalement de nombreux secteurs. Cet article explore les tendances actuelles de l'IA et leurs impacts potentiels sur l'industrie.
-              </p>
-
-              <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                Tendances actuelles de l'IA
-              </h2>
-              
-              <p className="leading-relaxed">
-                Plusieurs tendances clés façonnent le développement de l'IA aujourd'hui. L'apprentissage automatique (machine learning) permet aux systèmes d'apprendre à partir de données sans être explicitement programmés. L'apprentissage profond (deep learning), une sous-catégorie de l'apprentissage automatique, utilise des réseaux de neurones artificiels pour analyser des données complexes. Le traitement du langage naturel (NLP) permet aux machines de comprendre et de générer du langage humain. Enfin, la vision par ordinateur permet aux systèmes de "voir" et d'interpréter des images et des vidéos.
-              </p>
-
-              <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                Impacts sur l'industrie
-              </h2>
-              
-              <p className="leading-relaxed">
-                L'IA a des implications majeures pour de nombreux secteurs. Dans la santé, elle peut aider à diagnostiquer des maladies, à développer de nouveaux traitements et à personnaliser les soins aux patients. Dans la finance, l'IA peut être utilisée pour la détection de fraude, la gestion des risques et le trading algorithmique. Dans le commerce de détail, elle peut améliorer l'expérience client, optimiser les chaînes d'approvisionnement et prédire les tendances du marché. L'IA a également un impact sur la fabrication, les transports, l'agriculture et bien d'autres domaines.
-              </p>
-            </div>
+            {/* Contenu dynamique de l'article */}
+            <div 
+              className="space-y-6 text-gray-700 font-sans prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br>') }}
+            />
           </div>
         </div>
 
@@ -110,42 +94,67 @@ export default function ArticleDetail({ article }) {
           {/* Comments Section */}
           <div>
             <h3 className="text-xl font-bold text-gray-900 mb-6 font-sans">
-              Commentaires
+              Commentaires {article.comments?.length > 0 && `(${article.comments.length})`}
             </h3>
             
-            {/* Comments List */}
+            {/* Comments List - Données dynamiques */}
             <div className="space-y-6">
-              {/* Comment 1 */}
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex-shrink-0 flex items-center justify-center">
-                  <span className="text-white font-medium text-sm font-sans">J</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="font-medium text-gray-900 font-sans">Jean Dupont</span>
-                    <span className="text-sm text-gray-500 font-sans">2 jours</span>
+              {article.comments && article.comments.length > 0 ? (
+                article.comments.map((comment) => (
+                  <div key={comment.id} className="flex space-x-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex-shrink-0 flex items-center justify-center">
+                      <span className="text-white font-medium text-sm font-sans">
+                        {comment.author.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="font-medium text-gray-900 font-sans">
+                          {comment.author.name}
+                        </span>
+                        <span className="text-sm text-gray-500 font-sans">
+                          {new Date(comment.createdAt).toLocaleDateString('fr-FR')}
+                        </span>
+                      </div>
+                      <p className="text-gray-700 text-sm leading-relaxed font-sans">
+                        {comment.content}
+                      </p>
+                      
+                      {/* Afficher les réponses si elles existent */}
+                      {comment.replies && comment.replies.length > 0 && (
+                        <div className="mt-4 ml-6 space-y-4 border-l-2 border-gray-200 pl-4">
+                          {comment.replies.map((reply) => (
+                            <div key={reply.id} className="flex space-x-3">
+                              <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-teal-400 rounded-full flex-shrink-0 flex items-center justify-center">
+                                <span className="text-white font-medium text-xs font-sans">
+                                  {reply.author.name.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center space-x-2 mb-1">
+                                  <span className="font-medium text-gray-900 text-sm font-sans">
+                                    {reply.author.name}
+                                  </span>
+                                  <span className="text-xs text-gray-500 font-sans">
+                                    {new Date(reply.createdAt).toLocaleDateString('fr-FR')}
+                                  </span>
+                                </div>
+                                <p className="text-gray-700 text-sm leading-relaxed font-sans">
+                                  {reply.content}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-gray-700 text-sm leading-relaxed font-sans">
-                    Excellent article, Sophie ! J'ai particulièrement apprécié la clarté avec laquelle vous avez expliqué les différentes tendances de l'IA.
-                  </p>
-                </div>
-              </div>
-
-              {/* Comment 2 */}
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-teal-400 rounded-full flex-shrink-0 flex items-center justify-center">
-                  <span className="text-white font-medium text-sm font-poppins">M</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="font-medium text-gray-900 font-sans">Marie Dubois</span>
-                    <span className="text-sm text-gray-500 font-sans">1 jour</span>
-                  </div>
-                  <p className="text-gray-700 text-sm leading-relaxed font-sans">
-                    Merci pour cet aperçu complet. Je suis curieuse de voir comment l'IA va continuer à évoluer dans les années à venir.
-                  </p>
-                </div>
-              </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center py-8 font-sans">
+                  Aucun commentaire pour le moment. Soyez le premier à commenter !
+                </p>
+              )}
             </div>
 
             {/* Comment Form */}
