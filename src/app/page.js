@@ -1,12 +1,41 @@
-// src/app/page.js - Page d'accueil MODIFIÉE pour utiliser le layout horizontal aussi
+// src/app/page.js - Page d'accueil avec API
+"use client";
+
+import { useState, useEffect } from 'react';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
-import { sampleArticles } from "@/lib/data";
 
 export default function HomePage() {
-  // Prendre les 3 articles les plus récents
-  const recentArticles = sampleArticles.slice(0, 3);
+  const [recentArticles, setRecentArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchArticles() {
+      try {
+        const response = await fetch('/api/articles?type=recent&limit=3');
+        const articles = await response.json();
+        setRecentArticles(articles);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchArticles();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement des articles...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

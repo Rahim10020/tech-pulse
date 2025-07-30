@@ -1,7 +1,7 @@
 // src/app/author/[id]/page.js - Page auteur corrigée
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
-import AuthorProfile from '@/components/profile/AuthorProfile';
+import AuthorProfile from '@/components/articles/AuthorProfile';
 import { getAuthorById, getArticlesByAuthor } from '@/lib/data';
 
 export async function generateMetadata({ params }) {

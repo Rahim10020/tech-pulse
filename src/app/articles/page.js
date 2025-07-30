@@ -1,4 +1,4 @@
-// src/app/articles/page.js - MODIFIÉ pour utiliser le layout horizontal
+// src/app/articles/page.js - CORRIGÉ pour Next.js 15
 import Header from '@/components/layout/Header';
 import ArticleList from '@/components/articles/ArticleList';
 import CategoryFilter from '@/components/articles/CategoryFilter';
@@ -8,8 +8,9 @@ export const metadata = {
   description: 'Découvrez tous nos articles sur la technologie',
 };
 
-export default function ArticlesPage({ searchParams }) {
-  const category = searchParams?.category || 'all';
+export default async function ArticlesPage({ searchParams }) {
+  const params = await searchParams;
+  const category = params?.category || 'all';
 
   return (
     <div className="min-h-screen bg-gray-50">

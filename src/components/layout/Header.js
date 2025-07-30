@@ -1,7 +1,8 @@
 // src/components/layout/Header.js - Header simple
-'use client';
+"use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, Bell, Menu, User, Settings, LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { useState } from "react";
@@ -9,10 +10,18 @@ import { useState } from "react";
 export default function Header() {
   const { user, logout } = useAuth();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const handleLogout = () => {
     logout();
     setIsProfileMenuOpen(false);
+  };
+
+  const isActiveLink = (href) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
   };
 
   return (
@@ -35,25 +44,41 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+                isActiveLink("/")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               Accueil
             </Link>
             <Link
               href="/articles"
-              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+                isActiveLink("/articles")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               Articles
             </Link>
             <Link
               href="/categories"
-              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+                isActiveLink("/categories")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               Catégories
             </Link>
             <Link
               href="/about"
-              className="text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors"
+              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+                isActiveLink("/about")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               À propos
             </Link>

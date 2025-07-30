@@ -1,13 +1,10 @@
-// src/app/categories/page.js - Page catégories avec layout en grille
+// src/app/categories/page.js - Page catégories avec API
+"use client";
+
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Link from 'next/link';
 import { Code, Database, Cloud, Brain, Smartphone, Globe } from 'lucide-react';
-import { categories } from '@/lib/data';
-
-export const metadata = {
-  title: 'Catégories - TechPulse',
-  description: 'Explorez nos catégories d\'articles techniques',
-};
 
 const iconMap = {
   'Code': Code,
@@ -19,6 +16,39 @@ const iconMap = {
 };
 
 export default function CategoriesPage() {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await fetch('/api/categories?type=all');
+        const categoriesData = await response.json();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container-sm py-6">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement des catégories...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -58,6 +88,13 @@ export default function CategoriesPage() {
                   <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 flex-grow">
                     {category.description}
                   </p>
+
+                  {/* Compteur d'articles */}
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <span className="text-xs text-gray-500">
+                      {category.count} article{category.count > 1 ? 's' : ''}
+                    </span>
+                  </div>
                 </div>
               </Link>
             );

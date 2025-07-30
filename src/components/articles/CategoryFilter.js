@@ -1,8 +1,7 @@
-// src/components/articles/CategoryFilter.js - Filtre par catégorie (version améliorée)
+// src/components/articles/CategoryFilter.js - Filtre par catégorie avec API
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { categories } from '@/lib/data';
 import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -12,6 +11,25 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
   const scrollContainerRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Charger les catégories depuis l'API
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await fetch('/api/categories?type=all');
+        const categoriesData = await response.json();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCategories();
+  }, []);
 
   const handleCategoryChange = (categorySlug) => {
     const params = new URLSearchParams(searchParams);
@@ -25,8 +43,11 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
     router.push(`/articles?${params.toString()}`);
   };
 
+  // Calculer le total d'articles pour "Tous"
+  const totalArticles = categories.reduce((sum, cat) => sum + cat.count, 0);
+
   const allCategories = [
-    { id: 0, name: 'Tous', slug: 'all', count: 25 },
+    { id: 0, name: 'Tous', slug: 'all', count: totalArticles },
     ...categories
   ];
 
@@ -43,7 +64,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
     checkScrollButtons();
     window.addEventListener('resize', checkScrollButtons);
     return () => window.removeEventListener('resize', checkScrollButtons);
-  }, []);
+  }, [categories]); // Ajouter categories comme dépendance
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -54,6 +75,20 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
       });
     }
   };
+
+  // Affichage de chargement
+  if (loading) {
+    return (
+      <div className="mb-12 border-b border-gray-200">
+        <div className="flex space-x-1 pb-4">
+          {/* Skeleton loader pour les catégories */}
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-8 bg-gray-200 rounded animate-pulse w-20"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-12 border-b border-gray-200">
@@ -73,12 +108,12 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
               onClick={() => handleCategoryChange(category.slug)}
               className={`pb-4 px-4 text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeCategory === category.slug
-                  ? 'text-gray-900 border-b-2 border-gray-900'
+                  ? 'text-gray-900 border-b-2 border-teal-600'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               {category.name}
-              {category.count && (
+              {category.count !== undefined && (
                 <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
                   {category.count}
                 </span>

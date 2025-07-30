@@ -1,9 +1,8 @@
-// src/components/articles/ArticleList.js - MODIFIÉ pour layout horizontal
+// src/components/articles/ArticleList.js - MODIFIÉ pour utiliser l'API
 'use client';
 
 import { useState, useEffect } from 'react';
 import ArticleCard from './ArticleCard';
-import { getArticles } from '@/lib/articles';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 export default function ArticleList({ 
@@ -22,7 +21,10 @@ export default function ArticleList({
   const loadArticles = async () => {
     setLoading(true);
     try {
-      const result = await getArticles(currentPage, 6, category);
+      // Utiliser l'API route au lieu de l'import direct
+      const response = await fetch(`/api/articles?type=all&page=${currentPage}&limit=6&category=${category}`);
+      const result = await response.json();
+      
       setArticles(result.articles);
       setTotalPages(result.totalPages);
     } catch (error) {
@@ -32,6 +34,7 @@ export default function ArticleList({
     }
   };
 
+  // Le reste du code reste identique...
   if (loading) {
     return (
       <div className="flex justify-center py-12">

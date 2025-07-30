@@ -1,42 +1,55 @@
-// app/articles/[slug]/page.js - Page article détaillé
+// app/articles/[slug]/page.js - Version avec API
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import ArticleDetail from '@/components/articles/ArticleDetail';
-import { getArticleBySlug } from '@/lib/articles';
 
 export async function generateMetadata({ params }) {
-  const article = await getArticleBySlug(params.slug);
-  
-  if (!article) {
+  try {
+    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${params.slug}`);
+    
+    if (!response.ok) {
+      return {
+        title: 'Article non trouvé - TechPulse',
+      };
+    }
+    
+    const article = await response.json();
+
+    return {
+      title: `${article.title} - TechPulse`,
+      description: article.description,
+      openGraph: {
+        title: article.title,
+        description: article.description,
+        type: 'article',
+        publishedTime: article.publishedAt,
+        authors: [article.author.name],
+      },
+    };
+  } catch (error) {
     return {
       title: 'Article non trouvé - TechPulse',
     };
   }
-
-  return {
-    title: `${article.title} - TechPulse`,
-    description: article.description,
-    openGraph: {
-      title: article.title,
-      description: article.description,
-      type: 'article',
-      publishedTime: article.publishedAt,
-      authors: [article.author.name],
-    },
-  };
 }
 
 export default async function ArticlePage({ params }) {
-  const article = await getArticleBySlug(params.slug);
+  try {
+    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${params.slug}`);
+    
+    if (!response.ok) {
+      notFound();
+    }
+    
+    const article = await response.json();
 
-  if (!article) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <ArticleDetail article={article} />
+      </div>
+    );
+  } catch (error) {
     notFound();
   }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      <ArticleDetail article={article} />
-    </div>
-  );
 }
