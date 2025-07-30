@@ -571,7 +571,7 @@ export async function disconnectPrisma() {
   await prisma.$disconnect();
 }
 
-// Fonction createArticle modifiée pour supporter les brouillons
+// Remplacer la fonction createArticle dans lib/articles.js
 export async function createArticle(articleData) {
   try {
     const {
@@ -584,6 +584,30 @@ export async function createArticle(articleData) {
       authorId,
       isDraft = false,
     } = articleData;
+
+    // Pour les brouillons, vérifier s'il faut mettre à jour un brouillon existant
+    if (isDraft) {
+      // Chercher un brouillon existant avec le même titre et auteur
+      const existingDraft = await prisma.article.findFirst({
+        where: {
+          title: title,
+          authorId: parseInt(authorId),
+          published: false,
+        },
+      });
+
+      if (existingDraft) {
+        // Mettre à jour le brouillon existant
+        return await updateDraft(existingDraft.id, authorId, {
+          title,
+          content,
+          description,
+          category,
+          readTime,
+          featured,
+        });
+      }
+    }
 
     // Générer un slug unique
     const baseSlug = title

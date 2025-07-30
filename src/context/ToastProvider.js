@@ -1,4 +1,4 @@
-// src/context/ToastProvider.js - VERSION CORRIGÉE
+// src/context/ToastProvider.js
 'use client';
 
 import { createContext, useContext, useState } from 'react';
