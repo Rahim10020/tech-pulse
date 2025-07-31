@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 
 // Routes qui nécessitent une authentification
-const protectedRoutes = ['/dashboard', '/profile/edit', '/create'];
+const protectedRoutes = ['/profile/edit', '/create'];
 
 // Routes d'authentification (rediriger si déjà connecté)
 const authRoutes = ['/login', '/signup', '/forgot-password'];
@@ -31,7 +31,7 @@ export function middleware(request) {
 
   // Rediriger vers dashboard si route d'auth et déjà authentifié
   if (authRoutes.some(route => pathname.startsWith(route)) && isAuthenticated) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();

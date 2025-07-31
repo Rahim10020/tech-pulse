@@ -571,33 +571,33 @@ export async function disconnectPrisma() {
   await prisma.$disconnect();
 }
 
-// Dans lib/articles.js - Fonction createArticle améliorée
+// Dans lib/articles.js - Correction de la fonction createArticle
 export async function createArticle(articleData) {
   try {
-    const { 
-      title, 
-      content, 
-      description, 
-      category, 
-      tags = [], 
-      readTime, 
+    const {
+      title,
+      content,
+      description,
+      category,
+      tags = [],
+      readTime,
       featured = false,
       authorId,
-      isDraft = false // ← Nouveau paramètre pour gérer les brouillons
+      isDraft = false,
     } = articleData;
 
     // Validation de base
     if (!title?.trim()) {
       return {
         success: false,
-        error: 'Le titre est requis'
+        error: "Le titre est requis",
       };
     }
 
     if (!content?.trim()) {
       return {
         success: false,
-        error: 'Le contenu est requis'
+        error: "Le contenu est requis",
       };
     }
 
@@ -605,7 +605,7 @@ export async function createArticle(articleData) {
     if (!isDraft && !category) {
       return {
         success: false,
-        error: 'La catégorie est requise pour publier un article'
+        error: "La catégorie est requise pour publier un article",
       };
     }
 
@@ -614,16 +614,16 @@ export async function createArticle(articleData) {
     if (!isDraft) {
       slug = title
         .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s-]/g, "")
         .trim()
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-');
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
 
       // Vérifier l'unicité du slug pour les articles publiés
       const existingArticle = await prisma.article.findUnique({
-        where: { slug }
+        where: { slug },
       });
 
       if (existingArticle) {
@@ -635,18 +635,18 @@ export async function createArticle(articleData) {
     let categoryData = null;
     if (category) {
       categoryData = await prisma.category.findUnique({
-        where: { slug: category }
+        where: { slug: category },
       });
 
       if (!categoryData) {
         return {
           success: false,
-          error: 'Catégorie non trouvée'
+          error: "Catégorie non trouvée",
         };
       }
     }
 
-    // Créer l'article (brouillon ou publié)
+    // Créer l'article (brouillon ou publié) - CORRECTION ICI
     const article = await prisma.article.create({
       data: {
         title: title.trim(),
@@ -657,9 +657,9 @@ export async function createArticle(articleData) {
         featured,
         published: !isDraft, // false si c'est un brouillon
         publishedAt: isDraft ? null : new Date(),
-        authorId,
+        authorId: parseInt(authorId), // S'assurer que c'est un entier
         categoryId: categoryData?.id || null,
-        // Note: gestion des tags à ajouter si nécessaire
+        // Pas de champ author ici car on utilise authorId
       },
       include: {
         author: {
@@ -667,23 +667,23 @@ export async function createArticle(articleData) {
             id: true,
             name: true,
             username: true,
-            avatar: true
-          }
+            avatar: true,
+          },
         },
         category: true,
-        tags: true
-      }
+        tags: true,
+      },
     });
 
     return {
       success: true,
-      article
+      article,
     };
   } catch (error) {
-    console.error('Error creating article:', error);
+    console.error("Error creating article:", error);
     return {
       success: false,
-      error: 'Erreur lors de la création de l\'article'
+      error: "Erreur lors de la création de l'article",
     };
   }
 }
@@ -833,14 +833,8 @@ export async function updateDraft(articleId, authorId, updateData) {
 // Dans lib/articles.js - Fonction pour mettre à jour les brouillons existants
 export async function updateOrCreateDraft(articleData, existingDraftId = null) {
   try {
-    const { 
-      title, 
-      content, 
-      description, 
-      category, 
-      readTime, 
-      authorId 
-    } = articleData;
+    const { title, content, description, category, readTime, authorId } =
+      articleData;
 
     // Si on a un brouillon existant, le mettre à jour
     if (existingDraftId) {
@@ -848,14 +842,14 @@ export async function updateOrCreateDraft(articleData, existingDraftId = null) {
         where: {
           id: existingDraftId,
           authorId, // S'assurer que l'utilisateur possède le brouillon
-          published: false // S'assurer que c'est toujours un brouillon
+          published: false, // S'assurer que c'est toujours un brouillon
         },
         data: {
-          title: title?.trim() || 'Brouillon sans titre',
-          content: content?.trim() || '',
+          title: title?.trim() || "Brouillon sans titre",
+          content: content?.trim() || "",
           description: description?.trim() || null,
           readTime: readTime || null,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
         include: {
           author: {
@@ -863,36 +857,36 @@ export async function updateOrCreateDraft(articleData, existingDraftId = null) {
               id: true,
               name: true,
               username: true,
-              avatar: true
-            }
+              avatar: true,
+            },
           },
-          category: true
-        }
+          category: true,
+        },
       });
 
       return {
         success: true,
         article: updatedDraft,
-        isNew: false
+        isNew: false,
       };
     } else {
       // Créer un nouveau brouillon
       const result = await createArticle({
         ...articleData,
         isDraft: true,
-        authorId
+        authorId,
       });
 
       return {
         ...result,
-        isNew: true
+        isNew: true,
       };
     }
   } catch (error) {
-    console.error('Error updating or creating draft:', error);
+    console.error("Error updating or creating draft:", error);
     return {
       success: false,
-      error: 'Erreur lors de la sauvegarde du brouillon'
+      error: "Erreur lors de la sauvegarde du brouillon",
     };
   }
 }

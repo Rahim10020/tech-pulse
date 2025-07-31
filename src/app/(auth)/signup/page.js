@@ -22,7 +22,7 @@ export default function SignupPage() {
       
       if (result.success) {
         showToast('Compte créé avec succès !', 'success');
-        router.push('/dashboard');
+        router.push('/');
       } else {
         showToast(result.error || 'Erreur lors de la création du compte', 'error');
       }

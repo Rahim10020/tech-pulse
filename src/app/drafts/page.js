@@ -1,4 +1,4 @@
-// app/drafts/page.js - Dashboard des brouillons (terminé)
+// app/drafts/page.js - page des brouillons (terminé)
 "use client";
 
 import { useState, useEffect } from "react";

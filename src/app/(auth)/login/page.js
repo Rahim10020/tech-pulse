@@ -22,7 +22,7 @@ export default function LoginPage() {
       
       if (result.success) {
         showToast('Connexion réussie !', 'success');
-        router.push('/dashboard');
+        router.push('/');
       } else {
         showToast(result.error || 'Erreur de connexion', 'error');
       }

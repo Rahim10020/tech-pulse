@@ -222,10 +222,15 @@ export default function DragDropUpload({
         markdownText +
         textarea.value.substring(end);
 
-      // Déclencher l'événement de changement
-      const event = new Event("input", { bubbles: true });
+      // Mettre à jour la valeur
       textarea.value = newContent;
-      textarea.dispatchEvent(event);
+
+      // Déclencher les événements nécessaires pour React
+      const inputEvent = new Event("input", { bubbles: true });
+      const changeEvent = new Event("change", { bubbles: true });
+
+      textarea.dispatchEvent(inputEvent);
+      textarea.dispatchEvent(changeEvent);
 
       // Repositionner le curseur
       setTimeout(() => {
