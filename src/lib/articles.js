@@ -571,110 +571,120 @@ export async function disconnectPrisma() {
   await prisma.$disconnect();
 }
 
-// Remplacer la fonction createArticle dans lib/articles.js
+// Dans lib/articles.js - Fonction createArticle améliorée
 export async function createArticle(articleData) {
   try {
-    const {
-      title,
-      content,
-      description,
-      category,
-      readTime,
-      featured,
+    const { 
+      title, 
+      content, 
+      description, 
+      category, 
+      tags = [], 
+      readTime, 
+      featured = false,
       authorId,
-      isDraft = false,
+      isDraft = false // ← Nouveau paramètre pour gérer les brouillons
     } = articleData;
 
-    // Pour les brouillons, vérifier s'il faut mettre à jour un brouillon existant
-    if (isDraft) {
-      // Chercher un brouillon existant avec le même titre et auteur
-      const existingDraft = await prisma.article.findFirst({
-        where: {
-          title: title,
-          authorId: parseInt(authorId),
-          published: false,
-        },
+    // Validation de base
+    if (!title?.trim()) {
+      return {
+        success: false,
+        error: 'Le titre est requis'
+      };
+    }
+
+    if (!content?.trim()) {
+      return {
+        success: false,
+        error: 'Le contenu est requis'
+      };
+    }
+
+    // Pour les articles publiés, la catégorie est obligatoire
+    if (!isDraft && !category) {
+      return {
+        success: false,
+        error: 'La catégorie est requise pour publier un article'
+      };
+    }
+
+    // Générer le slug seulement pour les articles publiés
+    let slug = null;
+    if (!isDraft) {
+      slug = title
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+
+      // Vérifier l'unicité du slug pour les articles publiés
+      const existingArticle = await prisma.article.findUnique({
+        where: { slug }
       });
 
-      if (existingDraft) {
-        // Mettre à jour le brouillon existant
-        return await updateDraft(existingDraft.id, authorId, {
-          title,
-          content,
-          description,
-          category,
-          readTime,
-          featured,
-        });
+      if (existingArticle) {
+        slug = `${slug}-${Date.now()}`;
       }
     }
 
-    // Générer un slug unique
-    const baseSlug = title
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/[\s_-]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    // Vérifier l'unicité du slug
-    let slug = baseSlug;
-    let counter = 1;
-
-    while (true) {
-      const existingArticle = await prisma.article.findUnique({
-        where: { slug },
-      });
-
-      if (!existingArticle) break;
-
-      slug = `${baseSlug}-${counter}`;
-      counter++;
-    }
-
-    // Trouver la catégorie par slug
-    let categoryId = null;
+    // Récupérer la catégorie si spécifiée
+    let categoryData = null;
     if (category) {
-      const categoryRecord = await prisma.category.findUnique({
-        where: { slug: category },
+      categoryData = await prisma.category.findUnique({
+        where: { slug: category }
       });
-      categoryId = categoryRecord?.id;
+
+      if (!categoryData) {
+        return {
+          success: false,
+          error: 'Catégorie non trouvée'
+        };
+      }
     }
 
-    // Créer l'article
+    // Créer l'article (brouillon ou publié)
     const article = await prisma.article.create({
       data: {
-        title,
-        slug,
-        description: description || "",
-        content,
-        readTime: readTime || "5 min",
-        featured: featured || false,
-        authorId: parseInt(authorId),
-        categoryId: categoryId,
-        published: !isDraft, // Si c'est un brouillon, pas publié
-        publishedAt: isDraft ? null : new Date(), // Date de publication seulement si publié
+        title: title.trim(),
+        slug, // null pour les brouillons
+        content: content.trim(),
+        description: description?.trim() || null,
+        readTime: readTime || null,
+        featured,
+        published: !isDraft, // false si c'est un brouillon
+        publishedAt: isDraft ? null : new Date(),
+        authorId,
+        categoryId: categoryData?.id || null,
+        // Note: gestion des tags à ajouter si nécessaire
       },
       include: {
         author: {
           select: {
+            id: true,
             name: true,
             username: true,
-          },
+            avatar: true
+          }
         },
-        category: {
-          select: {
-            name: true,
-            slug: true,
-          },
-        },
-      },
+        category: true,
+        tags: true
+      }
     });
 
-    return { success: true, article };
+    return {
+      success: true,
+      article
+    };
   } catch (error) {
-    console.error("Error creating article:", error);
-    return { success: false, error: "Erreur lors de la création de l'article" };
+    console.error('Error creating article:', error);
+    return {
+      success: false,
+      error: 'Erreur lors de la création de l\'article'
+    };
   }
 }
 
@@ -816,6 +826,112 @@ export async function updateDraft(articleId, authorId, updateData) {
     return {
       success: false,
       error: "Erreur lors de la mise à jour du brouillon",
+    };
+  }
+}
+
+// Dans lib/articles.js - Fonction pour mettre à jour les brouillons existants
+export async function updateOrCreateDraft(articleData, existingDraftId = null) {
+  try {
+    const { 
+      title, 
+      content, 
+      description, 
+      category, 
+      readTime, 
+      authorId 
+    } = articleData;
+
+    // Si on a un brouillon existant, le mettre à jour
+    if (existingDraftId) {
+      const updatedDraft = await prisma.article.update({
+        where: {
+          id: existingDraftId,
+          authorId, // S'assurer que l'utilisateur possède le brouillon
+          published: false // S'assurer que c'est toujours un brouillon
+        },
+        data: {
+          title: title?.trim() || 'Brouillon sans titre',
+          content: content?.trim() || '',
+          description: description?.trim() || null,
+          readTime: readTime || null,
+          updatedAt: new Date()
+        },
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              avatar: true
+            }
+          },
+          category: true
+        }
+      });
+
+      return {
+        success: true,
+        article: updatedDraft,
+        isNew: false
+      };
+    } else {
+      // Créer un nouveau brouillon
+      const result = await createArticle({
+        ...articleData,
+        isDraft: true,
+        authorId
+      });
+
+      return {
+        ...result,
+        isNew: true
+      };
+    }
+  } catch (error) {
+    console.error('Error updating or creating draft:', error);
+    return {
+      success: false,
+      error: 'Erreur lors de la sauvegarde du brouillon'
+    };
+  }
+}
+
+// Nouvelle fonction pour supprimer un brouillon
+export async function deleteDraft(draftId, userId) {
+  try {
+    // Vérifier que le brouillon appartient à l'utilisateur
+    const draft = await prisma.article.findFirst({
+      where: {
+        id: draftId,
+        authorId: userId,
+        published: false, // S'assurer que c'est un brouillon
+      },
+    });
+
+    if (!draft) {
+      return {
+        success: false,
+        error:
+          "Brouillon non trouvé ou vous n'êtes pas autorisé à le supprimer",
+      };
+    }
+
+    // Supprimer le brouillon
+    await prisma.article.delete({
+      where: {
+        id: draftId,
+      },
+    });
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error("Error deleting draft:", error);
+    return {
+      success: false,
+      error: "Erreur lors de la suppression du brouillon",
     };
   }
 }

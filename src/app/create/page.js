@@ -1,4 +1,4 @@
-// app/create/page.js - Page de création d'article améliorée (Phase 1)
+// app/create/page.js - Page de création avec Drag & Drop intégré
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -7,11 +7,23 @@ import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useWordStats } from "@/components/shared/WordCounter";
-import { useMarkdownShortcuts, } from "@/components/shared/MarkdownToolbar";
+import { useMarkdownShortcuts } from "@/components/shared/MarkdownToolbar";
 import SaveIndicator from "@/components/shared/SaveIndicator";
 import WordCounter from "@/components/shared/WordCounter";
 import MarkdownToolbar from "@/components/shared/MarkdownToolbar";
-import { Image, Calendar, Award, Plus, Clock, Smile, Upload, X } from "lucide-react";
+import DragDropUpload from "@/components/shared/DragDropUpload";
+import {
+  Image,
+  Calendar,
+  Award,
+  Plus,
+  Clock,
+  Smile,
+  Upload,
+  X,
+  Video,
+  Play,
+} from "lucide-react";
 import Header from "@/components/layout/Header";
 
 // Emojis populaires
@@ -27,16 +39,15 @@ export default function CreateArticlePage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [categories, setCategories] = useState([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedMedias, setUploadedMedias] = useState([]); // Changé de uploadedImages à uploadedMedias
+  const [showDragDrop, setShowDragDrop] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [currentDraftId, setCurrentDraftId] = useState(null);
-  
+
   const textareaRef = useRef(null);
   const emojiPickerRef = useRef(null);
-  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -51,10 +62,10 @@ export default function CreateArticlePage() {
   // Hook pour les statistiques de mots
   const { readingTime } = useWordStats(formData.content);
 
-  // Fonction de sauvegarde automatique
+  // Enregistrer un brouillon automatiquement
   const handleAutoSave = async (data) => {
     try {
-      const response = await fetch("/api/articles", {
+      const response = await fetch("/api/drafts/auto-save", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,43 +73,55 @@ export default function CreateArticlePage() {
         credentials: "include",
         body: JSON.stringify({
           ...data,
-          readTime: readingTime, // Utiliser le temps calculé automatiquement
-          isDraft: true
+          readTime: readingTime,
+          existingDraftId: currentDraftId,
         }),
       });
 
       const result = await response.json();
-      
+
       if (result.success) {
-        setCurrentDraftId(result.article.id);
+        if (result.isNew) {
+          setCurrentDraftId(result.article.id);
+        }
         setHasUnsavedChanges(false);
         return result;
       } else {
         throw new Error(result.error);
       }
     } catch (err) {
-      console.error('Auto-save failed:', err);
+      console.error("Auto-save failed:", err);
       throw err;
     }
   };
 
   // Hook de sauvegarde automatique
   const { isSaving, forceSave, lastSaved } = useAutoSave(formData, {
-    delay: 30000, // 30 secondes
+    delay: 30000,
     minLength: 10,
     enabled: !loading && user && (formData.title.trim() || formData.content.trim()),
     onSave: handleAutoSave,
     onError: (err) => {
-      console.error('Auto-save error:', err);
-      // Ne pas montrer d'erreur pour l'auto-save, c'est en arrière-plan
-    }
+      console.error("Auto-save error:", err);
+    },
   });
 
   // Raccourcis clavier markdown
   const { handleKeyDown } = useMarkdownShortcuts(textareaRef, (newContent) => {
-    setFormData(prev => ({ ...prev, content: newContent }));
+    setFormData((prev) => ({ ...prev, content: newContent }));
     setHasUnsavedChanges(true);
   });
+
+  // Gestionnaires pour le drag & drop
+  const handleFilesUploaded = (files) => {
+    setUploadedMedias(prev => [...prev, ...files]);
+    setHasUnsavedChanges(true);
+  };
+
+  const handleUploadError = (errorMessage) => {
+    console.error('Upload error:', errorMessage);
+    error(errorMessage);
+  };
 
   // Rediriger si non connecté
   useEffect(() => {
@@ -131,7 +154,7 @@ export default function CreateArticlePage() {
   // Mettre à jour automatiquement le temps de lecture
   useEffect(() => {
     if (readingTime && readingTime !== formData.readTime) {
-      setFormData(prev => ({ ...prev, readTime: readingTime }));
+      setFormData((prev) => ({ ...prev, readTime: readingTime }));
     }
   }, [readingTime]);
 
@@ -141,15 +164,15 @@ export default function CreateArticlePage() {
       if (formData.title.trim()) {
         try {
           await forceSave();
-          success('Brouillon sauvegardé manuellement');
+          success("Brouillon sauvegardé manuellement");
         } catch (err) {
-          error('Erreur lors de la sauvegarde');
+          error("Erreur lors de la sauvegarde");
         }
       }
     };
 
-    document.addEventListener('forceSave', handleForceSave);
-    return () => document.removeEventListener('forceSave', handleForceSave);
+    document.addEventListener("forceSave", handleForceSave);
+    return () => document.removeEventListener("forceSave", handleForceSave);
   }, [formData.title, forceSave, success, error]);
 
   // Fermer le picker d'emojis si on clique dehors
@@ -169,12 +192,12 @@ export default function CreateArticlePage() {
     const handleBeforeUnload = (e) => {
       if (hasUnsavedChanges) {
         e.preventDefault();
-        e.returnValue = '';
+        e.returnValue = "";
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
   // Fonction pour publier l'article
@@ -195,7 +218,7 @@ export default function CreateArticlePage() {
         credentials: "include",
         body: JSON.stringify({
           ...formData,
-          isDraft: false
+          isDraft: false,
         }),
       });
 
@@ -235,76 +258,6 @@ export default function CreateArticlePage() {
     }
   };
 
-  // Fonction pour gérer l'upload d'images
-  const handleImageUpload = async (file) => {
-    if (!file) return;
-
-    // Vérifier le type de fichier
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-    if (!allowedTypes.includes(file.type)) {
-      error("Type de fichier non supporté. Utilisez JPG, PNG, WebP ou GIF.");
-      return;
-    }
-
-    // Vérifier la taille (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      error("Le fichier est trop volumineux. Taille maximum: 5MB.");
-      return;
-    }
-
-    setIsUploadingImage(true);
-    const formDataUpload = new FormData();
-    formDataUpload.append('image', file);
-
-    try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        credentials: 'include',
-        body: formDataUpload
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setUploadedImages(prev => [...prev, {
-          url: data.imageUrl,
-          fileName: data.fileName
-        }]);
-
-        const textarea = textareaRef.current;
-        if (textarea) {
-          const start = textarea.selectionStart;
-          const end = textarea.selectionEnd;
-          const imageMarkdown = `\n![Image](${data.imageUrl})\n`;
-          const newContent =
-            formData.content.substring(0, start) +
-            imageMarkdown +
-            formData.content.substring(end);
-
-          setFormData(prev => ({ ...prev, content: newContent }));
-          setHasUnsavedChanges(true);
-
-          setTimeout(() => {
-            textarea.focus();
-            textarea.setSelectionRange(
-              start + imageMarkdown.length, 
-              start + imageMarkdown.length
-            );
-          }, 0);
-        }
-
-        success("Image uploadée avec succès !");
-      } else {
-        error(data.error || "Erreur lors de l'upload");
-      }
-    } catch (err) {
-      console.error('Error uploading image:', err);
-      error("Erreur lors de l'upload de l'image");
-    } finally {
-      setIsUploadingImage(false);
-    }
-  };
-
   const handleBack = () => {
     if (hasUnsavedChanges) {
       const confirmLeave = window.confirm(
@@ -338,7 +291,7 @@ export default function CreateArticlePage() {
 
   // Fonction pour gérer les changements de contenu
   const handleContentChange = (newContent) => {
-    setFormData(prev => ({ ...prev, content: newContent }));
+    setFormData((prev) => ({ ...prev, content: newContent }));
     setHasUnsavedChanges(true);
   };
 
@@ -365,14 +318,13 @@ export default function CreateArticlePage() {
             <h1 className="text-3xl font-bold text-gray-900 font-poppins mb-2">
               Publier un article
             </h1>
-            {/* Indicateur de sauvegarde */}
-            <SaveIndicator 
+            <SaveIndicator
               isSaving={isSaving || isSavingDraft}
               lastSaved={lastSaved}
               hasUnsavedChanges={hasUnsavedChanges}
             />
           </div>
-          
+
           {/* Category and Reading Time */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -414,35 +366,58 @@ export default function CreateArticlePage() {
           <WordCounter content={formData.content} />
         </div>
 
-        {/* Images uploadées */}
-        {uploadedImages.length > 0 && (
-          <div className="mb-4 p-4 bg-white rounded-lg border border-gray-200">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Images uploadées:</h3>
-            <div className="flex flex-wrap gap-2">
-              {uploadedImages.map((image, index) => (
-                <div key={index} className="relative">
-                  <img 
-                    src={image.url} 
-                    alt={`Upload ${index + 1}`}
-                    className="w-20 h-20 object-cover rounded border"
-                  />
-                  <button
-                    onClick={() => {
-                      setUploadedImages(prev => prev.filter((_, i) => i !== index));
-                    }}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
+        {/* Section d'upload améliorée */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 font-poppins">
+              Médias
+            </h3>
+            <button
+              type="button"
+              onClick={() => setShowDragDrop(!showDragDrop)}
+              className="flex items-center space-x-2 px-3 py-1.5 text-sm text-teal-600 hover:text-teal-700 hover:bg-teal-50 rounded-lg transition-colors font-poppins"
+            >
+              <Upload className="w-4 h-4" />
+              <span>{showDragDrop ? 'Masquer' : 'Ajouter des médias'}</span>
+            </button>
+          </div>
+
+          {/* Composant Drag & Drop */}
+          {showDragDrop && (
+            <DragDropUpload
+              onFilesUploaded={handleFilesUploaded}
+              onError={handleUploadError}
+              textareaRef={textareaRef}
+              maxFiles={10}
+              showPreview={true}
+              className="mb-4"
+            />
+          )}
+
+          {/* Galerie des médias uploadés */}
+          {uploadedMedias.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="col-span-full text-sm font-medium text-gray-700 font-poppins mb-2">
+                Médias ajoutés ({uploadedMedias.length})
+              </h4>
+              
+              {uploadedMedias.map((media, index) => (
+                <MediaPreviewCard
+                  key={index}
+                  media={media}
+                  textareaRef={textareaRef}
+                  onRemove={() => {
+                    setUploadedMedias(prev => prev.filter((_, i) => i !== index));
+                    setHasUnsavedChanges(true);
+                  }}
+                />
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Main Content */}
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          {/* Form Content */}
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {/* Title Input */}
             <div>
@@ -460,7 +435,7 @@ export default function CreateArticlePage() {
             </div>
 
             {/* Toolbar Markdown */}
-            <MarkdownToolbar 
+            <MarkdownToolbar
               textareaRef={textareaRef}
               onContentChange={handleContentChange}
             />
@@ -479,21 +454,6 @@ export default function CreateArticlePage() {
                 />
               </div>
             </div>
-
-            {/* Input file caché pour les images */}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  handleImageUpload(file);
-                  e.target.value = '';
-                }
-              }}
-              className="hidden"
-            />
 
             {/* Footer Actions */}
             <div className="border-t border-gray-200 pt-4">
@@ -529,19 +489,14 @@ export default function CreateArticlePage() {
                     )}
                   </div>
 
-                  {/* Image Upload */}
+                  {/* Drag & Drop Toggle */}
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploadingImage}
-                    className="p-3 text-gray-500 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Ajouter une image"
+                    onClick={() => setShowDragDrop(!showDragDrop)}
+                    className="p-3 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
+                    title="Upload de médias"
                   >
-                    {isUploadingImage ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500"></div>
-                    ) : (
-                      <Image className="w-5 h-5" />
-                    )}
+                    <Upload className="w-5 h-5" />
                   </button>
 
                   <button
@@ -621,12 +576,109 @@ export default function CreateArticlePage() {
 
         {/* Aide rapide */}
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="text-sm font-medium text-blue-800 mb-2">💡 Raccourcis utiles :</h3>
+          <h3 className="text-sm font-medium text-blue-800 mb-2">
+            💡 Raccourcis utiles :
+          </h3>
           <div className="text-xs text-blue-700 space-y-1">
-            <p><kbd className="bg-blue-200 px-1 rounded">Ctrl+B</kbd> Gras • <kbd className="bg-blue-200 px-1 rounded">Ctrl+I</kbd> Italique • <kbd className="bg-blue-200 px-1 rounded">Ctrl+K</kbd> Lien • <kbd className="bg-blue-200 px-1 rounded">Ctrl+S</kbd> Sauvegarder</p>
-            <p>⏰ Sauvegarde automatique toutes les 30 secondes • 📊 Temps de lecture calculé automatiquement</p>
+            <p>
+              <kbd className="bg-blue-200 px-1 rounded">Ctrl+B</kbd> Gras •{" "}
+              <kbd className="bg-blue-200 px-1 rounded">Ctrl+I</kbd> Italique •{" "}
+              <kbd className="bg-blue-200 px-1 rounded">Ctrl+K</kbd> Lien •{" "}
+              <kbd className="bg-blue-200 px-1 rounded">Ctrl+S</kbd> Sauvegarder
+            </p>
+            <p>
+              ⏰ Sauvegarde automatique toutes les 30 secondes • 📊 Temps de
+              lecture calculé automatiquement • 🎬 Drag & drop pour images/vidéos/GIFs
+            </p>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Composant pour prévisualiser les médias
+function MediaPreviewCard({ media, textareaRef, onRemove }) {
+  const isVideo = media.mediaCategory === 'videos';
+  const isGif = media.mediaCategory === 'gifs';
+
+  const handleInsert = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      const markdownText = isVideo 
+        ? `\n<video controls width="100%" style="max-width: 600px;">\n  <source src="${media.fileUrl}" type="${media.fileType}">\n  Votre navigateur ne supporte pas la lecture de vidéos.\n</video>\n\n`
+        : `\n![${media.originalName || 'Image'}](${media.fileUrl})\n\n`;
+      
+      const start = textarea.selectionStart;
+      const newContent = 
+        textarea.value.substring(0, start) +
+        markdownText +
+        textarea.value.substring(start);
+      
+      textarea.value = newContent;
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      textarea.focus();
+      
+      // Repositionner le curseur
+      setTimeout(() => {
+        const newPosition = start + markdownText.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+      }, 0);
+    }
+  };
+
+  return (
+    <div className="relative group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+      {/* Aperçu du média */}
+      <div className="aspect-square bg-gray-100 flex items-center justify-center">
+        {isVideo ? (
+          <div className="relative w-full h-full">
+            <video 
+              src={media.fileUrl} 
+              className="w-full h-full object-cover"
+              muted
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+              <Play className="w-8 h-8 text-white" />
+            </div>
+          </div>
+        ) : (
+          <img 
+            src={media.fileUrl} 
+            alt={media.originalName || 'Media'}
+            className="w-full h-full object-cover"
+          />
+        )}
+      </div>
+
+      {/* Actions en hover */}
+      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
+        <div className="flex space-x-2">
+          <button
+            onClick={handleInsert}
+            className="p-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+            title="Insérer à nouveau"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+          <button
+            onClick={onRemove}
+            className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            title="Supprimer"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Informations du fichier */}
+      <div className="p-2">
+        <p className="text-xs text-gray-600 truncate font-sans">
+          {media.originalName || media.fileName}
+        </p>
+        <p className="text-xs text-gray-500 font-sans">
+          {media.fileSizeMB} MB • {isVideo ? 'Vidéo' : isGif ? 'GIF' : 'Image'}
+        </p>
       </div>
     </div>
   );
