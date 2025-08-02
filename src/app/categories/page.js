@@ -58,7 +58,7 @@ export default function CategoriesPage() {
             Catégories
           </h1>
           <p className="text-md font-poppins text-start text-gray-600">
-            Explorez nos articles par domaine d'expertise technologique.
+            Explorez nos articles par domaine d&apos;expertise technologique.
           </p>
         </div>
         

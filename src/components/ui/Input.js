@@ -1,4 +1,6 @@
 // components/ui/Input.js - Composant Input de base
+'use client';
+
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 

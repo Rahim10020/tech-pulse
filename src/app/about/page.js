@@ -261,12 +261,79 @@ export default function AboutPage() {
               accédez à du contenu exclusif en rejoignant notre communauté.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="/signup" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-poppins font-medium hover:bg-gray-100 transition-colors">
-                Créer un compte
-              </a>
-              <a href="/articles" className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white font-poppins hover:text-gray-900 transition-colors">
+              <a href="/articles" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-poppins font-medium hover:bg-gray-100 transition-colors">
                 Découvrir les articles
               </a>
+              <a href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white font-poppins hover:text-gray-900 transition-colors">
+                Nous contacter
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Publication Info Section */}
+        <section className="py-16 bg-gray-100">
+          <div className="container">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                <div className="mb-6">
+                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
+                    Vous souhaitez publier sur TechPulse ?
+                  </h3>
+                  <p className="text-lg font-poppins text-gray-600 mb-6 leading-relaxed">
+                    Nous sommes toujours à la recherche de nouveaux talents pour enrichir notre contenu ! 
+                    Si vous avez une expertise technique et souhaitez partager vos connaissances avec notre communauté, 
+                    nous serions ravis d'échanger avec vous.
+                  </p>
+                  <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 mb-6">
+                    <h4 className="text-lg font-poppins font-semibold text-teal-800 mb-3">
+                      Comment procéder ?
+                    </h4>
+                    <div className="text-left space-y-3">
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</div>
+                        <p className="text-teal-700 font-poppins">
+                          <strong>Contactez-nous</strong> via notre page de contact avec votre proposition d'article
+                        </p>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</div>
+                        <p className="text-teal-700 font-poppins">
+                          <strong>Présentez votre expertise</strong> et le sujet que vous souhaitez traiter
+                        </p>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</div>
+                        <p className="text-teal-700 font-poppins">
+                          <strong>Collaboration</strong> : nous vous accompagnerons dans le processus de publication
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <a 
+                      href="/contact" 
+                      className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-poppins font-medium transition-colors flex items-center"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Proposer un article
+                    </a>
+                    <a 
+                      href="/articles" 
+                      className="border-2 border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-6 py-3 rounded-lg font-poppins font-medium transition-colors"
+                    >
+                      Voir nos articles
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

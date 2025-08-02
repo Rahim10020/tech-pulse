@@ -1,4 +1,6 @@
 // components/ui/Button.js - Composant Button de base
+'use client';
+
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 

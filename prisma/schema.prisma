@@ -21,6 +21,7 @@ model User {
   joinedAt  DateTime @default(now())
   location  String?
   website   String?
+  role      String   @default("reader")
   
   // Relations
   articles  Article[]
