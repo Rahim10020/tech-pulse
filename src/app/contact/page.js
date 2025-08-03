@@ -1,14 +1,66 @@
 // src/app/contact/page.js - Page Contact (bonus)
-import Header from "@/components/layout/Header";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+"use client";
 
-export const metadata = {
-  title: "Contact - TechPulse",
-  description:
-    "Contactez l'équipe TechPulse pour vos questions, suggestions ou collaborations.",
-};
+import { useState } from "react";
+import Header from "@/components/layout/Header";
+import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { useToast } from "@/context/ToastProvider";
 
 export default function ContactPage() {
+  const { showToast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        showToast('Message envoyé avec succès !', 'success');
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: ""
+        });
+      } else {
+        showToast(result.error || 'Erreur lors de l\'envoi', 'error');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      showToast('Erreur lors de l\'envoi du message', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -25,55 +77,103 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div className="card p-8">
-              <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
-                Envoyez-nous un message
-              </h2>
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="label">Nom</label>
-                    <input
-                      type="text"
-                      className="input-field"
-                      placeholder="Votre nom"
-                    />
+              {isSubmitted ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <div>
-                    <label className="label">Email</label>
-                    <input
-                      type="email"
-                      className="input-field"
-                      placeholder="votre@email.com"
-                    />
-                  </div>
+                  <h3 className="text-xl font-poppins font-bold text-gray-900 mb-2">
+                    Message envoyé !
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
+                  </p>
+                  <button
+                    onClick={() => setIsSubmitted(false)}
+                    className="btn-secondary"
+                  >
+                    Envoyer un autre message
+                  </button>
                 </div>
-                <div>
-                  <label className="label">Sujet</label>
-                  <input
-                    type="text"
-                    className="input-field"
-                    placeholder="Sujet de votre message"
-                  />
-                </div>
-                <div>
-                  <label className="label">Message</label>
-                  <textarea
-                    rows="6"
-                    className="input-field resize-none"
-                    placeholder="Votre message..."
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="btn-primary w-full flex items-center justify-center"
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Envoyer le message
-                </button>
-              </form>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
+                    Envoyez-nous un message
+                  </h2>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="label">Nom complet</label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          className="input-field"
+                          placeholder="Votre nom"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="label">Email</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          className="input-field"
+                          placeholder="votre@email.com"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="label">Sujet</label>
+                      <input
+                        type="text"
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        className="input-field"
+                        placeholder="Sujet de votre message"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="label">Message</label>
+                      <textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        rows="6"
+                        className="input-field resize-none"
+                        placeholder="Votre message..."
+                        required
+                      ></textarea>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn-primary w-full flex items-center justify-center disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Envoi en cours...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 mr-2" />
+                          Envoyer le message
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </>
+              )}
             </div>
 
             {/* Contact Info */}

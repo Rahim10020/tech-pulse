@@ -7,7 +7,20 @@ const prisma = new PrismaClient();
 export async function getAllAuthors() {
   try {
     const authors = await prisma.user.findMany({
-      include: {
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+        bio: true,
+        avatar: true,
+        createdAt: true,
+        location: true,
+        website: true,
+        twitter: true,
+        linkedin: true,
+        github: true,
+        role: true,
         _count: {
           select: {
             articles: {
@@ -42,7 +55,20 @@ export async function getAuthorById(id) {
   try {
     const author = await prisma.user.findUnique({
       where: { id: parseInt(id) },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+        bio: true,
+        avatar: true,
+        createdAt: true,
+        location: true,
+        website: true,
+        twitter: true,
+        linkedin: true,
+        github: true,
+        role: true,
         _count: {
           select: {
             articles: {
@@ -78,7 +104,20 @@ export async function getAuthorByUsername(username) {
   try {
     const author = await prisma.user.findUnique({
       where: { username },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+        bio: true,
+        avatar: true,
+        createdAt: true,
+        location: true,
+        website: true,
+        twitter: true,
+        linkedin: true,
+        github: true,
+        role: true,
         _count: {
           select: {
             articles: {

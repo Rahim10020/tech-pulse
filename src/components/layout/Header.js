@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Bell, Menu, User, Settings, LogOut, Plus, PenTool } from "lucide-react";
+import { Search, Bell, Menu, User, Settings, LogOut, Plus, PenTool, Shield } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { useState } from "react";
 import { isAdmin } from "@/lib/auth-roles";
@@ -124,37 +124,34 @@ export default function Header() {
                   </button>
 
                   {isProfileMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-sm font-medium text-gray-900 font-poppins">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-gray-500 font-sans">
-                          {user.email}
-                        </p>
-                        {isAdmin(user) && (
-                          <p className="text-xs text-teal-600 font-medium font-poppins">
-                            Administrateur
-                          </p>
-                        )}
-                      </div>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                       <Link
-                        href={`/author/${user.username}`}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        href={`/profile/${user.id}`}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <User className="w-4 h-4 mr-3" />
-                        Voir le profil
+                        Mon Profil
                       </Link>
                       {isAdmin(user) && (
-                        <Link
-                          href="/create"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
-                          onClick={() => setIsProfileMenuOpen(false)}
-                        >
-                          <PenTool className="w-4 h-4 mr-3" />
-                          Publier un article
-                        </Link>
+                        <>
+                          <Link
+                            href="/create"
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                          >
+                            <PenTool className="w-4 h-4 mr-3" />
+                            Écrire un article
+                          </Link>
+                          <Link
+                            href="/secret-admin-access"
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                          >
+                            <Shield className="w-4 h-4 mr-3" />
+                            Administration
+                          </Link>
+                        </>
                       )}
                       <Link
                         href="/profile/edit"

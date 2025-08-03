@@ -71,6 +71,7 @@ export async function verifyCredentials(email, password) {
         bio: true,
         avatar: true,
         joinedAt: true,
+        role: true,
       },
     });
 
@@ -112,6 +113,7 @@ export async function getUserById(userId) {
         twitter: true,
         linkedin: true,
         github: true,
+        role: true,
       },
     });
 
