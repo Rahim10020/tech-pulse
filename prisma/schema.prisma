@@ -154,3 +154,28 @@ model Contact {
 
   @@map("contacts")
 }
+
+model SiteSettings {
+  id                Int      @id @default(autoincrement())
+  siteName          String   @default("TechPulse")
+  siteDescription   String?  @db.Text
+  siteUrl           String?
+  contactEmail      String?
+  contactPhone      String?
+  contactAddress    String?
+  socialTwitter      String?
+  socialLinkedin    String?
+  socialGithub      String?
+  analyticsCode      String?  @db.Text
+  seoTitle          String?
+  seoDescription    String?
+  seoKeywords       String?
+  maintenanceMode   Boolean  @default(false)
+  allowComments     Boolean  @default(true)
+  allowRegistration Boolean  @default(true)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}

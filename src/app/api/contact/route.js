@@ -1,7 +1,7 @@
 // src/app/api/contact/route.js - API pour les messages de contact
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { verifyJWT } from '@/lib/auth';
+import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
 
 const prisma = new PrismaClient();
@@ -56,8 +56,8 @@ export async function POST(request) {
 // GET - Récupérer les messages de contact (admin seulement)
 export async function GET(request) {
   try {
-    // Vérifier l'authentification admin
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    // Vérifier l'authentification admin via cookies
+    const token = request.cookies.get('token')?.value;
     if (!token) {
       return NextResponse.json(
         { error: 'Token d\'authentification requis' },
@@ -65,7 +65,7 @@ export async function GET(request) {
       );
     }
 
-    const decoded = verifyJWT(token);
+    const decoded = verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },
@@ -89,11 +89,25 @@ export async function GET(request) {
     const page = parseInt(searchParams.get('page')) || 1;
     const limit = parseInt(searchParams.get('limit')) || 10;
     const unreadOnly = searchParams.get('unread') === 'true';
+    const search = searchParams.get('search');
 
     const skip = (page - 1) * limit;
 
     // Construire la condition where
-    const where = unreadOnly ? { isRead: false } : {};
+    let where = {};
+    
+    if (unreadOnly) {
+      where.isRead = false;
+    }
+    
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { subject: { contains: search, mode: 'insensitive' } },
+        { message: { contains: search, mode: 'insensitive' } }
+      ];
+    }
 
     // Récupérer les messages avec pagination
     const [contacts, totalCount] = await Promise.all([
@@ -112,7 +126,7 @@ export async function GET(request) {
     });
 
     return NextResponse.json({
-      contacts,
+      messages: contacts,
       pagination: {
         page,
         limit,

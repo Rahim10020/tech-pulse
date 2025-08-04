@@ -45,9 +45,7 @@ export default function UserProfile({ user, articles }) {
     setLoading(true);
     try {
       const response = await fetch('/api/contact', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        credentials: 'include' // Utiliser les cookies pour l'authentification
       });
       
       if (response.ok) {
@@ -74,9 +72,7 @@ export default function UserProfile({ user, articles }) {
       });
       
       const response = await fetch(`/api/admin/users?${params}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        credentials: 'include' // Utiliser les cookies pour l'authentification
       });
       
       if (response.ok) {
@@ -96,11 +92,7 @@ export default function UserProfile({ user, articles }) {
     try {
       const response = await fetch(`/api/contact/${messageId}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ isRead: !isRead })
+        credentials: 'include' // Utiliser les cookies pour l'authentification
       });
 
       if (response.ok) {
@@ -121,9 +113,7 @@ export default function UserProfile({ user, articles }) {
     try {
       const response = await fetch(`/api/contact/${messageId}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        credentials: 'include' // Utiliser les cookies pour l'authentification
       });
 
       if (response.ok) {
@@ -143,11 +133,7 @@ export default function UserProfile({ user, articles }) {
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ role: newRole })
+        credentials: 'include' // Utiliser les cookies pour l'authentification
       });
 
       if (response.ok) {

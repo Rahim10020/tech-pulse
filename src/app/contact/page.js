@@ -5,9 +5,11 @@ import { useState } from "react";
 import Header from "@/components/layout/Header";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useToast } from "@/context/ToastProvider";
+import { useSettings } from "@/hooks/useSettings";
 
 export default function ContactPage() {
   const { showToast } = useToast();
+  const { settings } = useSettings();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -187,14 +189,14 @@ export default function ContactPage() {
                     <Mail className="w-6 h-6 text-teal-600 mt-1" />
                     <div>
                       <h3 className="font-semibold text-gray-900">Email</h3>
-                      <p className="text-gray-600">contact@techpulse.com</p>
+                      <p className="text-gray-600">{settings.contactEmail || 'contact@techpulse.com'}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
                     <Phone className="w-6 h-6 text-teal-600 mt-1" />
                     <div>
                       <h3 className="font-semibold text-gray-900">Téléphone</h3>
-                      <p className="text-gray-600">+33 1 23 45 67 89</p>
+                      <p className="text-gray-600">{settings.contactPhone || '+33 1 23 45 67 89'}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
@@ -202,9 +204,13 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-gray-900">Adresse</h3>
                       <p className="text-gray-600">
-                        123 Rue de la Tech
-                        <br />
-                        75001 Paris, France
+                        {settings.contactAddress || (
+                          <>
+                            123 Rue de la Tech
+                            <br />
+                            75001 Paris, France
+                          </>
+                        )}
                       </p>
                     </div>
                   </div>

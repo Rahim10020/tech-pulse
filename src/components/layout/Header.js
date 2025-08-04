@@ -6,10 +6,12 @@ import { usePathname } from "next/navigation";
 import { Search, Bell, Menu, User, Settings, LogOut, Plus, PenTool, Shield } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { useState } from "react";
-import { isAdmin } from "@/lib/auth-roles";
+import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
+import { useSettings } from "@/hooks/useSettings";
 
 export default function Header() {
   const { user, logout } = useAuth();
+  const { settings } = useSettings();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -33,11 +35,11 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
               <span className="text-white font-poppins font-bold text-sm">
-                TP
+                {settings.siteName ? settings.siteName.substring(0, 2).toUpperCase() : 'TP'}
               </span>
             </div>
             <span className="text-xl font-poppins font-bold text-gray-900 uppercase">
-              Tech<span className="text-teal-600">Pulse</span>{" "}
+              {settings.siteName || 'TechPulse'}
             </span>
           </Link>
 
@@ -97,18 +99,18 @@ export default function Header() {
               />
             </div>
 
-            {user ? (
-              <>
-                {/* Bouton Publier - Visible seulement pour les admins */}
-                {isAdmin(user) && (
-                  <Link
-                    href="/create"
-                    className="flex items-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors font-poppins text-sm font-medium"
-                  >
-                    <PenTool className="w-4 h-4" />
-                    <span className="hidden sm:inline font-poppins">Publier</span>
-                  </Link>
-                )}
+                         {user ? (
+               <>
+                 {/* Bouton Publier - Visible pour les admins et publishers */}
+                 {(isAdmin(user) || isPublisher(user)) && (
+                   <Link
+                     href="/create"
+                     className="flex items-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors font-poppins text-sm font-medium"
+                   >
+                     <PenTool className="w-4 h-4" />
+                     <span className="hidden sm:inline font-poppins">Publier</span>
+                   </Link>
+                 )}
 
                 <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
 
@@ -133,34 +135,38 @@ export default function Header() {
                         <User className="w-4 h-4 mr-3" />
                         Mon Profil
                       </Link>
-                      {isAdmin(user) && (
-                        <>
-                          <Link
-                            href="/create"
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                            onClick={() => setIsProfileMenuOpen(false)}
-                          >
-                            <PenTool className="w-4 h-4 mr-3" />
-                            Écrire un article
-                          </Link>
-                          <Link
-                            href="/secret-admin-access"
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                            onClick={() => setIsProfileMenuOpen(false)}
-                          >
-                            <Shield className="w-4 h-4 mr-3" />
-                            Administration
-                          </Link>
-                        </>
-                      )}
-                      <Link
-                        href="/profile/edit"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
-                        onClick={() => setIsProfileMenuOpen(false)}
-                      >
-                        <Settings className="w-4 h-4 mr-3" />
-                        Paramètres
-                      </Link>
+                                             {(isAdmin(user) || isPublisher(user)) && (
+                         <>
+                           <Link
+                             href="/create"
+                             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                             onClick={() => setIsProfileMenuOpen(false)}
+                           >
+                             <PenTool className="w-4 h-4 mr-3" />
+                             Écrire un article
+                           </Link>
+                           {isAdmin(user) && (
+                             <Link
+                               href="/profile/edit"
+                               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                               onClick={() => setIsProfileMenuOpen(false)}
+                             >
+                               <Shield className="w-4 h-4 mr-3" />
+                               Administration
+                             </Link>
+                           )}
+                         </>
+                       )}
+                                             {(isAdmin(user) || isPublisher(user)) && (
+                         <Link
+                           href="/profile/edit"
+                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                           onClick={() => setIsProfileMenuOpen(false)}
+                         >
+                           <Settings className="w-4 h-4 mr-3" />
+                           {isAdmin(user) ? 'Parametres' : 'Mon Profil'}
+                         </Link>
+                       )}
                       <button
                         onClick={handleLogout}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"

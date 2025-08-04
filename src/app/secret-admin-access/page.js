@@ -11,10 +11,10 @@ export default function SecretAdminAccess() {
   const router = useRouter();
   const [showAdminPanel, setShowAdminPanel] = useState(false);
 
-  // Si l'utilisateur est déjà connecté et admin, rediriger vers dashboard
+  // Si l'utilisateur est déjà connecté et admin, rediriger vers la page de profil admin
   useEffect(() => {
     if (user && user.role === 'admin') {
-      router.push('/admin/dashboard');
+      router.push('/profile/edit');
     }
   }, [user, router]);
 
@@ -95,10 +95,10 @@ export default function SecretAdminAccess() {
                 ) : user.role === 'admin' ? (
                   <div className="space-y-3">
                     <Link 
-                      href="/admin/dashboard"
+                      href="/profile/edit"
                       className="btn-primary w-full justify-center bg-teal-600 hover:bg-teal-700 font-poppins block text-center"
                     >
-                      📊 Dashboard Admin
+                      📊 Administration
                     </Link>
                     <Link 
                       href="/create"

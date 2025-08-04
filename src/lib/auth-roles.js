@@ -3,6 +3,7 @@
 // Définition des rôles et permissions
 export const ROLES = {
   ADMIN: 'admin',
+  PUBLISHER: 'publisher',
   READER: 'reader'
 };
 
@@ -46,6 +47,13 @@ const ROLE_PERMISSIONS = {
     PERMISSIONS.MANAGE_CATEGORIES,
     PERMISSIONS.MANAGE_TAGS
   ],
+  [ROLES.PUBLISHER]: [
+    PERMISSIONS.CREATE_ARTICLE,
+    PERMISSIONS.EDIT_ARTICLE,
+    PERMISSIONS.PUBLISH_ARTICLE,
+    PERMISSIONS.CREATE_COMMENT,
+    PERMISSIONS.LIKE_ARTICLE
+  ],
   [ROLES.READER]: [
     PERMISSIONS.CREATE_COMMENT,
     PERMISSIONS.LIKE_ARTICLE
@@ -65,6 +73,11 @@ export function isAdmin(user) {
 // Vérifier si un utilisateur est reader
 export function isReader(user) {
   return hasRole(user, ROLES.READER);
+}
+
+// Vérifier si un utilisateur est publisher
+export function isPublisher(user) {
+  return hasRole(user, ROLES.PUBLISHER);
 }
 
 // Vérifier si un utilisateur a une permission spécifique
