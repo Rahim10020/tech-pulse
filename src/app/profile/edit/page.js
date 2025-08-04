@@ -1,20 +1,20 @@
 // app/profile/edit/page.js - Page d'édition de profil avec fonctionnalités admin
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import ProfileForm from '@/components/forms/ProfileForm';
-import { useAuth } from '@/context/AuthProvider';
-import { useToast } from '@/context/ToastProvider';
-import { isAdmin, isPublisher, isReader } from '@/lib/auth-roles';
-import { 
-  Bell, 
-  MessageSquare, 
-  Users, 
-  FileText, 
-  Eye, 
-  Heart, 
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/layout/Header";
+import ProfileForm from "@/components/forms/ProfileForm";
+import { useAuth } from "@/context/AuthProvider";
+import { useToast } from "@/context/ToastProvider";
+import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
+import {
+  Bell,
+  MessageSquare,
+  Users,
+  FileText,
+  Eye,
+  Heart,
   MessageCircle,
   Settings,
   ExternalLink,
@@ -26,53 +26,53 @@ import {
   Linkedin,
   Github,
   Code,
-  AlertTriangle
-} from 'lucide-react';
+  AlertTriangle,
+} from "lucide-react";
 
 export default function EditProfilePage() {
   const router = useRouter();
   const { user, updateProfile } = useAuth();
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('profile');
-  
+  const [activeTab, setActiveTab] = useState("profile");
+
   // États pour les fonctionnalités admin
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalArticles: 0,
     totalViews: 0,
     totalLikes: 0,
-    totalComments: 0
+    totalComments: 0,
   });
-  
+
   const [unreadMessages, setUnreadMessages] = useState([]);
   const [recentMessages, setRecentMessages] = useState([]);
   const [loadingStats, setLoadingStats] = useState(false);
-  
+
   // États pour les paramètres du site
   const [settings, setSettings] = useState({
-    siteName: 'TechPulse',
-    siteDescription: '',
-    siteUrl: '',
-    contactEmail: '',
-    contactPhone: '',
-    contactAddress: '',
-    socialTwitter: '',
-    socialLinkedin: '',
-    socialGithub: '',
-    analyticsCode: '',
-    seoTitle: '',
-    seoDescription: '',
-    seoKeywords: '',
+    siteName: "TechPulse",
+    siteDescription: "",
+    siteUrl: "",
+    contactEmail: "",
+    contactPhone: "",
+    contactAddress: "",
+    socialTwitter: "",
+    socialLinkedin: "",
+    socialGithub: "",
+    analyticsCode: "",
+    seoTitle: "",
+    seoDescription: "",
+    seoKeywords: "",
     maintenanceMode: false,
     allowComments: true,
-    allowRegistration: true
+    allowRegistration: true,
   });
   const [savingSettings, setSavingSettings] = useState(false);
 
   useEffect(() => {
     if (!user) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [user, router]);
 
@@ -87,54 +87,53 @@ export default function EditProfilePage() {
   // Rediriger les lecteurs vers la page d'accueil
   useEffect(() => {
     if (user && isReader(user)) {
-      router.push('/');
+      router.push("/");
     }
   }, [user, router]);
 
   const fetchAdminData = async () => {
     try {
       setLoadingStats(true);
-      const token = localStorage.getItem('token');
-      
+      const token = localStorage.getItem("token");
+
       // Récupérer les statistiques
-      const statsResponse = await fetch('/api/admin/stats', {
+      const statsResponse = await fetch("/api/admin/stats", {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
         setStats(statsData);
       }
 
       // Récupérer les messages non lus
-      const messagesResponse = await fetch('/api/contact?unread=true&limit=5', {
+      const messagesResponse = await fetch("/api/contact?unread=true&limit=5", {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (messagesResponse.ok) {
         const messagesData = await messagesResponse.json();
         setUnreadMessages(messagesData.contacts || []);
       }
 
       // Récupérer les messages récents
-      const recentResponse = await fetch('/api/contact?limit=5', {
+      const recentResponse = await fetch("/api/contact?limit=5", {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (recentResponse.ok) {
         const recentData = await recentResponse.json();
         setRecentMessages(recentData.contacts || []);
       }
-
     } catch (error) {
-      console.error('Error fetching admin data:', error);
-      showToast('Erreur lors du chargement des données', 'error');
+      console.error("Error fetching admin data:", error);
+      showToast("Erreur lors du chargement des données", "error");
     } finally {
       setLoadingStats(false);
     }
@@ -142,50 +141,50 @@ export default function EditProfilePage() {
 
   const fetchSettings = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/settings', {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/admin/settings", {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data.settings || settings);
       }
     } catch (error) {
-      console.error('Error fetching settings:', error);
-      showToast('Erreur lors du chargement des paramètres', 'error');
+      console.error("Error fetching settings:", error);
+      showToast("Erreur lors du chargement des paramètres", "error");
     }
   };
 
   const markMessageAsRead = async (messageId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/contact/${messageId}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ isRead: true })
+        body: JSON.stringify({ isRead: true }),
       });
 
       if (response.ok) {
-        showToast('Message marqué comme lu', 'success');
+        showToast("Message marqué comme lu", "success");
         fetchAdminData(); // Recharger les données
       }
     } catch (error) {
-      console.error('Error marking message as read:', error);
-      showToast('Erreur lors de la mise à jour', 'error');
+      console.error("Error marking message as read:", error);
+      showToast("Erreur lors de la mise à jour", "error");
     }
   };
 
   const handleSettingsChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -194,25 +193,25 @@ export default function EditProfilePage() {
     setSavingSettings(true);
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/settings', {
-        method: 'PUT',
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/admin/settings", {
+        method: "PUT",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(settings)
+        body: JSON.stringify(settings),
       });
 
       if (response.ok) {
-        showToast('Paramètres sauvegardés avec succès', 'success');
+        showToast("Paramètres sauvegardés avec succès", "success");
       } else {
         const error = await response.json();
-        showToast(error.error || 'Erreur lors de la sauvegarde', 'error');
+        showToast(error.error || "Erreur lors de la sauvegarde", "error");
       }
     } catch (error) {
-      console.error('Error saving settings:', error);
-      showToast('Erreur lors de la sauvegarde', 'error');
+      console.error("Error saving settings:", error);
+      showToast("Erreur lors de la sauvegarde", "error");
     } finally {
       setSavingSettings(false);
     }
@@ -220,18 +219,18 @@ export default function EditProfilePage() {
 
   const handleUpdateProfile = async (formData) => {
     setIsLoading(true);
-    
+
     try {
       const result = await updateProfile(formData);
-      
+
       if (result.success) {
-        showToast('Profil mis à jour avec succès !', 'success');
+        showToast("Profil mis à jour avec succès !", "success");
         router.push(`/profile/${user.id}`);
       } else {
-        showToast(result.error || 'Erreur lors de la mise à jour', 'error');
+        showToast(result.error || "Erreur lors de la mise à jour", "error");
       }
     } catch (error) {
-      showToast('Une erreur est survenue', 'error');
+      showToast("Une erreur est survenue", "error");
     } finally {
       setIsLoading(false);
     }
@@ -250,7 +249,11 @@ export default function EditProfilePage() {
       <Header />
       <div className="container-sm py-4">
         <h1 className="text-2xl font-poppins font-bold text-gray-900 mb-8">
-          {isAdmin(user) ? 'Administration' : isPublisher(user) ? 'Mon Profil' : 'Édition du profil'}
+          {isAdmin(user)
+            ? "Administration"
+            : isPublisher(user)
+            ? "Mon Profil"
+            : "Édition du profil"}
         </h1>
 
         {/* Onglets pour les admins */}
@@ -259,31 +262,31 @@ export default function EditProfilePage() {
             <div className="border-b border-gray-200">
               <nav className="-mb-px flex space-x-8">
                 <button
-                  onClick={() => setActiveTab('profile')}
+                  onClick={() => setActiveTab("profile")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'profile'
-                      ? 'border-teal-500 text-teal-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    activeTab === "profile"
+                      ? "border-teal-500 text-teal-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   Mon Profil
                 </button>
                 <button
-                  onClick={() => setActiveTab('messages')}
+                  onClick={() => setActiveTab("messages")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'messages'
-                      ? 'border-teal-500 text-teal-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    activeTab === "messages"
+                      ? "border-teal-500 text-teal-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   Messages ({unreadMessages.length})
                 </button>
                 <button
-                  onClick={() => setActiveTab('settings')}
+                  onClick={() => setActiveTab("settings")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'settings'
-                      ? 'border-teal-500 text-teal-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    activeTab === "settings"
+                      ? "border-teal-500 text-teal-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   Paramètres du site
@@ -299,21 +302,21 @@ export default function EditProfilePage() {
             <div className="border-b border-gray-200">
               <nav className="-mb-px flex space-x-8">
                 <button
-                  onClick={() => setActiveTab('profile')}
+                  onClick={() => setActiveTab("profile")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'profile'
-                      ? 'border-teal-500 text-teal-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    activeTab === "profile"
+                      ? "border-teal-500 text-teal-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   Mon Profil
                 </button>
                 <button
-                  onClick={() => setActiveTab('articles')}
+                  onClick={() => setActiveTab("articles")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'articles'
-                      ? 'border-teal-500 text-teal-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    activeTab === "articles"
+                      ? "border-teal-500 text-teal-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   Mes Articles
@@ -324,17 +327,17 @@ export default function EditProfilePage() {
         )}
 
         {/* Contenu des onglets */}
-        {activeTab === 'profile' && (
+        {activeTab === "profile" && (
           <div>
-            <ProfileForm 
-              initialData={user} 
-              onSubmit={handleUpdateProfile} 
-              isLoading={isLoading} 
+            <ProfileForm
+              initialData={user}
+              onSubmit={handleUpdateProfile}
+              isLoading={isLoading}
             />
           </div>
         )}
 
-        {isPublisher(user) && activeTab === 'articles' && (
+        {isPublisher(user) && activeTab === "articles" && (
           <div className="card">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-xl font-bold text-gray-900 flex items-center">
@@ -350,25 +353,28 @@ export default function EditProfilePage() {
           </div>
         )}
 
-        {isAdmin(user) && activeTab === 'messages' && (
+        {isAdmin(user) && activeTab === "messages" && (
           <div className="space-y-8">
             {/* Messages non lus */}
             <div className="card">
               <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                <h2 className="text-md font-poppins font-bold text-gray-900 flex items-center">
                   <Bell className="w-5 h-5 mr-2 text-red-500" />
                   Messages non lus ({unreadMessages.length})
                 </h2>
               </div>
               <div className="p-6">
                 {unreadMessages.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
+                  <p className="text-gray-500 font-poppins text-xs text-center py-4">
                     Aucun message non lu
                   </p>
                 ) : (
                   <div className="space-y-4">
                     {unreadMessages.map((message) => (
-                      <div key={message.id} className="border border-gray-200 rounded-lg p-4">
+                      <div
+                        key={message.id}
+                        className="border border-gray-200 rounded-lg p-4"
+                      >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
@@ -376,7 +382,9 @@ export default function EditProfilePage() {
                                 {message.name}
                               </span>
                               <span className="text-xs text-gray-500">
-                                {new Date(message.createdAt).toLocaleDateString()}
+                                {new Date(
+                                  message.createdAt
+                                ).toLocaleDateString()}
                               </span>
                             </div>
                             <p className="text-sm font-medium text-gray-700 mb-1">
@@ -416,20 +424,23 @@ export default function EditProfilePage() {
             {/* Messages récents */}
             <div className="card">
               <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                <h2 className="text-md font-poppins font-bold text-gray-900 flex items-center">
                   <MessageSquare className="w-5 h-5 mr-2 text-blue-500" />
                   Messages récents
                 </h2>
               </div>
               <div className="p-6">
                 {recentMessages.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
+                  <p className="text-gray-500 text-xs font-poppins text-center py-4">
                     Aucun message récent
                   </p>
                 ) : (
                   <div className="space-y-4">
                     {recentMessages.map((message) => (
-                      <div key={message.id} className="border border-gray-200 rounded-lg p-4">
+                      <div
+                        key={message.id}
+                        className="border border-gray-200 rounded-lg p-4"
+                      >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
@@ -437,7 +448,9 @@ export default function EditProfilePage() {
                                 {message.name}
                               </span>
                               <span className="text-xs text-gray-500">
-                                {new Date(message.createdAt).toLocaleDateString()}
+                                {new Date(
+                                  message.createdAt
+                                ).toLocaleDateString()}
                               </span>
                               {!message.isRead && (
                                 <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
@@ -481,29 +494,29 @@ export default function EditProfilePage() {
           </div>
         )}
 
-        {isAdmin(user) && activeTab === 'messages' && (
+        {isAdmin(user) && activeTab === "messages" && (
           <div className="card">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center">
+              <h2 className="text-md font-poppins font-bold text-gray-900 flex items-center">
                 <MessageSquare className="w-5 h-5 mr-2" />
                 Tous les messages de contact
               </h2>
             </div>
             <div className="p-6">
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-gray-500 text-xs font-poppins text-center py-8">
                 Page de gestion des messages en cours de développement...
               </p>
             </div>
           </div>
         )}
 
-        {isAdmin(user) && activeTab === 'settings' && (
+        {isAdmin(user) && activeTab === "settings" && (
           <div className="space-y-8">
             <form onSubmit={handleSettingsSubmit}>
               {/* Informations générales */}
               <div className="card">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h2 className="text-xl font-poppins font-bold text-gray-900 flex items-center">
                     <Globe className="w-5 h-5 mr-2" />
                     Informations générales
                   </h2>
@@ -511,36 +524,38 @@ export default function EditProfilePage() {
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="label">Nom du site</label>
+                      <label className="label font-poppins">Nom du site</label>
                       <input
                         type="text"
                         name="siteName"
                         value={settings.siteName}
                         onChange={handleSettingsChange}
-                        className="input-field"
+                        className="input-field font-poppins"
                         placeholder="TechPulse"
                       />
                     </div>
                     <div>
-                      <label className="label">URL du site</label>
+                      <label className="label font-poppins">URL du site</label>
                       <input
                         type="url"
                         name="siteUrl"
                         value={settings.siteUrl}
                         onChange={handleSettingsChange}
-                        className="input-field"
+                        className="input-field font-poppins"
                         placeholder="https://techpulse.com"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="label">Description du site</label>
+                    <label className="label font-poppins">
+                      Description du site
+                    </label>
                     <textarea
                       name="siteDescription"
                       value={settings.siteDescription}
                       onChange={handleSettingsChange}
                       rows="3"
-                      className="input-field resize-none"
+                      className="input-field resize-none font-poppins"
                       placeholder="Description de votre blog..."
                     />
                   </div>
@@ -550,7 +565,7 @@ export default function EditProfilePage() {
               {/* Contact */}
               <div className="card">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h2 className="text-xl font-poppins font-bold text-gray-900 flex items-center">
                     <Mail className="w-5 h-5 mr-2" />
                     Informations de contact
                   </h2>
@@ -558,37 +573,39 @@ export default function EditProfilePage() {
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="label">Email de contact</label>
+                      <label className="label font-poppins">
+                        Email de contact
+                      </label>
                       <input
                         type="email"
                         name="contactEmail"
                         value={settings.contactEmail}
                         onChange={handleSettingsChange}
-                        className="input-field"
+                        className="input-field font-poppins"
                         placeholder="contact@techpulse.com"
                       />
                     </div>
                     <div>
-                      <label className="label">Téléphone</label>
+                      <label className="label font-poppins">Téléphone</label>
                       <input
                         type="tel"
                         name="contactPhone"
                         value={settings.contactPhone}
                         onChange={handleSettingsChange}
-                        className="input-field"
-                        placeholder="+33 1 23 45 67 89"
+                        className="input-field font-poppins"
+                        placeholder="+228 90 89 59 00"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="label">Adresse</label>
+                    <label className="label font-poppins">Adresse</label>
                     <textarea
                       name="contactAddress"
                       value={settings.contactAddress}
                       onChange={handleSettingsChange}
                       rows="2"
-                      className="input-field resize-none"
-                      placeholder="123 Rue de la Tech, 75001 Paris, France"
+                      className="input-field resize-none font-poppins"
+                      placeholder="Tokoin solidarite, Togo"
                     />
                   </div>
                 </div>
@@ -597,7 +614,7 @@ export default function EditProfilePage() {
               {/* Réseaux sociaux */}
               <div className="card">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h2 className="text-xl font-bold font-poppins text-gray-900 flex items-center">
                     <Twitter className="w-5 h-5 mr-2" />
                     Réseaux sociaux
                   </h2>
@@ -605,35 +622,35 @@ export default function EditProfilePage() {
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className="label">Twitter</label>
+                      <label className="label font-poppins">Twitter</label>
                       <input
                         type="url"
                         name="socialTwitter"
                         value={settings.socialTwitter}
                         onChange={handleSettingsChange}
-                        className="input-field"
+                        className="input-field font-poppins"
                         placeholder="https://twitter.com/techpulse"
                       />
                     </div>
                     <div>
-                      <label className="label">LinkedIn</label>
+                      <label className="label font-poppins">LinkedIn</label>
                       <input
                         type="url"
                         name="socialLinkedin"
                         value={settings.socialLinkedin}
                         onChange={handleSettingsChange}
-                        className="input-field"
+                        className="input-field font-poppins"
                         placeholder="https://linkedin.com/company/techpulse"
                       />
                     </div>
                     <div>
-                      <label className="label">GitHub</label>
+                      <label className="label font-poppins">GitHub</label>
                       <input
                         type="url"
                         name="socialGithub"
                         value={settings.socialGithub}
                         onChange={handleSettingsChange}
-                        className="input-field"
+                        className="input-field font-poppins"
                         placeholder="https://github.com/techpulse"
                       />
                     </div>
@@ -642,9 +659,9 @@ export default function EditProfilePage() {
               </div>
 
               {/* Fonctionnalités */}
-              <div className="card">
+              <div className="card mb-5">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h2 className="text-xl font-bold font-poppins text-gray-900 flex items-center">
                     <Settings className="w-5 h-5 mr-2" />
                     Fonctionnalités
                   </h2>
@@ -659,7 +676,7 @@ export default function EditProfilePage() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <label className="ml-2 text-sm font-medium text-gray-700">
+                      <label className="ml-2 text-sm font-poppins font-medium text-gray-700">
                         Mode maintenance
                       </label>
                     </div>
@@ -671,7 +688,7 @@ export default function EditProfilePage() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <label className="ml-2 text-sm font-medium text-gray-700">
+                      <label className="ml-2 text-sm font-poppins font-medium text-gray-700">
                         Autoriser les commentaires
                       </label>
                     </div>
@@ -683,7 +700,7 @@ export default function EditProfilePage() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
-                      <label className="ml-2 text-sm font-medium text-gray-700">
+                      <label className="ml-2 text-sm font-poppins font-medium text-gray-700">
                         Autoriser l'inscription
                       </label>
                     </div>
@@ -697,7 +714,7 @@ export default function EditProfilePage() {
                   <button
                     type="submit"
                     disabled={savingSettings}
-                    className="btn-primary flex items-center"
+                    className="btn-primary font-poppins flex items-center"
                   >
                     {savingSettings ? (
                       <>
@@ -712,11 +729,13 @@ export default function EditProfilePage() {
                     )}
                   </button>
                 </div>
-                
+
                 {settings.maintenanceMode && (
                   <div className="flex items-center space-x-2 text-orange-600">
                     <AlertTriangle className="w-4 h-4" />
-                    <span className="text-sm font-medium">Mode maintenance activé</span>
+                    <span className="text-sm font-poppins font-medium">
+                      Mode maintenance activé
+                    </span>
                   </div>
                 )}
               </div>

@@ -59,8 +59,8 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
     <form onSubmit={handleSubmit} className="space-y-6">
       
       {/* Informations de base */}
-      <div className="bg-transparent">
-        <h2 className="text-lg font-poppins font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-xl font-poppins font-semibold text-gray-900 mb-4">
           Informations personnelles
         </h2>
         
