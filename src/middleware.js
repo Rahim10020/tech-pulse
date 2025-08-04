@@ -1,27 +1,51 @@
-// middleware.js - Middleware simplifié pour l'authentification et maintenance
+// middleware.js - Middleware avec protection des routes admin
 import { NextResponse } from 'next/server';
+import { verifyToken } from '@/lib/auth';
 
 // Routes qui nécessitent une authentification
-const protectedRoutes = ['/profile/edit', '/create'];
+const protectedRoutes = ['/profile/edit', '/create', '/drafts'];
 
 // Routes d'authentification (rediriger si déjà connecté)
 const authRoutes = ['/login', '/signup', '/forgot-password'];
 
 // Routes publiques (toujours accessibles)
-const publicRoutes = ['/', '/articles', '/categories', '/about'];
+const publicRoutes = ['/', '/articles', '/categories', '/about', '/contact'];
 
-// Routes d'administration (toujours accessibles en mode maintenance)
-const adminRoutes = ['/admin', '/secret-admin-access'];
+// Routes d'administration (nécessitent un rôle admin)
+const adminRoutes = ['/admin'];
 
 // Routes de maintenance (toujours accessibles)
 const maintenanceRoutes = ['/maintenance', '/api/settings'];
+
+// Routes qui nécessitent seulement d'être connecté
+const authOnlyRoutes = ['/secret-admin-access'];
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('token')?.value;
 
-  // Vérifier si l'utilisateur a un token (authentification basique)
+  // Vérifier l'authentification de base
   const isAuthenticated = !!token;
+  let user = null;
+  let isAdmin = false;
+
+  // Si on a un token, vérifier les détails de l'utilisateur
+  if (token) {
+    try {
+      const decoded = verifyToken(token);
+      if (decoded) {
+        // Pour les routes admin, on doit vérifier le rôle
+        if (adminRoutes.some(route => pathname.startsWith(route))) {
+          // Ici on devrait idéalement faire un appel à la DB pour vérifier le rôle
+          // Mais pour simplifier, on fait confiance au token (à améliorer en production)
+          user = decoded;
+          isAdmin = decoded.role === 'admin'; // Si le rôle est dans le token
+        }
+      }
+    } catch (error) {
+      console.error('Token verification error:', error);
+    }
+  }
 
   // Vérifier le mode maintenance (sauf pour les routes admin et maintenance)
   if (!adminRoutes.some(route => pathname.startsWith(route)) && 
@@ -54,8 +78,26 @@ export async function middleware(request) {
     return NextResponse.next();
   }
 
-  // Permettre l'accès aux routes d'administration
+  // Vérifier l'accès aux routes d'administration
   if (adminRoutes.some(route => pathname.startsWith(route))) {
+    if (!isAuthenticated) {
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('callbackUrl', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Pour les routes admin, vérifier le rôle admin
+    // Note: En production, il faudrait faire une requête DB pour vérifier le rôle
+    if (!isAdmin) {
+      // Si pas admin, rediriger vers l'accueil avec un message d'erreur
+      return NextResponse.redirect(new URL('/?error=access-denied', request.url));
+    }
+
+    return NextResponse.next();
+  }
+
+  // Permettre l'accès aux routes qui nécessitent seulement d'être connecté
+  if (authOnlyRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
   }
 

@@ -1,7 +1,7 @@
-// app/api/auth/login/route.js - Version PostgreSQL
-import { NextResponse } from 'next/server';
-import { createToken } from '@/lib/auth';
-import { verifyCredentials } from '@/lib/auth-db';
+// app/api/auth/login/route.js - Version PostgreSQL CORRIGÉE avec rôle
+import { NextResponse } from "next/server";
+import { createToken } from "@/lib/auth";
+import { verifyCredentials } from "@/lib/auth-db";
 
 export async function POST(request) {
   try {
@@ -10,7 +10,7 @@ export async function POST(request) {
     // Validation des données
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Email et mot de passe requis' },
+        { error: "Email et mot de passe requis" },
         { status: 400 }
       );
     }
@@ -19,41 +19,39 @@ export async function POST(request) {
     const result = await verifyCredentials(email, password);
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: result.error }, { status: 401 });
     }
 
     const user = result.user;
 
-    // Créer le token JWT
-    const token = createToken({ 
-      userId: user.id, 
+    // Créer le token JWT AVEC le rôle
+    const token = createToken({
+      userId: user.id,
       email: user.email,
-      username: user.username
+      username: user.username,
+      role: user.role,
     });
 
     // Créer la réponse avec le token dans un cookie httpOnly
     const response = NextResponse.json({
       success: true,
       user,
-      message: 'Connexion réussie'
+      message: "Connexion réussie",
     });
 
-    response.cookies.set('token', token, {
+    response.cookies.set("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60, // 7 jours
-      path: '/'
+      path: "/",
     });
 
     return response;
   } catch (error) {
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     return NextResponse.json(
-      { error: 'Erreur interne du serveur' },
+      { error: "Erreur interne du serveur" },
       { status: 500 }
     );
   }

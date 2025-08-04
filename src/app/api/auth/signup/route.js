@@ -1,4 +1,4 @@
-// app/api/auth/signup/route.js - API Route pour l'inscription
+// app/api/auth/signup/route.js - API Route pour l'inscription CORRIGÉE
 import { NextResponse } from 'next/server';
 import { createToken } from '@/lib/auth';
 import { createUser } from '@/lib/auth-db';
@@ -58,11 +58,12 @@ export async function POST(request) {
 
     const user = result.user;
 
-    // Créer le token JWT
+    // Créer le token JWT AVEC le rôle (par défaut 'reader')
     const token = createToken({ 
       userId: user.id, 
       email: user.email,
-      username: user.username
+      username: user.username,
+      role: user.role || 'reader' // ✅ AJOUTÉ: inclure le rôle dans le token
     });
 
     // Créer la réponse avec le token dans un cookie httpOnly
