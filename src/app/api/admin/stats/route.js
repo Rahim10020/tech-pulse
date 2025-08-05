@@ -1,7 +1,7 @@
-// src/app/api/admin/stats/route.js - API pour les statistiques admin
+// src/app/api/admin/stats/route.js - API pour les statistiques admin CORRIGÉE
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { verifyJWT } from '@/lib/auth';
+import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
 
 const prisma = new PrismaClient();
@@ -9,8 +9,8 @@ const prisma = new PrismaClient();
 // GET - Récupérer les statistiques (admin seulement)
 export async function GET(request) {
   try {
-    // Vérifier l'authentification admin
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    // Vérifier l'authentification admin via cookies (pas Authorization header)
+    const token = request.cookies.get('token')?.value;
     if (!token) {
       return NextResponse.json(
         { error: 'Token d\'authentification requis' },
@@ -18,7 +18,7 @@ export async function GET(request) {
       );
     }
 
-    const decoded = verifyJWT(token);
+    const decoded = verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },
@@ -41,30 +41,142 @@ export async function GET(request) {
     const [
       totalUsers,
       totalArticles,
+      totalPublishedArticles,
+      totalDrafts,
       totalViews,
       totalLikes,
       totalComments,
-      unreadMessages
+      unreadMessages,
+      totalMessages,
+      recentActivity
     ] = await Promise.all([
+      // Nombre total d'utilisateurs
       prisma.user.count(),
+      
+      // Nombre total d'articles (publiés et brouillons)
       prisma.article.count(),
-      prisma.article.aggregate({
-        _sum: { views: true }
+      
+      // Nombre d'articles publiés seulement
+      prisma.article.count({
+        where: { published: true }
       }),
+      
+      // Nombre de brouillons
+      prisma.article.count({
+        where: { published: false }
+      }),
+      
+      // Total des vues
+      prisma.article.aggregate({
+        _sum: { views: true },
+        where: { published: true }
+      }),
+      
+      // Total des likes
       prisma.like.count(),
+      
+      // Total des commentaires
       prisma.comment.count(),
+      
+      // Messages de contact non lus
       prisma.contact.count({
         where: { isRead: false }
+      }),
+      
+      // Total des messages de contact
+      prisma.contact.count(),
+      
+      // Activité récente (derniers utilisateurs inscrits)
+      prisma.user.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+          role: true
+        }
+      })
+    ]);
+
+    // Statistiques supplémentaires
+    const [
+      articlesThisMonth,
+      usersThisMonth,
+      messagesThisMonth
+    ] = await Promise.all([
+      // Articles publiés ce mois
+      prisma.article.count({
+        where: {
+          published: true,
+          publishedAt: {
+            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+          }
+        }
+      }),
+      
+      // Nouveaux utilisateurs ce mois
+      prisma.user.count({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+          }
+        }
+      }),
+      
+      // Messages reçus ce mois
+      prisma.contact.count({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+          }
+        }
       })
     ]);
 
     return NextResponse.json({
+      // Statistiques principales
       totalUsers,
       totalArticles,
+      totalPublishedArticles,
+      totalDrafts,
       totalViews: totalViews._sum.views || 0,
       totalLikes,
       totalComments,
-      unreadMessages
+      unreadMessages,
+      totalMessages,
+      
+      // Statistiques mensuelles
+      articlesThisMonth,
+      usersThisMonth,
+      messagesThisMonth,
+      
+      // Activité récente
+      recentActivity,
+      
+      // Données pour le dashboard
+      stats: {
+        users: {
+          total: totalUsers,
+          thisMonth: usersThisMonth
+        },
+        articles: {
+          total: totalArticles,
+          published: totalPublishedArticles,
+          drafts: totalDrafts,
+          thisMonth: articlesThisMonth
+        },
+        engagement: {
+          totalViews: totalViews._sum.views || 0,
+          totalLikes,
+          totalComments
+        },
+        messages: {
+          total: totalMessages,
+          unread: unreadMessages,
+          thisMonth: messagesThisMonth
+        }
+      }
     });
 
   } catch (error) {
@@ -74,4 +186,4 @@ export async function GET(request) {
       { status: 500 }
     );
   }
-} 
+}

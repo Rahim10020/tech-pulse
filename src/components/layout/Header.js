@@ -1,4 +1,4 @@
-// src/components/layout/Header.js - Header avec accès admin corrigé
+// src/components/layout/Header.js - Header avec badge messages non lus corrigé
 "use client";
 
 import Link from "next/link";
@@ -13,15 +13,18 @@ import {
   Plus,
   PenTool,
   Shield,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { useState } from "react";
 import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
 import { useSettings } from "@/hooks/useSettings";
+import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 
 export default function Header() {
   const { user, logout } = useAuth();
   const { settings } = useSettings();
+  const { unreadCount } = useUnreadMessages();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -126,7 +129,27 @@ export default function Header() {
                   </Link>
                 )}
 
-                <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
+                {/* Messages Badge - Seulement pour les admins */}
+                {isAdmin(user) && (
+                  <Link
+                    href="/admin/dashboard"
+                    className="relative cursor-pointer hover:text-gray-900 transition-colors"
+                    title="Messages de contact"
+                  >
+                    <MessageSquare className="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                )}
+
+                {/* Bell notification - Placeholder pour futures notifications */}
+                <div className="relative">
+                  <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
+                  {/* Badge pour les notifications générales (à implémenter plus tard) */}
+                </div>
 
                 {/* Profile Menu */}
                 <div className="relative">
@@ -141,9 +164,23 @@ export default function Header() {
 
                   {isProfileMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                      {/* Informations utilisateur */}
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="text-sm font-medium text-gray-900 font-poppins truncate">
+                          {user.name}
+                        </p>
+                        <p className="text-xs text-gray-500 font-sans">
+                          {user.role === "admin"
+                            ? "👑 Admin"
+                            : user.role === "publisher"
+                            ? "✍️ Auteur"
+                            : "👤 Lecteur"}
+                        </p>
+                      </div>
+
                       <Link
                         href={`/profile/${user.id}`}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <User className="w-4 h-4 mr-3" />
@@ -154,7 +191,7 @@ export default function Header() {
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/create"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <PenTool className="w-4 h-4 mr-3" />
@@ -162,16 +199,48 @@ export default function Header() {
                         </Link>
                       )}
 
-                      {/* Lien Administration - SEULEMENT pour les vrais admins */}
-                      {user && isAdmin(user) && (
+                      {/* Mes brouillons pour les admins et publishers */}
+                      {(isAdmin(user) || isPublisher(user)) && (
                         <Link
-                          href="/admin/dashboard"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                          href="/drafts"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
-                          <Shield className="w-4 h-4 mr-3" />
-                          Administration
+                          <svg
+                            className="w-4 h-4 mr-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
+                          </svg>
+                          Mes brouillons
                         </Link>
+                      )}
+
+                      {/* Lien Administration - SEULEMENT pour les vrais admins */}
+                      {user && isAdmin(user) && (
+                        <>
+                          <div className="border-t border-gray-100 my-1"></div>
+                          <Link
+                            href="/admin/dashboard"
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                          >
+                            <Shield className="w-4 h-4 mr-3" />
+                            Administration
+                            {unreadCount > 0 && (
+                              <span className="ml-auto bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                                {unreadCount}
+                              </span>
+                            )}
+                          </Link>
+                        </>
                       )}
 
                       {/* Lien Paramètres - pour tous les utilisateurs connectés */}
@@ -184,6 +253,7 @@ export default function Header() {
                         Paramètres
                       </Link>
 
+                      <div className="border-t border-gray-100 my-1"></div>
                       <button
                         onClick={handleLogout}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
@@ -196,10 +266,15 @@ export default function Header() {
                 </div>
               </>
             ) : (
-              // Plus de boutons de connexion/inscription visibles pour les utilisateurs non connectés
+              // Pas de boutons de connexion/inscription visibles pour les utilisateurs non connectés
               // L'accès admin se fait via /secret-admin-access
-              <div className="text-sm text-gray-600 font-poppins">
-                <span>Bienvenue sur TechPulse</span>
+              <div className="flex items-center space-x-4">
+                <Link
+                  href="/contact"
+                  className="text-sm bg-teal-600 text-white px-3 py-1.5 rounded-lg hover:bg-teal-700 transition-colors font-poppins"
+                >
+                  Contact
+                </Link>
               </div>
             )}
 
