@@ -1,0 +1,337 @@
+classDiagram
+    class User {
+        +int id
+        +string name
+        +string username
+        +string email
+        +string password
+        +string avatar
+        +string bio
+        +DateTime joinedAt
+        +string location
+        +string website
+        +string role
+        +string twitter
+        +string linkedin
+        +string github
+        +DateTime createdAt
+        +DateTime updatedAt
+        +createUser()
+        +verifyCredentials()
+        +updateProfile()
+        +changePassword()
+    }
+
+    class Article {
+        +int id
+        +string title
+        +string slug
+        +string description
+        +string content
+        +boolean featured
+        +boolean published
+        +DateTime publishedAt
+        +string readTime
+        +string imageColor
+        +int views
+        +int authorId
+        +int categoryId
+        +DateTime createdAt
+        +DateTime updatedAt
+        +createArticle()
+        +publishDraft()
+        +updateDraft()
+        +incrementViews()
+    }
+
+    class Category {
+        +int id
+        +string name
+        +string slug
+        +string description
+        +string icon
+        +string color
+        +string textColor
+        +DateTime createdAt
+        +DateTime updatedAt
+        +getAllCategories()
+        +getCategoryBySlug()
+        +createCategory()
+    }
+
+    class Tag {
+        +int id
+        +string name
+        +string slug
+        +DateTime createdAt
+        +DateTime updatedAt
+    }
+
+    class Comment {
+        +int id
+        +string content
+        +int likes
+        +int authorId
+        +int articleId
+        +int parentId
+        +DateTime createdAt
+        +DateTime updatedAt
+        +addComment()
+    }
+
+    class Like {
+        +int id
+        +int userId
+        +int articleId
+        +DateTime createdAt
+        +likeArticle()
+        +unlikeArticle()
+    }
+
+    class Contact {
+        +int id
+        +string name
+        +string email
+        +string subject
+        +string message
+        +boolean isRead
+        +DateTime createdAt
+        +DateTime updatedAt
+        +createContact()
+        +markAsRead()
+    }
+
+    class SiteSettings {
+        +int id
+        +string siteName
+        +string siteDescription
+        +string siteUrl
+        +string contactEmail
+        +string contactPhone
+        +string contactAddress
+        +string socialTwitter
+        +string socialLinkedin
+        +string socialGithub
+        +string analyticsCode
+        +string seoTitle
+        +string seoDescription
+        +string seoKeywords
+        +boolean maintenanceMode
+        +boolean allowComments
+        +boolean allowRegistration
+        +DateTime createdAt
+        +DateTime updatedAt
+        +getSettings()
+        +updateSettings()
+    }
+
+    %% Relations
+    User ||--o{ Article : "écrit"
+    User ||--o{ Comment : "poste"
+    User ||--o{ Like : "aime"
+    Category ||--o{ Article : "contient"
+    Article ||--o{ Comment : "a"
+    Article ||--o{ Like : "reçoit"
+    Article }o--o{ Tag : "tagué avec"
+    Comment ||--o{ Comment : "répond à"
+
+
+
+
+graph TB
+    %% Acteurs
+    Visiteur[👤 Visiteur]
+    Lecteur[👤 Lecteur]
+    Admin[👤 Administrateur]
+    
+    %% Cas d'utilisation pour Visiteur
+    subgraph "Système TechPulse"
+        UC1[Consulter articles]
+        UC2[Rechercher articles]
+        UC3[Filtrer par catégorie]
+        UC4[Voir profil auteur]
+        UC5[Envoyer message contact]
+        UC6[S'inscrire]
+        UC7[Se connecter]
+        
+        %% Cas d'utilisation pour Lecteur
+        UC8[Commenter article]
+        UC9[Aimer article]
+        UC10[Modifier son profil]
+        UC11[Répondre commentaire]
+        UC12[Se déconnecter]
+        
+        %% Cas d'utilisation pour Admin
+        UC13[Créer article]
+        UC14[Modifier article]
+        UC15[Supprimer article]
+        UC16[Publier brouillon]
+        UC17[Gérer utilisateurs]
+        UC18[Modérer commentaires]
+        UC19[Gérer catégories]
+        UC20[Voir statistiques]
+        UC21[Gérer messages contact]
+        UC22[Configurer site]
+        UC23[Mode maintenance]
+        UC24[Créer brouillon]
+        UC25[Sauvegarder auto]
+    end
+    
+    %% Relations Visiteur
+    Visiteur --> UC1
+    Visiteur --> UC2
+    Visiteur --> UC3
+    Visiteur --> UC4
+    Visiteur --> UC5
+    Visiteur --> UC6
+    Visiteur --> UC7
+    
+    %% Relations Lecteur (hérite de Visiteur)
+    Lecteur --> UC1
+    Lecteur --> UC2
+    Lecteur --> UC3
+    Lecteur --> UC4
+    Lecteur --> UC7
+    Lecteur --> UC8
+    Lecteur --> UC9
+    Lecteur --> UC10
+    Lecteur --> UC11
+    Lecteur --> UC12
+    
+    %% Relations Admin (hérite de Lecteur)
+    Admin --> UC1
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC4
+    Admin --> UC8
+    Admin --> UC9
+    Admin --> UC10
+    Admin --> UC12
+    Admin --> UC13
+    Admin --> UC14
+    Admin --> UC15
+    Admin --> UC16
+    Admin --> UC17
+    Admin --> UC18
+    Admin --> UC19
+    Admin --> UC20
+    Admin --> UC21
+    Admin --> UC22
+    Admin --> UC23
+    Admin --> UC24
+    Admin --> UC25
+
+
+
+
+
+sequenceDiagram
+    participant A as Admin
+    participant UI as Interface
+    participant API as API Route
+    participant Auth as Auth Service
+    participant DB as Base de Données
+    participant Editor as Éditeur Tiptap
+
+    A->>UI: Accède à /create
+    UI->>Auth: Vérifier authentification
+    Auth-->>UI: Utilisateur authentifié (admin)
+    
+    UI->>Editor: Initialiser éditeur
+    A->>Editor: Saisir titre et contenu
+    
+    loop Sauvegarde automatique
+        Editor->>API: POST /api/drafts/auto-save
+        API->>Auth: Vérifier token
+        API->>DB: Sauvegarder brouillon
+        DB-->>API: Brouillon sauvegardé
+        API-->>Editor: Confirmation
+    end
+    
+    A->>UI: Sélectionner catégorie
+    A->>UI: Cliquer "Publier"
+    
+    UI->>API: POST /api/articles
+    API->>Auth: Vérifier permissions admin
+    API->>DB: Créer article publié
+    DB-->>API: Article créé
+    API-->>UI: Succès
+    UI-->>A: Redirection vers article
+
+
+
+
+
+graph TB
+    subgraph "Frontend - Next.js 15"
+        Pages[Pages]
+        Components[Composants]
+        Context[Contextes]
+        Hooks[Hooks]
+    end
+    
+    subgraph "Backend - API Routes"
+        AuthAPI[Auth API]
+        ArticlesAPI[Articles API]
+        AdminAPI[Admin API]
+        ContactAPI[Contact API]
+        UploadAPI[Upload API]
+    end
+    
+    subgraph "Services"
+        AuthService[Service Auth]
+        ArticleService[Service Articles]
+        CategoryService[Service Catégories]
+        AuthorService[Service Auteurs]
+    end
+    
+    subgraph "Base de Données"
+        Prisma[Prisma ORM]
+        PostgreSQL[(PostgreSQL)]
+    end
+    
+    subgraph "Stockage"
+        FileSystem[Système de fichiers]
+        Images[Images uploadées]
+    end
+    
+    subgraph "Sécurité"
+        JWT[JWT Tokens]
+        Middleware[Middleware]
+        RoleCheck[Vérification rôles]
+    end
+    
+    %% Relations
+    Pages --> Components
+    Components --> Context
+    Components --> Hooks
+    
+    Pages --> AuthAPI
+    Pages --> ArticlesAPI
+    Pages --> AdminAPI
+    Pages --> ContactAPI
+    Pages --> UploadAPI
+    
+    AuthAPI --> AuthService
+    ArticlesAPI --> ArticleService
+    AdminAPI --> CategoryService
+    ContactAPI --> AuthorService
+    
+    AuthService --> Prisma
+    ArticleService --> Prisma
+    CategoryService --> Prisma
+    AuthorService --> Prisma
+    
+    Prisma --> PostgreSQL
+    
+    UploadAPI --> FileSystem
+    FileSystem --> Images
+    
+    AuthAPI --> JWT
+    Pages --> Middleware
+    Middleware --> RoleCheck
+    RoleCheck --> JWT
+
+
+
+

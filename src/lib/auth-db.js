@@ -1,10 +1,10 @@
-// lib/auth-db.js - Fonctions d'authentification avec PostgreSQL
+// lib/auth-db.js - Corrections pour inclure le rôle partout
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-// Créer un nouvel utilisateur (inscription)
+// ✅ CORRIGÉ: Créer un nouvel utilisateur avec rôle par défaut
 export async function createUser(userData) {
   try {
     const { name, username, email, password } = userData;
@@ -30,13 +30,14 @@ export async function createUser(userData) {
     // Hacher le mot de passe
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Créer l'utilisateur
+    // ✅ IMPORTANT: Créer l'utilisateur AVEC un rôle par défaut
     const user = await prisma.user.create({
       data: {
         name,
         username,
         email,
         password: hashedPassword,
+        role: "reader", // ✅ Rôle par défaut
       },
       select: {
         id: true,
@@ -46,6 +47,7 @@ export async function createUser(userData) {
         bio: true,
         avatar: true,
         joinedAt: true,
+        role: true, // ✅ Inclure le rôle dans la réponse
       },
     });
 
@@ -56,9 +58,11 @@ export async function createUser(userData) {
   }
 }
 
-// Vérifier les identifiants de connexion
+// ✅ CORRIGÉ: Vérifier les identifiants avec logs de debug
 export async function verifyCredentials(email, password) {
   try {
+    console.log("🔍 Verifying credentials for:", email);
+
     // Récupérer l'utilisateur par email
     const user = await prisma.user.findUnique({
       where: { email },
@@ -71,31 +75,47 @@ export async function verifyCredentials(email, password) {
         bio: true,
         avatar: true,
         joinedAt: true,
-        role: true,
+        role: true, // ✅ CRITIQUE: Toujours inclure le rôle
       },
     });
 
     if (!user) {
+      console.log("❌ User not found for email:", email);
       return { success: false, error: "Identifiants invalides" };
     }
+
+    console.log("👤 User found:", {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      hasRole: !!user.role,
+    });
 
     // Vérifier le mot de passe
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
+      console.log("❌ Invalid password for user:", user.id);
       return { success: false, error: "Identifiants invalides" };
     }
 
-    // Retourner l'utilisateur sans le mot de passe
+    // ✅ Retourner l'utilisateur sans le mot de passe MAIS avec le rôle
     const { password: _, ...userWithoutPassword } = user;
+
+    console.log("✅ Credentials verified successfully:", {
+      userId: userWithoutPassword.id,
+      role: userWithoutPassword.role,
+      email: userWithoutPassword.email,
+    });
+
     return { success: true, user: userWithoutPassword };
   } catch (error) {
-    console.error("Error verifying credentials:", error);
+    console.error("❌ Error verifying credentials:", error);
     return { success: false, error: "Erreur lors de la connexion" };
   }
 }
 
-// Récupérer un utilisateur par son ID (pour vérifier les tokens)
+// ✅ CORRIGÉ: Récupérer un utilisateur par son ID avec le rôle
 export async function getUserById(userId) {
   try {
     const user = await prisma.user.findUnique({
@@ -113,7 +133,9 @@ export async function getUserById(userId) {
         twitter: true,
         linkedin: true,
         github: true,
-        role: true,
+        role: true, // ✅ IMPORTANT: Toujours inclure le rôle
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
@@ -124,7 +146,7 @@ export async function getUserById(userId) {
   }
 }
 
-// Récupérer un utilisateur par son email
+// ✅ CORRIGÉ: Récupérer un utilisateur par son email avec le rôle
 export async function getUserByEmail(email) {
   try {
     const user = await prisma.user.findUnique({
@@ -142,6 +164,7 @@ export async function getUserByEmail(email) {
         twitter: true,
         linkedin: true,
         github: true,
+        role: true, // ✅ Inclure le rôle
       },
     });
 
@@ -152,7 +175,7 @@ export async function getUserByEmail(email) {
   }
 }
 
-// Mettre à jour le profil utilisateur
+// ✅ CORRIGÉ: Mettre à jour le profil utilisateur (garder le rôle dans la réponse)
 export async function updateUserProfile(userId, profileData) {
   try {
     // Filtrer les champs autorisés pour la mise à jour
@@ -183,6 +206,7 @@ export async function updateUserProfile(userId, profileData) {
         twitter: true,
         linkedin: true,
         github: true,
+        role: true, // ✅ Inclure le rôle dans la réponse
       },
     });
 
@@ -193,7 +217,7 @@ export async function updateUserProfile(userId, profileData) {
   }
 }
 
-// Changer le mot de passe utilisateur
+// Les autres fonctions restent identiques...
 export async function changeUserPassword(userId, currentPassword, newPassword) {
   try {
     // Récupérer l'utilisateur avec le mot de passe
@@ -240,7 +264,6 @@ export async function changeUserPassword(userId, currentPassword, newPassword) {
   }
 }
 
-// Vérifier si un email est disponible
 export async function isEmailAvailable(email, excludeUserId = null) {
   try {
     const existingUser = await prisma.user.findUnique({
@@ -263,7 +286,6 @@ export async function isEmailAvailable(email, excludeUserId = null) {
   }
 }
 
-// Vérifier si un username est disponible
 export async function isUsernameAvailable(username, excludeUserId = null) {
   try {
     const existingUser = await prisma.user.findUnique({
