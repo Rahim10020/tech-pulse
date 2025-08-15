@@ -266,12 +266,10 @@ export default function Header() {
                 </div>
               </>
             ) : (
-              // Pas de boutons de connexion/inscription visibles pour les utilisateurs non connectés
-              // L'accès admin se fait via /secret-admin-access
               <div className="flex items-center space-x-4">
                 <Link
                   href="/contact"
-                  className="text-sm bg-teal-600 text-white px-3 py-1.5 rounded-lg hover:bg-teal-700 transition-colors font-poppins"
+                  className="text-sm bg-teal-600 text-white px-3 py-1.5 hover:bg-teal-700 transition-colors font-poppins"
                 >
                   Contact
                 </Link>

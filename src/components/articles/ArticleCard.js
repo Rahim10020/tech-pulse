@@ -1,4 +1,4 @@
-// src/components/articles/ArticleCard.js - VERSION HORIZONTALE CORRIGÉE
+// src/components/articles/ArticleCard.js
 import Link from "next/link";
 import { Calendar, Clock, User } from "lucide-react";
 
@@ -22,11 +22,10 @@ export default function ArticleCard({
       <Link href={href} className="block group w-full">
         <article className="bg-white border-b w-full border-gray-200 p-8 transition-colors">
           <div className="flex items-start space-x-6">
-            {/* Content */}
             <div className="flex-1">
               <div className="flex items-center mb-3">
                 {categoryName && (
-                  <span className="text-sm font-medium text-gray-600 mr-3">
+                  <span className="text-sm font-sans font-medium text-gray-600 mr-3">
                     {categoryName}
                   </span>
                 )}
@@ -35,7 +34,7 @@ export default function ArticleCard({
                 )}
               </div>
 
-              <h2 className="text-xl font-semibold text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors">
+              <h2 className="text-xl font-poppins font-semibold text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors">
                 {title}
               </h2>
 
@@ -79,7 +78,7 @@ export default function ArticleCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
           {categoryName && (
             <div className="absolute top-4 left-4">
-              <span className="badge badge-primary bg-white/90 text-gray-800">
+              <span className="badge badge-primary bg-white/90 font-sans text-gray-800">
                 {categoryName}
               </span>
             </div>
@@ -87,22 +86,22 @@ export default function ArticleCard({
         </div>
 
         <div className="p-6">
-          <h2 className="article-title group-hover:text-teal-600 transition-colors">
+          <h2 className="article-title font-poppins group-hover:text-teal-600 transition-colors">
             {title}
           </h2>
 
-          <p className="article-description mb-4 line-clamp-3">{description}</p>
+          <p className="article-description font-sans mb-4 line-clamp-3">{description}</p>
 
           <div className="flex items-center justify-between text-sm text-gray-500">
             <div className="flex items-center space-x-4">
               {author && (
-                <span className="flex items-center">
+                <span className="flex font-sans items-center">
                   <span className="w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full mr-2"></span>
                   {typeof author === "object" ? author.name : author}
                 </span>
               )}
               {publishedAt && (
-                <span className="flex items-center">
+                <span className="flex font-sans items-center">
                   <Calendar className="w-4 h-4 mr-1" />
                   {new Date(publishedAt).toLocaleDateString("fr-FR")}
                 </span>
@@ -110,7 +109,7 @@ export default function ArticleCard({
             </div>
 
             {readTime && (
-              <span className="flex items-center">
+              <span className="flex font-sans items-center">
                 <Clock className="w-4 h-4 mr-1" />
                 {readTime}
               </span>

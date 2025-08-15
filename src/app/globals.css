@@ -82,4 +82,29 @@ body {
   .container-sm {
     @apply max-w-4xl mx-auto px-6;
   }
+
+  .h1-title {
+    @apply text-3xl md:text-4xl font-poppins font-bold
+  }
+
+  .h2-title {
+    @apply text-2xl font-poppins font-bold
+  }
+
+  .h3-title {
+    @apply text-xl font-poppins font-semibold
+  }
+
+  .h4-title {
+    @apply text-lg font-poppins font-medium
+  }
+
+  .h5-title {
+    @apply text-base font-poppins font-medium
+  }
+  
+  .h6-title {
+    @apply text-sm font-poppins font-medium
+  }
+  
 }
