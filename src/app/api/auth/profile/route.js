@@ -14,7 +14,7 @@ export async function PUT(request) {
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },

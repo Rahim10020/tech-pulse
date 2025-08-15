@@ -1,5 +1,5 @@
-// lib/auth.js - Utilitaires d'authentification avec JWT
-import jwt from 'jsonwebtoken';
+// lib/auth.js - Compatible avec Edge Runtime et Node.js
+import { SignJWT, jwtVerify } from 'jose';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
@@ -9,7 +9,7 @@ if (!JWT_SECRET) {
   console.error('🚨 ERREUR CRITIQUE: JWT_SECRET manquant dans les variables d\'environnement');
   console.error('💡 Ajoutez JWT_SECRET="votre-clé-ultra-secrète" dans votre fichier .env');
   console.error('🔧 Générez une clé sécurisée avec: openssl rand -base64 32');
-  process.exit(1); // Arrêter l'application si pas de clé
+  process.exit(1);
 }
 
 // Validation de la qualité de la clé
@@ -18,37 +18,63 @@ if (JWT_SECRET.length < 32) {
   console.warn('🔧 Utilisez une clé plus longue pour une sécurité optimale');
 }
 
-// Créer un token JWT avec validation renforcée
-export function createToken(payload) {
+// Convertir l'expiration en secondes
+function parseExpiresIn(expiresIn) {
+  if (typeof expiresIn === 'number') return expiresIn;
+  
+  const match = expiresIn.match(/^(\d+)([dwh])$/);
+  if (!match) return 7 * 24 * 60 * 60; // 7 jours par défaut
+  
+  const [, num, unit] = match;
+  const value = parseInt(num);
+  
+  switch (unit) {
+    case 'd': return value * 24 * 60 * 60;
+    case 'w': return value * 7 * 24 * 60 * 60;
+    case 'h': return value * 60 * 60;
+    default: return value;
+  }
+}
+
+// Créer un token JWT avec jose (compatible Edge Runtime)
+export async function createToken(payload) {
   try {
+    const secret = new TextEncoder().encode(JWT_SECRET);
+    const expiresInSeconds = parseExpiresIn(JWT_EXPIRES_IN);
+    
     // Ajouter des metadata de sécurité
     const enhancedPayload = {
       ...payload,
-      iat: Math.floor(Date.now() / 1000), // Issued at
-      jti: crypto.randomUUID(), // JWT ID unique pour tracking
+      iat: Math.floor(Date.now() / 1000),
+      jti: crypto.randomUUID(), // UUID aléatoire
     };
 
-    return jwt.sign(enhancedPayload, JWT_SECRET, { 
-      expiresIn: JWT_EXPIRES_IN,
-      algorithm: 'HS256', // Forcer l'algorithme pour éviter les attaques
-      issuer: 'techpulse-app',
-      audience: 'techpulse-users'
-    });
+    const jwt = await new SignJWT(enhancedPayload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime(Math.floor(Date.now() / 1000) + expiresInSeconds)
+      .setIssuer('techpulse-app')
+      .setAudience('techpulse-users')
+      .sign(secret);
+
+    return jwt;
   } catch (error) {
     console.error('Erreur création token JWT:', error);
     throw new Error('Impossible de créer le token d\'authentification');
   }
 }
 
-// Vérifier un token JWT avec validation renforcée
-export function verifyToken(token) {
+// Vérifier un token JWT avec jose (compatible Edge Runtime)
+export async function verifyToken(token) {
   try {
     if (!token || typeof token !== 'string') {
       return null;
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET, {
-      algorithms: ['HS256'], // Accepter seulement HS256
+    const secret = new TextEncoder().encode(JWT_SECRET);
+    
+    const { payload } = await jwtVerify(token, secret, {
+      algorithms: ['HS256'],
       issuer: 'techpulse-app',
       audience: 'techpulse-users'
     });
@@ -57,16 +83,16 @@ export function verifyToken(token) {
     const now = Math.floor(Date.now() / 1000);
     const maxAge = 7 * 24 * 60 * 60; // 7 jours en secondes
     
-    if (decoded.iat && (now - decoded.iat) > maxAge) {
+    if (payload.iat && (now - payload.iat) > maxAge) {
       console.warn('Token trop ancien, considéré comme invalide');
       return null;
     }
 
-    return decoded;
+    return payload;
   } catch (error) {
-    if (error.name === 'TokenExpiredError') {
+    if (error.code === 'ERR_JWT_EXPIRED') {
       console.log('Token expiré');
-    } else if (error.name === 'JsonWebTokenError') {
+    } else if (error.code === 'ERR_JWT_INVALID') {
       console.log('Token invalide');
     } else {
       console.error('Erreur vérification token:', error.message);
@@ -75,7 +101,20 @@ export function verifyToken(token) {
   }
 }
 
-// Nouvelle fonction : Blacklist des tokens (optionnel)
+// Fonction pour décoder un token sans vérification (pour la blacklist)
+export function decodeToken(token) {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    
+    const payload = JSON.parse(atob(parts[1]));
+    return payload;
+  } catch (error) {
+    return null;
+  }
+}
+
+// Blacklist des tokens (optionnel)
 const tokenBlacklist = new Set();
 
 export function blacklistToken(token) {
@@ -110,7 +149,7 @@ export function withAuth(handler) {
       });
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return res.status(401).json({ 
         error: 'Token invalide ou expiré',

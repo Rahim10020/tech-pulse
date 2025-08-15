@@ -21,7 +21,7 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }
@@ -109,7 +109,7 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }

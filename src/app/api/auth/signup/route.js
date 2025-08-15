@@ -78,7 +78,7 @@ async function signupHandler(request) {
     const user = result.user;
 
     // Créer le token JWT
-    const token = createToken({ 
+    const token = await createToken({ 
       userId: user.id, 
       email: user.email,
       username: user.username,

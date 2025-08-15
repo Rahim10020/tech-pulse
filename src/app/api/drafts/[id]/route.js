@@ -11,7 +11,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }
@@ -63,7 +63,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }

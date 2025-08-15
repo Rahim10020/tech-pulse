@@ -131,7 +131,7 @@ export function withRoleAuth(allowedRoles = []) {
 
         // Vérifier le token (tu dois avoir cette fonction dans lib/auth.js)
         const { verifyToken } = await import('./auth.js');
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         
         if (!decoded) {
           return res.status(401).json({ error: 'Token invalide' });

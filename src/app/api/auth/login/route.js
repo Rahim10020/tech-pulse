@@ -48,7 +48,7 @@ async function loginHandler(request) {
       role: user.role || 'reader',
     };
 
-    const token = createToken(tokenPayload);
+    const token = await createToken(tokenPayload);
 
     // Créer la réponse avec le token dans un cookie httpOnly
     const response = NextResponse.json({

@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }) {
   }
 
   try {
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       redirect('/secret-admin-access');
     }

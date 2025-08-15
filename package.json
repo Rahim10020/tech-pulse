@@ -40,6 +40,7 @@
     "express-rate-limit": "^8.0.1",
     "express-slow-down": "^3.0.0",
     "file-type": "^21.0.0",
+    "jose": "^6.0.12",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.528.0",
     "mime-types": "^3.0.1",
