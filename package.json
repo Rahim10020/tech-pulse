@@ -10,7 +10,15 @@
     "type-check": "tsc --noEmit",
     "db:seed": "node prisma/seed.js",
     "db:init-settings": "node scripts/init-settings.js",
-    "generate-jwt": "node scripts/generate-jwt-secret.js"
+    "generate-jwt": "node scripts/generate-jwt-secret.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:integration": "jest --config jest.integration.config.js",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:all": "npm run test && npm run test:integration && npm run test:e2e",
+    "test:ci": "npm run test:coverage && npm run test:integration && npm run test:e2e"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
@@ -43,15 +51,24 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.54.2",
+    "@testing-library/jest-dom": "^6.7.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
+    "msw": "^2.10.5",
     "postcss": "^8.5.6",
     "prisma": "^6.13.0",
+    "supertest": "^7.1.4",
     "tailwindcss": "^3.4.0",
     "typescript": "^5"
   }
