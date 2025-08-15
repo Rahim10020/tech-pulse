@@ -9,7 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "db:seed": "node prisma/seed.js",
-    "db:init-settings": "node scripts/init-settings.js"
+    "db:init-settings": "node scripts/init-settings.js",
+    "generate-jwt": "node scripts/generate-jwt-secret.js"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
@@ -28,11 +29,17 @@
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
+    "express-rate-limit": "^8.0.1",
+    "express-slow-down": "^3.0.0",
+    "file-type": "^21.0.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.528.0",
+    "mime-types": "^3.0.1",
     "next": "15.4.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "sanitize-filename": "^1.6.3",
+    "sharp": "^0.34.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

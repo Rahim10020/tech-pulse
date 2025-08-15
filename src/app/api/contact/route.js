@@ -1,20 +1,26 @@
-// src/app/api/contact/route.js - API pour les messages de contact CORRIGÉE
+// ========================================
+// 6. MODIFIER src/app/api/contact/route.js
+// ========================================
+
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
+import { withRateLimit } from "@/lib/rate-limit";
 
 const prisma = new PrismaClient();
 
-// POST - Créer un nouveau message de contact
-export async function POST(request) {
+async function contactHandler(request) {
   try {
     const { name, email, subject, message } = await request.json();
 
     // Validation des données
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
-        { error: "Tous les champs sont requis" },
+        { 
+          error: "Tous les champs sont requis",
+          code: "MISSING_FIELDS"
+        },
         { status: 400 }
       );
     }
@@ -23,7 +29,24 @@ export async function POST(request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "Format d'email invalide" },
+        { 
+          error: "Format d'email invalide",
+          code: "INVALID_EMAIL"
+        },
+        { status: 400 }
+      );
+    }
+
+    // Protection anti-spam basique
+    const spamKeywords = ['viagra', 'casino', 'lottery', 'winner', 'urgent', 'click here'];
+    const messageText = (name + email + subject + message).toLowerCase();
+    
+    if (spamKeywords.some(keyword => messageText.includes(keyword))) {
+      return NextResponse.json(
+        { 
+          error: "Message détecté comme spam",
+          code: "SPAM_DETECTED"
+        },
         { status: 400 }
       );
     }
@@ -35,7 +58,7 @@ export async function POST(request) {
         email: email.trim().toLowerCase(),
         subject: subject.trim(),
         message: message.trim(),
-        isRead: false, // Par défaut, le message n'est pas lu
+        isRead: false,
       },
     });
 
@@ -47,11 +70,17 @@ export async function POST(request) {
   } catch (error) {
     console.error("Error creating contact:", error);
     return NextResponse.json(
-      { error: "Erreur lors de l'envoi du message" },
+      { 
+        error: "Erreur lors de l'envoi du message",
+        code: "SEND_ERROR"
+      },
       { status: 500 }
     );
   }
 }
+
+// ✅ APPLIQUER LE RATE LIMITING STRICT
+export const POST = withRateLimit('contact')(contactHandler);
 
 // GET - Récupérer les messages de contact (admin seulement)
 export async function GET(request) {

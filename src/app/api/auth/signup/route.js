@@ -1,16 +1,23 @@
-// app/api/auth/signup/route.js - API Route pour l'inscription CORRIGÉE
+// ========================================
+// 4. MODIFIER src/app/api/auth/signup/route.js
+// ========================================
+
 import { NextResponse } from 'next/server';
 import { createToken } from '@/lib/auth';
 import { createUser } from '@/lib/auth-db';
+import { withRateLimit } from '@/lib/rate-limit';
 
-export async function POST(request) {
+async function signupHandler(request) {
   try {
     const { name, username, email, password } = await request.json();
 
     // Validation des données
     if (!name || !username || !email || !password) {
       return NextResponse.json(
-        { error: 'Tous les champs sont requis' },
+        { 
+          error: 'Tous les champs sont requis',
+          code: 'MISSING_FIELDS'
+        },
         { status: 400 }
       );
     }
@@ -19,16 +26,22 @@ export async function POST(request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Format d\'email invalide' },
+        { 
+          error: 'Format d\'email invalide',
+          code: 'INVALID_EMAIL'
+        },
         { status: 400 }
       );
     }
 
-    // Validation du username (alphanumerique, tirets, underscores)
+    // Validation du username
     const usernameRegex = /^[a-zA-Z0-9_-]+$/;
     if (!usernameRegex.test(username) || username.length < 3) {
       return NextResponse.json(
-        { error: 'Le nom d\'utilisateur doit contenir au moins 3 caractères alphanumériques' },
+        { 
+          error: 'Le nom d\'utilisateur doit contenir au moins 3 caractères alphanumériques',
+          code: 'INVALID_USERNAME'
+        },
         { status: 400 }
       );
     }
@@ -36,7 +49,10 @@ export async function POST(request) {
     // Validation du mot de passe
     if (password.length < 6) {
       return NextResponse.json(
-        { error: 'Le mot de passe doit contenir au moins 6 caractères' },
+        { 
+          error: 'Le mot de passe doit contenir au moins 6 caractères',
+          code: 'WEAK_PASSWORD'
+        },
         { status: 400 }
       );
     }
@@ -51,19 +67,22 @@ export async function POST(request) {
 
     if (!result.success) {
       return NextResponse.json(
-        { error: result.error },
+        { 
+          error: result.error,
+          code: 'USER_CREATION_FAILED'
+        },
         { status: 400 }
       );
     }
 
     const user = result.user;
 
-    // Créer le token JWT AVEC le rôle (par défaut 'reader')
+    // Créer le token JWT
     const token = createToken({ 
       userId: user.id, 
       email: user.email,
       username: user.username,
-      role: user.role || 'reader' // ✅ AJOUTÉ: inclure le rôle dans le token
+      role: user.role || 'reader'
     });
 
     // Créer la réponse avec le token dans un cookie httpOnly
@@ -85,8 +104,14 @@ export async function POST(request) {
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json(
-      { error: 'Erreur interne du serveur' },
+      { 
+        error: 'Erreur interne du serveur',
+        code: 'INTERNAL_ERROR'
+      },
       { status: 500 }
     );
   }
 }
+
+// ✅ APPLIQUER LE RATE LIMITING
+export const POST = withRateLimit('signup')(signupHandler);

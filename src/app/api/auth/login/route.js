@@ -1,9 +1,13 @@
-// app/api/auth/login/route.js - Version avec debug complet
+// ========================================
+// 3. MODIFIER src/app/api/auth/login/route.js
+// ========================================
+
 import { NextResponse } from "next/server";
 import { createToken } from "@/lib/auth";
 import { verifyCredentials } from "@/lib/auth-db";
+import { withRateLimit } from "@/lib/rate-limit";
 
-export async function POST(request) {
+async function loginHandler(request) {
   try {
     const { email, password } = await request.json();
 
@@ -12,7 +16,10 @@ export async function POST(request) {
     // Validation des données
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Email et mot de passe requis" },
+        { 
+          error: "Email et mot de passe requis",
+          code: "MISSING_CREDENTIALS"
+        },
         { status: 400 }
       );
     }
@@ -22,38 +29,33 @@ export async function POST(request) {
 
     if (!result.success) {
       console.log("❌ Login failed:", result.error);
-      return NextResponse.json({ error: result.error }, { status: 401 });
+      return NextResponse.json(
+        { 
+          error: result.error,
+          code: "INVALID_CREDENTIALS"
+        }, 
+        { status: 401 }
+      );
     }
 
     const user = result.user;
 
-    console.log("🔍 User data before token creation:", {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      hasRole: !!user.role
-    });
-
-    // ✅ IMPORTANT: Créer le token JWT AVEC le rôle ET logs
+    // Créer le token JWT
     const tokenPayload = {
       userId: user.id,
       email: user.email,
       username: user.username,
-      role: user.role || 'reader', // Fallback au cas où
+      role: user.role || 'reader',
     };
 
-    console.log("🎫 Token payload:", tokenPayload);
-
     const token = createToken(tokenPayload);
-
-    console.log("✅ Token created successfully, length:", token.length);
 
     // Créer la réponse avec le token dans un cookie httpOnly
     const response = NextResponse.json({
       success: true,
       user: {
         ...user,
-        role: user.role || 'reader' // S'assurer que le rôle est retourné
+        role: user.role || 'reader'
       },
       message: "Connexion réussie",
     });
@@ -66,14 +68,18 @@ export async function POST(request) {
       path: "/",
     });
 
-    console.log("🍪 Cookie set successfully");
-
     return response;
   } catch (error) {
     console.error("❌ Login error:", error);
     return NextResponse.json(
-      { error: "Erreur interne du serveur" },
+      { 
+        error: "Erreur interne du serveur",
+        code: "INTERNAL_ERROR"
+      },
       { status: 500 }
     );
   }
 }
+
+// ✅ APPLIQUER LE RATE LIMITING
+export const POST = withRateLimit('auth')(loginHandler);
