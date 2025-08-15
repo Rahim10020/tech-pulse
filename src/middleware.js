@@ -1,4 +1,4 @@
-// middleware.js - Middleware corrigé AVEC debug
+// middleware.js - Middleware
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
@@ -21,16 +21,16 @@ const maintenanceRoutes = ["/maintenance", "/api/settings"];
 const authOnlyRoutes = ["/secret-admin-access"];
 
 export async function middleware(request) {
-  const { pathname } = request.nextUrl;
+  const { pathname } = request.nextUrl; // contient l'url de la requete. Le chemin de l'url est dans pathname
   const token = request.cookies.get("token")?.value;
 
-  console.log("🔍 Middleware Debug:", {
+  console.log("Middleware Debug:", {
     pathname,
     hasToken: !!token,
     tokenPreview: token ? token.substring(0, 20) + "..." : "none",
   });
 
-  // ✅ IMPORTANT: Permettre l'accès à toutes les routes API sans restrictions
+  // Permettre l'accès à toutes les routes API sans restrictions
   if (pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
@@ -41,9 +41,9 @@ export async function middleware(request) {
   }
 
   // Vérifier l'authentification de base
-  const isAuthenticated = !!token;
+  const isAuthenticated = !!token; //conversion en boolean pur sans changer la valeur initiale
   let user = null;
-  let isAdmin = false;
+  let isAdmin = false;             // par defaut l'utilisateur n'est pas un admin
 
   // Si on a un token, le décoder pour obtenir les infos utilisateur
   if (token) {
@@ -54,7 +54,7 @@ export async function middleware(request) {
         // Vérifier le rôle directement depuis le token JWT
         isAdmin = decoded.role === "admin";
 
-        console.log("👤 User Debug:", {
+        console.log("User Debug:", {
           userId: decoded.userId,
           role: decoded.role,
           isAdmin,
@@ -62,7 +62,7 @@ export async function middleware(request) {
         });
       }
     } catch (error) {
-      console.error("❌ Token verification error:", error);
+      console.error("Token verification error:", error);
       // Token invalide, le supprimer
       const response = NextResponse.redirect(new URL("/", request.url));
       response.cookies.delete("token");
@@ -79,9 +79,9 @@ export async function middleware(request) {
     return NextResponse.next();
   }
 
-  // ✅ CORRECTION: Vérifier l'accès aux routes d'administration
+  // Vérifier l'accès aux routes d'administration
   if (adminRoutes.some((route) => pathname.startsWith(route))) {
-    console.log("🔐 Admin route access check:", {
+    console.log("Admin route access check:", {
       pathname,
       isAuthenticated,
       isAdmin,
@@ -90,7 +90,7 @@ export async function middleware(request) {
 
     // Si pas authentifié du tout, rediriger vers l'accès secret
     if (!isAuthenticated) {
-      console.log("❌ Not authenticated, redirecting to secret-admin-access");
+      console.log("Not authenticated, redirecting to secret-admin-access");
       return NextResponse.redirect(
         new URL("/secret-admin-access", request.url)
       );
@@ -98,14 +98,14 @@ export async function middleware(request) {
 
     // Si authentifié mais pas admin, rediriger avec message d'erreur
     if (!isAdmin) {
-      console.log("❌ Not admin, access denied:", { userRole: user?.role });
+      console.log("Not admin, access denied:", { userRole: user?.role });
       return NextResponse.redirect(
         new URL("/?error=access-denied", request.url)
       );
     }
 
     // Si admin, permettre l'accès
-    console.log("✅ Admin access granted");
+    console.log("Admin access granted");
     return NextResponse.next();
   }
 

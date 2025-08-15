@@ -28,7 +28,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fr" className={`${inter.variable} ${poppins.variable}`}>
-      <body className="bg-gray-50 text-gray-900 antialiased">
+      <body className="bg-gray-50 text-gray-900 antialiased suppressHydrationWarning">
         <AuthProvider>
           <ToastProvider>{children}</ToastProvider>
         </AuthProvider>
