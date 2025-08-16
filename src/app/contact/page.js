@@ -1,7 +1,7 @@
 // src/app/contact/page.js - Page Contact (bonus)
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useToast } from "@/context/ToastProvider";
@@ -63,21 +63,47 @@ export default function ContactPage() {
     }
   };
 
+  function ImageCarousel() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const images = [
+      "/person.png",
+      "/person1.png",
+      "/person2.png",
+      "/person3.png",
+      "/person4.png"
+
+    ];
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }, [images.length]);
+
+    return (
+      <div className="relative h-full w-full">
+        {images.map((src, index) => (
+          <img
+            key={index}
+            src={src}
+            alt={`Image ${index + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
       <main className="py-7">
         <div className="container">
-          <div className="text-center mb-8">
-            <h1 className="h1-title text-gray-900 mb-6">
-              Contactez-nous
-            </h1>
-            <p className="h4-title text-gray-600 max-w-2xl mx-auto">
-              Une question, une suggestion ou envie de collaborer ? Nous serions
-              ravis d'échanger avec vous !
-            </p>
-          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
@@ -102,6 +128,11 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <>
+
+                  <p className="h4-title text-gray-600 max-w-2xl mb-4 mx-auto">
+                    Une question, une suggestion ou envie de collaborer ? Nous serions
+                    ravis d'échanger avec vous !
+                  </p>
                   <h2 className="h2-title text-gray-900 mb-6">
                     Envoyez-nous un message
                   </h2>
@@ -173,66 +204,15 @@ export default function ContactPage() {
                         </>
                       )}
                     </button>
+
                   </form>
                 </>
               )}
             </div>
 
-            {/* Contact Info */}
             <div className="space-y-6">
-              <div className="card p-8">
-                <h2 className="h2-title text-gray-900 mb-6">
-                  Informations de contact
-                </h2>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <Mail className="w-6 h-6 text-teal-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h3 className="h5-title text-gray-900">Email</h3>
-                      <p className="body-text text-gray-600">{settings.contactEmail || 'contact@techpulse.com'}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Phone className="w-6 h-6 text-teal-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h3 className="h5-title text-gray-900">Téléphone</h3>
-                      <p className="body-text text-gray-600">{settings.contactPhone || '+33 1 23 45 67 89'}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <MapPin className="w-6 h-6 text-teal-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <h3 className="h5-title text-gray-900">Adresse</h3>
-                      <p className="body-text text-gray-600">
-                        {settings.contactAddress || (
-                          <>
-                            123 Rue de la Tech
-                            <br />
-                            75001 Paris, France
-                          </>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="card p-8">
-                <h3 className="h3-title text-gray-900 mb-4">
-                  Temps de réponse
-                </h3>
-                <p className="body-text text-gray-600 mb-4">
-                  Nous nous efforçons de répondre à tous les messages dans les
-                  24 heures ouvrables.
-                </p>
-                <div className="small-text text-gray-500">
-                  <p>
-                    <strong>Lun - Ven:</strong> 9h00 - 18h00
-                  </p>
-                  <p>
-                    <strong>Sam - Dim:</strong> Fermé
-                  </p>
-                </div>
+              <div className="card overflow-hidden h-full">
+                <ImageCarousel />
               </div>
             </div>
           </div>
