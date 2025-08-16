@@ -1,4 +1,3 @@
-// components/CategoryCard.js - Version mise à jour
 export default function CategoryCard({ icon, title, description, href }) {
   return (
     <Link href={href} className="block group">
@@ -10,13 +9,13 @@ export default function CategoryCard({ icon, title, description, href }) {
           </div>
         </div>
         
-        {/* Titre */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
+        {/* Titre - Changé pour utiliser h4-title */}
+        <h3 className="h4-title text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
           {title}
         </h3>
         
-        {/* Description */}
-        <p className="text-gray-600 text-sm leading-relaxed">
+        {/* Description - Changé pour utiliser small-text */}
+        <p className="small-text text-gray-600 leading-relaxed">
           {description}
         </p>
       </div>

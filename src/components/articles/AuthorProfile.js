@@ -1,4 +1,4 @@
-// src/components/profile/AuthorProfile.js - Composant profil auteur corrigé
+// src/components/articles/AuthorProfile.js - Version avec styles cohérents
 'use client';
 
 import { useState } from 'react';
@@ -23,17 +23,17 @@ export default function AuthorProfile({ author }) {
                   {author.name.charAt(0)}
                 </span>
               </div>
-              <h1 className="text-xl font-bold text-gray-900 font-poppins mb-1">
+              <h1 className="h3-title text-gray-900 mb-1">
                 {author.name}
               </h1>
-              <p className="text-gray-500 text-sm font-poppins">
+              <p className="text-gray-500 text-sm font-sans">
                 @{author.username}
               </p>
             </div>
 
             {/* Bio */}
             <div className="mb-4">
-              <p className="text-gray-700 text-center text-sm leading-relaxed font-poppins">
+              <p className="text-gray-700 text-center text-sm leading-relaxed font-sans">
                 {author.bio}
               </p>
             </div>
@@ -44,7 +44,7 @@ export default function AuthorProfile({ author }) {
                 <div className="text-xl p-2 font-bold text-gray-900 font-sans">
                   {author.stats?.articles || articles.length}
                 </div>
-                <div className="text-xs text-gray-500 font-poppins">
+                <div className="h6-title text-gray-500">
                   Articles
                 </div>
               </div>
@@ -52,7 +52,7 @@ export default function AuthorProfile({ author }) {
                 <div className="text-xl font-bold text-gray-900 font-sans">
                   {author.stats?.comments || 0}
                 </div>
-                <div className="text-xs text-gray-500 font-poppins">
+                <div className="h6-title text-gray-500">
                   Commentaires
                 </div>
               </div>
@@ -61,7 +61,7 @@ export default function AuthorProfile({ author }) {
                   {/* Calculer les likes totaux des articles */}
                   {articles.reduce((total, article) => total + (article.likes || 0), 0)}
                 </div>
-                <div className="text-xs text-gray-500 font-poppins">
+                <div className="h6-title text-gray-500">
                   Likes reçus
                 </div>
               </div>
@@ -104,19 +104,19 @@ export default function AuthorProfile({ author }) {
             {/* Info */}
             <div className="flex items-center justify-center gap-4 mb-4 mt-7">
               {author.location && (
-                <div className="flex flex-col items-center gap-2 text-sm text-gray-500 font-poppins">
+                <div className="flex flex-col items-center gap-2 text-sm font-sans text-gray-500">
                   <MapPin className="w-4 h-4 mr-2" />
                   {author.location}
                 </div>
               )}
               {author.joinedAt && (
-                <div className="flex flex-col items-center gap-2 text-sm text-gray-500 font-poppins">
+                <div className="flex flex-col items-center gap-2 text-sm font-sans text-gray-500">
                   <Calendar className="w-4 h-4 mr-2" />
                   Rejoint en {new Date(author.joinedAt).getFullYear()}
                 </div>
               )}
               {author.website && (
-                <div className="flex flex-col items-center gap-2 text-sm text-gray-500 font-poppins">
+                <div className="flex flex-col items-center gap-2 text-sm font-sans text-gray-500">
                   <Globe className="w-4 h-4 mr-2" />
                   <a
                     href={author.website}
@@ -179,21 +179,21 @@ export default function AuthorProfile({ author }) {
                     <div key={article.id} className="bg-white rounded-lg border border-gray-200 p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <div className="flex items-center text-sm text-gray-500 mb-2 font-poppins">
+                          <div className="flex items-center text-sm text-gray-500 mb-2 font-sans">
                             <span className={`inline-block px-2 py-1 rounded-full text-xs ${article.category?.color || 'bg-gray-100'} ${article.category?.textColor || 'text-gray-600'} mr-3`}>
                               {article.category?.name || 'Sans catégorie'}
                             </span>
                             <span>{article.readTime} de lecture</span>
                           </div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2 font-poppins hover:text-teal-600 transition-colors">
+                          <h3 className="h4-title text-gray-900 mb-2 hover:text-teal-600 transition-colors">
                             <a href={`/articles/${article.slug}`}>
                               {article.title}
                             </a>
                           </h3>
-                          <p className="text-gray-600 text-sm mb-4 leading-relaxed font-poppins">
+                          <p className="text-gray-600 text-sm mb-4 leading-relaxed font-sans">
                             {article.description}
                           </p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-500 font-poppins">
+                          <div className="flex items-center space-x-4 text-sm text-gray-500 font-sans">
                             <span>{article.likes || 0} likes</span>
                             <span>{article.commentsCount || 0} commentaires</span>
                             <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
@@ -205,7 +205,7 @@ export default function AuthorProfile({ author }) {
                               {article.tags.map((tag, index) => (
                                 <span
                                   key={tag.id || `tag-${article.id}-${index}`}
-                                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-poppins"
+                                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-sans"
                                 >
                                   {tag.name}
                                 </span>
@@ -221,7 +221,7 @@ export default function AuthorProfile({ author }) {
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-gray-500 font-poppins">Aucun article publié pour le moment.</p>
+                    <p className="text-gray-500 font-sans">Aucun article publié pour le moment.</p>
                   </div>
                 )}
               </div>
@@ -229,19 +229,19 @@ export default function AuthorProfile({ author }) {
 
             {activeTab === 'likes' && (
               <div className="text-center py-12">
-                <div className="text-4xl font-bold text-gray-900 mb-2">
+                <div className="text-4xl font-bold text-gray-900 mb-2 font-sans">
                   {articles.reduce((total, article) => total + (article.likes || 0), 0)}
                 </div>
-                <p className="text-gray-500 font-poppins">Likes reçus au total sur tous les articles</p>
+                <p className="text-gray-500 font-sans">Likes reçus au total sur tous les articles</p>
               </div>
             )}
 
             {activeTab === 'comments' && (
               <div className="text-center py-12">
-                <div className="text-4xl font-bold text-gray-900 mb-2">
+                <div className="text-4xl font-bold text-gray-900 mb-2 font-sans">
                   {author.stats?.comments || 0}
                 </div>
-                <p className="text-gray-500 font-poppins">Commentaires écrits sur le blog</p>
+                <p className="text-gray-500 font-sans">Commentaires écrits sur le blog</p>
               </div>
             )}
           </div>

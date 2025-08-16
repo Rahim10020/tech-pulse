@@ -1,8 +1,8 @@
-// components/drafts/DraftFilters.js - Composant de filtres pour les brouillons
 "use client";
 
 import { useState } from "react";
 import { Search, Filter, X, Calendar, Tag, Clock } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 export default function DraftFilters({
   searchQuery,
@@ -43,7 +43,7 @@ export default function DraftFilters({
             placeholder="Rechercher par titre, contenu ou catégorie..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 body-text"
           />
         </div>
 
@@ -55,7 +55,7 @@ export default function DraftFilters({
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans bg-white min-w-[180px]"
+              className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 body-text bg-white min-w-[180px]"
             >
               <option value="all">Toutes les catégories</option>
               {categories.map((category) => (
@@ -72,7 +72,7 @@ export default function DraftFilters({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans bg-white min-w-[200px]"
+              className="pl-10 pr-8 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 body-text bg-white min-w-[200px]"
             >
               <option value="updated">Dernière modification</option>
               <option value="created">Date de création</option>
@@ -82,27 +82,27 @@ export default function DraftFilters({
           </div>
 
           {/* Bouton filtres avancés */}
-          <button
+          <Button
+            variant={showAdvancedFilters ? "primary" : "secondary"}
+            size="sm"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            className={`flex items-center space-x-2 px-4 py-2.5 border rounded-lg transition-colors font-poppins ${
-              showAdvancedFilters
-                ? "border-teal-500 bg-teal-50 text-teal-700"
-                : "border-gray-300 text-gray-700 hover:bg-gray-50"
-            }`}
+            icon={<Filter className="w-4 h-4" />}
+            className="hidden sm:flex"
           >
-            <Filter className="w-4 h-4" />
-            <span className="hidden sm:inline">Filtres</span>
-          </button>
+            Filtres
+          </Button>
 
           {/* Bouton de réinitialisation */}
           {hasActiveFilters && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleClearFilters}
-              className="flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors font-poppins"
+              icon={<X className="w-4 h-4" />}
+              className="hidden sm:flex"
             >
-              <X className="w-4 h-4" />
-              <span className="hidden sm:inline">Réinitialiser</span>
-            </button>
+              Réinitialiser
+            </Button>
           )}
         </div>
       </div>
@@ -113,10 +113,10 @@ export default function DraftFilters({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Période de création */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+              <label className="h5-title text-gray-700 mb-2">
                 Période de création
               </label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans">
+              <select className="w-full input-field">
                 <option value="all">Toute période</option>
                 <option value="today">Aujourd'hui</option>
                 <option value="week">Cette semaine</option>
@@ -128,10 +128,10 @@ export default function DraftFilters({
 
             {/* Nombre de mots */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+              <label className="h5-title text-gray-700 mb-2">
                 Nombre de mots
               </label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans">
+              <select className="w-full input-field">
                 <option value="all">Tous</option>
                 <option value="short">Court (0-300 mots)</option>
                 <option value="medium">Moyen (300-1000 mots)</option>
@@ -141,10 +141,10 @@ export default function DraftFilters({
 
             {/* Statut */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+              <label className="h5-title text-gray-700 mb-2">
                 Statut
               </label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans">
+              <select className="w-full input-field">
                 <option value="all">Tous les brouillons</option>
                 <option value="empty">Brouillons vides</option>
                 <option value="incomplete">Incomplets</option>
@@ -155,7 +155,7 @@ export default function DraftFilters({
 
           {/* Actions avancées */}
           <div className="mt-4 flex items-center justify-between">
-            <div className="text-sm text-gray-600 font-sans">
+            <div className="small-text text-gray-600">
               <span className="font-medium">{filteredCount}</span> brouillon
               {filteredCount !== 1 ? "s" : ""}
               {filteredCount !== totalDrafts && (
@@ -167,12 +167,13 @@ export default function DraftFilters({
               )}
             </div>
 
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setShowAdvancedFilters(false)}
-              className="text-sm text-gray-600 hover:text-gray-900 font-poppins"
             >
               Masquer les filtres avancés
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -181,12 +182,12 @@ export default function DraftFilters({
       {hasActiveFilters && (
         <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-gray-600 font-poppins">
+            <span className="small-text text-gray-600">
               Filtres actifs:
             </span>
 
             {searchQuery.trim() && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 font-sans">
+              <span className="badge badge-primary">
                 Recherche: "{searchQuery.substring(0, 20)}
                 {searchQuery.length > 20 ? "..." : ""}"
                 <button
@@ -199,7 +200,7 @@ export default function DraftFilters({
             )}
 
             {selectedCategory !== "all" && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 font-sans">
+              <span className="badge badge-primary">
                 Catégorie:{" "}
                 {categories.find((c) => c.slug === selectedCategory)?.name}
                 <button
@@ -212,7 +213,7 @@ export default function DraftFilters({
             )}
 
             {sortBy !== "updated" && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 font-sans">
+              <span className="badge badge-primary">
                 Tri:{" "}
                 {sortBy === "created"
                   ? "Date de création"

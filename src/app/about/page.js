@@ -1,4 +1,4 @@
-// src/app/about/page.js - Page "À propos" de TechPulse
+// src/app/about/page.js - Page "À propos" standardisée
 import Header from '@/components/layout/Header';
 import { Code, Users, Target, Award, ArrowRight, Github, Twitter, Linkedin } from 'lucide-react';
 
@@ -81,22 +81,22 @@ export default function AboutPage() {
       <main>
         {/* Hero Section */}
         <section className="bg-white py-10">
-          <div className="container">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl font-poppins font-bold text-gray-900 mb-6">
+          <div className="container-sm">
+            <div className="text-center">
+              <h1 className="h1-title text-gray-900 mb-6">
                 À propos de <span className="text-teal-600">TechPulse</span>
               </h1>
-              <p className="text-xl font-poppins text-gray-600 mb-8 leading-relaxed">
+              <p className="h4-title text-gray-600 mb-8">
                 Votre source de référence pour rester à la pointe de la technologie. 
                 Nous partageons les dernières tendances, tutoriels et analyses dans le monde du développement, 
                 de l'intelligence artificielle et de la cybersécurité.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/articles" className="btn-primary flex items-center font-poppins">
+                <a href="/articles" className="btn-primary flex items-center">
                   Découvrir nos articles
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </a>
-                <a href="/contact" className="btn-secondary font-poppins">
+                <a href="/contact" className="btn-secondary">
                   Nous contacter
                 </a>
               </div>
@@ -106,14 +106,14 @@ export default function AboutPage() {
 
         {/* Stats Section */}
         <section className="py-16 bg-gray-100">
-          <div className="container">
+          <div className="container-sm">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-4xl font-bold text-gray-900 mb-2">
+                  <div className="h2-title text-gray-900 mb-2">
                     {stat.value}
                   </div>
-                  <div className="text-gray-600">{stat.label}</div>
+                  <div className="body-text text-gray-600">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -122,64 +122,52 @@ export default function AboutPage() {
 
         {/* Mission Section */}
         <section className="py-20 bg-white">
-          <div className="container">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-poppins font-bold text-gray-900 mb-8 text-center">
-                Notre Mission
-              </h2>
-              <div className="prose prose-lg mx-auto text-gray-700">
-                <p className="text-center text-xl leading-relaxed mb-8">
-                  Chez TechPulse, nous croyons que la technologie doit être accessible à tous. 
-                  Notre mission est de démocratiser les connaissances techniques en proposant 
-                  du contenu de qualité, des tutoriels pratiques et des analyses approfondies.
-                </p>
-                <div className="grid md:grid-cols-2 gap-8 mt-12">
-                  <div>
-                    <h3 className="text-xl font-poppins font-semibold text-gray-900 mb-4">
-                      Ce que nous faisons
-                    </h3>
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start">
+          <div className="container-sm">
+            <h2 className="h2-title text-gray-900 mb-8 text-center">
+              Notre Mission
+            </h2>
+            <div className="text-center">
+              <p className="h4-title text-gray-600 mb-8">
+                Chez TechPulse, nous croyons que la technologie doit être accessible à tous. 
+                Notre mission est de démocratiser les connaissances techniques en proposant 
+                du contenu de qualité, des tutoriels pratiques et des analyses approfondies.
+              </p>
+              <div className="grid md:grid-cols-2 gap-8 mt-12">
+                <div>
+                  <h3 className="h3-title text-gray-900 mb-4">
+                    Ce que nous faisons
+                  </h3>
+                  <ul className="space-y-3 text-gray-700">
+                    {[
+                      "Articles techniques approfondis",
+                      "Tutoriels pas-à-pas",
+                      "Analyses des dernières tendances",
+                      "Guides pour débutants et experts"
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start">
                         <span className="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Articles techniques approfondis
+                        <span className="body-text">{item}</span>
                       </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Tutoriels pas-à-pas
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Analyses des dernières tendances
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-teal-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Guides pour débutants et experts
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-poppins font-semibold text-gray-900 mb-4">
-                      Nos domaines d'expertise
-                    </h3>
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start">
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="h3-title text-gray-900 mb-4">
+                    Nos domaines d'expertise
+                  </h3>
+                  <ul className="space-y-3 text-gray-700">
+                    {[
+                      "Développement Web et Mobile",
+                      "Intelligence Artificielle",
+                      "Cybersécurité",
+                      "Cloud Computing"
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start">
                         <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Développement Web et Mobile
+                        <span className="body-text">{item}</span>
                       </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Intelligence Artificielle
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Cybersécurité
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Cloud Computing
-                      </li>
-                    </ul>
-                  </div>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -188,8 +176,8 @@ export default function AboutPage() {
 
         {/* Values Section */}
         <section className="py-20 bg-gray-50">
-          <div className="container">
-            <h2 className="text-3xl font-poppins font-bold text-gray-900 mb-12 text-center">
+          <div className="container-sm">
+            <h2 className="h2-title text-gray-900 mb-12 text-center">
               Nos Valeurs
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -198,10 +186,10 @@ export default function AboutPage() {
                   <div className="mb-4 flex justify-center">
                     {value.icon}
                   </div>
-                  <h3 className="text-lg font-poppins font-semibold text-gray-900 mb-3">
+                  <h3 className="h4-title text-gray-900 mb-3">
                     {value.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="body-text text-gray-600">
                     {value.description}
                   </p>
                 </div>
@@ -212,11 +200,11 @@ export default function AboutPage() {
 
         {/* Team Section */}
         <section className="py-20 bg-white">
-          <div className="container">
-            <h2 className="text-3xl font-poppins font-bold text-gray-900 mb-12 text-center">
+          <div className="container-sm">
+            <h2 className="h2-title text-gray-900 mb-12 text-center">
               Notre Équipe
             </h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8">
               {teamMembers.map((member, index) => (
                 <div key={index} className="card p-6 text-center hover:shadow-lg transition-shadow">
                   <div className="w-20 h-20 bg-gradient-to-br from-teal-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -224,16 +212,16 @@ export default function AboutPage() {
                       {member.avatar}
                     </span>
                   </div>
-                  <h3 className="text-xl font-poppins font-semibold text-gray-900 mb-2">
+                  <h3 className="h4-title text-gray-900 mb-2">
                     {member.name}
                   </h3>
-                  <p className="text-teal-600 font-poppins font-medium mb-3">
+                  <p className="text-teal-600 h5-title mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-600 font-poppins text-sm leading-relaxed mb-4">
+                  <p className="body-text text-gray-600 mb-4">
                     {member.bio}
                   </p>
-                  <div className="flex justify-center space-x-3">
+                  <div className="flex justify-center gap-3">
                     <a href={member.social.github} className="text-gray-400 hover:text-gray-600 transition-colors">
                       <Github className="w-5 h-5" />
                     </a>
@@ -252,19 +240,19 @@ export default function AboutPage() {
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-teal-500 to-orange-500">
-          <div className="container text-center">
-            <h2 className="text-3xl font-poppins font-bold text-white mb-6">
+          <div className="container-sm text-center">
+            <h2 className="h2-title text-white mb-6">
               Rejoignez la Communauté TechPulse
             </h2>
-            <p className="text-xl font-poppins text-white/90 mb-8 max-w-2xl mx-auto">
+            <p className="h4-title text-white/90 mb-8">
               Restez informé des dernières tendances technologiques et 
               accédez à du contenu exclusif en rejoignant notre communauté.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="/articles" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-poppins font-medium hover:bg-gray-100 transition-colors">
+              <a href="/articles" className="bg-white text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
                 Découvrir les articles
               </a>
-              <a href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white font-poppins hover:text-gray-900 transition-colors">
+              <a href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900 transition-colors">
                 Nous contacter
               </a>
             </div>
@@ -273,52 +261,46 @@ export default function AboutPage() {
 
         {/* Publication Info Section */}
         <section className="py-16 bg-gray-100">
-          <div className="container">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <div className="container-sm">
+            <div className="text-center">
+              <div className="card p-8">
                 <div className="mb-6">
                   <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
+                  <h3 className="h2-title text-gray-900 mb-4">
                     Vous souhaitez publier sur TechPulse ?
                   </h3>
-                  <p className="text-lg font-poppins text-gray-600 mb-6 leading-relaxed">
+                  <p className="h4-title text-gray-600 mb-6">
                     Nous sommes toujours à la recherche de nouveaux talents pour enrichir notre contenu ! 
                     Si vous avez une expertise technique et souhaitez partager vos connaissances avec notre communauté, 
                     nous serions ravis d'échanger avec vous.
                   </p>
                   <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 mb-6">
-                    <h4 className="text-lg font-poppins font-semibold text-teal-800 mb-3">
+                    <h4 className="h4-title text-teal-800 mb-3">
                       Comment procéder ?
                     </h4>
                     <div className="text-left space-y-3">
-                      <div className="flex items-start">
-                        <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</div>
-                        <p className="text-teal-700 font-poppins">
-                          <strong>Contactez-nous</strong> via notre page de contact avec votre proposition d'article
-                        </p>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</div>
-                        <p className="text-teal-700 font-poppins">
-                          <strong>Présentez votre expertise</strong> et le sujet que vous souhaitez traiter
-                        </p>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</div>
-                        <p className="text-teal-700 font-poppins">
-                          <strong>Collaboration</strong> : nous vous accompagnerons dans le processus de publication
-                        </p>
-                      </div>
+                      {[
+                        "Contactez-nous via notre page de contact avec votre proposition d'article",
+                        "Présentez votre expertise et le sujet que vous souhaitez traiter",
+                        "Collaboration : nous vous accompagnerons dans le processus de publication"
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start">
+                          <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">{i+1}</div>
+                          <p className="body-text text-teal-700">
+                            {item}
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   <div className="flex flex-wrap justify-center gap-4">
                     <a 
                       href="/contact" 
-                      className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-poppins font-medium transition-colors flex items-center"
+                      className="btn-primary flex items-center"
                     >
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -327,7 +309,7 @@ export default function AboutPage() {
                     </a>
                     <a 
                       href="/articles" 
-                      className="border-2 border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-6 py-3 rounded-lg font-poppins font-medium transition-colors"
+                      className="btn-secondary"
                     >
                       Voir nos articles
                     </a>

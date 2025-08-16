@@ -236,14 +236,14 @@ export default function DraftsPage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="container py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 font-poppins">
+            <h1 className="h1-title text-gray-900 mb-2">
               Mes brouillons
             </h1>
-            <p className="text-gray-600 font-sans">
+            <p className="body-text text-gray-600">
               {drafts.length} brouillon{drafts.length !== 1 ? "s" : ""} •
               {filteredDrafts.length} affiché
               {filteredDrafts.length !== 1 ? "s" : ""}
@@ -252,7 +252,7 @@ export default function DraftsPage() {
 
           <button
             onClick={() => router.push("/create")}
-            className="flex items-center space-x-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors font-poppins"
+            className="btn-primary flex items-center space-x-2"
           >
             <Plus className="w-4 h-4" />
             <span>Nouveau brouillon</span>
@@ -260,7 +260,7 @@ export default function DraftsPage() {
         </div>
 
         {/* Filtres et recherche */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div className="card p-6 mb-6">
           <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
             {/* Recherche */}
             <div className="flex-1 relative">
@@ -270,7 +270,7 @@ export default function DraftsPage() {
                 placeholder="Rechercher dans vos brouillons..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans"
+                className="input-field w-full pl-10"
               />
             </div>
 
@@ -279,7 +279,7 @@ export default function DraftsPage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans"
+                className="input-field"
               >
                 <option value="all">Toutes les catégories</option>
                 {categories.map((category) => (
@@ -292,7 +292,7 @@ export default function DraftsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 font-sans"
+                className="input-field"
               >
                 <option value="updated">Dernière modification</option>
                 <option value="created">Date de création</option>
@@ -304,7 +304,7 @@ export default function DraftsPage() {
           {/* Actions en lot */}
           {selectedDrafts.length > 0 && (
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
-              <span className="text-sm text-gray-600 font-sans">
+              <span className="small-text text-gray-600">
                 {selectedDrafts.length} brouillon
                 {selectedDrafts.length > 1 ? "s" : ""} sélectionné
                 {selectedDrafts.length > 1 ? "s" : ""}
@@ -313,7 +313,7 @@ export default function DraftsPage() {
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => handleBulkAction("delete")}
-                  className="flex items-center space-x-1 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-poppins"
+                  className="flex items-center space-x-1 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>Supprimer</span>
@@ -331,17 +331,17 @@ export default function DraftsPage() {
         ) : filteredDrafts.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2 font-poppins">
+            <h3 className="h3-title text-gray-900 mb-2">
               {drafts.length === 0 ? "Aucun brouillon" : "Aucun résultat"}
             </h3>
-            <p className="text-gray-600 mb-6 font-sans">
+            <p className="body-text text-gray-600 mb-6">
               {drafts.length === 0
                 ? "Commencez à écrire votre premier article !"
                 : "Aucun brouillon ne correspond à vos critères de recherche."}
             </p>
             <button
               onClick={() => router.push("/create")}
-              className="inline-flex items-center space-x-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors font-poppins"
+              className="btn-primary inline-flex items-center space-x-2"
             >
               <Plus className="w-4 h-4" />
               <span>Créer un article</span>
@@ -350,7 +350,7 @@ export default function DraftsPage() {
         ) : (
           <div className="space-y-4">
             {/* Header de sélection */}
-            <div className="flex items-center justify-between bg-white p-4 rounded-lg border border-gray-200">
+            <div className="card p-4">
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -361,12 +361,12 @@ export default function DraftsPage() {
                   onChange={toggleSelectAll}
                   className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
                 />
-                <span className="text-sm font-medium text-gray-700 font-poppins">
+                <span className="h6-title text-gray-700">
                   Tout sélectionner
                 </span>
               </label>
 
-              <div className="flex items-center space-x-4 text-sm text-gray-600 font-sans">
+              <div className="flex items-center space-x-4 small-text text-gray-600">
                 <span className="flex items-center space-x-1">
                   <Clock className="w-4 h-4" />
                   <span>Dernière modification</span>

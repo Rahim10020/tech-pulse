@@ -68,18 +68,18 @@ export default function ContactPage() {
       <Header />
 
       <main className="py-7">
-        <div className="container max-w-6xl">
+        <div className="container">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-6">
+            <h1 className="h1-title text-gray-900 mb-6">
               Contactez-nous
             </h1>
-            <p className="text-xl font-poppins text-gray-600 max-w-2xl mx-auto">
+            <p className="h4-title text-gray-600 max-w-2xl mx-auto">
               Une question, une suggestion ou envie de collaborer ? Nous serions
               ravis d'échanger avec vous !
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <div className="card p-8">
               {isSubmitted ? (
@@ -87,10 +87,10 @@ export default function ContactPage() {
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-poppins font-bold text-gray-900 mb-2">
+                  <h3 className="h3-title text-gray-900 mb-2">
                     Message envoyé !
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="body-text text-gray-600 mb-6">
                     Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
                   </p>
                   <button
@@ -102,13 +102,13 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <>
-                  <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
+                  <h2 className="h2-title text-gray-900 mb-6">
                     Envoyez-nous un message
                   </h2>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="label">Nom complet</label>
+                        <label className="h6-title block mb-2">Nom complet</label>
                         <input
                           type="text"
                           name="name"
@@ -120,7 +120,7 @@ export default function ContactPage() {
                         />
                       </div>
                       <div>
-                        <label className="label">Email</label>
+                        <label className="h6-title block mb-2">Email</label>
                         <input
                           type="email"
                           name="email"
@@ -133,7 +133,7 @@ export default function ContactPage() {
                       </div>
                     </div>
                     <div>
-                      <label className="label">Sujet</label>
+                      <label className="h6-title block mb-2">Sujet</label>
                       <input
                         type="text"
                         name="subject"
@@ -145,7 +145,7 @@ export default function ContactPage() {
                       />
                     </div>
                     <div>
-                      <label className="label">Message</label>
+                      <label className="h6-title block mb-2">Message</label>
                       <textarea
                         name="message"
                         value={formData.message}
@@ -179,31 +179,31 @@ export default function ContactPage() {
             </div>
 
             {/* Contact Info */}
-            <div className="space-y-8">
+            <div className="space-y-6">
               <div className="card p-8">
-                <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
+                <h2 className="h2-title text-gray-900 mb-6">
                   Informations de contact
                 </h2>
                 <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <Mail className="w-6 h-6 text-teal-600 mt-1" />
+                  <div className="flex items-start gap-4">
+                    <Mail className="w-6 h-6 text-teal-600 mt-1 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-gray-900">Email</h3>
-                      <p className="text-gray-600">{settings.contactEmail || 'contact@techpulse.com'}</p>
+                      <h3 className="h5-title text-gray-900">Email</h3>
+                      <p className="body-text text-gray-600">{settings.contactEmail || 'contact@techpulse.com'}</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <Phone className="w-6 h-6 text-teal-600 mt-1" />
+                  <div className="flex items-start gap-4">
+                    <Phone className="w-6 h-6 text-teal-600 mt-1 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-gray-900">Téléphone</h3>
-                      <p className="text-gray-600">{settings.contactPhone || '+33 1 23 45 67 89'}</p>
+                      <h3 className="h5-title text-gray-900">Téléphone</h3>
+                      <p className="body-text text-gray-600">{settings.contactPhone || '+33 1 23 45 67 89'}</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <MapPin className="w-6 h-6 text-teal-600 mt-1" />
+                  <div className="flex items-start gap-4">
+                    <MapPin className="w-6 h-6 text-teal-600 mt-1 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-gray-900">Adresse</h3>
-                      <p className="text-gray-600">
+                      <h3 className="h5-title text-gray-900">Adresse</h3>
+                      <p className="body-text text-gray-600">
                         {settings.contactAddress || (
                           <>
                             123 Rue de la Tech
@@ -218,14 +218,14 @@ export default function ContactPage() {
               </div>
 
               <div className="card p-8">
-                <h3 className="text-xl font-poppins font-bold text-gray-900 mb-4">
+                <h3 className="h3-title text-gray-900 mb-4">
                   Temps de réponse
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="body-text text-gray-600 mb-4">
                   Nous nous efforçons de répondre à tous les messages dans les
                   24 heures ouvrables.
                 </p>
-                <div className="text-sm text-gray-500">
+                <div className="small-text text-gray-500">
                   <p>
                     <strong>Lun - Ven:</strong> 9h00 - 18h00
                   </p>

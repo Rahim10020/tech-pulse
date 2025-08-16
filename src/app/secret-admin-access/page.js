@@ -40,10 +40,10 @@ export default function SecretAdminAccess() {
                 </svg>
               </div>
             </div>
-            <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-2">
+            <h1 className="h1-title text-gray-900 mb-2">
               Zone Administrateur
             </h1>
-            <p className="text-gray-600 font-poppins">
+            <p className="body-text text-gray-600">
               Accès sécurisé pour la gestion du blog TechPulse
             </p>
           </div>
@@ -56,20 +56,20 @@ export default function SecretAdminAccess() {
               <div className="text-center">
                 {user ? (
                   <div className="space-y-2">
-                    <p className="text-teal-600 font-medium font-poppins">
+                    <p className="text-teal-600 font-medium body-text">
                       ✓ Connecté en tant que {user.name}
                     </p>
-                    <p className="text-sm text-gray-500 font-poppins">
+                    <p className="small-text text-gray-500">
                       Rôle : {user.role === 'admin' ? '👑 Administrateur' : '👤 Lecteur'}
                     </p>
                     {user.role === 'admin' && (
-                      <p className="text-orange-500 text-sm font-poppins">
+                      <p className="text-orange-500 small-text">
                         Redirection vers le dashboard...
                       </p>
                     )}
                   </div>
                 ) : (
-                  <p className="text-gray-500 font-poppins">
+                  <p className="text-gray-500 body-text">
                     Non connecté
                   </p>
                 )}
@@ -81,13 +81,13 @@ export default function SecretAdminAccess() {
                   <>
                     <Link 
                       href="/login"
-                      className="btn-primary w-full justify-center font-poppins block text-center"
+                      className="btn-primary w-full justify-center block text-center"
                     >
                       🔑 Se connecter
                     </Link>
                     <Link 
                       href="/signup"
-                      className="btn-secondary w-full justify-center font-poppins block text-center"
+                      className="btn-secondary w-full justify-center block text-center"
                     >
                       ✍️ Créer un compte
                     </Link>
@@ -96,19 +96,19 @@ export default function SecretAdminAccess() {
                   <div className="space-y-3">
                     <Link 
                       href="/profile/edit"
-                      className="btn-primary w-full justify-center bg-teal-600 hover:bg-teal-700 font-poppins block text-center"
+                      className="btn-primary w-full justify-center bg-teal-600 hover:bg-teal-700 block text-center"
                     >
                       📊 Administration
                     </Link>
                     <Link 
                       href="/create"
-                      className="btn-primary w-full justify-center bg-orange-500 hover:bg-orange-600 font-poppins block text-center"
+                      className="btn-primary w-full justify-center bg-orange-500 hover:bg-orange-600 block text-center"
                     >
                       ✍️ Écrire un article
                     </Link>
                     <Link 
                       href="/admin/manage-users"
-                      className="btn-secondary w-full justify-center font-poppins block text-center"
+                      className="btn-secondary w-full justify-center block text-center"
                     >
                       👥 Gérer les utilisateurs
                     </Link>
@@ -116,17 +116,17 @@ export default function SecretAdminAccess() {
                 ) : (
                   <div className="text-center space-y-4">
                     <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                      <p className="text-orange-600 font-medium font-poppins mb-2">
+                      <p className="text-orange-600 font-medium body-text mb-2">
                         ⚠️ Accès limité
                       </p>
-                      <p className="text-sm text-orange-700 font-poppins leading-relaxed">
+                      <p className="small-text text-orange-700 leading-relaxed">
                         Vous êtes connecté mais n'avez pas les permissions d'administrateur.
                         Pour publier des articles, contactez l'administrateur.
                       </p>
                     </div>
                     <Link 
                       href="/contact"
-                      className="btn-primary font-poppins inline-block"
+                      className="btn-primary inline-block"
                     >
                       📧 Contacter l'admin
                     </Link>
@@ -138,7 +138,7 @@ export default function SecretAdminAccess() {
               <div className="text-center pt-4 border-t border-gray-200">
                 <Link 
                   href="/"
-                  className="text-gray-500 hover:text-gray-700 transition-colors duration-200 text-sm font-poppins"
+                  className="text-gray-500 hover:text-gray-700 transition-colors duration-200 small-text"
                 >
                   ← Retour au blog
                 </Link>
@@ -148,7 +148,7 @@ export default function SecretAdminAccess() {
 
           {/* Warning de sécurité */}
           <div className="text-center">
-            <p className="text-xs text-gray-400 font-poppins">
+            <p className="small-text text-gray-400">
               Cette page est confidentielle. L'URL ne doit pas être partagée.
             </p>
           </div>

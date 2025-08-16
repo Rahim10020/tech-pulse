@@ -1,8 +1,8 @@
-// components/shared/ScheduledPublish.js - Publication programmée
 "use client";
 
 import { useState, useEffect } from "react";
 import { Calendar, Clock, X, CheckCircle, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 export default function ScheduledPublish({
   onSchedule,
@@ -21,13 +21,8 @@ export default function ScheduledPublish({
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     setTimezone(userTimezone);
 
-    // Initialiser avec les valeurs par défaut si fournies
-    if (defaultDate) {
-      setSelectedDate(defaultDate);
-    }
-    if (defaultTime) {
-      setSelectedTime(defaultTime);
-    }
+    if (defaultDate) setSelectedDate(defaultDate);
+    if (defaultTime) setSelectedTime(defaultTime);
   }, [defaultDate, defaultTime]);
 
   // Valider la date et l'heure
@@ -35,8 +30,6 @@ export default function ScheduledPublish({
     if (selectedDate && selectedTime) {
       const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}`);
       const now = new Date();
-
-      // La date doit être dans le futur et pas trop loin (1 an max)
       const oneYearFromNow = new Date();
       oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 
@@ -48,7 +41,6 @@ export default function ScheduledPublish({
     }
   }, [selectedDate, selectedTime]);
 
-  // Générer les dates min et max
   const getMinDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -65,7 +57,7 @@ export default function ScheduledPublish({
     const today = new Date().toISOString().split("T")[0];
     if (selectedDate === today) {
       const now = new Date();
-      now.setHours(now.getHours() + 1); // Au moins 1h dans le futur
+      now.setHours(now.getHours() + 1);
       return now.toTimeString().slice(0, 5);
     }
     return "00:00";
@@ -76,25 +68,21 @@ export default function ScheduledPublish({
 
     const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}`);
 
-    if (onSchedule) {
-      onSchedule({
-        scheduledAt: scheduledDateTime.toISOString(),
-        scheduledAtFormatted: scheduledDateTime.toLocaleString("fr-FR", {
-          timeZone: timezone,
-          dateStyle: "full",
-          timeStyle: "short",
-        }),
-        timezone,
-      });
-    }
+    onSchedule?.({
+      scheduledAt: scheduledDateTime.toISOString(),
+      scheduledAtFormatted: scheduledDateTime.toLocaleString("fr-FR", {
+        timeZone: timezone,
+        dateStyle: "full",
+        timeStyle: "short",
+      }),
+      timezone,
+    });
   };
 
   const handleCancel = () => {
     setSelectedDate("");
     setSelectedTime("");
-    if (onCancel) {
-      onCancel();
-    }
+    onCancel?.();
   };
 
   const getScheduledPreview = () => {
@@ -102,13 +90,10 @@ export default function ScheduledPublish({
 
     const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}`);
     const now = new Date();
-
-    // Calculer la différence
     const diffMs = scheduledDateTime - now;
+
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor(
-      (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
+    const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
     let timeUntil = "";
@@ -144,23 +129,24 @@ export default function ScheduledPublish({
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-2">
             <Calendar className="w-5 h-5 text-teal-600" />
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="h4-title text-gray-900">
               Programmer la publication
             </h3>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={handleCancel}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
           >
             <X className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Date Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="h5-title text-gray-700 mb-2">
               Date de publication
             </label>
             <div className="relative">
@@ -171,14 +157,14 @@ export default function ScheduledPublish({
                 onChange={(e) => setSelectedDate(e.target.value)}
                 min={getMinDate()}
                 max={getMaxDate()}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                className="input-field pl-10"
               />
             </div>
           </div>
 
           {/* Time Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="h5-title text-gray-700 mb-2">
               Heure de publication
             </label>
             <div className="relative">
@@ -188,13 +174,13 @@ export default function ScheduledPublish({
                 value={selectedTime}
                 onChange={(e) => setSelectedTime(e.target.value)}
                 min={getMinTime()}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                className="input-field pl-10"
               />
             </div>
           </div>
 
           {/* Timezone Info */}
-          <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
+          <div className="small-text text-gray-500 bg-gray-50 p-3 rounded-lg">
             <span className="font-medium">Fuseau horaire:</span> {timezone}
           </div>
 
@@ -214,20 +200,10 @@ export default function ScheduledPublish({
                   <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                 )}
                 <div className="flex-1">
-                  <p
-                    className={`text-sm font-medium ${
-                      preview.isValid ? "text-green-800" : "text-red-800"
-                    }`}
-                  >
-                    {preview.isValid
-                      ? "Publication programmée"
-                      : "Date invalide"}
+                  <p className={`h6-title ${preview.isValid ? "text-green-800" : "text-red-800"}`}>
+                    {preview.isValid ? "Publication programmée" : "Date invalide"}
                   </p>
-                  <p
-                    className={`text-xs ${
-                      preview.isValid ? "text-green-700" : "text-red-700"
-                    }`}
-                  >
+                  <p className={`small-text ${preview.isValid ? "text-green-700" : "text-red-700"}`}>
                     {preview.isValid ? (
                       <>
                         Le {preview.formatted}
@@ -245,19 +221,19 @@ export default function ScheduledPublish({
 
         {/* Footer */}
         <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200">
-          <button
+          <Button
+            variant="secondary"
             onClick={handleCancel}
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
           >
             Annuler
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="primary"
             onClick={handleSchedule}
             disabled={!isValidDateTime}
-            className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             Programmer
-          </button>
+          </Button>
         </div>
       </div>
     </div>

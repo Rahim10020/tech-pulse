@@ -1,4 +1,3 @@
-// src/components/layout/Header.js - Header avec badge messages non lus corrigé
 "use client";
 
 import Link from "next/link";
@@ -20,6 +19,7 @@ import { useState } from "react";
 import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
 import { useSettings } from "@/hooks/useSettings";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
+import { Button } from "@/components/ui/Button";
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -47,13 +47,13 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
-              <span className="text-white font-poppins font-bold text-sm">
+              <span className="text-white font-bold text-sm">
                 {settings.siteName
                   ? settings.siteName.substring(0, 2).toUpperCase()
                   : "TP"}
               </span>
             </div>
-            <span className="text-xl font-poppins font-bold text-gray-900 uppercase">
+            <span className="h3-title text-gray-900 uppercase">
               {settings.siteName || "TechPulse"}
             </span>
           </Link>
@@ -62,7 +62,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
                 isActiveLink("/")
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
@@ -72,7 +72,7 @@ export default function Header() {
             </Link>
             <Link
               href="/articles"
-              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
                 isActiveLink("/articles")
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
@@ -82,7 +82,7 @@ export default function Header() {
             </Link>
             <Link
               href="/categories"
-              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
                 isActiveLink("/categories")
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
@@ -92,7 +92,7 @@ export default function Header() {
             </Link>
             <Link
               href="/about"
-              className={`text-gray-700 font-poppins hover:text-gray-900 text-sm transition-colors relative pb-1 ${
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
                 isActiveLink("/about")
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
@@ -110,7 +110,7 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="bg-gray-100 font-poppins rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
+                className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
               />
             </div>
 
@@ -118,15 +118,15 @@ export default function Header() {
               <>
                 {/* Bouton Publier - Visible pour les admins et publishers */}
                 {(isAdmin(user) || isPublisher(user)) && (
-                  <Link
+                  <Button
                     href="/create"
-                    className="flex items-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors font-poppins text-sm font-medium"
+                    variant="primary"
+                    size="sm"
+                    icon={<PenTool className="w-4 h-4" />}
+                    className="hidden sm:flex"
                   >
-                    <PenTool className="w-4 h-4" />
-                    <span className="hidden sm:inline font-poppins">
-                      Publier
-                    </span>
-                  </Link>
+                    Publier
+                  </Button>
                 )}
 
                 {/* Messages Badge - Seulement pour les admins */}
@@ -145,10 +145,9 @@ export default function Header() {
                   </Link>
                 )}
 
-                {/* Bell notification - Placeholder pour futures notifications */}
+                {/* Bell notification */}
                 <div className="relative">
                   <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
-                  {/* Badge pour les notifications générales (à implémenter plus tard) */}
                 </div>
 
                 {/* Profile Menu */}
@@ -157,7 +156,7 @@ export default function Header() {
                     onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                     className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 focus:outline-none focus:ring-2 focus:ring-gray-300 flex items-center justify-center"
                   >
-                    <span className="text-white font-medium text-sm font-poppins">
+                    <span className="text-white font-medium text-sm">
                       {user.name?.charAt(0) || "U"}
                     </span>
                   </button>
@@ -166,10 +165,10 @@ export default function Header() {
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                       {/* Informations utilisateur */}
                       <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-sm font-medium text-gray-900 font-poppins truncate">
+                        <p className="h5-title text-gray-900 truncate">
                           {user.name}
                         </p>
-                        <p className="text-xs text-gray-500 font-sans">
+                        <p className="small-text text-gray-500">
                           {user.role === "admin"
                             ? "👑 Admin"
                             : user.role === "publisher"
@@ -180,18 +179,18 @@ export default function Header() {
 
                       <Link
                         href={`/profile/${user.id}`}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <User className="w-4 h-4 mr-3" />
                         Mon Profil
                       </Link>
 
-                      {/* Lien Écrire un article pour les admins et publishers */}
+                      {/* Lien Écrire un article */}
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/create"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                          className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <PenTool className="w-4 h-4 mr-3" />
@@ -199,11 +198,11 @@ export default function Header() {
                         </Link>
                       )}
 
-                      {/* Mes brouillons pour les admins et publishers */}
+                      {/* Mes brouillons */}
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/drafts"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                          className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <svg
@@ -223,13 +222,13 @@ export default function Header() {
                         </Link>
                       )}
 
-                      {/* Lien Administration - SEULEMENT pour les vrais admins */}
+                      {/* Lien Administration */}
                       {user && isAdmin(user) && (
                         <>
                           <div className="border-t border-gray-100 my-1"></div>
                           <Link
                             href="/admin/dashboard"
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                            className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                             onClick={() => setIsProfileMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4 mr-3" />
@@ -243,10 +242,10 @@ export default function Header() {
                         </>
                       )}
 
-                      {/* Lien Paramètres - pour tous les utilisateurs connectés */}
+                      {/* Lien Paramètres */}
                       <Link
                         href="/profile/edit"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <Settings className="w-4 h-4 mr-3" />
@@ -256,7 +255,7 @@ export default function Header() {
                       <div className="border-t border-gray-100 my-1"></div>
                       <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-poppins"
+                        className="flex items-center w-full px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                       >
                         <LogOut className="w-4 h-4 mr-3" />
                         Déconnexion
@@ -267,12 +266,13 @@ export default function Header() {
               </>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link
+                <Button
                   href="/contact"
-                  className="text-sm bg-teal-600 text-white px-3 py-1.5 hover:bg-teal-700 transition-colors font-poppins"
+                  variant="primary"
+                  size="sm"
                 >
                   Contact
-                </Link>
+                </Button>
               </div>
             )}
 

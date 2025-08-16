@@ -42,7 +42,7 @@ export default function CategoriesPage() {
         <div className="container-sm py-6">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement des catégories...</p>
+            <p className="body-text text-gray-600">Chargement des catégories...</p>
           </div>
         </div>
       </div>
@@ -54,15 +54,15 @@ export default function CategoriesPage() {
       <Header />
       <div className="container-sm py-6">
         <div className="mb-8">
-          <h1 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
+          <h1 className="h2-title text-gray-900 mb-4">
             Catégories
           </h1>
-          <p className="text-md font-poppins text-start text-gray-600">
+          <p className="body-text text-gray-600">
             Explorez nos articles par domaine d&apos;expertise technologique.
           </p>
         </div>
         
-        {/* Layout en grille comme sur la deuxième image */}
+        {/* Layout en grille */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((category) => {
             const IconComponent = iconMap[category.icon] || Code;
@@ -73,25 +73,25 @@ export default function CategoriesPage() {
                 href={`/articles?category=${category.slug}`}
                 className="block group h-full"
               >
-                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300 h-full flex flex-col">
+                <div className="card p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300 h-full flex flex-col">
                   {/* Icône en haut à gauche */}
                   <div className="mb-4">
                     <IconComponent className="w-6 h-6 text-gray-700" />
                   </div>
                   
                   {/* Titre */}
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
+                  <h3 className="h4-title text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
                     {category.name}
                   </h3>
                   
                   {/* Description */}
-                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 flex-grow">
+                  <p className="small-text text-gray-600 leading-relaxed line-clamp-3 flex-grow">
                     {category.description}
                   </p>
 
                   {/* Compteur d'articles */}
                   <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="text-xs text-gray-500">
+                    <span className="small-text text-gray-500">
                       {category.count} article{category.count > 1 ? 's' : ''}
                     </span>
                   </div>

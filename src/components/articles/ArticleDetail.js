@@ -1,26 +1,18 @@
 // src/components/articles/ArticleDetail.js - Corrigé avec données dynamiques
 import Link from 'next/link';
 import { Heart, MessageCircle } from 'lucide-react';
+import NotFound from '@/app/not-found';
 
 export default function ArticleDetail({ article }) {
   if (!article) {
-    return (
-      <div className="container-sm py-12">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Article non trouvé</h1>
-          <Link href="/articles" className="btn-primary">
-            Retour aux articles
-          </Link>
-        </div>
-      </div>
-    );
+    return NotFound()
   }
 
-  return (
+return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-6 font-poppins">
+        <nav className="text-sm font-sans text-gray-500 mb-6">
           <Link href="/" className="hover:text-gray-700">Accueil</Link>
           <span className="mx-2">/</span>
           <Link href="/articles" className="hover:text-gray-700">Articles</Link>
@@ -28,12 +20,12 @@ export default function ArticleDetail({ article }) {
 
         {/* Article Header */}
         <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight font-sans">
+          <h1 className="h1-title text-gray-900 mb-4 leading-tight">
             {article.title}
           </h1>
           
           {/* Author & Meta */}
-          <div className="flex items-center text-sm text-gray-600 mb-6 font-sans">
+          <div className="flex items-center text-sm font-sans text-gray-600 mb-6">
             <span>Publié par </span>
             <Link 
               href={`/author/${article.author.username}`}
@@ -93,7 +85,7 @@ export default function ArticleDetail({ article }) {
 
           {/* Comments Section */}
           <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-6 font-sans">
+            <h3 className="h2-title text-gray-900 mb-6">
               Commentaires {article.comments?.length > 0 && `(${article.comments.length})`}
             </h3>
             
@@ -109,10 +101,10 @@ export default function ArticleDetail({ article }) {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="font-medium text-gray-900 font-sans">
+                        <span className="h5-title text-gray-900">
                           {comment.author.name}
                         </span>
-                        <span className="text-sm text-gray-500 font-sans">
+                        <span className="text-sm font-sans text-gray-500">
                           {new Date(comment.createdAt).toLocaleDateString('fr-FR')}
                         </span>
                       </div>
@@ -132,10 +124,10 @@ export default function ArticleDetail({ article }) {
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center space-x-2 mb-1">
-                                  <span className="font-medium text-gray-900 text-sm font-sans">
+                                  <span className="h6-title text-gray-900">
                                     {reply.author.name}
                                   </span>
-                                  <span className="text-xs text-gray-500 font-sans">
+                                  <span className="text-xs font-sans text-gray-500">
                                     {new Date(reply.createdAt).toLocaleDateString('fr-FR')}
                                   </span>
                                 </div>

@@ -1,9 +1,9 @@
-// src/components/articles/CategoryFilter.js - Filtre par catégorie avec API
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function CategoryFilter({ activeCategory = 'all' }) {
   const router = useRouter();
@@ -14,7 +14,6 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Charger les catégories depuis l'API
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -43,15 +42,12 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
     router.push(`/articles?${params.toString()}`);
   };
 
-  // Calculer le total d'articles pour "Tous"
   const totalArticles = categories.reduce((sum, cat) => sum + cat.count, 0);
-
   const allCategories = [
     { id: 0, name: 'Tous', slug: 'all', count: totalArticles },
     ...categories
   ];
 
-  // Vérifier si les flèches sont nécessaires
   const checkScrollButtons = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
@@ -64,7 +60,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
     checkScrollButtons();
     window.addEventListener('resize', checkScrollButtons);
     return () => window.removeEventListener('resize', checkScrollButtons);
-  }, [categories]); // Ajouter categories comme dépendance
+  }, [categories]);
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -76,15 +72,11 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
     }
   };
 
-  // Affichage de chargement
   if (loading) {
     return (
       <div className="mb-12 border-b border-gray-200">
-        <div className="flex space-x-1 pb-4">
-          {/* Skeleton loader pour les catégories */}
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-8 bg-gray-200 rounded animate-pulse w-20"></div>
-          ))}
+        <div className="flex justify-center pb-4">
+          <LoadingSpinner size="md" />
         </div>
       </div>
     );
@@ -93,7 +85,6 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
   return (
     <div className="mb-12 border-b border-gray-200">
       <div className="relative">
-        {/* Conteneur des catégories avec padding pour les flèches */}
         <div
           ref={scrollContainerRef}
           onScroll={checkScrollButtons}
@@ -106,7 +97,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
             <button
               key={category.id}
               onClick={() => handleCategoryChange(category.slug)}
-              className={`pb-4 px-4 text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
+              className={`pb-4 px-4 h6-title whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeCategory === category.slug
                   ? 'text-gray-900 border-b-2 border-teal-600'
                   : 'text-gray-500 hover:text-gray-700'
@@ -114,7 +105,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
             >
               {category.name}
               {category.count !== undefined && (
-                <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                <span className="ml-2 small-text bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
                   {category.count}
                 </span>
               )}
@@ -122,7 +113,6 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
           ))}
         </div>
 
-        {/* Flèche gauche */}
         {showLeftArrow && (
           <button
             onClick={() => scroll('left')}
@@ -132,7 +122,6 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
           </button>
         )}
 
-        {/* Flèche droite */}
         {showRightArrow && (
           <button
             onClick={() => scroll('right')}

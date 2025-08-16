@@ -16,7 +16,7 @@ export default function ArticleCard({
   // Gérer category comme objet ou string
   const categoryName = typeof category === "object" ? category?.name : category;
 
-  if (horizontal) {
+if (horizontal) {
     // Layout horizontal (liste)
     return (
       <Link href={href} className="block group w-full">
@@ -25,25 +25,25 @@ export default function ArticleCard({
             <div className="flex-1">
               <div className="flex items-center mb-3">
                 {categoryName && (
-                  <span className="text-sm font-sans font-medium text-gray-600 mr-3">
+                  <span className="h6-title text-gray-600 mr-3">
                     {categoryName}
                   </span>
                 )}
                 {readTime && (
-                  <span className="text-sm text-gray-500">{readTime}</span>
+                  <span className="text-sm font-sans text-gray-500">{readTime}</span>
                 )}
               </div>
 
-              <h2 className="text-xl font-poppins font-semibold text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors">
+              <h2 className="h3-title text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors">
                 {title}
               </h2>
 
-              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+              <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4">
                 {description}
               </p>
 
               {/* Author & Date */}
-              <div className="flex items-center text-sm text-gray-500">
+              <div className="flex items-center text-sm font-sans text-gray-500">
                 {author && (
                   <>
                     <span>
@@ -86,11 +86,13 @@ export default function ArticleCard({
         </div>
 
         <div className="p-6">
-          <h2 className="article-title font-poppins group-hover:text-teal-600 transition-colors">
+          <h2 className="h3-title text-gray-900 mb-2 leading-tight group-hover:text-teal-600 transition-colors">
             {title}
           </h2>
 
-          <p className="article-description font-sans mb-4 line-clamp-3">{description}</p>
+          <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
+            {description}
+          </p>
 
           <div className="flex items-center justify-between text-sm text-gray-500">
             <div className="flex items-center space-x-4">

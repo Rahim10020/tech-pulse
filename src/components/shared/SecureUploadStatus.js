@@ -1,10 +1,5 @@
-// ========================================
-// 4. CRÉER src/components/shared/SecureUploadStatus.js
-// ========================================
-
 "use client";
 
-import { useState } from 'react';
 import { 
   Shield, 
   CheckCircle, 
@@ -22,10 +17,10 @@ export default function SecureUploadStatus({ uploadResult, error }) {
         <div className="flex items-start space-x-3">
           <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-red-800 mb-1">
+            <h3 className="h5-title text-red-800 mb-1">
               🚨 Upload bloqué pour sécurité
             </h3>
-            <p className="text-sm text-red-700 mb-3">
+            <p className="small-text text-red-700 mb-3">
               {error.error}
             </p>
             <div className="text-xs text-red-600">
@@ -43,11 +38,11 @@ export default function SecureUploadStatus({ uploadResult, error }) {
         <div className="flex items-start space-x-3">
           <ShieldCheck className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-green-800 mb-2">
+            <h3 className="h5-title text-green-800 mb-2">
               ✅ Upload sécurisé réussi
             </h3>
             
-            <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-2 gap-3 small-text">
               <div className="flex items-center space-x-2">
                 <FileCheck className="w-4 h-4 text-green-600" />
                 <span className="text-green-700">Type validé</span>

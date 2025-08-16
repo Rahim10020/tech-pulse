@@ -1,4 +1,3 @@
-// components/forms/LoginForm.js - Composant formulaire de connexion
 "use client";
 
 import { useState } from "react";
@@ -26,7 +25,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <Input
         label="Email"
         type="email"
@@ -35,6 +34,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
         onChange={handleChange}
         placeholder="Email"
         required
+        className="h5-title" // Ajout pour la cohérence typographique
       />
 
       <Input
@@ -45,12 +45,13 @@ export default function LoginForm({ onSubmit, isLoading }) {
         onChange={handleChange}
         placeholder="Password"
         required
+        className="h5-title" // Ajout pour la cohérence typographique
       />
 
-      <div className="text-left">
+      <div className="text-right">
         <Link
           href="/forgot-password"
-          className="text-sm text-gray-500 hover:text-gray-700 underline"
+          className="small-text text-gray-500 hover:text-gray-700 underline"
         >
           Forgot password?
         </Link>
@@ -59,10 +60,18 @@ export default function LoginForm({ onSubmit, isLoading }) {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full font-poppins"
+        className="w-full h5-title" // Standardisation avec h5-title
+        isLoading={isLoading}
       >
         {isLoading ? "Connecting..." : "Log in"}
       </Button>
+
+      <p className="small-text text-center text-gray-500 mt-4">
+        Don't have an account?{" "}
+        <Link href="/register" className="text-teal-600 hover:text-teal-700 underline">
+          Sign up
+        </Link>
+      </p>
     </form>
   );
 }

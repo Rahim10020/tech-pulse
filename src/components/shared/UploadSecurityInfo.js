@@ -1,7 +1,3 @@
-// ========================================
-// 5. CRÉER src/components/shared/UploadSecurityInfo.js
-// ========================================
-
 "use client";
 
 import { Shield, FileCheck, Zap, Users, Clock } from 'lucide-react';
@@ -12,11 +8,11 @@ export default function UploadSecurityInfo() {
       <div className="flex items-start space-x-3">
         <Shield className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
         <div className="flex-1">
-          <h3 className="text-sm font-medium text-blue-800 mb-2">
+          <h3 className="h5-title text-blue-800 mb-2">
             🛡️ Upload sécurisé activé
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-blue-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 small-text text-blue-700">
             <div className="flex items-center space-x-2">
               <FileCheck className="w-4 h-4" />
               <span>Validation stricte des types</span>

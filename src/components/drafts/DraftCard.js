@@ -1,4 +1,3 @@
-// components/drafts/DraftCard.js - Carte d'un brouillon
 "use client";
 
 import { useState } from 'react';
@@ -16,6 +15,7 @@ import {
   Tag,
   FileText
 } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export default function DraftCard({ 
   draft, 
@@ -27,18 +27,15 @@ export default function DraftCard({
 }) {
   const [showActions, setShowActions] = useState(false);
 
-  // Calculer le temps écoulé
   const timeAgo = formatDistanceToNow(new Date(draft.updatedAt), {
     addSuffix: true,
     locale: fr
   });
 
-  // Extraire un aperçu du contenu (premiers 150 caractères)
   const contentPreview = draft.content?.length > 150 
     ? draft.content.substring(0, 150) + '...'
     : draft.content || 'Aucun contenu';
 
-  // Compter les mots
   const wordCount = draft.content ? draft.content.split(/\s+/).filter(word => word.length > 0).length : 0;
 
   return (
@@ -62,33 +59,33 @@ export default function DraftCard({
             {/* Header avec titre et actions */}
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 font-poppins line-clamp-2">
+                <h3 className="h3-title text-gray-900 mb-2 line-clamp-2">
                   {draft.title || 'Brouillon sans titre'}
                 </h3>
                 
                 {/* Métadonnées */}
-                <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+                <div className="flex items-center space-x-4 small-text text-gray-600 mb-3">
                   <div className="flex items-center space-x-1">
                     <Clock className="w-4 h-4" />
-                    <span className="font-sans">Modifié {timeAgo}</span>
+                    <span>Modifié {timeAgo}</span>
                   </div>
                   
                   {draft.category && (
                     <div className="flex items-center space-x-1">
                       <Tag className="w-4 h-4" />
-                      <span className="font-sans">{draft.category.name}</span>
+                      <span>{draft.category.name}</span>
                     </div>
                   )}
                   
                   <div className="flex items-center space-x-1">
                     <FileText className="w-4 h-4" />
-                    <span className="font-sans">{wordCount} mots</span>
+                    <span>{wordCount} mots</span>
                   </div>
                   
                   {draft.readTime && (
                     <div className="flex items-center space-x-1">
                       <Eye className="w-4 h-4" />
-                      <span className="font-sans">{draft.readTime}</span>
+                      <span>{draft.readTime}</span>
                     </div>
                   )}
                 </div>
@@ -110,7 +107,7 @@ export default function DraftCard({
                         onEdit();
                         setShowActions(false);
                       }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-poppins"
+                      className="flex items-center w-full px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <Edit className="w-4 h-4 mr-3" />
                       Modifier
@@ -120,7 +117,7 @@ export default function DraftCard({
                         onPublish();
                         setShowActions(false);
                       }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition-colors font-poppins"
+                      className="flex items-center w-full px-4 py-2 h6-title text-green-700 hover:bg-green-50 transition-colors"
                     >
                       <Send className="w-4 h-4 mr-3" />
                       Publier
@@ -130,7 +127,7 @@ export default function DraftCard({
                         onDelete();
                         setShowActions(false);
                       }}
-                      className="flex items-center w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50 transition-colors font-poppins"
+                      className="flex items-center w-full px-4 py-2 h6-title text-red-700 hover:bg-red-50 transition-colors"
                     >
                       <Trash2 className="w-4 h-4 mr-3" />
                       Supprimer
@@ -142,7 +139,7 @@ export default function DraftCard({
 
             {/* Aperçu du contenu */}
             <div className="mb-4">
-              <p className="text-gray-700 leading-relaxed font-sans text-sm line-clamp-3">
+              <p className="body-text text-gray-700 leading-relaxed line-clamp-3">
                 {contentPreview}
               </p>
             </div>
@@ -153,13 +150,13 @@ export default function DraftCard({
                 {draft.tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag.id}
-                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 font-sans"
+                    className="badge badge-primary"
                   >
                     {tag.name}
                   </span>
                 ))}
                 {draft.tags.length > 3 && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 font-sans">
+                  <span className="badge badge-primary">
                     +{draft.tags.length - 3} autres
                   </span>
                 )}
@@ -170,7 +167,7 @@ export default function DraftCard({
 
         {/* Actions en bas */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-          <div className="flex items-center space-x-1 text-xs text-gray-500 font-sans">
+          <div className="flex items-center space-x-1 small-text text-gray-500">
             <Calendar className="w-3 h-3" />
             <span>
               Créé le {new Date(draft.createdAt).toLocaleDateString('fr-FR', {
@@ -182,21 +179,23 @@ export default function DraftCard({
           </div>
 
           <div className="flex items-center space-x-2">
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={onEdit}
-              className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors font-poppins"
+              icon={<Edit className="w-4 h-4" />}
             >
-              <Edit className="w-4 h-4" />
-              <span>Modifier</span>
-            </button>
+              Modifier
+            </Button>
             
-            <button
+            <Button
+              variant="primary"
+              size="sm"
               onClick={onPublish}
-              className="flex items-center space-x-1 px-3 py-1.5 text-sm text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors font-poppins"
+              icon={<Send className="w-4 h-4" />}
             >
-              <Send className="w-4 h-4" />
-              <span>Publier</span>
-            </button>
+              Publier
+            </Button>
           </div>
         </div>
       </div>

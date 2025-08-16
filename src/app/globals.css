@@ -106,5 +106,8 @@ body {
   .h6-title {
     @apply text-sm font-poppins font-medium
   }
+
+  .body-text { @apply font-sans text-base }
+  .small-text { @apply font-sans text-sm }
   
 }

@@ -1,10 +1,11 @@
-// src/app/page.js - Page d'accueil avec API
 "use client";
 
 import { useState, useEffect } from 'react';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
+import { Button } from "@/components/ui/Button";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function HomePage() {
   const [recentArticles, setRecentArticles] = useState([]);
@@ -29,10 +30,8 @@ export default function HomePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des articles...</p>
-        </div>
+        <LoadingSpinner size="lg" />
+        <p className="body-text text-gray-600 mt-4">Chargement des articles...</p>
       </div>
     );
   }
@@ -40,29 +39,20 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="container-sm py-4">
+      <div className="container-sm py-8">
         <SearchBar
           placeholder="Rechercher des articles par mots-clés ou catégories"
-          className="mb-6"
+          className="mb-8"
         />
 
-        <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
+        <h2 className="h2-title text-gray-900 mb-6">
           Articles récents
         </h2>
 
-        {/* Articles en layout horizontal */}
-        {recentArticles.map((article, index) => (
-          <div
-            key={article.id}
-            className={
-              index === 0
-                ? "rounded-t-lg"
-                : index === recentArticles.length - 1
-                ? "rounded-b-lg"
-                : "w-full"
-            }
-          >
+        <div className="space-y-4">
+          {recentArticles.map((article) => (
             <ArticleCard
+              key={article.id}
               title={article.title}
               description={article.description}
               readTime={article.readTime}
@@ -73,14 +63,17 @@ export default function HomePage() {
               category={article.category}
               horizontal={true}
             />
-          </div>
-        ))}
+          ))}
+        </div>
 
-        {/* Lien vers tous les articles */}
-        <div className="text-center mt-8">
-          <a href="/articles" className="btn-primary">
+        <div className="text-center mt-10">
+          <Button
+            href="/articles"
+            variant="primary"
+            className="h5-title"
+          >
             Voir tous les articles
-          </a>
+          </Button>
         </div>
       </div>
     </div>

@@ -56,7 +56,7 @@ export default function EditProfilePage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="container-sm py-8">
         {/* Header avec bouton retour */}
         <div className="flex items-center mb-8">
           <button
@@ -64,20 +64,20 @@ export default function EditProfilePage() {
             className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors mr-4"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="font-poppins text-sm">Retour</span>
+            <span className="h6-title">Retour</span>
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 font-poppins">
+            <h1 className="h1-title text-gray-900">
               Éditer mon profil
             </h1>
-            <p className="text-gray-600 font-sans mt-2">
+            <p className="body-text text-gray-600 mt-2">
               Mettez à jour vos informations personnelles
             </p>
           </div>
         </div>
 
         {/* Formulaire de profil */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="card">
           <div className="p-8">
             <ProfileForm
               initialData={user}
@@ -89,23 +89,23 @@ export default function EditProfilePage() {
 
         {/* Informations supplémentaires */}
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-800 mb-3 font-poppins">
+          <h3 className="h4-title text-blue-800 mb-3">
             Informations importantes
           </h3>
-          <div className="space-y-2 text-sm text-blue-700">
-            <p className="font-sans">
+          <div className="space-y-2 small-text text-blue-700">
+            <p>
               • Votre nom d'utilisateur et email ne peuvent pas être modifiés
               depuis cette page
             </p>
-            <p className="font-sans">
+            <p>
               • Les informations de votre profil sont publiques et visibles par
               tous les visiteurs
             </p>
-            <p className="font-sans">
+            <p>
               • Les liens vers vos réseaux sociaux apparaîtront sur votre page
               de profil public
             </p>
-            <p className="font-sans">
+            <p>
               • Pour changer votre mot de passe, contactez l'administrateur
             </p>
           </div>
@@ -115,7 +115,7 @@ export default function EditProfilePage() {
         <div className="mt-6 text-center">
           <a
             href={`/profile/${user.id}`}
-            className="inline-flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors font-poppins text-sm"
+            className="inline-flex items-center space-x-2 text-teal-600 hover:text-teal-700 transition-colors h6-title"
           >
             <span>Voir mon profil public</span>
             <svg

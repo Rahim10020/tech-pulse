@@ -1,4 +1,3 @@
-// src/components/articles/UserProfile.js - Profil public simplifié (sans admin)
 "use client";
 
 import { useState } from "react";
@@ -30,14 +29,14 @@ export default function UserProfile({ user, articles }) {
               <div className="w-24 h-24 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
                 {user.name.charAt(0).toUpperCase()}
               </div>
-              <h1 className="text-xl font-bold text-gray-900 font-poppins mb-1">
+              <h1 className="h3-title text-gray-900 mb-1">
                 {user.name}
               </h1>
-              <p className="text-gray-600 font-sans">@{user.username}</p>
+              <p className="body-text text-gray-600">@{user.username}</p>
               {user.role === "admin" && (
                 <div className="flex items-center justify-center mt-2">
                   <Shield className="w-4 h-4 text-teal-600 mr-1" />
-                  <span className="text-sm text-teal-600 font-medium font-poppins">
+                  <span className="small-text text-teal-600 font-medium">
                     Administrateur
                   </span>
                 </div>
@@ -47,7 +46,7 @@ export default function UserProfile({ user, articles }) {
             {/* Bio */}
             {user.bio && (
               <div className="mb-6">
-                <p className="text-gray-700 text-sm leading-relaxed font-sans">
+                <p className="body-text text-gray-700 leading-relaxed">
                   {user.bio}
                 </p>
               </div>
@@ -56,31 +55,31 @@ export default function UserProfile({ user, articles }) {
             {/* Statistiques */}
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-900 font-sans">
+                <div className="h4-title text-gray-900">
                   {articles.length}
                 </div>
-                <div className="text-xs text-gray-500 font-poppins">
+                <div className="small-text text-gray-500">
                   Articles
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-900 font-sans">
+                <div className="h4-title text-gray-900">
                   {articles
                     .reduce((total, article) => total + (article.views || 0), 0)
                     .toLocaleString()}
                 </div>
-                <div className="text-xs text-gray-500 font-poppins">
+                <div className="small-text text-gray-500">
                   Vues totales
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-900 font-sans">
+                <div className="h4-title text-gray-900">
                   {articles.reduce(
                     (total, article) => total + (article.likes || 0),
                     0
                   )}
                 </div>
-                <div className="text-xs text-gray-500 font-poppins">
+                <div className="small-text text-gray-500">
                   Likes reçus
                 </div>
               </div>
@@ -89,20 +88,20 @@ export default function UserProfile({ user, articles }) {
             {/* Informations personnelles */}
             <div className="space-y-3 mb-6">
               {user.location && (
-                <div className="flex items-center text-sm text-gray-600">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  <span className="font-sans">{user.location}</span>
+                <div className="flex items-center">
+                  <MapPin className="w-4 h-4 mr-2 text-gray-600" />
+                  <span className="body-text text-gray-600">{user.location}</span>
                 </div>
               )}
 
               {user.website && (
-                <div className="flex items-center text-sm text-gray-600">
-                  <Globe className="w-4 h-4 mr-2" />
+                <div className="flex items-center">
+                  <Globe className="w-4 h-4 mr-2 text-gray-600" />
                   <a
                     href={user.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-teal-600 hover:text-teal-700 transition-colors font-sans flex items-center"
+                    className="body-text text-teal-600 hover:text-teal-700 transition-colors flex items-center"
                   >
                     {user.website.replace(/^https?:\/\//, "")}
                     <ExternalLink className="w-3 h-3 ml-1" />
@@ -111,9 +110,9 @@ export default function UserProfile({ user, articles }) {
               )}
 
               {user.createdAt && (
-                <div className="flex items-center text-sm text-gray-600">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  <span className="font-sans">
+                <div className="flex items-center">
+                  <Calendar className="w-4 h-4 mr-2 text-gray-600" />
+                  <span className="body-text text-gray-600">
                     Rejoint en{" "}
                     {new Date(user.createdAt).toLocaleDateString("fr-FR", {
                       month: "long",
@@ -127,7 +126,7 @@ export default function UserProfile({ user, articles }) {
             {/* Réseaux sociaux */}
             {(user.twitter || user.linkedin || user.github) && (
               <div className="border-t pt-4">
-                <h3 className="text-sm font-medium text-gray-900 mb-3 font-poppins">
+                <h3 className="h5-title text-gray-900 mb-3">
                   Réseaux sociaux
                 </h3>
                 <div className="flex space-x-3">
@@ -198,7 +197,7 @@ export default function UserProfile({ user, articles }) {
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
-                <span className="font-poppins">
+                <span className="h6-title">
                   Articles publiés ({articles.length})
                 </span>
               </button>
@@ -230,10 +229,10 @@ export default function UserProfile({ user, articles }) {
                                 {article.category.name}
                               </span>
                             )}
-                            <span className="font-sans">
+                            <span className="small-text">
                               {article.readTime}
                             </span>
-                            <span className="font-sans">
+                            <span className="small-text">
                               {new Date(article.publishedAt).toLocaleDateString(
                                 "fr-FR"
                               )}
@@ -241,36 +240,30 @@ export default function UserProfile({ user, articles }) {
                           </div>
 
                           {/* Titre de l'article */}
-                          <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-teal-600 transition-colors font-poppins">
+                          <h3 className="h3-title text-gray-900 mb-3 hover:text-teal-600 transition-colors">
                             <a href={`/articles/${article.slug}`}>
                               {article.title}
                             </a>
                           </h3>
 
                           {/* Description */}
-                          <p className="text-gray-600 text-sm mb-4 leading-relaxed font-sans line-clamp-3">
+                          <p className="small-text text-gray-600 mb-4 leading-relaxed line-clamp-3">
                             {article.description}
                           </p>
 
                           {/* Statistiques de l'article */}
-                          <div className="flex items-center space-x-6 text-sm text-gray-500">
-                            <div className="flex items-center space-x-1">
+                          <div className="flex items-center space-x-6">
+                            <div className="flex items-center space-x-1 small-text text-gray-500">
                               <Eye className="w-4 h-4" />
-                              <span className="font-sans">
-                                {article.views || 0} vues
-                              </span>
+                              <span>{article.views || 0} vues</span>
                             </div>
-                            <div className="flex items-center space-x-1">
+                            <div className="flex items-center space-x-1 small-text text-gray-500">
                               <Heart className="w-4 h-4" />
-                              <span className="font-sans">
-                                {article.likes || 0} likes
-                              </span>
+                              <span>{article.likes || 0} likes</span>
                             </div>
-                            <div className="flex items-center space-x-1">
+                            <div className="flex items-center space-x-1 small-text text-gray-500">
                               <MessageCircle className="w-4 h-4" />
-                              <span className="font-sans">
-                                {article.commentsCount || 0} commentaires
-                              </span>
+                              <span>{article.commentsCount || 0} commentaires</span>
                             </div>
                           </div>
 
@@ -280,13 +273,13 @@ export default function UserProfile({ user, articles }) {
                               {article.tags.slice(0, 5).map((tag, index) => (
                                 <span
                                   key={tag.id || `tag-${article.id}-${index}`}
-                                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-sans"
+                                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
                                 >
                                   #{tag.name}
                                 </span>
                               ))}
                               {article.tags.length > 5 && (
-                                <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-full font-sans">
+                                <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
                                   +{article.tags.length - 5} autres
                                 </span>
                               )}
@@ -310,10 +303,10 @@ export default function UserProfile({ user, articles }) {
                     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Eye className="w-8 h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2 font-poppins">
+                    <h3 className="h3-title text-gray-900 mb-2">
                       Aucun article publié
                     </h3>
-                    <p className="text-gray-500 font-sans">
+                    <p className="body-text text-gray-500">
                       Cet utilisateur n'a pas encore publié d'articles.
                     </p>
                   </div>

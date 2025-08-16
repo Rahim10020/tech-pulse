@@ -19,21 +19,21 @@ export default function Error({ error, reset }) {
           <AlertTriangle className="w-10 h-10 text-red-500" />
         </div>
 
-        {/* Titre */}
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        {/* Titre - Utilisation de h1-title */}
+        <h1 className="h1-title text-gray-900 mb-4">
           Oups ! Une erreur s'est produite
         </h1>
 
-        {/* Message d'erreur */}
-        <p className="text-gray-600 mb-8 leading-relaxed">
+        {/* Message d'erreur - Utilisation de body-text */}
+        <p className="body-text text-gray-600 mb-8">
           Nous rencontrons un problème technique. Veuillez réessayer ou retourner à la page d'accueil.
         </p>
 
         {/* Détails de l'erreur en mode développement */}
         {process.env.NODE_ENV === 'development' && error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
-            <h3 className="text-sm font-medium text-red-800 mb-2">Détails de l'erreur :</h3>
-            <pre className="text-xs text-red-700 overflow-auto">
+            <h3 className="h6-title text-red-800 mb-2">Détails de l'erreur :</h3>
+            <pre className="small-text text-red-700 overflow-auto">
               {error.message || 'Erreur inconnue'}
             </pre>
           </div>
@@ -58,8 +58,8 @@ export default function Error({ error, reset }) {
           </Link>
         </div>
 
-        {/* Message de support */}
-        <p className="text-sm text-gray-500 mt-8">
+        {/* Message de support - Utilisation de small-text */}
+        <p className="small-text text-gray-500 mt-8">
           Si le problème persiste, veuillez{' '}
           <Link href="/contact" className="text-gray-700 hover:text-gray-900 underline">
             nous contacter

@@ -9,14 +9,13 @@ export const metadata = {
 };
 
 export default async function ArticlesPage({ searchParams }) {
-  const params = await searchParams;
-  const category = params?.category || 'all';
+  const category = searchParams?.category || 'all';
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       <div className="container-sm py-6">
-        <h1 className="text-2xl font-poppins font-bold text-gray-900 mb-6">
+        <h1 className="h2-title text-gray-900 mb-6">
           Derniers Articles
         </h1>
         

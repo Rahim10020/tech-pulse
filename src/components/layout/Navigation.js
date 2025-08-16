@@ -1,9 +1,11 @@
-// components/Navigation.js - Composant de navigation mis à jour
+"use client";
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Bell, MessageSquare, Search, Menu, X, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { Button } from '@/components/ui/Button';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,39 +19,59 @@ export default function Navigation() {
     setIsProfileMenuOpen(false);
   };
 
+  const isActiveLink = (href) => router.pathname === href;
+
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gray-900 flex items-center justify-center">
+          <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
             <span className="text-white font-bold text-sm">TP</span>
           </div>
-          <span className="text-xl font-bold text-gray-900">TechPulse</span>
+          <span className="h3-title text-gray-900">TechPulse</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link href="/" className={`hover:text-gray-900 ${router.pathname === '/' ? 'text-gray-900' : 'text-gray-700'}`}>
+          <Link 
+            href="/" 
+            className={`h6-title ${isActiveLink('/') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+          >
             Home
           </Link>
-          <Link href="/articles" className={`hover:text-gray-900 ${router.pathname === '/articles' ? 'text-gray-900' : 'text-gray-700'}`}>
+          <Link 
+            href="/articles" 
+            className={`h6-title ${isActiveLink('/articles') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+          >
             Articles
           </Link>
           {user && (
             <>
-              <Link href="/create" className={`hover:text-gray-900 ${router.pathname === '/create' ? 'text-gray-900' : 'text-gray-700'}`}>
+              <Link 
+                href="/create" 
+                className={`h6-title ${isActiveLink('/create') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+              >
                 Create
               </Link>
-              <Link href="/notifications" className={`hover:text-gray-900 ${router.pathname === '/notifications' ? 'text-gray-900' : 'text-gray-700'}`}>
+              <Link 
+                href="/notifications" 
+                className={`h6-title ${isActiveLink('/notifications') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+              >
                 Notifications
               </Link>
-              <Link href="/messages" className={`hover:text-gray-900 ${router.pathname === '/messages' ? 'text-gray-900' : 'text-gray-700'}`}>
+              <Link 
+                href="/messages" 
+                className={`h6-title ${isActiveLink('/messages') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+              >
                 Messages
               </Link>
             </>
           )}
-          <Link href="/about" className={`hover:text-gray-900 ${router.pathname === '/about' ? 'text-gray-900' : 'text-gray-700'}`}>
+          <Link 
+            href="/about" 
+            className={`h6-title ${isActiveLink('/about') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+          >
             About
           </Link>
         </nav>
@@ -62,21 +84,27 @@ export default function Navigation() {
             <input
               type="text"
               placeholder="Search"
-              className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
+              className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
             />
           </div>
 
           {user ? (
             <>
               {/* Notifications */}
-              <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900" />
-              <MessageSquare className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900" />
+              <Button variant="ghost" size="icon">
+                <Bell className="w-5 h-5" />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <MessageSquare className="w-5 h-5" />
+              </Button>
               
               {/* Profile Menu */}
               <div className="relative">
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400"
                 >
                   {user.avatar ? (
                     <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
@@ -85,18 +113,18 @@ export default function Navigation() {
                       {user.name?.charAt(0) || user.email?.charAt(0) || 'U'}
                     </span>
                   )}
-                </button>
+                </Button>
 
                 {/* Profile Dropdown */}
                 {isProfileMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">{user.name || 'User'}</p>
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="h5-title text-gray-900">{user.name || 'User'}</p>
+                      <p className="small-text text-gray-500">{user.email}</p>
                     </div>
                     <Link
                       href={`/profile/${user.username || user.id}`}
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
                       <User className="w-4 h-4 mr-3" />
@@ -104,7 +132,7 @@ export default function Navigation() {
                     </Link>
                     <Link
                       href="/profile/edit"
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
                       <Settings className="w-4 h-4 mr-3" />
@@ -112,7 +140,7 @@ export default function Navigation() {
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      className="flex items-center w-full px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                     >
                       <LogOut className="w-4 h-4 mr-3" />
                       Sign Out
@@ -123,28 +151,32 @@ export default function Navigation() {
             </>
           ) : (
             <>
-              <Link
-                href="/login"
-                className="text-gray-700 hover:text-gray-900 font-medium"
+              <Button 
+                href="/login" 
+                variant="ghost"
+                className="h6-title"
               >
                 Sign In
-              </Link>
-              <Link
+              </Button>
+              <Button
                 href="/signup"
-                className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+                variant="primary"
+                className="h6-title"
               >
                 Sign Up
-              </Link>
+              </Button>
             </>
           )}
 
           {/* Mobile menu button */}
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2"
+            className="md:hidden"
           >
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -152,26 +184,26 @@ export default function Navigation() {
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 px-6 py-4">
           <nav className="space-y-4">
-            <Link href="/" className="block text-gray-700 hover:text-gray-900">
+            <Link href="/" className="block h6-title text-gray-700 hover:text-gray-900">
               Home
             </Link>
-            <Link href="/articles" className="block text-gray-700 hover:text-gray-900">
+            <Link href="/articles" className="block h6-title text-gray-700 hover:text-gray-900">
               Articles
             </Link>
             {user && (
               <>
-                <Link href="/create" className="block text-gray-700 hover:text-gray-900">
+                <Link href="/create" className="block h6-title text-gray-700 hover:text-gray-900">
                   Create
                 </Link>
-                <Link href="/notifications" className="block text-gray-700 hover:text-gray-900">
+                <Link href="/notifications" className="block h6-title text-gray-700 hover:text-gray-900">
                   Notifications
                 </Link>
-                <Link href="/messages" className="block text-gray-700 hover:text-gray-900">
+                <Link href="/messages" className="block h6-title text-gray-700 hover:text-gray-900">
                   Messages
                 </Link>
               </>
             )}
-            <Link href="/about" className="block text-gray-700 hover:text-gray-900">
+            <Link href="/about" className="block h6-title text-gray-700 hover:text-gray-900">
               About
             </Link>
             
@@ -181,7 +213,7 @@ export default function Navigation() {
               <input
                 type="text"
                 placeholder="Search"
-                className="w-full bg-gray-100 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                className="w-full bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
             </div>
           </nav>
