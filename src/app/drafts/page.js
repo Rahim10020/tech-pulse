@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import Header from "@/components/layout/Header";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import DraftCard from "@/components/drafts/DraftCard";
 import DraftFilters from "@/components/drafts/DraftFilters";
 import {

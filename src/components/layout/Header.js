@@ -45,58 +45,47 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
-              <span className="text-white font-bold text-sm">
-                {settings.siteName
-                  ? settings.siteName.substring(0, 2).toUpperCase()
-                  : "TP"}
-              </span>
-            </div>
-            <span className="h3-title text-gray-900 uppercase">
-              {settings.siteName || "TechPulse"}
-            </span>
+          <Link href="/">
+            <img src="/logo.png"
+              alt="Logo pixelpulse"
+              className="h-10" />
           </Link>
 
           {/* Navigation Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/")
-                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                  : ""
-              }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                : ""
+                }`}
             >
               Accueil
             </Link>
             <Link
               href="/articles"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/articles")
-                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                  : ""
-              }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/articles")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                : ""
+                }`}
             >
               Articles
             </Link>
             <Link
               href="/categories"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/categories")
-                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                  : ""
-              }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/categories")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                : ""
+                }`}
             >
               Catégories
             </Link>
             <Link
               href="/about"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/about")
-                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                  : ""
-              }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/about")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                : ""
+                }`}
             >
               À propos
             </Link>
@@ -118,15 +107,16 @@ export default function Header() {
               <>
                 {/* Bouton Publier - Visible pour les admins et publishers */}
                 {(isAdmin(user) || isPublisher(user)) && (
-                  <Button
-                    href="/create"
-                    variant="primary"
-                    size="sm"
-                    icon={<PenTool className="w-4 h-4" />}
-                    className="hidden sm:flex"
-                  >
-                    Publier
-                  </Button>
+                  <Link href="/create" className="hidden sm:flex">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="flex items-center gap-2"
+                    >
+                      <PenTool className="w-4 h-4" />
+                      Publier
+                    </Button>
+                  </Link>
                 )}
 
                 {/* Messages Badge - Seulement pour les admins */}
@@ -172,8 +162,8 @@ export default function Header() {
                           {user.role === "admin"
                             ? "👑 Admin"
                             : user.role === "publisher"
-                            ? "✍️ Auteur"
-                            : "👤 Lecteur"}
+                              ? "✍️ Auteur"
+                              : "👤 Lecteur"}
                         </p>
                       </div>
 

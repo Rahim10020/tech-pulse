@@ -1,9 +1,10 @@
-// src/app/categories/page.js - Page catégories avec API
+// src/app/categories/page.js
 "use client";
 
 import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Link from 'next/link';
+import { CategoryCardSkeleton } from '@/components/ui/Skeleton';
 import { Code, Database, Cloud, Brain, Smartphone, Globe } from 'lucide-react';
 
 const iconMap = {
@@ -40,9 +41,15 @@ export default function CategoriesPage() {
       <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="container-sm py-6">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="body-text text-gray-600">Chargement des catégories...</p>
+          <div className="mb-8">
+            <div className="animate-pulse bg-gray-200 rounded h-8 w-48 mb-4"></div>
+            <div className="animate-pulse bg-gray-200 rounded h-4 w-96"></div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <CategoryCardSkeleton key={i} />
+            ))}
           </div>
         </div>
       </div>
@@ -61,15 +68,15 @@ export default function CategoriesPage() {
             Explorez nos articles par domaine d&apos;expertise technologique.
           </p>
         </div>
-        
+
         {/* Layout en grille */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((category) => {
             const IconComponent = iconMap[category.icon] || Code;
-            
+
             return (
-              <Link 
-                key={category.id} 
+              <Link
+                key={category.id}
                 href={`/articles?category=${category.slug}`}
                 className="block group h-full"
               >
@@ -78,12 +85,12 @@ export default function CategoriesPage() {
                   <div className="mb-4">
                     <IconComponent className="w-6 h-6 text-gray-700" />
                   </div>
-                  
+
                   {/* Titre */}
                   <h3 className="h4-title text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
                     {category.name}
                   </h3>
-                  
+
                   {/* Description */}
                   <p className="small-text text-gray-600 leading-relaxed line-clamp-3 flex-grow">
                     {category.description}

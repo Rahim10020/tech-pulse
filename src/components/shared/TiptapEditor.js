@@ -37,6 +37,7 @@ export default function TiptapEditor({
   const [linkUrl, setLinkUrl] = useState("");
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         heading: {

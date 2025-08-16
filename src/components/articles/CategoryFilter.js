@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function CategoryFilter({ activeCategory = 'all' }) {
   const router = useRouter();
@@ -32,13 +31,13 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
 
   const handleCategoryChange = (categorySlug) => {
     const params = new URLSearchParams(searchParams);
-    
+
     if (categorySlug === 'all') {
       params.delete('category');
     } else {
       params.set('category', categorySlug);
     }
-    
+
     router.push(`/articles?${params.toString()}`);
   };
 
@@ -75,8 +74,10 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
   if (loading) {
     return (
       <div className="mb-12 border-b border-gray-200">
-        <div className="flex justify-center pb-4">
-          <LoadingSpinner size="md" />
+        <div className="flex space-x-4 pb-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="animate-pulse bg-gray-200 rounded h-8 w-20 flex-shrink-0" />
+          ))}
         </div>
       </div>
     );
@@ -88,20 +89,18 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
         <div
           ref={scrollContainerRef}
           onScroll={checkScrollButtons}
-          className={`flex space-x-1 overflow-x-auto scrollbar-hide transition-all duration-200 ${
-            showLeftArrow ? 'pl-10' : ''
-          } ${showRightArrow ? 'pr-10' : ''}`}
+          className={`flex space-x-1 overflow-x-auto scrollbar-hide transition-all duration-200 ${showLeftArrow ? 'pl-10' : ''
+            } ${showRightArrow ? 'pr-10' : ''}`}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {allCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => handleCategoryChange(category.slug)}
-              className={`pb-4 px-4 h6-title whitespace-nowrap transition-colors flex-shrink-0 ${
-                activeCategory === category.slug
-                  ? 'text-gray-900 border-b-2 border-teal-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`pb-4 px-4 h6-title whitespace-nowrap transition-colors flex-shrink-0 ${activeCategory === category.slug
+                ? 'text-gray-900 border-b-2 border-teal-600'
+                : 'text-gray-500 hover:text-gray-700'
+                }`}
             >
               {category.name}
               {category.count !== undefined && (

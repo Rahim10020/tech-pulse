@@ -1,11 +1,12 @@
+// src/app/page.js - Page d'accueil avec API
 "use client";
 
 import { useState, useEffect } from 'react';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
-import { Button } from "@/components/ui/Button";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import LaodingSpinner from "@/components/ui/LoadingSpinner"
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function HomePage() {
   const [recentArticles, setRecentArticles] = useState([]);
@@ -30,8 +31,9 @@ export default function HomePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-        <p className="body-text text-gray-600 mt-4">Chargement des articles...</p>
+        <div className="text-center">
+          <LoadingSpinner />
+        </div>
       </div>
     );
   }
@@ -39,20 +41,29 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="container-sm py-8">
+      <div className="container-sm py-4">
         <SearchBar
           placeholder="Rechercher des articles par mots-clés ou catégories"
-          className="mb-8"
+          className="mb-6"
         />
 
-        <h2 className="h2-title text-gray-900 mb-6">
+        <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
           Articles récents
         </h2>
 
-        <div className="space-y-4">
-          {recentArticles.map((article) => (
+        {/* Articles en layout horizontal */}
+        {recentArticles.map((article, index) => (
+          <div
+            key={article.id}
+            className={
+              index === 0
+                ? "rounded-t-lg"
+                : index === recentArticles.length - 1
+                  ? "rounded-b-lg"
+                  : "w-full"
+            }
+          >
             <ArticleCard
-              key={article.id}
               title={article.title}
               description={article.description}
               readTime={article.readTime}
@@ -63,17 +74,14 @@ export default function HomePage() {
               category={article.category}
               horizontal={true}
             />
-          ))}
-        </div>
+          </div>
+        ))}
 
-        <div className="text-center mt-10">
-          <Button
-            href="/articles"
-            variant="primary"
-            className="h5-title"
-          >
+        {/* Lien vers tous les articles */}
+        <div className="text-center mt-8">
+          <a href="/articles" className="btn-primary">
             Voir tous les articles
-          </Button>
+          </a>
         </div>
       </div>
     </div>
