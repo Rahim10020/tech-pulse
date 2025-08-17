@@ -34,7 +34,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
         onChange={handleChange}
         placeholder="Email"
         required
-        className="h5-title" // Ajout pour la cohérence typographique
+        className="h5-title"
       />
 
       <Input
@@ -45,7 +45,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
         onChange={handleChange}
         placeholder="Password"
         required
-        className="h5-title" // Ajout pour la cohérence typographique
+        className="h5-title"
       />
 
       <div className="text-right">
@@ -60,7 +60,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h5-title" // Standardisation avec h5-title
+        className="w-full h5-title"
         isLoading={isLoading}
       >
         {isLoading ? "Connecting..." : "Log in"}

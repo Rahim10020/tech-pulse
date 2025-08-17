@@ -20,7 +20,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
       ...prev,
       [name]: value
     }));
-    
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -62,7 +62,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       onSubmit({
         username: formData.username.trim(),
@@ -85,7 +85,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         placeholder="Votre nom d'utilisateur"
         disabled={isLoading}
         autoComplete="username"
-        className="h5-title" // Ajout pour la cohérence typographique
+        className="h5-title"
       />
 
       {/* Email Field */}
@@ -99,7 +99,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         placeholder="votre@email.com"
         disabled={isLoading}
         autoComplete="email"
-        className="h5-title" // Ajout pour la cohérence typographique
+        className="h5-title"
       />
 
       {/* Password Field */}
@@ -113,7 +113,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         placeholder="Mot de passe sécurisé"
         disabled={isLoading}
         autoComplete="new-password"
-        className="h5-title" // Ajout pour la cohérence typographique
+        className="h5-title"
       />
 
       {/* Confirm Password Field */}
@@ -127,14 +127,14 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         placeholder="Confirmez votre mot de passe"
         disabled={isLoading}
         autoComplete="new-password"
-        className="h5-title" // Ajout pour la cohérence typographique
+        className="h5-title"
       />
 
       {/* Submit Button */}
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h5-title" // Standardisation avec h5-title
+        className="w-full h5-title"
         isLoading={isLoading}
       >
         Créer mon compte

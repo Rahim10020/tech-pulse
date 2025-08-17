@@ -71,11 +71,10 @@ export default function ResetPasswordPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gray-900 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">TP</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">pixelpulse</span>
+          <Link href="/">
+            <img src="/logo.png"
+              alt="Logo pixelpulse"
+              className="h-10" />
           </Link>
         </div>
       </header>

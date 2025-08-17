@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
@@ -16,10 +15,10 @@ export default function LoginPage() {
 
   const handleLogin = async (formData) => {
     setIsLoading(true);
-    
+
     try {
       const result = await login(formData.email, formData.password);
-      
+
       if (result.success) {
         showToast('Connexion réussie !', 'success');
         router.push('/');
@@ -41,14 +40,6 @@ export default function LoginPage() {
 
       <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
 
-      <div className="text-center mt-6">
-        <span className="text-sm font-poppins text-gray-500">
-          Don't have an account?{' '}
-          <Link href="/signup" className="text-gray-700 hover:text-gray-900 font-poppins underline">
-            Sign up
-          </Link>
-        </span>
-      </div>
     </div>
   );
 }

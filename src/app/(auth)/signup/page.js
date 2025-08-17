@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
@@ -16,10 +15,10 @@ export default function SignupPage() {
 
   const handleSignup = async (formData) => {
     setIsLoading(true);
-    
+
     try {
       const result = await signup(formData.username, formData.email, formData.password);
-      
+
       if (result.success) {
         showToast('Compte créé avec succès !', 'success');
         router.push('/');
@@ -40,15 +39,6 @@ export default function SignupPage() {
       </div>
 
       <SignupForm onSubmit={handleSignup} isLoading={isLoading} />
-
-      <div className="text-center mt-4">
-        <span className="text-sm font-poppins text-gray-500">
-          Already have an account?{' '}
-          <Link href="/login" className="text-gray-700 hover:text-gray-900 font-poppins underline">
-            Sign in
-          </Link>
-        </span>
-      </div>
     </div>
   );
 }
