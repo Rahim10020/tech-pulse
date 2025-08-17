@@ -40,6 +40,15 @@ export default function CreateArticlePage() {
     return `${readingTimeMinutes} min`;
   };
 
+  // Ajouter cette fonction après calculateReadingTime :
+  const updateFormData = useCallback((field, value) => {
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value };
+      setHasUnsavedChanges(true);
+      return newData;
+    });
+  }, []);
+
   const readingTime = calculateReadingTime(formData.content);
 
   // Enregistrer un brouillon automatiquement
@@ -145,7 +154,7 @@ export default function CreateArticlePage() {
   // Mettre à jour automatiquement le temps de lecture
   useEffect(() => {
     if (readingTime && readingTime !== formData.readTime) {
-      setFormData((prev) => ({ ...prev, readTime: readingTime }));
+      updateFormData((prev) => ({ ...prev, readTime: readingTime }));
     }
   }, [readingTime]);
 
@@ -249,7 +258,7 @@ export default function CreateArticlePage() {
 
   // Fonction pour gérer les changements de contenu
   const handleContentChange = (newContent) => {
-    setFormData((prev) => ({ ...prev, content: newContent }));
+    updateFormData((prev) => ({ ...prev, content: newContent }));
     setHasUnsavedChanges(true);
   };
 
@@ -289,7 +298,7 @@ export default function CreateArticlePage() {
             <select
               value={formData.category}
               onChange={(e) => {
-                setFormData({ ...formData, category: e.target.value });
+                updateFormData({ ...formData, category: e.target.value });
                 setHasUnsavedChanges(true);
               }}
               className="input-field"
@@ -332,7 +341,7 @@ export default function CreateArticlePage() {
                 placeholder="Titre..."
                 value={formData.title}
                 onChange={(e) => {
-                  setFormData({ ...formData, title: e.target.value });
+                  updateFormData({ ...formData, title: e.target.value });
                   setHasUnsavedChanges(true);
                 }}
                 className="w-full text-3xl bg-transparent font-bold text-gray-900 placeholder-gray-400 border-none outline-none"
