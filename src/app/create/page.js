@@ -155,7 +155,7 @@ export default function CreateArticlePage() {
       if (formData.title.trim()) {
         try {
           await forceSave();
-          success("Brouillon sauvegardé manuellement");
+          success("Draft saved manually");
         } catch (err) {
           error("Erreur lors de la sauvegarde");
         }
@@ -183,7 +183,7 @@ export default function CreateArticlePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) {
-      error("Le titre et le contenu sont requis");
+      error("Title and content are required");
       return;
     }
 
@@ -204,7 +204,7 @@ export default function CreateArticlePage() {
       const data = await response.json();
 
       if (data.success) {
-        success("Article publié avec succès !");
+        success("Article successfully published!");
         setHasUnsavedChanges(false);
         router.push(`/articles/${data.article.slug}`);
       } else {
@@ -212,7 +212,7 @@ export default function CreateArticlePage() {
       }
     } catch (err) {
       console.error("Error creating article:", err);
-      error("Erreur lors de la publication");
+      error("Error while publishing");
     } finally {
       setIsSubmitting(false);
     }
@@ -221,17 +221,17 @@ export default function CreateArticlePage() {
   // Fonction pour sauvegarder en brouillon manuellement
   const handleSaveDraft = async () => {
     if (!formData.title.trim()) {
-      error("Le titre est requis pour sauvegarder un brouillon");
+      error("Title is required to save a draft");
       return;
     }
 
     setIsSavingDraft(true);
     try {
       await forceSave();
-      success("Brouillon sauvegardé avec succès !");
+      success("Draft saved successfully!");
     } catch (err) {
       console.error("Error saving draft:", err);
-      error("Erreur lors de la sauvegarde du brouillon");
+      error("Error saving draft");
     } finally {
       setIsSavingDraft(false);
     }
@@ -240,7 +240,7 @@ export default function CreateArticlePage() {
   const handleBack = () => {
     if (hasUnsavedChanges) {
       const confirmLeave = window.confirm(
-        "Vous avez des modifications non sauvegardées. Êtes-vous sûr de vouloir quitter ?"
+        "You have unsaved changes. Are you sure you want to quit?"
       );
       if (!confirmLeave) return;
     }
@@ -275,7 +275,7 @@ export default function CreateArticlePage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div className="flex-1">
             <h1 className="h1-title text-gray-900 mb-2">
-              Publier un article
+              Publish an article
             </h1>
             <SaveIndicator
               isSaving={isSaving || isSavingDraft}
@@ -295,7 +295,7 @@ export default function CreateArticlePage() {
               className="input-field"
               required
             >
-              <option value="">Choisissez une catégorie</option>
+              <option value="">Choose a category</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.slug}>
                   {category.name}
@@ -307,7 +307,7 @@ export default function CreateArticlePage() {
           {/* Informations de l'article */}
           <div className="text-right">
             <div className="small-text text-gray-600">
-              Temps de lecture:{" "}
+              Reading time:{" "}
               <span className="font-medium">{readingTime}</span>
             </div>
             <div className="small-text text-gray-500">
@@ -317,7 +317,7 @@ export default function CreateArticlePage() {
                   .split(/\s+/)
                   .filter((word) => word.length > 0).length
               }{" "}
-              mots
+              words
             </div>
           </div>
         </div>

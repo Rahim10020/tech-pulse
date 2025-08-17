@@ -8,11 +8,10 @@ export default function NotFound() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
         {/* Logo pixelpulse */}
-        <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-10 h-10 bg-gray-900 flex items-center justify-center rounded">
-            <span className="text-white font-bold">TP</span>
-          </div>
-          <span className="h2-title text-gray-900">pixelpulse</span>
+        <div className="mb-8">
+          <img src="/logo.png"
+            alt="Logo pixelpulse"
+            className="h-10" />
         </div>
 
         {/* 404 */}
@@ -20,12 +19,12 @@ export default function NotFound() {
 
         {/* Titre */}
         <h1 className="h2-title text-gray-900 mb-4">
-          Page introuvable
+          Page not found
         </h1>
 
         {/* Message */}
         <p className="body-text text-gray-600 mb-8">
-          Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+          Sorry, the page you are looking for does not exist or has been moved.
         </p>
 
         {/* Barre de recherche */}
@@ -45,7 +44,7 @@ export default function NotFound() {
             variant="primary"
             icon={<Home className="w-4 h-4" />}
           >
-            Retour à l'accueil
+            Return to home
           </Button>
 
           <Button
@@ -53,31 +52,31 @@ export default function NotFound() {
             onClick={() => window.history.back()}
             icon={<ArrowLeft className="w-4 h-4" />}
           >
-            Page précédente
+            Back
           </Button>
         </div>
 
         {/* Liens suggérés */}
         <div className="mt-12">
-          <h3 className="h5-title text-gray-900 mb-4">Pages populaires :</h3>
+          <h3 className="h5-title text-gray-900 mb-4">Popular pages :</h3>
           <div className="space-y-2">
             <Link
               href="/articles"
               className="block small-text text-gray-600 hover:text-gray-900 underline"
             >
-              Tous les articles
+              All articles
             </Link>
             <Link
               href="/categories"
               className="block small-text text-gray-600 hover:text-gray-900 underline"
             >
-              Catégories
+              Categories
             </Link>
             <Link
               href="/about"
               className="block small-text text-gray-600 hover:text-gray-900 underline"
             >
-              À propos
+              About
             </Link>
           </div>
         </div>

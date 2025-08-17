@@ -116,7 +116,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Error loading messages:", error);
-      showToast("Erreur lors du chargement des messages", "error");
+      showToast("Error loading messages", "error");
     } finally {
       setMessagesLoading(false);
     }
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Error loading users:", error);
-      showToast("Erreur lors du chargement des utilisateurs", "error");
+      showToast("Error loading messages users", "error");
     } finally {
       setUsersLoading(false);
     }
@@ -185,7 +185,7 @@ export default function AdminDashboard() {
   };
 
   const deleteMessage = async (messageId) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer ce message ?")) return;
+    if (!confirm("Are you sure you want to delete this message?")) return;
     try {
       const response = await fetch(`/api/contact/${messageId}`, {
         method: "DELETE",
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
             unreadMessages: prev.unreadMessages - 1,
           }));
         }
-        showToast("Message supprimé", "success");
+        showToast("Message deleted", "success");
       }
     } catch (error) {
       console.error("Error deleting message:", error);
@@ -222,13 +222,13 @@ export default function AdminDashboard() {
       });
       if (response.ok) {
         setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
-        showToast("Rôle utilisateur mis à jour", "success");
+        showToast("User role updated", "success");
       } else {
-        showToast((await response.json()).error || "Erreur lors du changement de rôle", "error");
+        showToast((await response.json()).error || "Error changing user role", "error");
       }
     } catch (error) {
       console.error("Error changing user role:", error);
-      showToast("Erreur lors du changement de rôle", "error");
+      showToast("Error changing user role", "error");
     }
   };
 
@@ -247,11 +247,11 @@ export default function AdminDashboard() {
       if (response.ok) {
         showToast("Paramètres sauvegardés avec succès", "success");
       } else {
-        showToast((await response.json()).error || "Erreur lors de la sauvegarde", "error");
+        showToast((await response.json()).error || "Error while saving", "error");
       }
     } catch (error) {
       console.error("Error saving settings:", error);
-      showToast("Erreur lors de la sauvegarde", "error");
+      showToast("Error while saving", "error");
     } finally {
       setSavingSettings(false);
     }
@@ -285,7 +285,7 @@ export default function AdminDashboard() {
           <div>
             <h1 className="h1-title text-gray-900">Administration</h1>
             <p className="body-text text-gray-600">
-              Gérez votre site et surveillez les performances
+              Manage your site and monitor performance
             </p>
           </div>
           <button
@@ -293,7 +293,7 @@ export default function AdminDashboard() {
             className="btn-secondary flex items-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
-            <span>Actualiser</span>
+            <span>Refresh</span>
           </button>
         </div>
 
@@ -301,17 +301,17 @@ export default function AdminDashboard() {
         <div className="border-b border-gray-200 mb-8">
           <nav className="flex gap-8">
             {[
-              { id: "overview", label: "Vue d'ensemble", icon: BarChart3 },
-              { id: "users", label: "Utilisateurs", icon: Users },
+              { id: "overview", label: "Overview", icon: BarChart3 },
+              { id: "users", label: "Users", icon: Users },
               { id: "messages", label: "Messages", icon: MessageSquare, badge: stats.unreadMessages },
-              { id: "settings", label: "Paramètres", icon: Settings },
+              { id: "settings", label: "Settings", icon: Settings },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 ${activeTab === tab.id
-                    ? "border-teal-500 text-teal-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? "border-teal-500 text-teal-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -335,7 +335,7 @@ export default function AdminDashboard() {
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="h6-title text-gray-600">Utilisateurs</p>
+                      <p className="h6-title text-gray-600">Users</p>
                       <p className="h3-title text-gray-900">{stats.totalUsers}</p>
                     </div>
                     <Users className="w-8 h-8 text-blue-500" />
@@ -353,7 +353,7 @@ export default function AdminDashboard() {
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="h6-title text-gray-600">Vues totales</p>
+                      <p className="h6-title text-gray-600">Total Views</p>
                       <p className="h3-title text-gray-900">{stats.totalViews.toLocaleString()}</p>
                     </div>
                     <Eye className="w-8 h-8 text-purple-500" />
@@ -362,7 +362,7 @@ export default function AdminDashboard() {
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="h6-title text-gray-600">Messages non lus</p>
+                      <p className="h6-title text-gray-600">Unread messages</p>
                       <p className="h3-title text-gray-900">{stats.unreadMessages}</p>
                     </div>
                     <MessageSquare className="w-8 h-8 text-red-500" />
@@ -372,54 +372,54 @@ export default function AdminDashboard() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card p-6">
-                  <h3 className="h3-title text-gray-900 mb-4">Activité récente</h3>
+                  <h3 className="h3-title text-gray-900 mb-4">Recent activities</h3>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
-                        Nouvel utilisateur inscrit
+                        New registered user
                       </span>
-                      <span className="small-text text-gray-400">il y a 2h</span>
+                      <span className="small-text text-gray-400">2 hours ago</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
-                        Article publié
+                        Article published
                       </span>
-                      <span className="small-text text-gray-400">il y a 4h</span>
+                      <span className="small-text text-gray-400">4 hours ago</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
-                        Nouveau message de contact
+                        New contact message
                       </span>
-                      <span className="small-text text-gray-400">il y a 6h</span>
+                      <span className="small-text text-gray-400">10 hours ago</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="card p-6">
-                  <h3 className="h3-title text-gray-900 mb-4">Actions rapides</h3>
+                  <h3 className="h3-title text-gray-900 mb-4">Quick Actions</h3>
                   <div className="space-y-3">
                     <button
                       onClick={() => setActiveTab("messages")}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
-                      <span className="body-text">Gérer les messages</span>
+                      <span className="body-text">Manage messages</span>
                       <MessageSquare className="w-4 h-4 text-gray-400" />
                     </button>
                     <button
                       onClick={() => setActiveTab("users")}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
-                      <span className="body-text">Gérer les utilisateurs</span>
+                      <span className="body-text">Manage users</span>
                       <Users className="w-4 h-4 text-gray-400" />
                     </button>
                     <button
                       onClick={() => setActiveTab("settings")}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
-                      <span className="body-text">Paramètres du site</span>
+                      <span className="body-text">Site Settings</span>
                       <Settings className="w-4 h-4 text-gray-400" />
                     </button>
                   </div>
@@ -431,7 +431,7 @@ export default function AdminDashboard() {
           {/* Gestion des utilisateurs */}
           {activeTab === "users" && (
             <div className="space-y-6">
-              <h2 className="h2-title text-gray-900">Gestion des utilisateurs</h2>
+              <h2 className="h2-title text-gray-900">User management</h2>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
@@ -446,9 +446,9 @@ export default function AdminDashboard() {
                   onChange={(e) => setRoleFilter(e.target.value)}
                   className="input-field"
                 >
-                  <option value="all">Tous les rôles</option>
-                  <option value="admin">Administrateurs</option>
-                  <option value="reader">Lecteurs</option>
+                  <option value="all">All roles</option>
+                  <option value="admin">Administrators</option>
+                  <option value="reader">Readers</option>
                 </select>
               </div>
 
@@ -504,7 +504,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-12 card">
                   <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">Aucun utilisateur trouvé.</p>
+                  <p className="body-text text-gray-500">No users found.</p>
                 </div>
               )}
             </div>
@@ -514,7 +514,7 @@ export default function AdminDashboard() {
           {activeTab === "messages" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="h2-title text-gray-900">Messages de contact</h2>
+                <h2 className="h2-title text-gray-900">Contact Messages</h2>
                 <span className="small-text text-gray-500">
                   {messages.length} message(s)
                 </span>
@@ -570,7 +570,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-12 card">
                   <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">Aucun message de contact.</p>
+                  <p className="body-text text-gray-500">No contact message.</p>
                 </div>
               )}
             </div>
@@ -584,12 +584,12 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Globe className="w-5 h-5" />
-                    Informations générales
+                    General information
                   </h2>
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Nom du site</label>
+                        <label className="h6-title block mb-2">Site name</label>
                         <input
                           type="text"
                           name="siteName"
@@ -600,7 +600,7 @@ export default function AdminDashboard() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">URL du site</label>
+                        <label className="h6-title block mb-2">Site URL</label>
                         <input
                           type="url"
                           name="siteUrl"
@@ -612,7 +612,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Description du site</label>
+                      <label className="h6-title block mb-2">Site description</label>
                       <textarea
                         name="siteDescription"
                         value={settings.siteDescription}
@@ -629,12 +629,12 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Mail className="w-5 h-5" />
-                    Informations de contact
+                    Contact informations
                   </h2>
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Email de contact</label>
+                        <label className="h6-title block mb-2">Contact Email</label>
                         <input
                           type="email"
                           name="contactEmail"
@@ -645,7 +645,7 @@ export default function AdminDashboard() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">Téléphone</label>
+                        <label className="h6-title block mb-2">Phone</label>
                         <input
                           type="tel"
                           name="contactPhone"
@@ -657,7 +657,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Adresse</label>
+                      <label className="h6-title block mb-2">Address</label>
                       <textarea
                         name="contactAddress"
                         value={settings.contactAddress}
@@ -674,7 +674,7 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Twitter className="w-5 h-5" />
-                    Réseaux sociaux
+                    Social networks
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
@@ -717,11 +717,11 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Activity className="w-5 h-5" />
-                    Paramètres SEO
+                    SEO Settings
                   </h2>
                   <div className="space-y-6">
                     <div>
-                      <label className="h6-title block mb-2">Titre SEO</label>
+                      <label className="h6-title block mb-2">SEO title</label>
                       <input
                         type="text"
                         name="seoTitle"
@@ -732,7 +732,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Description SEO</label>
+                      <label className="h6-title block mb-2">SEO description</label>
                       <textarea
                         name="seoDescription"
                         value={settings.seoDescription}
@@ -743,14 +743,14 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Mots-clés SEO</label>
+                      <label className="h6-title block mb-2">SEO Keywords</label>
                       <input
                         type="text"
                         name="seoKeywords"
                         value={settings.seoKeywords}
                         onChange={handleSettingsChange}
                         className="input-field"
-                        placeholder="tech, technologie, innovation, blog, articles"
+                        placeholder="tech, technology, innovation, blog, articles"
                       />
                     </div>
                   </div>
@@ -760,7 +760,7 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Settings className="w-5 h-5" />
-                    Fonctionnalités
+                    Features
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="flex items-center">
@@ -771,7 +771,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Mode maintenance</label>
+                      <label className="h6-title ml-2">Maintenance mode</label>
                     </div>
                     <div className="flex items-center">
                       <input
@@ -781,7 +781,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Autoriser les commentaires</label>
+                      <label className="h6-title ml-2">Allow comments</label>
                     </div>
                     <div className="flex items-center">
                       <input
@@ -791,7 +791,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Autoriser l'inscription</label>
+                      <label className="h6-title ml-2">Allow registration</label>
                     </div>
                   </div>
                 </div>
@@ -813,7 +813,7 @@ export default function AdminDashboard() {
                       placeholder="<!-- Code de tracking Google Analytics -->"
                     />
                     <p className="small-text text-gray-500 mt-1">
-                      Collez ici votre code de tracking Google Analytics
+                      Paste your Google Analytics tracking code here
                     </p>
                   </div>
                 </div>
@@ -828,12 +828,12 @@ export default function AdminDashboard() {
                     {savingSettings ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        <span>Sauvegarde...</span>
+                        <span>Saving...</span>
                       </>
                     ) : (
                       <>
                         <Settings className="w-4 h-4" />
-                        <span>Sauvegarder</span>
+                        <span>Save</span>
                       </>
                     )}
                   </button>
@@ -841,7 +841,7 @@ export default function AdminDashboard() {
                   {settings.maintenanceMode && (
                     <div className="flex items-center gap-2 text-orange-600">
                       <AlertTriangle className="w-4 h-4" />
-                      <span className="h6-title">Mode maintenance activé</span>
+                      <span className="h6-title">Maintenance Mode activated</span>
                     </div>
                   )}
                 </div>

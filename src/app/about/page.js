@@ -67,7 +67,7 @@ function HeroSection() {
             transition={{ duration: 0.8 }}
             className="h1-title text-gray-900 mb-14"
           >
-            À propos de <span className="text-teal-600">pixelpulse</span>
+            About <span className="text-teal-600">pixelpulse</span>
           </motion.h1>
 
           <motion.p
@@ -76,9 +76,9 @@ function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="h4-title text-gray-600 mb-8"
           >
-            Votre source de référence pour rester à la pointe de la technologie.
-            Nous partageons les dernières tendances, tutoriels et analyses dans le monde du développement,
-            de l'intelligence artificielle et de la cybersécurité.
+            Your go-to source for staying on the cutting edge of technology.
+            We share the latest trends, tutorials, and analysis in the world of development,
+            artificial intelligence, and cybersecurity.
           </motion.p>
 
           <motion.div
@@ -93,7 +93,7 @@ function HeroSection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Découvrir nos articles
+              Discover our articles
               <ArrowRight className="w-4 h-4 ml-2" />
             </motion.a>
             <motion.a
@@ -102,7 +102,7 @@ function HeroSection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Nous contacter
+              Contact us
             </motion.a>
           </motion.div>
         </div>
@@ -114,10 +114,10 @@ function HeroSection() {
 // Stats Section avec compteurs animés
 function StatsSection() {
   const stats = [
-    { label: "Articles publiés", value: 150, suffix: "+" },
-    { label: "Lecteurs mensuels", value: 50, suffix: "K+" },
-    { label: "Pays couverts", value: 25, suffix: "+" },
-    { label: "Années d'expérience", value: 5, suffix: "+" }
+    { label: "Published articles", value: 150, suffix: "+" },
+    { label: "Monthly Readers", value: 50, suffix: "K+" },
+    { label: "Countries covered", value: 25, suffix: "+" },
+    { label: "Years of experience", value: 5, suffix: "+" }
   ];
 
   return (
@@ -206,7 +206,7 @@ function MissionSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Notre Mission
+            Our Mission
           </motion.h2>
           <div className="text-center">
             <motion.p
@@ -216,28 +216,28 @@ function MissionSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Chez pixelpulse, nous croyons que la technologie doit être accessible à tous.
-              Notre mission est de démocratiser les connaissances techniques en proposant
-              du contenu de qualité, des tutoriels pratiques et des analyses approfondies.
+              At pixelpulse, we believe technology should be accessible to everyone.
+              Our mission is to democratize technical knowledge by offering
+              quality content, practical tutorials, and in-depth analyses.
             </motion.p>
             <div className="grid md:grid-cols-2 gap-8 mt-12">
               <MissionCard
-                title="Ce que nous faisons"
+                title="What we do"
                 items={[
-                  "Articles techniques approfondis",
-                  "Tutoriels pas-à-pas",
-                  "Analyses des dernières tendances",
-                  "Guides pour débutants et experts"
+                  "In-depth technical articles",
+                  "Step-by-step tutorials",
+                  "Analysis of the latest trends",
+                  "Guides for beginners and experts"
                 ]}
                 color="teal"
                 delay={0.3}
               />
               <MissionCard
-                title="Nos domaines d'expertise"
+                title="Our areas of expertise"
                 items={[
-                  "Développement Web et Mobile",
-                  "Intelligence Artificielle",
-                  "Cybersécurité",
+                  "Web and Mobile Development",
+                  "Artificial intelligence",
+                  "Cybersecurity",
                   "Cloud Computing"
                 ]}
                 color="orange"
@@ -286,23 +286,23 @@ function ValuesSection() {
   const values = [
     {
       icon: <Code className="w-8 h-8 text-teal-600" />,
-      title: "Excellence Technique",
-      description: "Nous nous engageons à fournir un contenu technique de la plus haute qualité, vérifié par nos experts."
+      title: "Technical Excellence",
+      description: "We are committed to providing the highest quality technical content, verified by our experts."
     },
     {
       icon: <Users className="w-8 h-8 text-orange-500" />,
-      title: "Communauté",
-      description: "Nous croyons en la force de la communauté pour partager les connaissances et faire progresser la technologie."
+      title: "Community",
+      description: "We believe in the power of community to share knowledge and advance technology."
     },
     {
       icon: <Target className="w-8 h-8 text-blue-500" />,
       title: "Innovation",
-      description: "Nous explorons constamment les dernières tendances pour vous tenir informé des évolutions technologiques."
+      description: "We are constantly exploring the latest trends to keep you informed of technological developments."
     },
     {
       icon: <Award className="w-8 h-8 text-green-500" />,
-      title: "Pédagogie",
-      description: "Nous rendons les concepts complexes accessibles à tous, du débutant à l'expert confirmé."
+      title: "Pedagogy",
+      description: "We make complex concepts accessible to everyone, from beginner to seasoned expert."
     }
   ];
 
@@ -317,7 +317,7 @@ function ValuesSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Nos Valeurs
+            Our Values
           </motion.h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
@@ -365,36 +365,36 @@ function TimelineSection() {
   const milestones = [
     {
       year: "2020",
-      title: "Naissance de pixelpulse",
-      description: "Création du blog avec une vision simple : démocratiser la tech",
+      title: "Birth of Pixelpulse",
+      description: "Creation of the blog with a simple vision: democratize tech",
       icon: "🚀",
       color: "from-blue-400 to-purple-500"
     },
     {
       year: "2021",
-      title: "Première communauté",
-      description: "10K lecteurs mensuels et lancement de la newsletter",
+      title: "First community",
+      description: "10K monthly readers and newsletter launch",
       icon: "👥",
       color: "from-green-400 to-teal-500"
     },
     {
       year: "2022",
-      title: "Équipe élargie",
-      description: "Recrutement d'experts et diversification des contenus",
+      title: "Extended team",
+      description: "Recruitment of experts and diversification of content",
       icon: "⭐",
       color: "from-orange-400 to-red-500"
     },
     {
       year: "2023",
-      title: "Recognition internationale",
-      description: "50K+ lecteurs dans 25 pays, partenariats tech",
+      title: "International recognition",
+      description: "50K+ readers in 25 countries, tech partnerships",
       icon: "🌍",
       color: "from-purple-400 to-pink-500"
     },
     {
       year: "2024",
-      title: "Innovation continue",
-      description: "IA, cybersécurité avancée et nouvelles technologies",
+      title: "Continuous innovation",
+      description: "AI, advanced cybersecurity and new technologies",
       icon: "🔮",
       color: "from-cyan-400 to-blue-500"
     }
@@ -413,7 +413,7 @@ function TimelineSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Notre Histoire
+            Our history
           </motion.h2>
 
           <div className="relative">
@@ -586,7 +586,7 @@ function TeamSection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Notre Équipe
+            Our Team
           </motion.h2>
 
           {/* Carrousel Desktop */}
@@ -731,7 +731,7 @@ function TeamMemberCard({ name, role, bio, avatar, social, specialties, delay, o
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          En savoir plus →
+          Learn more →
         </motion.button>
 
         {/* Social links */}
@@ -807,7 +807,7 @@ function TeamMemberModal({ member, isOpen, onClose }) {
 
           {/* Bio détaillée */}
           <div className="mb-6">
-            <h4 className="h4-title text-gray-900 mb-3">Biographie</h4>
+            <h4 className="h4-title text-gray-900 mb-3">Biography</h4>
             <p className="body-text text-gray-700 leading-relaxed">
               {member.detailedBio}
             </p>
@@ -815,7 +815,7 @@ function TeamMemberModal({ member, isOpen, onClose }) {
 
           {/* Spécialités */}
           <div className="mb-6">
-            <h4 className="h4-title text-gray-900 mb-3">Spécialités</h4>
+            <h4 className="h4-title text-gray-900 mb-3">Specialties</h4>
             <div className="flex flex-wrap gap-2">
               {member.specialties?.map((skill, index) => (
                 <span key={index} className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
@@ -827,7 +827,7 @@ function TeamMemberModal({ member, isOpen, onClose }) {
 
           {/* Social Links */}
           <div>
-            <h4 className="h4-title text-gray-900 mb-3">Suivre {member.name.split(' ')[0]}</h4>
+            <h4 className="h4-title text-gray-900 mb-3">follow {member.name.split(' ')[0]}</h4>
             <div className="flex gap-4">
               {Object.entries(member.social).map(([platform, url]) => {
                 const icons = {
@@ -875,7 +875,7 @@ function CTASection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Rejoignez la Communauté pixelpulse
+            Join the Pixelpulse Community
           </motion.h2>
           <motion.p
             className="h4-title text-white/90 mb-8"
@@ -884,8 +884,8 @@ function CTASection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Restez informé des dernières tendances technologiques et
-            accédez à du contenu exclusif en rejoignant notre communauté.
+            Stay up-to-date on the latest technology trends and
+            access exclusive content by joining our community.
           </motion.p>
           <motion.div
             className="flex flex-wrap justify-center gap-4"
@@ -900,7 +900,7 @@ function CTASection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Découvrir les articles
+              Discover the articles
             </motion.a>
             <motion.a
               href="/contact"
@@ -908,7 +908,7 @@ function CTASection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Nous contacter
+              Contact us
             </motion.a>
           </motion.div>
         </div>

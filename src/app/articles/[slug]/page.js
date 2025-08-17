@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
 
     if (!response.ok) {
       return {
-        title: 'Article non trouvé - pixelpulse',
+        title: 'Article not found - pixelpulse',
       };
     }
 
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }) {
     };
   } catch (error) {
     return {
-      title: 'Article non trouvé - pixelpulse',
+      title: 'Article not found - pixelpulse',
     };
   }
 }

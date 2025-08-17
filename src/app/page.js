@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
-import LaodingSpinner from "@/components/ui/LoadingSpinner"
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function HomePage() {
@@ -48,7 +47,7 @@ export default function HomePage() {
         />
 
         <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
-          Articles récents
+          Recent articles
         </h2>
 
         {/* Articles en layout horizontal */}
@@ -80,7 +79,7 @@ export default function HomePage() {
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8">
           <a href="/articles" className="btn-primary">
-            Voir tous les articles
+            See all articles
           </a>
         </div>
       </div>

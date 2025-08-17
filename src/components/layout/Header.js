@@ -60,7 +60,7 @@ export default function Header() {
                 : ""
                 }`}
             >
-              Accueil
+              Home
             </Link>
             <Link
               href="/articles"

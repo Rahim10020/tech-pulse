@@ -8,12 +8,12 @@ export default function ArticleDetail({ article }) {
     return NotFound()
   }
 
-return (
+  return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <nav className="text-sm font-sans text-gray-500 mb-6">
-          <Link href="/" className="hover:text-gray-700">Accueil</Link>
+          <Link href="/" className="hover:text-gray-700">Home</Link>
           <span className="mx-2">/</span>
           <Link href="/articles" className="hover:text-gray-700">Articles</Link>
         </nav>
@@ -23,11 +23,11 @@ return (
           <h1 className="h1-title text-gray-900 mb-4 leading-tight">
             {article.title}
           </h1>
-          
+
           {/* Author & Meta */}
           <div className="flex items-center text-sm font-sans text-gray-600 mb-6">
-            <span>Publié par </span>
-            <Link 
+            <span>Published by </span>
+            <Link
               href={`/author/${article.author.username}`}
               className="mx-1 text-gray-900 hover:text-teal-600 transition-colors font-medium"
             >
@@ -36,7 +36,7 @@ return (
             <span className="mx-2">•</span>
             <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
             <span className="mx-2">•</span>
-            <span>{article.readTime} de lecture</span>
+            <span>{article.readTime} reading</span>
           </div>
         </header>
 
@@ -60,9 +60,9 @@ return (
             <p className="text-gray-700 leading-relaxed mb-6 font-sans">
               {article.description}
             </p>
-            
+
             {/* Contenu dynamique de l'article */}
-            <div 
+            <div
               className="space-y-6 text-gray-700 font-sans prose prose-lg max-w-none"
               dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br>') }}
             />
@@ -86,9 +86,9 @@ return (
           {/* Comments Section */}
           <div>
             <h3 className="h2-title text-gray-900 mb-6">
-              Commentaires {article.comments?.length > 0 && `(${article.comments.length})`}
+              Comments {article.comments?.length > 0 && `(${article.comments.length})`}
             </h3>
-            
+
             {/* Comments List - Données dynamiques */}
             <div className="space-y-6">
               {article.comments && article.comments.length > 0 ? (
@@ -111,7 +111,7 @@ return (
                       <p className="text-gray-700 text-sm leading-relaxed font-sans">
                         {comment.content}
                       </p>
-                      
+
                       {/* Afficher les réponses si elles existent */}
                       {comment.replies && comment.replies.length > 0 && (
                         <div className="mt-4 ml-6 space-y-4 border-l-2 border-gray-200 pl-4">
@@ -144,7 +144,7 @@ return (
                 ))
               ) : (
                 <p className="text-gray-500 text-center py-8 font-sans">
-                  Aucun commentaire pour le moment. Soyez le premier à commenter !
+                  No comments yet. Be the first to comment!
                 </p>
               )}
             </div>
@@ -163,7 +163,7 @@ return (
                   />
                   <div className="mt-3 flex justify-end">
                     <button className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors text-sm font-poppins">
-                      Envoyer
+                      Send
                     </button>
                   </div>
                 </div>

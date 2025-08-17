@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
 
   if (!author) {
     return {
-      title: 'Auteur non trouvé - pixelpulse',
+      title: 'Author not found - pixelpulse',
     };
   }
 

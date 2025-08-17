@@ -62,10 +62,10 @@ export default function CategoriesPage() {
       <div className="container-sm py-6">
         <div className="mb-8">
           <h1 className="h2-title text-gray-900 mb-4">
-            Catégories
+            Categories
           </h1>
           <p className="body-text text-gray-600">
-            Explorez nos articles par domaine d&apos;expertise technologique.
+            Explore our articles by area of technology expertise.
           </p>
         </div>
 

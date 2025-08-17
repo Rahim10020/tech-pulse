@@ -35,7 +35,7 @@ async function setupAdmin() {
           email: adminEmail,
           password: hashedPassword,
           role: 'admin',
-          bio: 'Administrateur et créateur du blog pixelpulse. Passionné par les nouvelles technologies et le développement web.',
+          bio: 'Administrator and creator of the pixelpulse blog. Passionate about new technologies and web development.',
           joinedAt: new Date()
         }
       });
