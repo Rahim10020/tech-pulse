@@ -50,7 +50,7 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [settings, setSettings] = useState({
-    siteName: "TechPulse",
+    siteName: "pixelpulse",
     siteDescription: "",
     siteUrl: "",
     contactEmail: "",
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
         body: JSON.stringify({ isRead: !isRead }),
       });
       if (response.ok) {
-        setMessages(messages.map(msg => 
+        setMessages(messages.map(msg =>
           msg.id === messageId ? { ...msg, isRead: !isRead } : msg
         ));
         setStats(prev => ({
@@ -309,11 +309,10 @@ export default function AdminDashboard() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 ${
-                  activeTab === tab.id
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 ${activeTab === tab.id
                     ? "border-teal-500 text-teal-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
+                  }`}
               >
                 <tab.icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -473,9 +472,8 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className={`badge ${
-                          user.role === "admin" ? "bg-teal-100 text-teal-800" : "bg-gray-100 text-gray-800"
-                        }`}>
+                        <span className={`badge ${user.role === "admin" ? "bg-teal-100 text-teal-800" : "bg-gray-100 text-gray-800"
+                          }`}>
                           {user.role === "admin" ? "Admin" : "Lecteur"}
                         </span>
                         {user.id !== user.id && (
@@ -531,9 +529,8 @@ export default function AdminDashboard() {
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`card p-4 ${
-                        !message.isRead ? "border-l-4 border-l-teal-500 bg-teal-50" : ""
-                      }`}
+                      className={`card p-4 ${!message.isRead ? "border-l-4 border-l-teal-500 bg-teal-50" : ""
+                        }`}
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
@@ -599,7 +596,7 @@ export default function AdminDashboard() {
                           value={settings.siteName}
                           onChange={handleSettingsChange}
                           className="input-field"
-                          placeholder="TechPulse"
+                          placeholder="pixelpulse"
                         />
                       </div>
                       <div>
@@ -610,7 +607,7 @@ export default function AdminDashboard() {
                           value={settings.siteUrl}
                           onChange={handleSettingsChange}
                           className="input-field"
-                          placeholder="https://techpulse.com"
+                          placeholder="https://pixelpulse.com"
                         />
                       </div>
                     </div>
@@ -644,7 +641,7 @@ export default function AdminDashboard() {
                           value={settings.contactEmail}
                           onChange={handleSettingsChange}
                           className="input-field"
-                          placeholder="contact@techpulse.com"
+                          placeholder="contact@pixelpulse.com"
                         />
                       </div>
                       <div>
@@ -688,7 +685,7 @@ export default function AdminDashboard() {
                         value={settings.socialTwitter}
                         onChange={handleSettingsChange}
                         className="input-field"
-                        placeholder="https://twitter.com/techpulse"
+                        placeholder="https://twitter.com/pixelpulse"
                       />
                     </div>
                     <div>
@@ -699,7 +696,7 @@ export default function AdminDashboard() {
                         value={settings.socialLinkedin}
                         onChange={handleSettingsChange}
                         className="input-field"
-                        placeholder="https://linkedin.com/company/techpulse"
+                        placeholder="https://linkedin.com/company/pixelpulse"
                       />
                     </div>
                     <div>
@@ -710,7 +707,7 @@ export default function AdminDashboard() {
                         value={settings.socialGithub}
                         onChange={handleSettingsChange}
                         className="input-field"
-                        placeholder="https://github.com/techpulse"
+                        placeholder="https://github.com/pixelpulse"
                       />
                     </div>
                   </div>
@@ -731,7 +728,7 @@ export default function AdminDashboard() {
                         value={settings.seoTitle}
                         onChange={handleSettingsChange}
                         className="input-field"
-                        placeholder="TechPulse - Blog Technologique"
+                        placeholder="pixelpulse - Blog Technologique"
                       />
                     </div>
                     <div>

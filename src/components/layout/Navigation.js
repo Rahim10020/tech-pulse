@@ -29,47 +29,47 @@ export default function Navigation() {
           <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
             <span className="text-white font-bold text-sm">TP</span>
           </div>
-          <span className="h3-title text-gray-900">TechPulse</span>
+          <span className="h3-title text-gray-900">pixelpulse</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className={`h6-title ${isActiveLink('/') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
           >
             Home
           </Link>
-          <Link 
-            href="/articles" 
+          <Link
+            href="/articles"
             className={`h6-title ${isActiveLink('/articles') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
           >
             Articles
           </Link>
           {user && (
             <>
-              <Link 
-                href="/create" 
+              <Link
+                href="/create"
                 className={`h6-title ${isActiveLink('/create') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
               >
                 Create
               </Link>
-              <Link 
-                href="/notifications" 
+              <Link
+                href="/notifications"
                 className={`h6-title ${isActiveLink('/notifications') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
               >
                 Notifications
               </Link>
-              <Link 
-                href="/messages" 
+              <Link
+                href="/messages"
                 className={`h6-title ${isActiveLink('/messages') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
               >
                 Messages
               </Link>
             </>
           )}
-          <Link 
-            href="/about" 
+          <Link
+            href="/about"
             className={`h6-title ${isActiveLink('/about') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
           >
             About
@@ -97,7 +97,7 @@ export default function Navigation() {
               <Button variant="ghost" size="icon">
                 <MessageSquare className="w-5 h-5" />
               </Button>
-              
+
               {/* Profile Menu */}
               <div className="relative">
                 <Button
@@ -151,8 +151,8 @@ export default function Navigation() {
             </>
           ) : (
             <>
-              <Button 
-                href="/login" 
+              <Button
+                href="/login"
                 variant="ghost"
                 className="h6-title"
               >
@@ -206,7 +206,7 @@ export default function Navigation() {
             <Link href="/about" className="block h6-title text-gray-700 hover:text-gray-900">
               About
             </Link>
-            
+
             {/* Mobile Search */}
             <div className="relative pt-2">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />

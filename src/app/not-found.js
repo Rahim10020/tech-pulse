@@ -7,12 +7,12 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
-        {/* Logo TechPulse */}
+        {/* Logo pixelpulse */}
         <div className="flex items-center justify-center space-x-2 mb-8">
           <div className="w-10 h-10 bg-gray-900 flex items-center justify-center rounded">
             <span className="text-white font-bold">TP</span>
           </div>
-          <span className="h2-title text-gray-900">TechPulse</span>
+          <span className="h2-title text-gray-900">pixelpulse</span>
         </div>
 
         {/* 404 */}
@@ -47,7 +47,7 @@ export default function NotFound() {
           >
             Retour à l'accueil
           </Button>
-          
+
           <Button
             variant="secondary"
             onClick={() => window.history.back()}

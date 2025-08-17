@@ -6,8 +6,8 @@ import { getUserById } from '@/lib/auth-db';
 import { isAdmin } from '@/lib/auth-roles';
 
 export const metadata = {
-  title: 'Administration - TechPulse',
-  description: 'Panneau d\'administration pour la gestion du site TechPulse',
+  title: 'Administration - pixelpulse',
+  description: 'Panneau d\'administration pour la gestion du site pixelpulse',
 };
 
 export default async function AdminLayout({ children }) {

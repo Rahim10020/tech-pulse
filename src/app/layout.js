@@ -21,7 +21,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "TechPulse - Blog Tech",
+  title: "pixelpulse - Blog Tech",
   description: "Blog technologique moderne",
 };
 

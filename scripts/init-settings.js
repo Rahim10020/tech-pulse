@@ -9,7 +9,7 @@ async function initSettings() {
 
     // Vérifier s'il existe déjà des paramètres
     const existingSettings = await prisma.siteSettings.findFirst();
-    
+
     if (existingSettings) {
       console.log('✅ Les paramètres existent déjà');
       return;
@@ -18,17 +18,17 @@ async function initSettings() {
     // Créer les paramètres par défaut
     const settings = await prisma.siteSettings.create({
       data: {
-        siteName: 'TechPulse',
+        siteName: 'pixelpulse',
         siteDescription: 'Blog technologique moderne et innovant',
-        siteUrl: 'https://techpulse.com',
-        contactEmail: 'contact@techpulse.com',
+        siteUrl: 'https://pixelpulse.com',
+        contactEmail: 'contact@pixelpulse.com',
         contactPhone: '+33 1 23 45 67 89',
         contactAddress: '123 Rue de la Tech, 75001 Paris, France',
-        socialTwitter: 'https://twitter.com/techpulse',
-        socialLinkedin: 'https://linkedin.com/company/techpulse',
-        socialGithub: 'https://github.com/techpulse',
+        socialTwitter: 'https://twitter.com/pixelpulse',
+        socialLinkedin: 'https://linkedin.com/company/pixelpulse',
+        socialGithub: 'https://github.com/pixelpulse',
         analyticsCode: '',
-        seoTitle: 'TechPulse - Blog Technologique',
+        seoTitle: 'pixelpulse - Blog Technologique',
         seoDescription: 'Découvrez les dernières actualités technologiques et les innovations du moment',
         seoKeywords: 'tech, technologie, innovation, blog, articles',
         maintenanceMode: false,

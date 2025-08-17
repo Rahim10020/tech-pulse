@@ -108,15 +108,15 @@ async function main() {
   // 3. Créer les utilisateurs
   console.log('Création des utilisateurs...');
   const hashedPassword = await bcrypt.hash('123456', 10);
-  
+
   const users = await Promise.all([
     prisma.user.upsert({
-      where: { email: 'sophie@techpulse.com' },
+      where: { email: 'sophie@pixelpulse.com' },
       update: {},
       create: {
         name: 'Sophie Martin',
         username: 'sophiemartin',
-        email: 'sophie@techpulse.com',
+        email: 'sophie@pixelpulse.com',
         password: hashedPassword,
         bio: 'Développeuse Full Stack passionnée par l\'IA et les nouvelles technologies. 5 ans d\'expérience en développement web moderne.',
         location: 'Paris, France',
@@ -127,12 +127,12 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'thomas@techpulse.com' },
+      where: { email: 'thomas@pixelpulse.com' },
       update: {},
       create: {
         name: 'Thomas Dubois',
         username: 'thomasdubois',
-        email: 'thomas@techpulse.com',
+        email: 'thomas@pixelpulse.com',
         password: hashedPassword,
         bio: 'Expert en cybersécurité avec plus de 8 ans d\'expérience. Spécialisé dans la sécurité des applications web et la cryptographie.',
         location: 'Lyon, France',
@@ -142,12 +142,12 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'clara@techpulse.com' },
+      where: { email: 'clara@pixelpulse.com' },
       update: {},
       create: {
         name: 'Clara Dupont',
         username: 'claradupont',
-        email: 'clara@techpulse.com',
+        email: 'clara@pixelpulse.com',
         password: hashedPassword,
         bio: 'Développeuse Frontend passionnée par l\'expérience utilisateur et les interfaces modernes. Experte React et Vue.js.',
         location: 'Bordeaux, France',
@@ -158,12 +158,12 @@ async function main() {
       }
     }),
     prisma.user.upsert({
-      where: { email: 'marc@techpulse.com' },
+      where: { email: 'marc@pixelpulse.com' },
       update: {},
       create: {
         name: 'Marc Leroy',
         username: 'marcleroy',
-        email: 'marc@techpulse.com',
+        email: 'marc@pixelpulse.com',
         password: hashedPassword,
         bio: 'Architecte Cloud et DevOps avec une passion pour l\'automatisation et l\'infrastructure moderne.',
         location: 'Toulouse, France',
@@ -175,7 +175,7 @@ async function main() {
 
   // 4. Créer quelques articles avec tags
   console.log('Création des articles...');
-  
+
   const article1 = await prisma.article.upsert({
     where: { slug: 'avenir-ia-developpement-logiciel' },
     update: {},
@@ -378,12 +378,12 @@ La sécurité est un processus continu, pas une destination !`,
 
   // 5. Créer quelques commentaires
   console.log('Création des commentaires...');
-  
+
   // Vérifier si les commentaires existent déjà
   const existingComment1 = await prisma.comment.findFirst({
     where: { articleId: article1.id, authorId: users[1].id }
   });
-  
+
   if (!existingComment1) {
     await prisma.comment.create({
       data: {
@@ -397,7 +397,7 @@ La sécurité est un processus continu, pas une destination !`,
   const existingComment2 = await prisma.comment.findFirst({
     where: { articleId: article2.id, authorId: users[2].id }
   });
-  
+
   if (!existingComment2) {
     await prisma.comment.create({
       data: {
@@ -410,14 +410,14 @@ La sécurité est un processus continu, pas une destination !`,
 
   // 6. Créer quelques likes
   console.log('Création des likes...');
-  
+
   // Vérifier si les likes existent déjà (contrainte unique)
   const likes = [
     { userId: users[1].id, articleId: article1.id },
     { userId: users[2].id, articleId: article1.id },
     { userId: users[0].id, articleId: article2.id }
   ];
-  
+
   for (const like of likes) {
     const existingLike = await prisma.like.findUnique({
       where: {
@@ -427,14 +427,14 @@ La sécurité est un processus continu, pas une destination !`,
         }
       }
     });
-    
+
     if (!existingLike) {
       await prisma.like.create({ data: like });
     }
   }
 
   console.log('Seeding terminé avec succès !');
-  
+
   // Statistiques
   const stats = await Promise.all([
     prisma.user.count(),
@@ -444,7 +444,7 @@ La sécurité est un processus continu, pas une destination !`,
     prisma.comment.count(),
     prisma.like.count()
   ]);
-  
+
   console.log(`
 Données créées :
 - ${stats[0]} utilisateurs

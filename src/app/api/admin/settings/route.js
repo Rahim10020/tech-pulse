@@ -39,12 +39,12 @@ export async function GET(request) {
 
     // Récupérer les paramètres (prendre le premier enregistrement ou créer par défaut)
     let settings = await prisma.siteSettings.findFirst();
-    
+
     if (!settings) {
       // Créer des paramètres par défaut
       settings = await prisma.siteSettings.create({
         data: {
-          siteName: 'TechPulse',
+          siteName: 'pixelpulse',
           siteDescription: 'Blog technologique moderne',
           allowComments: true,
           allowRegistration: true,
@@ -101,13 +101,13 @@ export async function PUT(request) {
 
     // Récupérer les paramètres existants ou créer par défaut
     let settings = await prisma.siteSettings.findFirst();
-    
+
     if (!settings) {
       // Créer de nouveaux paramètres
       settings = await prisma.siteSettings.create({
         data: {
           ...updateData,
-          siteName: updateData.siteName || 'TechPulse',
+          siteName: updateData.siteName || 'pixelpulse',
           allowComments: updateData.allowComments !== undefined ? updateData.allowComments : true,
           allowRegistration: updateData.allowRegistration !== undefined ? updateData.allowRegistration : true,
           maintenanceMode: updateData.maintenanceMode !== undefined ? updateData.maintenanceMode : false

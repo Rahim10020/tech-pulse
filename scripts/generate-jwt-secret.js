@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-console.log('🔐 Générateur de clé JWT sécurisée pour TechPulse\n');
+console.log('🔐 Générateur de clé JWT sécurisée pour pixelpulse\n');
 
 // Générer une clé aléatoire de 64 bytes (512 bits)
 const jwtSecret = crypto.randomBytes(64).toString('base64');
@@ -24,7 +24,7 @@ const envExamplePath = path.join(process.cwd(), '.env.example');
 try {
   if (fs.existsSync(envPath)) {
     let envContent = fs.readFileSync(envPath, 'utf8');
-    
+
     if (envContent.includes('JWT_SECRET=')) {
       // Remplacer la ligne existante
       envContent = envContent.replace(
@@ -35,7 +35,7 @@ try {
       // Ajouter la nouvelle ligne
       envContent += `\nJWT_SECRET="${jwtSecret}"\n`;
     }
-    
+
     fs.writeFileSync(envPath, envContent);
     console.log('✅ Fichier .env mis à jour automatiquement');
   } else if (fs.existsSync(envExamplePath)) {

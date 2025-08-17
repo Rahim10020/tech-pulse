@@ -157,7 +157,7 @@ model Contact {
 
 model SiteSettings {
   id                Int      @id @default(autoincrement())
-  siteName          String   @default("TechPulse")
+  siteName          String   @default("pixelpulse")
   siteDescription   String?  @db.Text
   siteUrl           String?
   contactEmail      String?

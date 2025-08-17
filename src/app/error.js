@@ -1,4 +1,4 @@
-// src/app/error.js - Page d'erreur pour TechPulse
+// src/app/error.js - Page d'erreur pour pixelpulse
 'use client';
 
 import { useEffect } from 'react';
@@ -48,7 +48,7 @@ export default function Error({ error, reset }) {
             <RefreshCw className="w-4 h-4" />
             Réessayer
           </button>
-          
+
           <Link
             href="/"
             className="btn-secondary flex items-center justify-center gap-2"

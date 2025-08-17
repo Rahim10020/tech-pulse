@@ -18,7 +18,7 @@ export async function setupTestDB() {
   await prisma.user.deleteMany()
   await prisma.category.deleteMany()
   await prisma.tag.deleteMany()
-  
+
   console.log('✅ Test database cleaned')
 }
 

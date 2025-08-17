@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-/* Variables CSS pour TechPulse */
+/* Variables CSS pour pixelpulse */
 :root {
   --background: #fafafa;
   --foreground: #0f172a;
@@ -37,7 +37,7 @@ body {
 }
 
 
-/* Composants TechPulse */
+/* Composants pixelpulse */
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 transition-colors;

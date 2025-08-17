@@ -9,7 +9,7 @@ async function setupAdmin() {
     console.log('🚀 Configuration du compte administrateur...');
 
     const adminEmail = 'rahialighi@gmail.com';
-    
+
     // Vérifier si l'utilisateur existe déjà
     let admin = await prisma.user.findUnique({
       where: { email: adminEmail }
@@ -25,9 +25,9 @@ async function setupAdmin() {
     } else {
       // Créer le compte admin s'il n'existe pas
       console.log('👤 Création du compte administrateur...');
-      
+
       const hashedPassword = await bcrypt.hash('admin123', 12); // Change ce mot de passe !
-      
+
       admin = await prisma.user.create({
         data: {
           name: 'Rahia Lighi',
@@ -35,7 +35,7 @@ async function setupAdmin() {
           email: adminEmail,
           password: hashedPassword,
           role: 'admin',
-          bio: 'Administrateur et créateur du blog TechPulse. Passionné par les nouvelles technologies et le développement web.',
+          bio: 'Administrateur et créateur du blog pixelpulse. Passionné par les nouvelles technologies et le développement web.',
           joinedAt: new Date()
         }
       });
@@ -53,10 +53,10 @@ async function setupAdmin() {
 
     // Vérifier les permissions (simplifiée)
     console.log('\n🔐 Vérification des permissions...');
-    
+
     // Vérification simple basée sur le rôle
     const isAdminRole = admin.role === 'admin';
-    
+
     console.log(`   Est admin: ${isAdminRole ? '✅' : '❌'}`);
     console.log(`   Peut écrire des articles: ${isAdminRole ? '✅' : '❌'}`);
     console.log(`   Peut gérer les utilisateurs: ${isAdminRole ? '✅' : '❌'}`);

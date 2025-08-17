@@ -145,7 +145,7 @@ graph TB
     Admin[👤 Administrateur]
     
     %% Cas d'utilisation pour Visiteur
-    subgraph "Système TechPulse"
+    subgraph "Système pixelpulse"
         UC1[Consulter articles]
         UC2[Rechercher articles]
         UC3[Filtrer par catégorie]

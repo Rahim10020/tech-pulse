@@ -21,13 +21,13 @@ if (JWT_SECRET.length < 32) {
 // Convertir l'expiration en secondes
 function parseExpiresIn(expiresIn) {
   if (typeof expiresIn === 'number') return expiresIn;
-  
+
   const match = expiresIn.match(/^(\d+)([dwh])$/);
   if (!match) return 7 * 24 * 60 * 60; // 7 jours par défaut
-  
+
   const [, num, unit] = match;
   const value = parseInt(num);
-  
+
   switch (unit) {
     case 'd': return value * 24 * 60 * 60;
     case 'w': return value * 7 * 24 * 60 * 60;
@@ -41,7 +41,7 @@ export async function createToken(payload) {
   try {
     const secret = new TextEncoder().encode(JWT_SECRET);
     const expiresInSeconds = parseExpiresIn(JWT_EXPIRES_IN);
-    
+
     // Ajouter des metadata de sécurité
     const enhancedPayload = {
       ...payload,
@@ -53,8 +53,8 @@ export async function createToken(payload) {
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime(Math.floor(Date.now() / 1000) + expiresInSeconds)
-      .setIssuer('techpulse-app')
-      .setAudience('techpulse-users')
+      .setIssuer('pixelpulse-app')
+      .setAudience('pixelpulse-users')
       .sign(secret);
 
     return jwt;
@@ -72,17 +72,17 @@ export async function verifyToken(token) {
     }
 
     const secret = new TextEncoder().encode(JWT_SECRET);
-    
+
     const { payload } = await jwtVerify(token, secret, {
       algorithms: ['HS256'],
-      issuer: 'techpulse-app',
-      audience: 'techpulse-users'
+      issuer: 'pixelpulse-app',
+      audience: 'pixelpulse-users'
     });
 
     // Vérifier que le token n'est pas trop ancien
     const now = Math.floor(Date.now() / 1000);
     const maxAge = 7 * 24 * 60 * 60; // 7 jours en secondes
-    
+
     if (payload.iat && (now - payload.iat) > maxAge) {
       console.warn('Token trop ancien, considéré comme invalide');
       return null;
@@ -106,7 +106,7 @@ export function decodeToken(token) {
   try {
     const parts = token.split('.');
     if (parts.length !== 3) return null;
-    
+
     const payload = JSON.parse(atob(parts[1]));
     return payload;
   } catch (error) {
@@ -133,9 +133,9 @@ export function isTokenBlacklisted(token) {
 export function withAuth(handler) {
   return async (req, res) => {
     const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
-    
+
     if (!token) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         error: 'Token d\'authentification requis',
         code: 'MISSING_TOKEN'
       });
@@ -143,7 +143,7 @@ export function withAuth(handler) {
 
     // Vérifier si le token est blacklisté
     if (isTokenBlacklisted(token)) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         error: 'Token révoqué',
         code: 'REVOKED_TOKEN'
       });
@@ -151,7 +151,7 @@ export function withAuth(handler) {
 
     const decoded = await verifyToken(token);
     if (!decoded) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         error: 'Token invalide ou expiré',
         code: 'INVALID_TOKEN'
       });

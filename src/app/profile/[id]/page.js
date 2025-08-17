@@ -8,15 +8,15 @@ import { getArticlesByAuthor } from '@/lib/articles';
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const user = await getAuthorById(parseInt(resolvedParams.id));
-  
+
   if (!user) {
     return {
-      title: 'Profil non trouvé - TechPulse',
+      title: 'Profil non trouvé - pixelpulse',
     };
   }
 
   return {
-    title: `${user.name} - TechPulse`,
+    title: `${user.name} - pixelpulse`,
     description: user.bio,
   };
 }

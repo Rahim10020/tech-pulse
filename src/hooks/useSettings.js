@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 export function useSettings() {
   const [settings, setSettings] = useState({
-    siteName: 'TechPulse',
+    siteName: 'pixelpulse',
     siteDescription: 'Blog technologique moderne',
     siteUrl: '',
     contactEmail: '',
@@ -30,7 +30,7 @@ export function useSettings() {
     try {
       setLoading(true);
       const response = await fetch('/api/settings');
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data);

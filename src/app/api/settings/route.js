@@ -9,12 +9,12 @@ export async function GET() {
   try {
     // Récupérer les paramètres (prendre le premier enregistrement ou créer par défaut)
     let settings = await prisma.siteSettings.findFirst();
-    
+
     if (!settings) {
       // Créer des paramètres par défaut
       settings = await prisma.siteSettings.create({
         data: {
-          siteName: 'TechPulse',
+          siteName: 'pixelpulse',
           siteDescription: 'Blog technologique moderne',
           allowComments: true,
           allowRegistration: true,

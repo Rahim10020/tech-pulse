@@ -8,16 +8,16 @@ async function getAuthorData(identifier) {
   try {
     // Essayer d'abord par username, puis par ID si c'est un nombre
     const isNumeric = !isNaN(identifier);
-    const endpoint = isNumeric 
+    const endpoint = isNumeric
       ? `/api/authors?type=single&id=${identifier}`
       : `/api/authors?type=single&username=${identifier}`;
-    
+
     const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}${endpoint}`);
-    
+
     if (!response.ok) {
       return null;
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error fetching author:', error);
@@ -27,15 +27,15 @@ async function getAuthorData(identifier) {
 
 export async function generateMetadata({ params }) {
   const author = await getAuthorData(params.id);
-  
+
   if (!author) {
     return {
-      title: 'Auteur non trouvé - TechPulse',
+      title: 'Auteur non trouvé - pixelpulse',
     };
   }
 
   return {
-    title: `${author.name} - TechPulse`,
+    title: `${author.name} - pixelpulse`,
     description: author.bio,
   };
 }

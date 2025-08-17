@@ -1,4 +1,4 @@
-// src/app/secret-admin-access/page.js - URL secrète pour l'accès admin avec styles TechPulse
+// src/app/secret-admin-access/page.js - URL secrète pour l'accès admin avec styles pixelpulse
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -30,7 +30,7 @@ export default function SecretAdminAccess() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="container-sm">
         <div className="max-w-md mx-auto space-y-8">
-          
+
           {/* Header avec animation */}
           <div className="text-center">
             <div className="animate-pulse">
@@ -44,14 +44,14 @@ export default function SecretAdminAccess() {
               Zone Administrateur
             </h1>
             <p className="body-text text-gray-600">
-              Accès sécurisé pour la gestion du blog TechPulse
+              Accès sécurisé pour la gestion du blog pixelpulse
             </p>
           </div>
 
           {/* Panel d'accès avec animation */}
           {showAdminPanel && (
             <div className="card p-6 space-y-6 animate-fade-in">
-              
+
               {/* Status actuel */}
               <div className="text-center">
                 {user ? (
@@ -79,13 +79,13 @@ export default function SecretAdminAccess() {
               <div className="space-y-3">
                 {!user ? (
                   <>
-                    <Link 
+                    <Link
                       href="/login"
                       className="btn-primary w-full justify-center block text-center"
                     >
                       🔑 Se connecter
                     </Link>
-                    <Link 
+                    <Link
                       href="/signup"
                       className="btn-secondary w-full justify-center block text-center"
                     >
@@ -94,19 +94,19 @@ export default function SecretAdminAccess() {
                   </>
                 ) : user.role === 'admin' ? (
                   <div className="space-y-3">
-                    <Link 
+                    <Link
                       href="/profile/edit"
                       className="btn-primary w-full justify-center bg-teal-600 hover:bg-teal-700 block text-center"
                     >
                       📊 Administration
                     </Link>
-                    <Link 
+                    <Link
                       href="/create"
                       className="btn-primary w-full justify-center bg-orange-500 hover:bg-orange-600 block text-center"
                     >
                       ✍️ Écrire un article
                     </Link>
-                    <Link 
+                    <Link
                       href="/admin/manage-users"
                       className="btn-secondary w-full justify-center block text-center"
                     >
@@ -124,7 +124,7 @@ export default function SecretAdminAccess() {
                         Pour publier des articles, contactez l'administrateur.
                       </p>
                     </div>
-                    <Link 
+                    <Link
                       href="/contact"
                       className="btn-primary inline-block"
                     >
@@ -136,7 +136,7 @@ export default function SecretAdminAccess() {
 
               {/* Lien de retour */}
               <div className="text-center pt-4 border-t border-gray-200">
-                <Link 
+                <Link
                   href="/"
                   className="text-gray-500 hover:text-gray-700 transition-colors duration-200 small-text"
                 >

@@ -35,17 +35,17 @@ async function verifyTokenEdge(token) {
 
     // Utiliser jose pour l'Edge Runtime
     const secret = new TextEncoder().encode(JWT_SECRET);
-    
+
     const { payload } = await jwtVerify(token, secret, {
       algorithms: ['HS256'],
-      issuer: 'techpulse-app',
-      audience: 'techpulse-users'
+      issuer: 'pixelpulse-app',
+      audience: 'pixelpulse-users'
     });
 
     // Vérifier que le token n'est pas trop ancien
     const now = Math.floor(Date.now() / 1000);
     const maxAge = 7 * 24 * 60 * 60; // 7 jours en secondes
-    
+
     if (payload.iat && (now - payload.iat) > maxAge) {
       console.warn('Token trop ancien, considéré comme invalide');
       return null;

@@ -108,7 +108,7 @@ CREATE TABLE "public"."contacts" (
 -- CreateTable
 CREATE TABLE "public"."site_settings" (
     "id" SERIAL NOT NULL,
-    "siteName" TEXT NOT NULL DEFAULT 'TechPulse',
+    "siteName" TEXT NOT NULL DEFAULT 'pixelpulse',
     "siteDescription" TEXT,
     "siteUrl" TEXT,
     "contactEmail" TEXT,

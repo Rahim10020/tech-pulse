@@ -58,16 +58,16 @@ function AnimatedSection({ children, className = "", delay = 0 }) {
 // Hero Section avec animation d'entrée
 function HeroSection() {
   return (
-    <section className="bg-white py-10">
+    <section className="bg-white py-28">
       <div className="container-sm">
         <div className="text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="h1-title text-gray-900 mb-6"
+            className="h1-title text-gray-900 mb-14"
           >
-            À propos de <span className="text-teal-600">TechPulse</span>
+            À propos de <span className="text-teal-600">pixelpulse</span>
           </motion.h1>
 
           <motion.p
@@ -122,7 +122,7 @@ function StatsSection() {
 
   return (
     <AnimatedSection>
-      <section className="py-16 bg-gray-100">
+      <section className="py-20 bg-gray-100">
         <div className="container-sm">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -197,7 +197,7 @@ function AnimatedCounter({ value, suffix, isInView }) {
 function MissionSection() {
   return (
     <AnimatedSection>
-      <section className="py-20 bg-white">
+      <section className="py-28 bg-white">
         <div className="container-sm">
           <motion.h2
             className="h2-title text-gray-900 mb-8 text-center"
@@ -216,7 +216,7 @@ function MissionSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Chez TechPulse, nous croyons que la technologie doit être accessible à tous.
+              Chez pixelpulse, nous croyons que la technologie doit être accessible à tous.
               Notre mission est de démocratiser les connaissances techniques en proposant
               du contenu de qualité, des tutoriels pratiques et des analyses approfondies.
             </motion.p>
@@ -365,7 +365,7 @@ function TimelineSection() {
   const milestones = [
     {
       year: "2020",
-      title: "Naissance de TechPulse",
+      title: "Naissance de pixelpulse",
       description: "Création du blog avec une vision simple : démocratiser la tech",
       icon: "🚀",
       color: "from-blue-400 to-purple-500"
@@ -501,7 +501,7 @@ function TeamSection() {
       name: "Sophie Martin",
       role: "Fondatrice & Rédactrice en Chef",
       bio: "Développeuse Full Stack passionnée par l'IA et les nouvelles technologies. 8 ans d'expérience en développement web moderne.",
-      detailedBio: "Sophie a fondé TechPulse avec une vision claire : rendre la technologie accessible à tous. Diplômée en informatique de l'École Polytechnique, elle a travaillé chez Google et Microsoft avant de se lancer dans l'entrepreneuriat. Experte en React, Node.js et intelligence artificielle, elle écrit principalement sur les frameworks modernes et les tendances emerging tech.",
+      detailedBio: "Sophie a fondé pixelpulse avec une vision claire : rendre la technologie accessible à tous. Diplômée en informatique de l'École Polytechnique, elle a travaillé chez Google et Microsoft avant de se lancer dans l'entrepreneuriat. Experte en React, Node.js et intelligence artificielle, elle écrit principalement sur les frameworks modernes et les tendances emerging tech.",
       avatar: "SM",
       specialties: ["React", "Node.js", "IA", "Leadership"],
       social: {
@@ -514,7 +514,7 @@ function TeamSection() {
       name: "Thomas Dubois",
       role: "Expert Cybersécurité",
       bio: "Spécialiste en sécurité informatique avec plus de 10 ans d'expérience dans la protection des systèmes critiques.",
-      detailedBio: "Thomas est un ancien consultant en cybersécurité pour des institutions bancaires européennes. Certifié CISSP et CEH, il a dirigé des équipes de response d'incident et de penetration testing. Chez TechPulse, il démystifie les concepts de sécurité et partage les meilleures pratiques pour protéger applications et données.",
+      detailedBio: "Thomas est un ancien consultant en cybersécurité pour des institutions bancaires européennes. Certifié CISSP et CEH, il a dirigé des équipes de response d'incident et de penetration testing. Chez pixelpulse, il démystifie les concepts de sécurité et partage les meilleures pratiques pour protéger applications et données.",
       avatar: "TD",
       specialties: ["Pentest", "SOC", "Forensics", "GDPR"],
       social: {
@@ -875,7 +875,7 @@ function CTASection() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Rejoignez la Communauté TechPulse
+            Rejoignez la Communauté pixelpulse
           </motion.h2>
           <motion.p
             className="h4-title text-white/90 mb-8"

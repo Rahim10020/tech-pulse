@@ -75,7 +75,7 @@ export default function ResetPasswordPage() {
             <div className="w-8 h-8 bg-gray-900 flex items-center justify-center">
               <span className="text-white font-bold text-sm">TP</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">TechPulse</span>
+            <span className="text-xl font-bold text-gray-900">pixelpulse</span>
           </Link>
         </div>
       </header>
@@ -148,7 +148,7 @@ export default function ResetPasswordPage() {
             <p className="text-gray-600 mb-8">
               Your password has been successfully updated. You can now sign in with your new password.
             </p>
-            <Link 
+            <Link
               href="/login"
               className="inline-block bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors"
             >
