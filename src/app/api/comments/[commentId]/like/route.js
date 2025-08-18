@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 // POST - Liker/Unliker un commentaire
 export async function POST(request, { params }) {
     try {
-        const { commentId } = params;
+        const { commentId } = await params;
         const token = request.cookies.get('token')?.value;
 
         if (!token) {

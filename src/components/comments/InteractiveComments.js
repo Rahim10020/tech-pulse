@@ -1,5 +1,5 @@
 // ===============================================
-// 1. src/components/comments/InteractiveComments.js - Système de commentaires moderne COMPLET
+// 1. src/components/comments/InteractiveComments.js
 // ===============================================
 
 "use client";
@@ -288,15 +288,9 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
                         onChange={(e) => setSortBy(e.target.value)}
                         className="input-field text-sm border-gray-300"
                     >
-                        <option value="newest">
-                            <Clock className="w-4 h-4 mr-1" />
-                            Plus récents
-                        </option>
+                        <option value="newest">Plus récents</option>
                         <option value="oldest">Plus anciens</option>
-                        <option value="popular">
-                            <TrendingUp className="w-4 h-4 mr-1" />
-                            Plus populaires
-                        </option>
+                        <option value="popular">Plus populaires</option>
                     </select>
                 </div>
             </div>

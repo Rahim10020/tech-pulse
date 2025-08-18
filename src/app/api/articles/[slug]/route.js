@@ -1,11 +1,24 @@
 // app/api/articles/[slug]/route.js
 import { NextResponse } from 'next/server';
 import { getArticleBySlug } from '@/lib/articles';
+import { verifyToken } from '@/lib/auth';
 
 export async function GET(request, { params }) {
   try {
-    const article = await getArticleBySlug(params.slug);
-    
+    const { slug } = await params;
+
+    const token = request.cookies.get('token')?.value;
+    let userId = null;
+
+    if (token) {
+      const decoded = await verifyToken(token);
+      if (decoded) {
+        userId = decoded.userId;
+      }
+    }
+
+    const article = await getArticleBySlug(slug, userId);
+
     if (!article) {
       return NextResponse.json(
         { error: 'Article non trouvé' },

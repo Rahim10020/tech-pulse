@@ -87,8 +87,8 @@ async function getDefaultCategory() {
   return defaultCategory;
 }
 
-// Récupérer un article par son slug
-export async function getArticleBySlug(slug) {
+// Récupérer un article par son slug avec les likes
+export async function getArticleBySlug(slug, userId = null) {
   try {
     const article = await prisma.article.findUnique({
       where: {
@@ -97,6 +97,13 @@ export async function getArticleBySlug(slug) {
       },
       include: {
         ...includeRelations,
+        likes: true, // ✅ Inclure les likes complets
+        _count: {
+          select: {
+            likes: true,
+            comments: true
+          }
+        },
         comments: {
           include: {
             author: {
@@ -134,12 +141,21 @@ export async function getArticleBySlug(slug) {
     // Incrémenter les vues
     await incrementArticleViews(article.id);
 
-    // Formatter la réponse pour correspondre à l'ancien format
+    // ✅ Calculer si l'utilisateur a liké l'article
+    const isLikedByUser = userId ?
+      article.likes.some(like => like.userId === userId) :
+      false;
+
+    // ✅ Formatter la réponse avec les nouvelles données
     return {
       ...article,
-      likes: article._count.likes,
+      likes: article._count.likes, // Nombre total de likes
+      likesCount: article._count.likes, // ✅ Ajout explicite
+      isLikedByUser, // ✅ État du like pour l'utilisateur
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      // Supprimer les données sensibles
+      likes: undefined, // On supprime l'array complet pour la sécurité
     };
   } catch (error) {
     console.error("Error fetching article by slug:", error);

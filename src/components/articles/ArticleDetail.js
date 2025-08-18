@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Heart, MessageCircle } from 'lucide-react';
 import NotFound from '@/app/not-found';
 import InteractiveComments from '@/components/comments/InteractiveComments';
+import ArticleActions from '@/components/articles/ArticleActions';
 
 export default function ArticleDetail({ article }) {
   if (!article) {
@@ -59,23 +60,19 @@ export default function ArticleDetail({ article }) {
         {/* Actions & Comments */}
         <div className="bg-transparent p-6">
           {/* Actions */}
-          <div className="flex items-center space-x-6 mb-8 pb-6 border-b border-gray-200">
-            <button className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors font-sans">
-              <Heart className="w-5 h-5" />
-              <span>{article.likes}</span>
-            </button>
-            <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500 transition-colors font-sans">
-              <MessageCircle className="w-5 h-5" />
-              <span>{article.comments?.length || 0}</span>
-            </button>
-          </div>
+          <ArticleActions
+            article={article}
+            commentsCount={article.comments?.length || 0}
+          />
 
           {/* Comments Section */}
+          <div id="comments-section">
 
-          <InteractiveComments
-            articleSlug={article.slug}
-            initialComments={article.comments || []}
-          />
+            <InteractiveComments
+              articleSlug={article.slug}
+              initialComments={article.comments || []}
+            />
+          </div>
 
         </div>
       </div>
