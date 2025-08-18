@@ -1,4 +1,4 @@
-// hooks/useAutoSave.js - Version corrigée avec meilleure gestion des états
+// hooks/useAutoSave.js - Version corrigée avec meilleure logique
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useToast } from "@/context/ToastProvider";
 
@@ -16,6 +16,7 @@ export function useAutoSave(formData, options = {}) {
   const lastSavedDataRef = useRef(null);
   const lastSavedTimeRef = useRef(null);
   const [isSaving, setIsSaving] = useState(false);
+  const isInitialMount = useRef(true);
 
   // Fonction de comparaison pour détecter les changements réels
   const hasDataChanged = useCallback((newData) => {
@@ -24,26 +25,41 @@ export function useAutoSave(formData, options = {}) {
     // Comparer les champs importants seulement
     const oldData = lastSavedDataRef.current;
     return (
-      oldData.title !== newData.title ||
-      oldData.content !== newData.content ||
-      oldData.description !== newData.description ||
+      oldData.title?.trim() !== newData.title?.trim() ||
+      oldData.content?.trim() !== newData.content?.trim() ||
+      oldData.description?.trim() !== newData.description?.trim() ||
       oldData.category !== newData.category
     );
   }, []);
 
-  // Fonction de sauvegarde avec gestion d'état améliorée
-  const performSave = useCallback(async (data) => {
-    // Vérifier les conditions minimales
-    if (!data.title?.trim() && !data.content?.trim()) {
-      return false;
-    }
+  // Fonction de validation des données avant sauvegarde
+  const shouldSave = useCallback((data) => {
+    // Au moins un titre ou du contenu doit être présent
+    const hasContent = data.title?.trim() || data.content?.trim();
+    if (!hasContent) return false;
 
-    if (data.content && data.content.length < minLength) {
+    // Vérifier la longueur minimale du contenu si présent
+    if (data.content && data.content.replace(/<[^>]*>/g, '').length < minLength) {
       return false;
     }
 
     // Vérifier si les données ont vraiment changé
     if (!hasDataChanged(data)) {
+      return false;
+    }
+
+    return true;
+  }, [minLength, hasDataChanged]);
+
+  // Fonction de sauvegarde avec gestion d'état améliorée
+  const performSave = useCallback(async (data) => {
+    // Vérifier si on doit sauvegarder
+    if (!shouldSave(data)) {
+      return false;
+    }
+
+    // Éviter les sauvegardes multiples simultanées
+    if (isSaving) {
       return false;
     }
 
@@ -54,8 +70,15 @@ export function useAutoSave(formData, options = {}) {
         const result = await onSave(data);
 
         // Mettre à jour la référence seulement en cas de succès
-        lastSavedDataRef.current = { ...data };
-        lastSavedTimeRef.current = new Date();
+        if (result && result.success) {
+          lastSavedDataRef.current = {
+            title: data.title,
+            content: data.content,
+            description: data.description,
+            category: data.category
+          };
+          lastSavedTimeRef.current = new Date();
+        }
 
         return result;
       }
@@ -66,13 +89,16 @@ export function useAutoSave(formData, options = {}) {
       if (onError) {
         onError(err);
       } else {
-        error("Erreur lors de la sauvegarde automatique");
+        // N'afficher l'erreur que si ce n'est pas le premier échec
+        if (!isInitialMount.current) {
+          error("Erreur lors de la sauvegarde automatique");
+        }
       }
       return false;
     } finally {
       setIsSaving(false);
     }
-  }, [minLength, hasDataChanged, onSave, onError, error]);
+  }, [shouldSave, isSaving, onSave, onError, error]);
 
   // Fonction de sauvegarde avec debounce
   const debouncedSave = useCallback(
@@ -84,16 +110,22 @@ export function useAutoSave(formData, options = {}) {
 
       // Programmer une nouvelle sauvegarde
       timeoutRef.current = setTimeout(() => {
-        if (!isSaving) {
+        if (!isSaving && enabled) {
           performSave(data);
         }
       }, delay);
     },
-    [delay, performSave, isSaving]
+    [delay, performSave, isSaving, enabled]
   );
 
   // Déclencher la sauvegarde quand les données changent
   useEffect(() => {
+    // Ignorer le premier rendu
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     if (!enabled || isSaving) return;
 
     // Vérifier si il y a du contenu à sauvegarder
@@ -122,10 +154,12 @@ export function useAutoSave(formData, options = {}) {
 
   // Fonction pour forcer une sauvegarde immédiate
   const forceSave = useCallback(async () => {
+    // Annuler la sauvegarde programmée
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
+    // Effectuer la sauvegarde immédiatement
     return await performSave(formData);
   }, [formData, performSave]);
 

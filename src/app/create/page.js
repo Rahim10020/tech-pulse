@@ -1,4 +1,4 @@
-// app/create/page.js - Page de création finale avec Tiptap seulement
+// app/create/page.js - Version corrigée avec logique clarifiée
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -24,7 +24,7 @@ export default function CreateArticlePage() {
     title: "",
     content: "",
     description: "",
-    category: "",
+    category: "", // Vide par défaut = sera traité comme "non-classe"
     tags: [],
     readTime: "",
     featured: false,
@@ -52,7 +52,7 @@ export default function CreateArticlePage() {
   // Calculer le temps de lecture
   const readingTime = calculateReadingTime(formData.content);
 
-  // Enregistrer un brouillon automatiquement
+  // **FONCTION D'AUTO-SAVE CORRIGÉE**
   const handleAutoSave = useCallback(async (data) => {
     try {
       const response = await fetch("/api/drafts/auto-save", {
@@ -65,7 +65,6 @@ export default function CreateArticlePage() {
           ...data,
           readTime: calculateReadingTime(data.content),
           existingDraftId: currentDraftId,
-          isDraft: true, // TOUJOURS un brouillon pour l'auto-save
         }),
       });
 
@@ -138,7 +137,9 @@ export default function CreateArticlePage() {
       try {
         const response = await fetch("/api/categories?type=all");
         const data = await response.json();
-        setCategories(data);
+        // Filtrer pour exclure la catégorie "non-classe" des options
+        const filteredCategories = data.filter(cat => cat.slug !== "non-classe");
+        setCategories(filteredCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
         error("Erreur lors du chargement des catégories");
@@ -156,20 +157,18 @@ export default function CreateArticlePage() {
 
   // Écouter l'événement de sauvegarde forcée (Ctrl+S)
   useEffect(() => {
-    const handleForceSave = async () => {
-      if (formData.title.trim()) {
-        try {
-          await forceSave();
-          success("Draft saved manually");
-        } catch (err) {
-          error("Erreur lors de la sauvegarde");
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        if (formData.title.trim()) {
+          handleSaveDraft();
         }
       }
     };
 
-    document.addEventListener("forceSave", handleForceSave);
-    return () => document.removeEventListener("forceSave", handleForceSave);
-  }, [formData.title, forceSave, success, error]);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [formData.title]);
 
   // Avertir avant de quitter si changements non sauvegardés
   useEffect(() => {
@@ -184,11 +183,23 @@ export default function CreateArticlePage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  // Fonction pour publier l'article
+  // **FONCTION DE PUBLICATION CORRIGÉE**
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title.trim() || !formData.content.trim()) {
-      error("Title and content are required");
+
+    // Validation côté client
+    if (!formData.title.trim()) {
+      error("Le titre est requis");
+      return;
+    }
+
+    if (!formData.content.trim()) {
+      error("Le contenu est requis");
+      return;
+    }
+
+    if (!formData.category) {
+      error("Veuillez sélectionner une catégorie pour publier l'article");
       return;
     }
 
@@ -202,41 +213,48 @@ export default function CreateArticlePage() {
         credentials: "include",
         body: JSON.stringify({
           ...formData,
-          isDraft: false,
+          // Pas de isDraft: false ici, c'est géré côté serveur
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        success("Article successfully published!");
+        success("Article publié avec succès!");
         setHasUnsavedChanges(false);
+
+        // Si on avait un brouillon, il faut le supprimer ou le marquer comme publié
+        if (currentDraftId) {
+          // Le brouillon sera automatiquement "converti" en article publié
+          setCurrentDraftId(null);
+        }
+
         router.push(`/articles/${data.article.slug}`);
       } else {
         error(data.error || "Erreur lors de la publication");
       }
     } catch (err) {
       console.error("Error creating article:", err);
-      error("Error while publishing");
+      error("Erreur lors de la publication");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Fonction pour sauvegarder en brouillon manuellement
+  // **FONCTION DE SAUVEGARDE MANUELLE CORRIGÉE**
   const handleSaveDraft = async () => {
-    if (!formData.title.trim()) {
-      error("Title is required to save a draft");
+    if (!formData.title.trim() && !formData.content.trim()) {
+      error("Au moins un titre ou du contenu est requis pour sauvegarder");
       return;
     }
 
     setIsSavingDraft(true);
     try {
       await forceSave();
-      success("Draft saved successfully!");
+      success("Brouillon sauvegardé avec succès!");
     } catch (err) {
       console.error("Error saving draft:", err);
-      error("Error saving draft");
+      error("Erreur lors de la sauvegarde du brouillon");
     } finally {
       setIsSavingDraft(false);
     }
@@ -245,7 +263,7 @@ export default function CreateArticlePage() {
   const handleBack = () => {
     if (hasUnsavedChanges) {
       const confirmLeave = window.confirm(
-        "You have unsaved changes. Are you sure you want to quit?"
+        "Vous avez des modifications non sauvegardées. Êtes-vous sûr de vouloir quitter ?"
       );
       if (!confirmLeave) return;
     }
@@ -265,8 +283,13 @@ export default function CreateArticlePage() {
   // Gestionnaire pour les changements de catégorie
   const handleCategoryChange = useCallback((e) => {
     updateFormData("category", e.target.value);
-    // Ne pas déclencher de publication automatique
   }, [updateFormData]);
+
+  // Détermine si on peut publier
+  const canPublish = formData.title.trim() &&
+    formData.content.trim() &&
+    formData.category &&
+    !isSubmitting;
 
   if (loading) {
     return (
@@ -290,7 +313,7 @@ export default function CreateArticlePage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div className="flex-1">
             <h1 className="h1-title text-gray-900 mb-2">
-              Publish an article
+              Créer un article
             </h1>
             <SaveIndicator
               isSaving={isSaving || isSavingDraft}
@@ -306,7 +329,9 @@ export default function CreateArticlePage() {
               onChange={handleCategoryChange}
               className="input-field"
             >
-              <option value="">📝 Brouillon (sans catégorie)</option>
+              <option value="">
+                {currentDraftId ? "📝 Brouillon (non classé)" : "Sélectionner une catégorie..."}
+              </option>
               {categories.map((category) => (
                 <option key={category.id} value={category.slug}>
                   {category.name}
@@ -318,7 +343,7 @@ export default function CreateArticlePage() {
           {/* Informations de l'article */}
           <div className="text-right">
             <div className="small-text text-gray-600">
-              Reading time:{" "}
+              Temps de lecture:{" "}
               <span className="font-medium">{readingTime}</span>
             </div>
             <div className="small-text text-gray-500">
@@ -328,7 +353,7 @@ export default function CreateArticlePage() {
                   .split(/\s+/)
                   .filter((word) => word.length > 0).length
               }{" "}
-              words
+              mots
             </div>
           </div>
         </div>
@@ -340,11 +365,10 @@ export default function CreateArticlePage() {
             <div className="p-6 pb-0">
               <input
                 type="text"
-                placeholder="Titre..."
+                placeholder="Titre de votre article..."
                 value={formData.title}
                 onChange={handleTitleChange}
                 className="w-full text-3xl bg-transparent font-bold text-gray-900 placeholder-gray-400 border-none outline-none"
-                required
               />
             </div>
 
@@ -373,7 +397,7 @@ export default function CreateArticlePage() {
                 <button
                   type="button"
                   onClick={handleSaveDraft}
-                  disabled={isSavingDraft || !formData.title.trim()}
+                  disabled={isSavingDraft || (!formData.title.trim() && !formData.content.trim())}
                   className="btn-secondary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   title="Sauvegarder en brouillon (Ctrl+S)"
                 >
@@ -383,19 +407,15 @@ export default function CreateArticlePage() {
                       <span>Sauvegarde...</span>
                     </>
                   ) : (
-                    <span>Brouillon</span>
+                    <span>Sauvegarder le brouillon</span>
                   )}
                 </button>
 
                 <button
                   type="submit"
-                  disabled={
-                    isSubmitting ||
-                    !formData.title.trim() ||
-                    !formData.content.trim() ||
-                    !formData.category
-                  }
+                  disabled={!canPublish}
                   className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  title={!formData.category ? "Sélectionnez une catégorie pour publier" : ""}
                 >
                   {isSubmitting ? (
                     <>
@@ -407,6 +427,15 @@ export default function CreateArticlePage() {
                   )}
                 </button>
               </div>
+
+              {/* Message d'aide */}
+              {!formData.category && (formData.title.trim() || formData.content.trim()) && (
+                <div className="mt-3 text-center">
+                  <p className="small-text text-orange-600">
+                    💡 Sélectionnez une catégorie pour pouvoir publier votre article
+                  </p>
+                </div>
+              )}
             </div>
           </form>
         </div>
@@ -414,24 +443,20 @@ export default function CreateArticlePage() {
         {/* Aide rapide */}
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <h3 className="h6-title text-blue-800 mb-2">
-            💡 Éditeur moderne Tiptap :
+            💡 Comment ça marche :
           </h3>
           <div className="small-text text-blue-700 space-y-1">
             <p>
-              ✨ <strong>Formatage visuel :</strong> Sélectionnez du texte et
-              utilisez la toolbar
+              📝 <strong>Brouillons automatiques :</strong> Vos modifications sont sauvegardées automatiquement toutes les 30 secondes
             </p>
             <p>
-              🖼️ <strong>Images :</strong> Glissez-déposez ou cliquez sur
-              l'icône 📷 dans la toolbar
+              💾 <strong>Sauvegarde manuelle :</strong> Utilisez Ctrl+S ou le bouton "Sauvegarder" pour forcer la sauvegarde
             </p>
             <p>
-              🔗 <strong>Liens :</strong> Sélectionnez du texte et cliquez sur
-              l'icône lien
+              📂 <strong>Catégories :</strong> Sélectionnez une catégorie pour pouvoir publier (obligatoire)
             </p>
             <p>
-              ⏰ <strong>Sauvegarde automatique</strong> toutes les 30 secondes
-              • Temps de lecture calculé automatiquement
+              🚀 <strong>Publication :</strong> Une fois publié, l'article sera visible par tous les visiteurs
             </p>
           </div>
         </div>

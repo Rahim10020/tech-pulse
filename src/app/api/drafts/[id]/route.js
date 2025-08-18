@@ -1,7 +1,9 @@
-// app/api/drafts/[id]/route.js - Route pour gérer un brouillon spécifique
+// ==========================================
+// 3. app/api/drafts/[id]/route.js - CORRIGÉ
+// ==========================================
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
-import { publishDraft, updateDraft } from "@/lib/articles";
+import { publishDraft, updateDraft, deleteDraft } from "@/lib/articles";
 
 export async function PUT(request, { params }) {
   try {
@@ -17,9 +19,10 @@ export async function PUT(request, { params }) {
     }
 
     const { action, ...updateData } = await request.json();
-    const draftId = params.id;
+    const draftId = parseInt(params.id);
 
     if (action === "publish") {
+      // Publier le brouillon
       const result = await publishDraft(draftId, decoded.userId);
 
       if (result.success) {
@@ -54,7 +57,6 @@ export async function PUT(request, { params }) {
   }
 }
 
-// À ajouter dans app/api/drafts/[id]/route.js
 export async function DELETE(request, { params }) {
   try {
     const token = request.cookies.get("token")?.value;
@@ -69,8 +71,6 @@ export async function DELETE(request, { params }) {
     }
 
     const draftId = parseInt(params.id);
-
-    // Tu devras ajouter cette fonction dans ton lib/articles.js
     const result = await deleteDraft(draftId, decoded.userId);
 
     if (result.success) {

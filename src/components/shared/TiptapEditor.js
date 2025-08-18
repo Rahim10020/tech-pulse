@@ -24,7 +24,6 @@ import {
   Image as ImageIcon,
   X,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 
 export default function TiptapEditor({
   content,
@@ -289,7 +288,7 @@ export default function TiptapEditor({
 
         {/* Compteur */}
         <div className="border-t border-gray-200 px-4 py-2 bg-gray-50 text-right">
-          <span className="small-text text-gray-500">
+          <span className="text-sm text-gray-500">
             {editor.storage.characterCount?.characters() || 0} caractères
           </span>
         </div>
@@ -299,28 +298,28 @@ export default function TiptapEditor({
       {showLinkModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 max-w-md">
-            <h3 className="h4-title mb-4">Ajouter un lien</h3>
+            <h3 className="text-lg font-semibold mb-4">Ajouter un lien</h3>
             <input
               type="url"
               placeholder="https://example.com"
               value={linkUrl}
               onChange={(e) => setLinkUrl(e.target.value)}
-              className="input-field w-full mb-4"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 mb-4"
               autoFocus
             />
             <div className="flex justify-end space-x-3">
-              <Button
-                variant="secondary"
+              <button
                 onClick={() => setShowLinkModal(false)}
+                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 Annuler
-              </Button>
-              <Button
-                variant="primary"
+              </button>
+              <button
                 onClick={handleLinkSubmit}
+                className="px-4 py-2 bg-teal-600 text-white hover:bg-teal-700 rounded-lg transition-colors"
               >
                 Ajouter
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -359,7 +358,7 @@ export default function TiptapEditor({
   );
 }
 
-// Composants helper
+// Composants helper avec des boutons HTML natifs au lieu du composant Button
 function ToolbarGroup({ children }) {
   return (
     <div className="flex items-center border-r border-gray-300 pr-2 mr-2 last:border-r-0 last:pr-0 last:mr-0">
@@ -370,15 +369,24 @@ function ToolbarGroup({ children }) {
 
 function ToolbarButton({ onClick, active, icon: Icon, tooltip, disabled = false }) {
   return (
-    <Button
-      variant={active ? "primary" : "ghost"}
-      size="icon"
+    <button
+      type="button"
       onClick={onClick}
       disabled={disabled}
       title={tooltip}
-      className="p-2"
+      className={`
+        p-2 rounded-lg transition-colors
+        ${active
+          ? 'bg-teal-600 text-white'
+          : 'text-gray-700 hover:bg-gray-200'
+        }
+        ${disabled
+          ? 'opacity-50 cursor-not-allowed'
+          : 'cursor-pointer'
+        }
+      `}
     >
       <Icon className="w-4 h-4" />
-    </Button>
+    </button>
   );
 }

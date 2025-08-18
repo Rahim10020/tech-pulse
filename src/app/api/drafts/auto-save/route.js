@@ -1,4 +1,7 @@
-// app/api/drafts/auto-save/route.js - Route pour la sauvegarde automatique
+
+// ==========================================
+// 2. app/api/drafts/auto-save/route.js - CORRIGÉ
+// ==========================================
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { updateOrCreateDraft } from '@/lib/articles';
@@ -22,12 +25,12 @@ export async function POST(request) {
       );
     }
 
-    const { existingDraftId, ...articleData } = await request.json();
+    const { existingDraftId, ...draftData } = await request.json();
 
-    // Utiliser updateOrCreateDraft au lieu de createArticle
+    // L'auto-save sauvegarde TOUJOURS en brouillon
     const result = await updateOrCreateDraft(
       {
-        ...articleData,
+        ...draftData,
         authorId: decoded.userId
       },
       existingDraftId ? parseInt(existingDraftId) : null
@@ -37,7 +40,7 @@ export async function POST(request) {
       return NextResponse.json({
         success: true,
         article: result.article,
-        isNew: result.isNew,
+        isNew: result.isNew || false,
         message: result.isNew ? 'Nouveau brouillon créé' : 'Brouillon mis à jour'
       });
     } else {

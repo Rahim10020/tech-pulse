@@ -1,8 +1,9 @@
-// app/api/articles/route.js - API Route pour les articles
+// ==========================================
+// 1. app/api/articles/route.js - CORRIGÉ
+// ==========================================
 import { NextResponse } from 'next/server';
-import { getArticles, getFeaturedArticles, getRecentArticles } from '@/lib/articles';
+import { getArticles, getFeaturedArticles, getRecentArticles, createArticle } from '@/lib/articles';
 import { verifyToken } from '@/lib/auth';
-import { createArticle } from '@/lib/articles';
 
 export async function GET(request) {
   try {
@@ -58,6 +59,8 @@ export async function POST(request) {
     }
 
     const articleData = await request.json();
+
+    // Cette route est UNIQUEMENT pour publier des articles (pas des brouillons)
     const result = await createArticle({
       ...articleData,
       authorId: decoded.userId
