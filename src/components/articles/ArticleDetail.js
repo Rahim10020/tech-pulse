@@ -1,7 +1,8 @@
-// src/components/articles/ArticleDetail.js - Corrigé avec données dynamiques
+// src/components/articles/ArticleDetail.js
 import Link from 'next/link';
 import { Heart, MessageCircle } from 'lucide-react';
 import NotFound from '@/app/not-found';
+import InteractiveComments from '@/components/comments/InteractiveComments';
 
 export default function ArticleDetail({ article }) {
   if (!article) {
@@ -70,92 +71,12 @@ export default function ArticleDetail({ article }) {
           </div>
 
           {/* Comments Section */}
-          <div>
-            <h3 className="h2-title text-gray-900 mb-6">
-              Comments {article.comments?.length > 0 && `(${article.comments.length})`}
-            </h3>
 
-            {/* Comments List - Données dynamiques */}
-            <div className="space-y-6">
-              {article.comments && article.comments.length > 0 ? (
-                article.comments.map((comment) => (
-                  <div key={comment.id} className="flex space-x-4">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex-shrink-0 flex items-center justify-center">
-                      <span className="text-white font-medium text-sm font-sans">
-                        {comment.author.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <span className="h5-title text-gray-900">
-                          {comment.author.name}
-                        </span>
-                        <span className="text-sm font-sans text-gray-500">
-                          {new Date(comment.createdAt).toLocaleDateString('fr-FR')}
-                        </span>
-                      </div>
-                      <p className="text-gray-700 text-sm leading-relaxed font-sans">
-                        {comment.content}
-                      </p>
+          <InteractiveComments
+            articleSlug={article.slug}
+            initialComments={article.comments || []}
+          />
 
-                      {/* Afficher les réponses si elles existent */}
-                      {comment.replies && comment.replies.length > 0 && (
-                        <div className="mt-4 ml-6 space-y-4 border-l-2 border-gray-200 pl-4">
-                          {comment.replies.map((reply) => (
-                            <div key={reply.id} className="flex space-x-3">
-                              <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-teal-400 rounded-full flex-shrink-0 flex items-center justify-center">
-                                <span className="text-white font-medium text-xs font-sans">
-                                  {reply.author.name.charAt(0).toUpperCase()}
-                                </span>
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center space-x-2 mb-1">
-                                  <span className="h6-title text-gray-900">
-                                    {reply.author.name}
-                                  </span>
-                                  <span className="text-xs font-sans text-gray-500">
-                                    {new Date(reply.createdAt).toLocaleDateString('fr-FR')}
-                                  </span>
-                                </div>
-                                <p className="text-gray-700 text-sm leading-relaxed font-sans">
-                                  {reply.content}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500 text-center py-8 font-sans">
-                  No comments yet. Be the first to comment!
-                </p>
-              )}
-            </div>
-
-            {/* Comment Form */}
-            <div className="mt-8">
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex-shrink-0 flex items-center justify-center">
-                  <span className="text-white font-medium text-sm font-poppins">U</span>
-                </div>
-                <div className="flex-1">
-                  <textarea
-                    placeholder="Ajouter un commentaire..."
-                    className="w-full p-3 border-2 border-gray-200 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent font-sans"
-                    rows="3"
-                  />
-                  <div className="mt-3 flex justify-end">
-                    <button className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors text-sm font-poppins">
-                      Send
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

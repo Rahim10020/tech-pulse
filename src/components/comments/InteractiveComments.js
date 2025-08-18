@@ -29,7 +29,7 @@ import {
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function InteractiveComments({ articleId, initialComments = [] }) {
+export default function InteractiveComments({ articleSlug, initialComments = [] }) {
     const { user } = useAuth();
     const { showToast } = useToast();
 
@@ -45,11 +45,11 @@ export default function InteractiveComments({ articleId, initialComments = [] })
     // Charger les commentaires
     useEffect(() => {
         loadComments();
-    }, [articleId, sortBy]);
+    }, [articleSlug, sortBy]);
 
     const loadComments = async () => {
         try {
-            const response = await fetch(`/api/articles/${articleId}/comments?sort=${sortBy}`);
+            const response = await fetch(`/api/articles/${articleSlug}/comments?sort=${sortBy}`);
             if (response.ok) {
                 const data = await response.json();
                 setComments(data.comments || []);
@@ -75,7 +75,7 @@ export default function InteractiveComments({ articleId, initialComments = [] })
 
         setLoading(true);
         try {
-            const response = await fetch(`/api/articles/${articleId}/comments`, {
+            const response = await fetch(`/api/articles/${articleSlug}/comments`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
