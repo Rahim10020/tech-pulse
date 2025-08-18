@@ -571,7 +571,7 @@ export async function disconnectPrisma() {
   await prisma.$disconnect();
 }
 
-// Dans lib/articles.js - Correction de la fonction createArticle
+// Dans lib/articles.js - Version avec catégorie par défaut
 export async function createArticle(articleData) {
   try {
     const {
@@ -586,19 +586,22 @@ export async function createArticle(articleData) {
       isDraft = false,
     } = articleData;
 
-    // Validation de base
-    if (!title?.trim()) {
-      return {
-        success: false,
-        error: "Le titre est requis",
-      };
-    }
+    // Validation de base - plus souple pour les brouillons
+    if (!isDraft) {
+      // Validation stricte pour les articles publiés
+      if (!title?.trim()) {
+        return {
+          success: false,
+          error: "Le titre est requis",
+        };
+      }
 
-    if (!content?.trim()) {
-      return {
-        success: false,
-        error: "Le contenu est requis",
-      };
+      if (!content?.trim()) {
+        return {
+          success: false,
+          error: "Le contenu est requis",
+        };
+      }
     }
 
     // Pour les articles publiés, la catégorie est obligatoire
@@ -606,6 +609,14 @@ export async function createArticle(articleData) {
       return {
         success: false,
         error: "La catégorie est requise pour publier un article",
+      };
+    }
+
+    // Pour les brouillons, pas besoin de validation stricte
+    if (isDraft && !title?.trim() && !content?.trim()) {
+      return {
+        success: false,
+        error: "Au moins un titre ou du contenu est requis pour sauvegarder",
       };
     }
 
@@ -631,9 +642,11 @@ export async function createArticle(articleData) {
       }
     }
 
-    // Récupérer la catégorie si spécifiée
+    // Récupérer la catégorie spécifiée ou la catégorie par défaut
     let categoryData = null;
+
     if (category) {
+      // Catégorie spécifiée par l'utilisateur
       categoryData = await prisma.category.findUnique({
         where: { slug: category },
       });
@@ -644,9 +657,40 @@ export async function createArticle(articleData) {
           error: "Catégorie non trouvée",
         };
       }
+    } else {
+      // Catégorie par défaut pour les brouillons
+      categoryData = await prisma.category.findFirst({
+        where: {
+          OR: [
+            { slug: "brouillon" },
+            { slug: "draft" },
+            { slug: "non-classe" },
+            { slug: "uncategorized" }
+          ]
+        },
+      });
+
+      // Si aucune catégorie par défaut n'existe, prendre la première disponible
+      if (!categoryData) {
+        categoryData = await prisma.category.findFirst({
+          orderBy: { id: "asc" }
+        });
+      }
+
+      // Si vraiment aucune catégorie n'existe, en créer une
+      if (!categoryData) {
+        categoryData = await prisma.category.create({
+          data: {
+            name: "Non classé",
+            slug: "non-classe",
+            color: "#6B7280",
+            textColor: "#FFFFFF"
+          }
+        });
+      }
     }
 
-    // Créer l'article (brouillon ou publié) - CORRECTION ICI
+    // Créer l'article avec catégorie obligatoire
     const article = await prisma.article.create({
       data: {
         title: title.trim(),
@@ -657,9 +701,12 @@ export async function createArticle(articleData) {
         featured,
         published: !isDraft, // false si c'est un brouillon
         publishedAt: isDraft ? null : new Date(),
-        authorId: parseInt(authorId), // S'assurer que c'est un entier
-        categoryId: categoryData?.id || null,
-        // Pas de champ author ici car on utilise authorId
+        author: {
+          connect: { id: parseInt(authorId) }
+        },
+        category: {
+          connect: { id: categoryData.id }
+        }
       },
       include: {
         author: {

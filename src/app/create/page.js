@@ -1,7 +1,7 @@
 // app/create/page.js - Page de création finale avec Tiptap seulement
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -31,16 +31,16 @@ export default function CreateArticlePage() {
   });
 
   // Calculer le temps de lecture à partir du contenu HTML
-  const calculateReadingTime = (htmlContent) => {
+  const calculateReadingTime = useCallback((htmlContent) => {
     const textContent = htmlContent.replace(/<[^>]*>/g, "");
     const wordCount = textContent
       .split(/\s+/)
       .filter((word) => word.length > 0).length;
     const readingTimeMinutes = Math.ceil(wordCount / 200);
     return `${readingTimeMinutes} min`;
-  };
+  }, []);
 
-  // Ajouter cette fonction après calculateReadingTime :
+  // Fonction pour mettre à jour les données du formulaire
   const updateFormData = useCallback((field, value) => {
     setFormData(prev => {
       const newData = { ...prev, [field]: value };
@@ -49,10 +49,11 @@ export default function CreateArticlePage() {
     });
   }, []);
 
+  // Calculer le temps de lecture
   const readingTime = calculateReadingTime(formData.content);
 
   // Enregistrer un brouillon automatiquement
-  const handleAutoSave = async (data) => {
+  const handleAutoSave = useCallback(async (data) => {
     try {
       const response = await fetch("/api/drafts/auto-save", {
         method: "POST",
@@ -62,8 +63,9 @@ export default function CreateArticlePage() {
         credentials: "include",
         body: JSON.stringify({
           ...data,
-          readTime: readingTime,
+          readTime: calculateReadingTime(data.content),
           existingDraftId: currentDraftId,
+          isDraft: true, // TOUJOURS un brouillon pour l'auto-save
         }),
       });
 
@@ -83,7 +85,7 @@ export default function CreateArticlePage() {
       console.error("Auto-save failed:", err);
       throw err;
     }
-  };
+  }, [currentDraftId, calculateReadingTime]);
 
   // Hook de sauvegarde automatique
   const { isSaving, forceSave, lastSaved } = useAutoSave(formData, {
@@ -98,7 +100,7 @@ export default function CreateArticlePage() {
   });
 
   // Gestionnaire pour l'upload d'images depuis Tiptap
-  const handleTiptapImageUpload = async (file) => {
+  const handleTiptapImageUpload = useCallback(async (file) => {
     try {
       const formDataUpload = new FormData();
       formDataUpload.append("file", file);
@@ -121,7 +123,7 @@ export default function CreateArticlePage() {
       error("Erreur lors de l'upload de l'image");
       throw err;
     }
-  };
+  }, [error]);
 
   // Rediriger si non connecté
   useEffect(() => {
@@ -143,20 +145,14 @@ export default function CreateArticlePage() {
       }
     }
     fetchCategories();
-  }, []);
-
-  // Détecter les changements non sauvegardés
-  useEffect(() => {
-    const hasContent = formData.title.trim() || formData.content.trim();
-    setHasUnsavedChanges(hasContent && !isSaving);
-  }, [formData, isSaving]);
+  }, [error]);
 
   // Mettre à jour automatiquement le temps de lecture
   useEffect(() => {
     if (readingTime && readingTime !== formData.readTime) {
-      updateFormData((prev) => ({ ...prev, readTime: readingTime }));
+      setFormData(prev => ({ ...prev, readTime: readingTime }));
     }
-  }, [readingTime]);
+  }, [readingTime, formData.readTime]);
 
   // Écouter l'événement de sauvegarde forcée (Ctrl+S)
   useEffect(() => {
@@ -257,10 +253,20 @@ export default function CreateArticlePage() {
   };
 
   // Fonction pour gérer les changements de contenu
-  const handleContentChange = (newContent) => {
-    updateFormData((prev) => ({ ...prev, content: newContent }));
-    setHasUnsavedChanges(true);
-  };
+  const handleContentChange = useCallback((newContent) => {
+    updateFormData("content", newContent);
+  }, [updateFormData]);
+
+  // Gestionnaire pour les changements de titre
+  const handleTitleChange = useCallback((e) => {
+    updateFormData("title", e.target.value);
+  }, [updateFormData]);
+
+  // Gestionnaire pour les changements de catégorie
+  const handleCategoryChange = useCallback((e) => {
+    updateFormData("category", e.target.value);
+    // Ne pas déclencher de publication automatique
+  }, [updateFormData]);
 
   if (loading) {
     return (
@@ -297,14 +303,10 @@ export default function CreateArticlePage() {
           <div className="md:w-64">
             <select
               value={formData.category}
-              onChange={(e) => {
-                updateFormData({ ...formData, category: e.target.value });
-                setHasUnsavedChanges(true);
-              }}
+              onChange={handleCategoryChange}
               className="input-field"
-              required
             >
-              <option value="">Choose a category</option>
+              <option value="">📝 Brouillon (sans catégorie)</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.slug}>
                   {category.name}
@@ -340,10 +342,7 @@ export default function CreateArticlePage() {
                 type="text"
                 placeholder="Titre..."
                 value={formData.title}
-                onChange={(e) => {
-                  updateFormData({ ...formData, title: e.target.value });
-                  setHasUnsavedChanges(true);
-                }}
+                onChange={handleTitleChange}
                 className="w-full text-3xl bg-transparent font-bold text-gray-900 placeholder-gray-400 border-none outline-none"
                 required
               />
