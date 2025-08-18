@@ -40,22 +40,8 @@ export default function ArticleDetail({ article }) {
           </div>
         </header>
 
-        {/* Article Image */}
-        <div className="mb-8">
-          <div className={`w-full h-96 ${article.imageColor || 'bg-gradient-to-br from-teal-400 via-teal-500 to-green-600'} rounded-md flex items-center justify-center`}>
-            {/* Placeholder pour l'image de l'article */}
-            <div className="text-white text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-lg flex items-center justify-center">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Article Content */}
-        <div className="bg-transparent p-8 mb-8">
+        <div className="bg-transparent mb-8">
           <div className="prose prose-lg max-w-none">
             <p className="text-gray-700 leading-relaxed mb-6 font-sans">
               {article.description}

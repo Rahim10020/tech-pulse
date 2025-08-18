@@ -45,7 +45,7 @@ export default function TiptapEditor({
       }),
       Image.configure({
         HTMLAttributes: {
-          class: "max-w-full h-auto rounded-lg my-4 shadow-sm",
+          class: "w-full h-96 object-cover rounded-lg my-6 shadow-sm",
         },
       }),
       Link.configure({
@@ -351,7 +351,7 @@ export default function TiptapEditor({
           ol { @apply list-decimal pl-6 my-2; }
           li { @apply mb-1; }
           a { @apply text-teal-600 hover:text-teal-700 underline; }
-          img { @apply max-w-full h-auto rounded-lg my-4 shadow-sm; }
+          img { @apply w-full h-96 object-cover rounded-lg my-6 shadow-sm; }
         }
       `}</style>
     </>
