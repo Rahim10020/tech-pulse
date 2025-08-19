@@ -2,10 +2,8 @@
 // 4. app/api/comments/[commentId]/report/route.js
 // ==========================================
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // POST - Signaler un commentaire
 export async function POST(request, { params }) {

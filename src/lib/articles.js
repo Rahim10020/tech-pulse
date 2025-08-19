@@ -1,7 +1,6 @@
-// lib/articles.js - Version corrigée avec gestion cohérente des brouillons
-import { PrismaClient } from "@prisma/client";
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+// lib/articles.js - Version corrigée avec gestion cohérente des brouillons
 
 // Configuration pour les relations communes
 const includeRelations = {

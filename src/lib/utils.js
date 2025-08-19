@@ -1,7 +1,6 @@
-// lib/utils.js - Fonctions utilitaires générales
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+// lib/utils.js - Fonctions utilitaires générales
 
 // Récupérer les statistiques générales du blog
 export async function getBlogStats() {

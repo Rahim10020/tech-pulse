@@ -1,9 +1,7 @@
 // app/api/articles/[slug]/like/route.js
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request, { params }) {
     try {

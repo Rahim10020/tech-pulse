@@ -2,10 +2,8 @@
 // 2. app/api/comments/[commentId]/route.js
 // ==========================================
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // PATCH - Modifier un commentaire
 export async function PATCH(request, { params }) {

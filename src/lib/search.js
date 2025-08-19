@@ -1,10 +1,8 @@
+import { prisma } from '@/lib/prisma';
+
 // ===============================================
 // 4. src/lib/search.js - Fonctions utilitaires pour la recherche
 // ===============================================
-
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 // Fonction pour enregistrer les termes de recherche populaires
 export async function logSearchTerm(term, userId = null) {

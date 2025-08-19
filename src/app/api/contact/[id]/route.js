@@ -1,15 +1,13 @@
-// src/app/api/contact/[id]/route.js - API pour gérer un message de contact spécifique
+// src/app/api/contact/[id]/route.js - CORRIGÉ
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { verifyJWT } from '@/lib/auth';
+import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // PATCH - Marquer un message comme lu (admin seulement)
 export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const { isRead } = await request.json();
 
     // Vérifier l'authentification admin
@@ -21,7 +19,7 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    const decoded = verifyJWT(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },
@@ -64,7 +62,7 @@ export async function PATCH(request, { params }) {
 // DELETE - Supprimer un message (admin seulement)
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     // Vérifier l'authentification admin
     const token = request.headers.get('authorization')?.replace('Bearer ', '');
@@ -75,7 +73,7 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    const decoded = verifyJWT(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },

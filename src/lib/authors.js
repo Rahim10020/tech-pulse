@@ -1,7 +1,6 @@
-// lib/authors.js - Fonctions pour les auteurs avec Prisma
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+// lib/authors.js - Fonctions pour les auteurs avec Prisma
 
 // Récupérer tous les auteurs avec leurs statistiques
 export async function getAllAuthors() {

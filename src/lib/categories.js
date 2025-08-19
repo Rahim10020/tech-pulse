@@ -1,7 +1,6 @@
-// lib/categories.js - Fonctions pour les catégories avec Prisma
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+// lib/categories.js - Fonctions pour les catégories avec Prisma
 
 // Récupérer toutes les catégories avec le nombre d'articles
 export async function getAllCategories() {

@@ -3,10 +3,8 @@
 // 3. app/api/comments/[commentId]/like/route.js
 // ==========================================
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // POST - Liker/Unliker un commentaire
 export async function POST(request, { params }) {

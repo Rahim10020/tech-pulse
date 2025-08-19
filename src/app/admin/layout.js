@@ -1,4 +1,4 @@
-// src/app/admin/layout.js - Layout pour les pages d'administration avec vérification auth
+// src/app/admin/layout.js - CORRIGÉ: Server Component (pas Client)
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth';
@@ -12,7 +12,7 @@ export const metadata = {
 
 export default async function AdminLayout({ children }) {
   // Vérifier l'authentification côté serveur
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
 
   if (!token) {

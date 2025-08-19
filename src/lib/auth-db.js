@@ -1,10 +1,8 @@
 // lib/auth-db.js - Corrections pour inclure le rôle partout
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
-
-// ✅ CORRIGÉ: Créer un nouvel utilisateur avec rôle par défaut
+// Créer un nouvel utilisateur avec rôle par défaut
 export async function createUser(userData) {
   try {
     const { name, username, email, password } = userData;
@@ -30,14 +28,14 @@ export async function createUser(userData) {
     // Hacher le mot de passe
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // ✅ IMPORTANT: Créer l'utilisateur AVEC un rôle par défaut
+    // Créer l'utilisateur AVEC un rôle par défaut
     const user = await prisma.user.create({
       data: {
         name,
         username,
         email,
         password: hashedPassword,
-        role: "reader", // ✅ Rôle par défaut
+        role: "reader", // Rôle par défaut
       },
       select: {
         id: true,
@@ -47,7 +45,7 @@ export async function createUser(userData) {
         bio: true,
         avatar: true,
         joinedAt: true,
-        role: true, // ✅ Inclure le rôle dans la réponse
+        role: true, // Inclure le rôle dans la réponse
       },
     });
 
@@ -58,7 +56,7 @@ export async function createUser(userData) {
   }
 }
 
-// ✅ CORRIGÉ: Vérifier les identifiants avec logs de debug
+// Vérifier les identifiants avec logs de debug
 export async function verifyCredentials(email, password) {
   try {
     console.log("🔍 Verifying credentials for:", email);
@@ -75,7 +73,7 @@ export async function verifyCredentials(email, password) {
         bio: true,
         avatar: true,
         joinedAt: true,
-        role: true, // ✅ CRITIQUE: Toujours inclure le rôle
+        role: true, // Toujours inclure le rôle
       },
     });
 
@@ -99,10 +97,10 @@ export async function verifyCredentials(email, password) {
       return { success: false, error: "Identifiants invalides" };
     }
 
-    // ✅ Retourner l'utilisateur sans le mot de passe MAIS avec le rôle
+    //  Retourner l'utilisateur sans le mot de passe MAIS avec le rôle
     const { password: _, ...userWithoutPassword } = user;
 
-    console.log("✅ Credentials verified successfully:", {
+    console.log(" Credentials verified successfully:", {
       userId: userWithoutPassword.id,
       role: userWithoutPassword.role,
       email: userWithoutPassword.email,
@@ -115,7 +113,7 @@ export async function verifyCredentials(email, password) {
   }
 }
 
-// ✅ CORRIGÉ: Récupérer un utilisateur par son ID avec le rôle
+// Récupérer un utilisateur par son ID avec le rôle
 export async function getUserById(userId) {
   try {
     const user = await prisma.user.findUnique({
@@ -133,7 +131,7 @@ export async function getUserById(userId) {
         twitter: true,
         linkedin: true,
         github: true,
-        role: true, // ✅ IMPORTANT: Toujours inclure le rôle
+        role: true, // Toujours inclure le rôle
         createdAt: true,
         updatedAt: true,
       },
@@ -146,7 +144,7 @@ export async function getUserById(userId) {
   }
 }
 
-// ✅ CORRIGÉ: Récupérer un utilisateur par son email avec le rôle
+// Récupérer un utilisateur par son email avec le rôle
 export async function getUserByEmail(email) {
   try {
     const user = await prisma.user.findUnique({
@@ -164,7 +162,7 @@ export async function getUserByEmail(email) {
         twitter: true,
         linkedin: true,
         github: true,
-        role: true, // ✅ Inclure le rôle
+        role: true,
       },
     });
 
@@ -175,7 +173,7 @@ export async function getUserByEmail(email) {
   }
 }
 
-// ✅ CORRIGÉ: Mettre à jour le profil utilisateur (garder le rôle dans la réponse)
+// Mettre à jour le profil utilisateur (garder le rôle dans la réponse)
 export async function updateUserProfile(userId, profileData) {
   try {
     // Filtrer les champs autorisés pour la mise à jour
@@ -206,7 +204,7 @@ export async function updateUserProfile(userId, profileData) {
         twitter: true,
         linkedin: true,
         github: true,
-        role: true, // ✅ Inclure le rôle dans la réponse
+        role: true, // inclure le rôle dans la réponse
       },
     });
 

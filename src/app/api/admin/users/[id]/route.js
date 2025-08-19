@@ -1,10 +1,8 @@
 // src/app/api/admin/users/[id]/route.js - API pour modifier un utilisateur spécifique
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // PATCH - Modifier un utilisateur (admin seulement)
 export async function PATCH(request, { params }) {

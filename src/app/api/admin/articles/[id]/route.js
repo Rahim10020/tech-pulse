@@ -1,10 +1,8 @@
 // src/app/api/admin/articles/[id]/route.js - API pour un article spécifique (admin)
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer un article spécifique (admin)
 export async function GET(request, { params }) {

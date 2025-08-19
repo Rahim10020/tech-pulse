@@ -1,10 +1,8 @@
 // src/app/api/admin/stats/route.js - API pour les statistiques admin CORRIGÉE
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer les statistiques (admin seulement)
 export async function GET(request) {

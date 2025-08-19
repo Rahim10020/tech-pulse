@@ -1,10 +1,8 @@
 // src/app/api/admin/categories/route.js - API pour la gestion des catégories (admin)
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer toutes les catégories (admin)
 export async function GET(request) {

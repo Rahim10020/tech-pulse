@@ -1,10 +1,8 @@
 // src/app/api/admin/articles/route.js - API pour la gestion des articles (admin)
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer tous les articles pour l'admin
 export async function GET(request) {

@@ -1,8 +1,6 @@
 // src/app/api/settings/route.js - API publique pour les paramètres du site
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer les paramètres publics du site
 export async function GET() {

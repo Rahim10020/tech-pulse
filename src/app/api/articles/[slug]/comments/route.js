@@ -2,10 +2,8 @@
 // 1. app/api/articles/[slug]/comments/route.js
 // ==========================================
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@/lib/auth';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer les commentaires d'un article
 export async function GET(request, { params }) {

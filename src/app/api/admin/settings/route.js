@@ -1,10 +1,8 @@
-// src/app/api/admin/settings/route.js - API pour les paramètres du site
+// src/app/api/admin/settings/route.js - CORRIGÉ
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { verifyJWT } from '@/lib/auth';
+import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer les paramètres du site
 export async function GET(request) {
@@ -18,7 +16,7 @@ export async function GET(request) {
       );
     }
 
-    const decoded = verifyJWT(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },
@@ -78,7 +76,7 @@ export async function PUT(request) {
       );
     }
 
-    const decoded = verifyJWT(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Token invalide' },
@@ -134,4 +132,4 @@ export async function PUT(request) {
       { status: 500 }
     );
   }
-} 
+}

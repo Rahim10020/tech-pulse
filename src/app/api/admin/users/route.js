@@ -1,10 +1,8 @@
 // src/app/api/admin/users/route.js - API pour la gestion des utilisateurs (admin)
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // GET - Récupérer la liste des utilisateurs (admin seulement)
 export async function GET(request) {
