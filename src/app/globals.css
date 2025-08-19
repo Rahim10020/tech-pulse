@@ -51,6 +51,10 @@ body {
     @apply bg-white rounded-sm border border-gray-200 shadow-sm hover:shadow-md transition-shadow;
   }
 
+  .card-noborder {
+    @apply bg-white rounded-sm shadow-sm hover:shadow-md transition-shadow;
+  }
+
   .input-field {
     @apply w-full px-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300;
   }
@@ -102,12 +106,17 @@ body {
   .h5-title {
     @apply text-base font-poppins font-medium
   }
-  
+
   .h6-title {
     @apply text-sm font-poppins font-medium
   }
 
-  .body-text { @apply font-sans text-base }
-  .small-text { @apply font-sans text-sm }
-  
+  .body-text {
+    @apply font-sans text-base
+  }
+
+  .small-text {
+    @apply font-sans text-sm
+  }
+
 }

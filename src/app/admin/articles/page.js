@@ -10,7 +10,6 @@ import { isAdmin } from "@/lib/auth-roles";
 import {
     Search,
     Plus,
-    Filter,
     Eye,
     Edit,
     Trash2,
@@ -20,12 +19,10 @@ import {
     Heart,
     MessageSquare,
     Star,
-    MoreHorizontal,
     CheckCircle,
     Clock,
     Globe,
     RefreshCw,
-    ArrowUpDown,
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";
@@ -311,8 +308,8 @@ export default function AdminArticlesPage() {
                 </div>
 
                 {/* Statistiques */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div className="card p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div className="card-noborder p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="h6-title text-gray-600">Total</p>
@@ -321,7 +318,7 @@ export default function AdminArticlesPage() {
                             <FileText className="w-8 h-8 text-blue-500" />
                         </div>
                     </div>
-                    <div className="card p-6">
+                    <div className="card-noborder p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="h6-title text-gray-600">Publiés</p>
@@ -330,7 +327,7 @@ export default function AdminArticlesPage() {
                             <Globe className="w-8 h-8 text-green-500" />
                         </div>
                     </div>
-                    <div className="card p-6">
+                    <div className="card-noborder p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="h6-title text-gray-600">Brouillons</p>
@@ -339,77 +336,69 @@ export default function AdminArticlesPage() {
                             <Clock className="w-8 h-8 text-orange-500" />
                         </div>
                     </div>
-                    <div className="card p-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="h6-title text-gray-600">En vedette</p>
-                                <p className="h3-title text-gray-900">{stats.featured}</p>
-                            </div>
-                            <Star className="w-8 h-8 text-yellow-500" />
-                        </div>
-                    </div>
                 </div>
 
                 {/* Filtres et recherche */}
-                <div className="card p-6 mb-6">
+                <div className="card-noborder p-6 mb-6">
                     <div className="flex flex-col lg:flex-row gap-4">
                         {/* Recherche */}
-                        <div className="flex-1 relative">
+                        <div className="flex gap-3">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                             <input
                                 type="text"
                                 placeholder="Rechercher par titre, contenu..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="input-field pl-10"
+                                className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300"
                             />
+                            {/* Filtres */}
+                            <div className="flex flex-wrap gap-3">
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className="input-field min-w-[140px]"
+                                >
+                                    <option value="all">Tous les statuts</option>
+                                    <option value="published">Publiés</option>
+                                    <option value="draft">Brouillons</option>
+                                    <option value="featured">En vedette</option>
+                                </select>
+
+                                <select
+                                    value={categoryFilter}
+                                    onChange={(e) => setCategoryFilter(e.target.value)}
+                                    className="input-field min-w-[140px]"
+                                >
+                                    <option value="">Toutes catégories</option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.slug}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <select
+                                    value={`${sortBy}-${sortOrder}`}
+                                    onChange={(e) => {
+                                        const [field, order] = e.target.value.split("-");
+                                        setSortBy(field);
+                                        setSortOrder(order);
+                                    }}
+                                    className="input-field min-w-[140px]"
+                                >
+                                    <option value="updatedAt-desc">Modifié récemment</option>
+                                    <option value="updatedAt-asc">Modifié anciennement</option>
+                                    <option value="publishedAt-desc">Publié récemment</option>
+                                    <option value="publishedAt-asc">Publié anciennement</option>
+                                    <option value="title-asc">Titre A-Z</option>
+                                    <option value="title-desc">Titre Z-A</option>
+                                    <option value="views-desc">Plus vus</option>
+                                    <option value="views-asc">Moins vus</option>
+                                </select>
+                            </div>
                         </div>
 
-                        {/* Filtres */}
-                        <div className="flex flex-wrap gap-3">
-                            <select
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className="input-field min-w-[140px]"
-                            >
-                                <option value="all">Tous les statuts</option>
-                                <option value="published">Publiés</option>
-                                <option value="draft">Brouillons</option>
-                                <option value="featured">En vedette</option>
-                            </select>
 
-                            <select
-                                value={categoryFilter}
-                                onChange={(e) => setCategoryFilter(e.target.value)}
-                                className="input-field min-w-[140px]"
-                            >
-                                <option value="">Toutes catégories</option>
-                                {categories.map((category) => (
-                                    <option key={category.id} value={category.slug}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={`${sortBy}-${sortOrder}`}
-                                onChange={(e) => {
-                                    const [field, order] = e.target.value.split("-");
-                                    setSortBy(field);
-                                    setSortOrder(order);
-                                }}
-                                className="input-field min-w-[140px]"
-                            >
-                                <option value="updatedAt-desc">Modifié récemment</option>
-                                <option value="updatedAt-asc">Modifié anciennement</option>
-                                <option value="publishedAt-desc">Publié récemment</option>
-                                <option value="publishedAt-asc">Publié anciennement</option>
-                                <option value="title-asc">Titre A-Z</option>
-                                <option value="title-desc">Titre Z-A</option>
-                                <option value="views-desc">Plus vus</option>
-                                <option value="views-asc">Moins vus</option>
-                            </select>
-                        </div>
                     </div>
 
                     {/* Actions de masse */}
