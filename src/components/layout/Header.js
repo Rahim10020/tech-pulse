@@ -135,11 +135,6 @@ export default function Header() {
                   </Link>
                 )}
 
-                {/* Bell notification */}
-                <div className="relative">
-                  <Bell className="w-5 h-5 text-gray-600 cursor-pointer hover:text-gray-900 transition-colors" />
-                </div>
-
                 {/* Profile Menu */}
                 <div className="relative">
                   <button

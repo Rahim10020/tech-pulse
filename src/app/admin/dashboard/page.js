@@ -1,4 +1,4 @@
-// src/app/admin/dashboard/page.js - Page d'administration standardisée
+// src/app/admin/dashboard/page.js - Dashboard admin avec navigation améliorée
 "use client";
 
 import { useState, useEffect } from "react";
@@ -28,6 +28,13 @@ import {
   FileText,
   Activity,
   RefreshCw,
+  Tag,
+  Folder,
+  Edit,
+  Star,
+  Clock,
+  Calendar,
+  ArrowRight,
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -35,6 +42,8 @@ export default function AdminDashboard() {
   const { showToast } = useToast();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
+
+  // États existants...
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalArticles: 0,
@@ -42,11 +51,18 @@ export default function AdminDashboard() {
     totalLikes: 0,
     totalComments: 0,
     unreadMessages: 0,
+    publishedArticles: 0,
+    draftArticles: 0,
+    featuredArticles: 0,
+    totalCategories: 0,
   });
+
   const [messages, setMessages] = useState([]);
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
+  const [recentArticles, setRecentArticles] = useState([]);
+  const [topCategories, setTopCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [settings, setSettings] = useState({
@@ -79,6 +95,7 @@ export default function AdminDashboard() {
     if (user && isAdmin(user)) {
       loadStats();
       loadSettings();
+      loadRecentContent();
     }
   }, [user]);
 
@@ -104,6 +121,32 @@ export default function AdminDashboard() {
       console.error("Error loading stats:", error);
     }
   };
+
+  const loadRecentContent = async () => {
+    try {
+      // Charger les articles récents
+      const articlesResponse = await fetch("/api/admin/articles?limit=5&sortBy=updatedAt&sortOrder=desc", {
+        credentials: "include",
+      });
+      if (articlesResponse.ok) {
+        const articlesData = await articlesResponse.json();
+        setRecentArticles(articlesData.articles);
+      }
+
+      // Charger les catégories populaires
+      const categoriesResponse = await fetch("/api/admin/categories?sortBy=articles&sortOrder=desc&limit=5", {
+        credentials: "include",
+      });
+      if (categoriesResponse.ok) {
+        const categoriesData = await categoriesResponse.json();
+        setTopCategories(categoriesData.categories);
+      }
+    } catch (error) {
+      console.error("Error loading recent content:", error);
+    }
+  };
+
+  // ... autres fonctions existantes (loadMessages, loadUsers, loadSettings, etc.)
 
   const loadMessages = async () => {
     setMessagesLoading(true);
@@ -137,7 +180,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Error loading users:", error);
-      showToast("Error loading messages users", "error");
+      showToast("Error loading users", "error");
     } finally {
       setUsersLoading(false);
     }
@@ -265,6 +308,8 @@ export default function AdminDashboard() {
     }));
   };
 
+  // ... autres fonctions existantes
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -285,7 +330,7 @@ export default function AdminDashboard() {
           <div>
             <h1 className="h1-title text-gray-900">Administration</h1>
             <p className="body-text text-gray-600">
-              Manage your site and monitor performance
+              Gérez votre site et surveillez les performances
             </p>
           </div>
           <button
@@ -293,23 +338,24 @@ export default function AdminDashboard() {
             className="btn-secondary flex items-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
-            <span>Refresh</span>
+            <span>Actualiser</span>
           </button>
         </div>
 
         {/* Onglets */}
         <div className="border-b border-gray-200 mb-8">
-          <nav className="flex gap-8">
+          <nav className="flex gap-8 overflow-x-auto">
             {[
-              { id: "overview", label: "Overview", icon: BarChart3 },
-              { id: "users", label: "Users", icon: Users },
+              { id: "overview", label: "Vue d'ensemble", icon: BarChart3 },
+              { id: "content", label: "Contenu", icon: FileText },
+              { id: "users", label: "Utilisateurs", icon: Users },
               { id: "messages", label: "Messages", icon: MessageSquare, badge: stats.unreadMessages },
-              { id: "settings", label: "Settings", icon: Settings },
+              { id: "settings", label: "Paramètres", icon: Settings },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 ${activeTab === tab.id
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 whitespace-nowrap ${activeTab === tab.id
                   ? "border-teal-500 text-teal-600"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
@@ -335,7 +381,7 @@ export default function AdminDashboard() {
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="h6-title text-gray-600">Users</p>
+                      <p className="h6-title text-gray-600">Utilisateurs</p>
                       <p className="h3-title text-gray-900">{stats.totalUsers}</p>
                     </div>
                     <Users className="w-8 h-8 text-blue-500" />
@@ -353,8 +399,8 @@ export default function AdminDashboard() {
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="h6-title text-gray-600">Total Views</p>
-                      <p className="h3-title text-gray-900">{stats.totalViews.toLocaleString()}</p>
+                      <p className="h6-title text-gray-600">Vues totales</p>
+                      <p className="h3-title text-gray-900">{stats.totalViews?.toLocaleString() || 0}</p>
                     </div>
                     <Eye className="w-8 h-8 text-purple-500" />
                   </div>
@@ -362,7 +408,7 @@ export default function AdminDashboard() {
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="h6-title text-gray-600">Unread messages</p>
+                      <p className="h6-title text-gray-600">Messages non lus</p>
                       <p className="h3-title text-gray-900">{stats.unreadMessages}</p>
                     </div>
                     <MessageSquare className="w-8 h-8 text-red-500" />
@@ -372,57 +418,253 @@ export default function AdminDashboard() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card p-6">
-                  <h3 className="h3-title text-gray-900 mb-4">Recent activities</h3>
+                  <h3 className="h3-title text-gray-900 mb-4">Activités récentes</h3>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
-                        New registered user
+                        Nouvel utilisateur inscrit
                       </span>
-                      <span className="small-text text-gray-400">2 hours ago</span>
+                      <span className="small-text text-gray-400">Il y a 2 heures</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
-                        Article published
+                        Article publié
                       </span>
-                      <span className="small-text text-gray-400">4 hours ago</span>
+                      <span className="small-text text-gray-400">Il y a 4 heures</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
-                        New contact message
+                        Nouveau message de contact
                       </span>
-                      <span className="small-text text-gray-400">10 hours ago</span>
+                      <span className="small-text text-gray-400">Il y a 10 heures</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="card p-6">
-                  <h3 className="h3-title text-gray-900 mb-4">Quick Actions</h3>
+                  <h3 className="h3-title text-gray-900 mb-4">Actions rapides</h3>
                   <div className="space-y-3">
                     <button
-                      onClick={() => setActiveTab("messages")}
+                      onClick={() => router.push("/admin/articles")}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
-                      <span className="body-text">Manage messages</span>
-                      <MessageSquare className="w-4 h-4 text-gray-400" />
+                      <span className="body-text">Gérer les articles</span>
+                      <FileText className="w-4 h-4 text-gray-400" />
+                    </button>
+                    <button
+                      onClick={() => router.push("/admin/categories")}
+                      className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
+                    >
+                      <span className="body-text">Gérer les catégories</span>
+                      <Tag className="w-4 h-4 text-gray-400" />
                     </button>
                     <button
                       onClick={() => setActiveTab("users")}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
-                      <span className="body-text">Manage users</span>
+                      <span className="body-text">Gérer les utilisateurs</span>
                       <Users className="w-4 h-4 text-gray-400" />
                     </button>
                     <button
-                      onClick={() => setActiveTab("settings")}
+                      onClick={() => setActiveTab("messages")}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
-                      <span className="body-text">Site Settings</span>
-                      <Settings className="w-4 h-4 text-gray-400" />
+                      <span className="body-text">Voir les messages</span>
+                      <MessageSquare className="w-4 h-4 text-gray-400" />
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Gestion du contenu */}
+          {activeTab === "content" && (
+            <div className="space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 className="h2-title text-gray-900">Gestion du contenu</h2>
+                <button
+                  onClick={() => router.push("/create")}
+                  className="btn-primary flex items-center gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Nouvel article
+                </button>
+              </div>
+
+              {/* Statistiques du contenu */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="card p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="h6-title text-gray-600">Articles publiés</p>
+                      <p className="h3-title text-gray-900">{stats.publishedArticles || 0}</p>
+                    </div>
+                    <Globe className="w-8 h-8 text-green-500" />
+                  </div>
+                </div>
+                <div className="card p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="h6-title text-gray-600">Brouillons</p>
+                      <p className="h3-title text-gray-900">{stats.draftArticles || 0}</p>
+                    </div>
+                    <Clock className="w-8 h-8 text-orange-500" />
+                  </div>
+                </div>
+                <div className="card p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="h6-title text-gray-600">En vedette</p>
+                      <p className="h3-title text-gray-900">{stats.featuredArticles || 0}</p>
+                    </div>
+                    <Star className="w-8 h-8 text-yellow-500" />
+                  </div>
+                </div>
+                <div className="card p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="h6-title text-gray-600">Catégories</p>
+                      <p className="h3-title text-gray-900">{stats.totalCategories || 0}</p>
+                    </div>
+                    <Tag className="w-8 h-8 text-purple-500" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Gestion rapide */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Articles récents */}
+                <div className="card p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="h3-title text-gray-900">Articles récents</h3>
+                    <button
+                      onClick={() => router.push("/admin/articles")}
+                      className="btn-secondary text-sm flex items-center gap-1"
+                    >
+                      Voir tout
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+
+                  {recentArticles.length > 0 ? (
+                    <div className="space-y-3">
+                      {recentArticles.slice(0, 5).map((article) => (
+                        <div key={article.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <div className="flex-1">
+                            <h4 className="h6-title text-gray-900 line-clamp-1">{article.title}</h4>
+                            <div className="flex items-center gap-2 mt-1">
+                              {article.published ? (
+                                <span className="badge bg-green-100 text-green-800 flex items-center gap-1">
+                                  <Globe className="w-3 h-3" />
+                                  Publié
+                                </span>
+                              ) : (
+                                <span className="badge bg-gray-100 text-gray-800 flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  Brouillon
+                                </span>
+                              )}
+                              <span className="small-text text-gray-500">
+                                {new Date(article.updatedAt).toLocaleDateString("fr-FR")}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => router.push(`/admin/articles/${article.id}/edit`)}
+                            className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-white"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                      <p className="body-text text-gray-500">Aucun article récent</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Catégories populaires */}
+                <div className="card p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="h3-title text-gray-900">Catégories populaires</h3>
+                    <button
+                      onClick={() => router.push("/admin/categories")}
+                      className="btn-secondary text-sm flex items-center gap-1"
+                    >
+                      Gérer
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+
+                  {topCategories.length > 0 ? (
+                    <div className="space-y-3">
+                      {topCategories.slice(0, 5).map((category) => (
+                        <div key={category.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className={`${category.color} ${category.textColor} p-2 rounded-lg`}>
+                              <Folder className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <h4 className="h6-title text-gray-900">{category.name}</h4>
+                              <p className="small-text text-gray-500">
+                                {category.articlesCount} article{category.articlesCount !== 1 ? 's' : ''}
+                              </p>
+                            </div>
+                          </div>
+                          <span className={`badge ${category.color} ${category.textColor}`}>
+                            {category.articlesCount}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <Tag className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                      <p className="body-text text-gray-500">Aucune catégorie</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Actions rapides pour le contenu */}
+              <div className="card p-6">
+                <h3 className="h3-title text-gray-900 mb-4">Actions rapides</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <button
+                    onClick={() => router.push("/admin/articles")}
+                    className="btn-secondary flex items-center justify-center gap-2 py-4"
+                  >
+                    <FileText className="w-5 h-5" />
+                    <span>Tous les articles</span>
+                  </button>
+                  <button
+                    onClick={() => router.push("/admin/articles?status=draft")}
+                    className="btn-secondary flex items-center justify-center gap-2 py-4"
+                  >
+                    <Clock className="w-5 h-5" />
+                    <span>Brouillons</span>
+                  </button>
+                  <button
+                    onClick={() => router.push("/admin/categories")}
+                    className="btn-secondary flex items-center justify-center gap-2 py-4"
+                  >
+                    <Tag className="w-5 h-5" />
+                    <span>Catégories</span>
+                  </button>
+                  <button
+                    onClick={() => router.push("/create")}
+                    className="btn-primary flex items-center justify-center gap-2 py-4"
+                  >
+                    <Plus className="w-5 h-5" />
+                    <span>Nouvel article</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -431,8 +673,8 @@ export default function AdminDashboard() {
           {/* Gestion des utilisateurs */}
           {activeTab === "users" && (
             <div className="space-y-6">
-              <h2 className="h2-title text-gray-900">User management</h2>
-
+              <h2 className="h2-title text-gray-900">Gestion des utilisateurs</h2>
+              {/* Code existant pour la gestion des utilisateurs */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
                   type="text"
@@ -510,7 +752,6 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* Gestion des messages */}
           {activeTab === "messages" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
@@ -519,7 +760,7 @@ export default function AdminDashboard() {
                   {messages.length} message(s)
                 </span>
               </div>
-
+              {/* Code existant pour la gestion des messages */}
               {messagesLoading ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 mx-auto"></div>
@@ -576,9 +817,10 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* Paramètres du site */}
           {activeTab === "settings" && (
             <div className="space-y-8">
+              <h2 className="h2-title text-gray-900">Paramètres du site</h2>
+              {/* Code existant pour les paramètres */}
               <form onSubmit={handleSettingsSubmit}>
                 {/* Informations générales */}
                 <div className="card p-6 mb-6">

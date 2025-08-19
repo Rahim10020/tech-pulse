@@ -1,5 +1,5 @@
 // ==========================================
-// 1. app/api/articles/route.js - CORRIGÉ
+// 1. app/api/articles/route.js
 // ==========================================
 import { NextResponse } from 'next/server';
 import { getArticles, getFeaturedArticles, getRecentArticles, createArticle } from '@/lib/articles';
