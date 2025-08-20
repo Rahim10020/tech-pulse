@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma';
 // GET - Récupérer les commentaires d'un article
 export async function GET(request, { params }) {
     try {
-        const { slug } = params;
+        const { slug } = await params;
         const { searchParams } = new URL(request.url);
         const sort = searchParams.get('sort') || 'newest';
 

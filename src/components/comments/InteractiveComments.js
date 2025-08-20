@@ -281,18 +281,16 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
                     Commentaires ({comments.length})
                 </h3>
 
-                <div className="flex items-center space-x-3">
-                    <span className="small-text text-gray-500">Trier par :</span>
-                    <select
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
-                        className="input-field text-sm border-gray-300"
-                    >
-                        <option value="newest">Plus récents</option>
-                        <option value="oldest">Plus anciens</option>
-                        <option value="popular">Plus populaires</option>
-                    </select>
-                </div>
+
+                <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-34 cursor-pointer pt-3 pb-3 pl-3 text-sm border-gray-300"
+                >
+                    <option value="newest">Plus récents</option>
+                    <option value="oldest">Plus anciens</option>
+                    <option value="popular">Plus populaires</option>
+                </select>
             </div>
 
             {/* Formulaire de nouveau commentaire */}
