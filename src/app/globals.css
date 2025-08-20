@@ -55,8 +55,16 @@ body {
     @apply bg-white rounded-sm shadow-sm hover:shadow-md transition-shadow;
   }
 
+  .code {
+    @apply rounded-sm;
+  }
+
   .input-field {
     @apply w-full px-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300;
+  }
+
+  .search-input-field {
+    @apply bg-gray-100 rounded-sm px-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300
   }
 
   .special-input-field {

@@ -4,12 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Search,
-  Bell,
   Menu,
   User,
   Settings,
   LogOut,
-  Plus,
   PenTool,
   Shield,
   MessageSquare,

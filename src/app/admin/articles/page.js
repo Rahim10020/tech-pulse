@@ -309,7 +309,7 @@ export default function AdminArticlesPage() {
 
                 {/* Statistiques */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="card-noborder p-6">
+                    <div className="card p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="h6-title text-gray-600">Total</p>
@@ -318,7 +318,7 @@ export default function AdminArticlesPage() {
                             <FileText className="w-8 h-8 text-blue-500" />
                         </div>
                     </div>
-                    <div className="card-noborder p-6">
+                    <div className="card p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="h6-title text-gray-600">Publiés</p>
@@ -327,7 +327,7 @@ export default function AdminArticlesPage() {
                             <Globe className="w-8 h-8 text-green-500" />
                         </div>
                     </div>
-                    <div className="card-noborder p-6">
+                    <div className="card p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="h6-title text-gray-600">Brouillons</p>
@@ -339,7 +339,7 @@ export default function AdminArticlesPage() {
                 </div>
 
                 {/* Filtres et recherche */}
-                <div className="card-noborder p-6 mb-6">
+                <div className="card p-6 mb-6">
                     <div className="flex flex-col">
                         <div className="flex flex-col lg:flex-row">
                             {/* Recherche */}
@@ -423,7 +423,7 @@ export default function AdminArticlesPage() {
                 </div>
 
                 {/* Liste des articles */}
-                <div className="card-noborder">
+                <div className="card">
                     {loading_articles ? (
                         <div className="p-12 text-center">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 mx-auto mb-4"></div>

@@ -1,4 +1,4 @@
-// app/create/page.js - Version corrigée avec logique clarifiée
+// app/create/page.js
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -24,7 +24,7 @@ export default function CreateArticlePage() {
     title: "",
     content: "",
     description: "",
-    category: "", // Vide par défaut = sera traité comme "non-classe"
+    category: "",// sera traite comme "non-classe"
     tags: [],
     readTime: "",
     featured: false,
@@ -52,7 +52,7 @@ export default function CreateArticlePage() {
   // Calculer le temps de lecture
   const readingTime = calculateReadingTime(formData.content);
 
-  // **FONCTION D'AUTO-SAVE CORRIGÉE**
+  // fonction d'autosave
   const handleAutoSave = useCallback(async (data) => {
     try {
       const response = await fetch("/api/drafts/auto-save", {
@@ -183,7 +183,7 @@ export default function CreateArticlePage() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  // **FONCTION DE PUBLICATION CORRIGÉE**
+  // fonction de publication
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -241,7 +241,7 @@ export default function CreateArticlePage() {
     }
   };
 
-  // **FONCTION DE SAUVEGARDE MANUELLE CORRIGÉE**
+  // fonction de sauvegarde manuelle
   const handleSaveDraft = async () => {
     if (!formData.title.trim() && !formData.content.trim()) {
       error("Au moins un titre ou du contenu est requis pour sauvegarder");
@@ -308,156 +308,157 @@ export default function CreateArticlePage() {
       <Header />
 
       {/* Contenu principal */}
-      <div className="container-sm py-4 pt-20">
-        {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-          <div className="flex-1">
-            <h1 className="h1-title text-gray-900 mb-2">
-              Créer un article
-            </h1>
-            <SaveIndicator
-              isSaving={isSaving || isSavingDraft}
-              lastSaved={lastSaved}
-              hasUnsavedChanges={hasUnsavedChanges}
-            />
-          </div>
-
-          {/* Sélection de catégorie */}
-          <div className="md:w-64">
-            <select
-              value={formData.category}
-              onChange={handleCategoryChange}
-              className="input-field"
-            >
-              <option value="">
-                {currentDraftId ? "📝 Brouillon (non classé)" : "Sélectionner une catégorie..."}
-              </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.slug}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Informations de l'article */}
-          <div className="text-right">
-            <div className="small-text text-gray-600">
-              Temps de lecture:{" "}
-              <span className="font-medium">{readingTime}</span>
-            </div>
-            <div className="small-text text-gray-500">
-              {
-                formData.content
-                  .replace(/<[^>]*>/g, "")
-                  .split(/\s+/)
-                  .filter((word) => word.length > 0).length
-              }{" "}
-              mots
-            </div>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Title Input */}
-            <div className="p-6 pb-0">
-              <input
-                type="text"
-                placeholder="Titre de votre article..."
-                value={formData.title}
-                onChange={handleTitleChange}
-                className="w-full text-3xl bg-transparent font-bold text-gray-900 placeholder-gray-400 border-none outline-none"
-              />
-            </div>
-
-            {/* Éditeur Tiptap */}
-            <div className="px-6">
-              <TiptapEditor
-                content={formData.content}
-                onChange={handleContentChange}
-                placeholder="Commencez à écrire votre article... Partagez vos idées, vos expériences, vos découvertes !"
-                onImageUpload={handleTiptapImageUpload}
-                className="min-h-[500px]"
-              />
-            </div>
-
-            {/* Footer Actions */}
-            <div className="border-t border-gray-200 p-6">
-              <div className="flex flex-col sm:flex-row items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="btn-secondary w-full sm:w-auto"
-                >
-                  Annuler
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleSaveDraft}
-                  disabled={isSavingDraft || (!formData.title.trim() && !formData.content.trim())}
-                  className="btn-secondary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  title="Sauvegarder en brouillon (Ctrl+S)"
-                >
-                  {isSavingDraft ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700"></div>
-                      <span>Sauvegarde...</span>
-                    </>
-                  ) : (
-                    <span>Sauvegarder le brouillon</span>
-                  )}
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={!canPublish}
-                  className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  title={!formData.category ? "Sélectionnez une catégorie pour publier" : ""}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>Publication...</span>
-                    </>
-                  ) : (
-                    <span>Publier l'article</span>
-                  )}
-                </button>
+      <div className="container py-4 pt-10">
+        <div className="flex flex-col">
+          {/* Page Header */}
+          <div className="sticky top-20 bg-white z-10 border-b border-gray-200 p-4 mb-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h1 className="h1-title text-gray-900 mb-2">
+                  Créer un article
+                </h1>
+                <SaveIndicator
+                  isSaving={isSaving || isSavingDraft}
+                  lastSaved={lastSaved}
+                  hasUnsavedChanges={hasUnsavedChanges}
+                />
               </div>
 
-              {/* Message d'aide */}
-              {!formData.category && (formData.title.trim() || formData.content.trim()) && (
-                <div className="mt-3 text-center">
-                  <p className="small-text text-orange-600">
-                    💡 Sélectionnez une catégorie pour pouvoir publier votre article
-                  </p>
-                </div>
-              )}
-            </div>
-          </form>
-        </div>
+              {/* Sélection de catégorie */}
+              <div className="md:w-64">
+                <select
+                  value={formData.category}
+                  onChange={handleCategoryChange}
+                  className="search-input-field cursor-pointer"
+                >
+                  <option value="">
+                    {currentDraftId ? "Brouillon (non classé)" : "Sélectionner une catégorie..."}
+                  </option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.slug}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        {/* Aide rapide */}
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="h6-title text-blue-800 mb-2">
-            💡 Comment ça marche :
-          </h3>
-          <div className="small-text text-blue-700 space-y-1">
-            <p>
-              📝 <strong>Brouillons automatiques :</strong> Vos modifications sont sauvegardées automatiquement toutes les 30 secondes
-            </p>
-            <p>
-              💾 <strong>Sauvegarde manuelle :</strong> Utilisez Ctrl+S ou le bouton "Sauvegarder" pour forcer la sauvegarde
-            </p>
-            <p>
-              📂 <strong>Catégories :</strong> Sélectionnez une catégorie pour pouvoir publier (obligatoire)
-            </p>
-            <p>
-              🚀 <strong>Publication :</strong> Une fois publié, l'article sera visible par tous les visiteurs
-            </p>
+              {/* Bouton d'aide stylé */}
+              <div className="relative group">
+                <button className="p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                {/* Tooltip au survol */}
+                <div className="absolute left-0 top-full mt-2 w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                  <h4 className="font-semibold text-gray-900 mb-2">Guide rapide</h4>
+                  <div className="text-sm text-gray-600 space-y-2">
+                    <p>📝 Sauvegarde automatique toutes les 30s</p>
+                    <p>💾 Ctrl+S pour sauvegarder manuellement</p>
+                    <p>📂 Catégorie obligatoire pour publier</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Informations de l'article */}
+              <div className="text-right">
+                <div className="small-text text-gray-600">
+                  Temps de lecture:{" "}
+                  <span className="font-medium">{readingTime}</span>
+                </div>
+                <div className="small-text text-gray-500">
+                  {
+                    formData.content
+                      .replace(/<[^>]*>/g, "")
+                      .split(/\s+/)
+                      .filter((word) => word.length > 0).length
+                  }{" "}
+                  mots
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="code">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Title Input */}
+              <div className="pb-4">
+                <input
+                  type="text"
+                  placeholder="TITRE DE VOTRE ARTICLE..."
+                  value={formData.title}
+                  onChange={handleTitleChange}
+                  className="w-full text-3xl lg:text-4xl bg-transparent font-bold text-gray-900 placeholder-gray-400 border-none outline-none"
+                />
+              </div>
+
+              {/* Éditeur Tiptap */}
+              <div className="">
+                <TiptapEditor
+                  content={formData.content}
+                  onChange={handleContentChange}
+                  placeholder="Commencez à écrire votre article... Partagez vos idées, vos expériences, vos découvertes !"
+                  onImageUpload={handleTiptapImageUpload}
+                  className="min-h-[500px]"
+                />
+              </div>
+
+              {/* Footer Actions */}
+              <div className="border-t border-gray-200 pt-6 pb-6">
+                <div className="flex flex-col sm:flex-row items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="btn-secondary w-full sm:w-auto"
+                  >
+                    Annuler
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSaveDraft}
+                    disabled={isSavingDraft || (!formData.title.trim() && !formData.content.trim())}
+                    className="btn-secondary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    title="Sauvegarder en brouillon (Ctrl+S)"
+                  >
+                    {isSavingDraft ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700"></div>
+                        <span>Sauvegarde...</span>
+                      </>
+                    ) : (
+                      <span>Sauvegarder le brouillon</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={!canPublish}
+                    className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    title={!formData.category ? "Sélectionnez une catégorie pour publier" : ""}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Publication...</span>
+                      </>
+                    ) : (
+                      <span>Publier l'article</span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Message d'aide */}
+                {!formData.category && (formData.title.trim() || formData.content.trim()) && (
+                  <div className="mt-3 text-right">
+                    <p className="small-text text-orange-600">
+                      💡 Sélectionnez une catégorie pour pouvoir publier votre article
+                    </p>
+                  </div>
+                )}
+              </div>
+            </form>
           </div>
         </div>
       </div>

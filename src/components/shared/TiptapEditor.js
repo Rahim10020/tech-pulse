@@ -22,7 +22,6 @@ import {
   Redo,
   Link as LinkIcon,
   Image as ImageIcon,
-  X,
 } from "lucide-react";
 
 export default function TiptapEditor({
@@ -169,7 +168,7 @@ export default function TiptapEditor({
 
   return (
     <>
-      <div className={`border border-gray-200 rounded-lg overflow-hidden bg-white ${className}`}>
+      <div className={`overflow-hidden bg-white ${className}`}>
         {/* Toolbar */}
         <div className="border-b border-gray-200 p-3 bg-gray-50">
           <div className="flex flex-wrap items-center gap-1">
