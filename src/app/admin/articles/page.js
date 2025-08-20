@@ -340,23 +340,25 @@ export default function AdminArticlesPage() {
 
                 {/* Filtres et recherche */}
                 <div className="card-noborder p-6 mb-6">
-                    <div className="flex flex-col lg:flex-row gap-4">
-                        {/* Recherche */}
-                        <div className="flex gap-3">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                            <input
-                                type="text"
-                                placeholder="Rechercher par titre, contenu..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300"
-                            />
-                            {/* Filtres */}
-                            <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-col">
+                        <div className="flex flex-col lg:flex-row">
+                            {/* Recherche */}
+                            <div className="flex gap-3">
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                                    <input
+                                        type="text"
+                                        placeholder="Rechercher par titre, contenu..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="bg-gray-100 pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                    />
+                                </div>
+                                {/* Filtres */}
                                 <select
                                     value={statusFilter}
                                     onChange={(e) => setStatusFilter(e.target.value)}
-                                    className="input-field min-w-[140px]"
+                                    className="special-input-field cursor-pointer"
                                 >
                                     <option value="all">Tous les statuts</option>
                                     <option value="published">Publiés</option>
@@ -367,7 +369,7 @@ export default function AdminArticlesPage() {
                                 <select
                                     value={categoryFilter}
                                     onChange={(e) => setCategoryFilter(e.target.value)}
-                                    className="input-field min-w-[140px]"
+                                    className="special-input-field cursor-pointer"
                                 >
                                     <option value="">Toutes catégories</option>
                                     {categories.map((category) => (
@@ -384,7 +386,7 @@ export default function AdminArticlesPage() {
                                         setSortBy(field);
                                         setSortOrder(order);
                                     }}
-                                    className="input-field min-w-[140px]"
+                                    className="special-input-field cursor-pointer"
                                 >
                                     <option value="updatedAt-desc">Modifié récemment</option>
                                     <option value="updatedAt-asc">Modifié anciennement</option>
@@ -397,33 +399,31 @@ export default function AdminArticlesPage() {
                                 </select>
                             </div>
                         </div>
-
-
+                        {/* Actions de masse */}
+                        {selectedArticles.size > 0 && (
+                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                                <p className="small-text text-gray-600">
+                                    {selectedArticles.size} article(s) sélectionné(s)
+                                </p>
+                                <div className="flex gap-2">
+                                    <button className="btn-secondary text-sm">
+                                        Publier la sélection
+                                    </button>
+                                    <button className="btn-secondary text-sm">
+                                        Mettre en brouillon
+                                    </button>
+                                    <button className="btn-secondary text-sm text-red-600">
+                                        Supprimer la sélection
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
-                    {/* Actions de masse */}
-                    {selectedArticles.size > 0 && (
-                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
-                            <p className="small-text text-gray-600">
-                                {selectedArticles.size} article(s) sélectionné(s)
-                            </p>
-                            <div className="flex gap-2">
-                                <button className="btn-secondary text-sm">
-                                    Publier la sélection
-                                </button>
-                                <button className="btn-secondary text-sm">
-                                    Mettre en brouillon
-                                </button>
-                                <button className="btn-secondary text-sm text-red-600">
-                                    Supprimer la sélection
-                                </button>
-                            </div>
-                        </div>
-                    )}
                 </div>
 
                 {/* Liste des articles */}
-                <div className="card">
+                <div className="card-noborder">
                     {loading_articles ? (
                         <div className="p-12 text-center">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 mx-auto mb-4"></div>
@@ -438,23 +438,23 @@ export default function AdminArticlesPage() {
                                         type="checkbox"
                                         checked={selectedArticles.size === articles.length && articles.length > 0}
                                         onChange={toggleSelectAll}
-                                        className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                                        className="w-4 h-4 cursor-pointer text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                     />
-                                    <span className="ml-4 h6-title text-gray-900">Article</span>
+                                    <span className="ml-4 h6-title text-gray-900">All</span>
                                 </div>
                             </div>
 
                             {/* Corps du tableau */}
                             <div className="divide-y divide-gray-200">
                                 {articles.map((article) => (
-                                    <div key={article.id} className="p-6 hover:bg-gray-50 transition-colors">
+                                    <div key={article.id} className="p-6 hover:bg-gray-50 transition-colors group">
                                         <div className="flex items-start space-x-4">
                                             {/* Checkbox */}
                                             <input
                                                 type="checkbox"
                                                 checked={selectedArticles.has(article.id)}
                                                 onChange={() => toggleSelectArticle(article.id)}
-                                                className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500 mt-1"
+                                                className="w-4 h-4 cursor-pointer text-teal-600 border-gray-300 rounded focus:ring-teal-500 mt-1"
                                             />
 
                                             {/* Contenu principal */}
@@ -503,8 +503,8 @@ export default function AdminArticlesPage() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Actions */}
-                                                    <div className="flex items-center gap-2 ml-4">
+                                                    {/* Actions - Visibles seulement au survol */}
+                                                    <div className="flex items-center gap-2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                                         {article.published && (
                                                             <button
                                                                 onClick={() => window.open(`/articles/${article.slug}`, '_blank')}
@@ -521,18 +521,6 @@ export default function AdminArticlesPage() {
                                                             title="Modifier"
                                                         >
                                                             <Edit className="w-4 h-4" />
-                                                        </button>
-
-                                                        <button
-                                                            onClick={() => toggleFeatured(article.id, article.featured)}
-                                                            disabled={actionLoading === article.id}
-                                                            className={`p-2 rounded-lg hover:bg-gray-100 ${article.featured
-                                                                ? "text-yellow-500 hover:text-yellow-600"
-                                                                : "text-gray-400 hover:text-yellow-500"
-                                                                }`}
-                                                            title={article.featured ? "Retirer de la vedette" : "Mettre en vedette"}
-                                                        >
-                                                            <Star className="w-4 h-4" />
                                                         </button>
 
                                                         <button

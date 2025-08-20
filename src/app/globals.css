@@ -59,6 +59,10 @@ body {
     @apply w-full px-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300;
   }
 
+  .special-input-field {
+    @apply w-full px-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300;
+  }
+
   .article-card {
     @apply bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all;
   }

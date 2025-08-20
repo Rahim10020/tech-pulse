@@ -494,7 +494,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Statistiques du contenu */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="card p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -511,15 +511,6 @@ export default function AdminDashboard() {
                       <p className="h3-title text-gray-900">{stats.draftArticles || 0}</p>
                     </div>
                     <Clock className="w-8 h-8 text-orange-500" />
-                  </div>
-                </div>
-                <div className="card p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="h6-title text-gray-600">En vedette</p>
-                      <p className="h3-title text-gray-900">{stats.featuredArticles || 0}</p>
-                    </div>
-                    <Star className="w-8 h-8 text-yellow-500" />
                   </div>
                 </div>
                 <div className="card p-6">
