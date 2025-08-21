@@ -63,6 +63,7 @@ model Article {
   slug        String   @unique
   description String?
   content     String   @db.Text
+  imageUrl    String?
   featured    Boolean  @default(false)
   published   Boolean  @default(true)
   publishedAt DateTime @default(now())

@@ -281,7 +281,6 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
                     Commentaires ({comments.length})
                 </h3>
 
-
                 <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}

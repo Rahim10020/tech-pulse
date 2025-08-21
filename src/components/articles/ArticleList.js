@@ -1,4 +1,4 @@
-// src/components/articles/ArticleList.js
+// src/components/articles/ArticleList.js - Mise à jour pour le nouveau design
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -83,17 +83,20 @@ export default function ArticleList({
                 description={article.description}
                 readTime={article.readTime}
                 imageColor={article.imageColor}
+                imageUrl={article.imageUrl || null}
                 href={`/articles/${article.slug}`}
                 author={article.author}
                 publishedAt={article.publishedAt}
                 category={article.category}
+                likes={article.likes || 0}
+                commentsCount={article.commentsCount || 0}
                 horizontal={true}
               />
             </div>
           ))}
         </div>
       ) : (
-        // Layout grille
+        // Layout grille - Version mise à jour
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
           {articles.map((article) => (
             <ArticleCard
@@ -102,10 +105,13 @@ export default function ArticleList({
               description={article.description}
               readTime={article.readTime}
               imageColor={article.imageColor}
+              imageUrl={article.imageUrl || null}
               href={`/articles/${article.slug}`}
               author={article.author}
               publishedAt={article.publishedAt}
               category={article.category}
+              likes={article.likes || 0}
+              commentsCount={article.commentsCount || 0}
               horizontal={false}
             />
           ))}

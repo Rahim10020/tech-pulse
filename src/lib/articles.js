@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 
-// lib/articles.js - Version corrigée avec gestion cohérente des brouillons
+// lib/articles.js
 
 // Configuration pour les relations communes
 const includeRelations = {

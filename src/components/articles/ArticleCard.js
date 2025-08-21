@@ -1,68 +1,118 @@
-// src/components/articles/ArticleCard.js
+// src/components/articles/ArticleCard.js - Nouveau design inspiré de l'image 2
 import Link from "next/link";
-import { Calendar, Clock, User } from "lucide-react";
+import { Calendar, Clock, User, Heart, MessageCircle, Star } from "lucide-react";
 
 export default function ArticleCard({
   title,
   description,
   readTime,
   imageColor = "bg-gray-100",
+  imageUrl = null, // Nouvelle prop pour l'image réelle
   href = "#",
   author,
   publishedAt,
   category,
+  likes = 0,
+  commentsCount = 0,
   horizontal = false,
 }) {
   // Gérer category comme objet ou string
   const categoryName = typeof category === "object" ? category?.name : category;
+  const categoryColor = typeof category === "object" ? category?.color : "bg-gray-100";
+  const categoryTextColor = typeof category === "object" ? category?.textColor : "text-gray-600";
 
-if (horizontal) {
-    // Layout horizontal (liste)
+  if (horizontal) {
+    // Layout horizontal (liste) - Version mise à jour avec le nouveau design
     return (
       <Link href={href} className="block group w-full">
-        <article className="bg-white border-b w-full border-gray-200 p-8 transition-colors">
+        <article className="bg-white border-b border-gray-200 p-6 transition-all duration-200 hover:bg-gray-50 hover:shadow-sm">
           <div className="flex items-start space-x-6">
             <div className="flex-1">
-              <div className="flex items-center mb-3">
+              {/* Auteur et catégorie */}
+              <div className="flex items-center mb-3 space-x-3">
+                {/* Avatar auteur */}
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-xs font-poppins">
+                      {typeof author === "object" ? author.name?.charAt(0) : author?.charAt(0)}
+                    </span>
+                  </div>
+                  <span className="text-sm text-gray-700 font-medium font-sans">
+                    {typeof author === "object" ? author.name : author}
+                  </span>
+                </div>
+
+                {/* Catégorie */}
                 {categoryName && (
-                  <span className="h6-title text-gray-600 mr-3">
+                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${categoryColor} ${categoryTextColor}`}>
                     {categoryName}
                   </span>
                 )}
-                {readTime && (
-                  <span className="text-sm font-sans text-gray-500">{readTime}</span>
-                )}
               </div>
 
-              <h2 className="h3-title text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors">
+              {/* Titre */}
+              <h2 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors font-poppins line-clamp-2">
                 {title}
               </h2>
 
-              <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4">
+              {/* Description */}
+              <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-2">
                 {description}
               </p>
 
-              {/* Author & Date */}
-              <div className="flex items-center text-sm font-sans text-gray-500">
-                {author && (
-                  <>
-                    <span>
-                      Par {typeof author === "object" ? author.name : author}
-                    </span>
-                    <span className="mx-2">•</span>
-                  </>
-                )}
+              {/* Statistiques et métadonnées */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  {/* Temps de lecture */}
+                  {readTime && (
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-4 h-4 text-yellow-500" />
+                      <span className="font-sans">{readTime}</span>
+                    </div>
+                  )}
+
+                  {/* Likes */}
+                  <div className="flex items-center space-x-1">
+                    <Heart className="w-4 h-4 text-red-500" />
+                    <span className="font-sans">{likes?.toLocaleString() || "0"}</span>
+                  </div>
+
+                  {/* Commentaires */}
+                  <div className="flex items-center space-x-1">
+                    <MessageCircle className="w-4 h-4 text-blue-500" />
+                    <span className="font-sans">{commentsCount || "0"}</span>
+                  </div>
+                </div>
+
+                {/* Date de publication */}
                 {publishedAt && (
-                  <span>
-                    {new Date(publishedAt).toLocaleDateString("fr-FR")}
-                  </span>
+                  <div className="flex items-center space-x-1 text-sm text-gray-500">
+                    <Calendar className="w-4 h-4" />
+                    <span className="font-sans">
+                      {new Date(publishedAt).toLocaleDateString("fr-FR", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric"
+                      })}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
 
-            {/* Image placeholder */}
-            <div className={`w-32 h-24 ${imageColor} rounded-lg flex-shrink-0`}>
-              {/* Placeholder pour image */}
+            {/* Image à droite */}
+            <div className="flex-shrink-0 w-32 h-24 rounded-lg overflow-hidden">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                />
+              ) : (
+                <div className={`w-full h-full ${imageColor} flex items-center justify-center group-hover:opacity-80 transition-opacity`}>
+                  <span className="text-white text-xs font-semibold opacity-50">IMG</span>
+                </div>
+              )}
             </div>
           </div>
         </article>
@@ -70,15 +120,28 @@ if (horizontal) {
     );
   }
 
-  // Layout vertical (grille) - version existante
+  // Layout vertical (grille) - Version mise à jour
   return (
     <Link href={href} className="block group">
-      <article className="article-card h-full">
-        <div className={`h-48 ${imageColor} relative overflow-hidden`}>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      <article className="article-card h-full bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200">
+        {/* Image en haut */}
+        <div className="relative h-48 overflow-hidden">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+            />
+          ) : (
+            <div className={`w-full h-full ${imageColor} relative`}>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+          )}
+
+          {/* Catégorie en overlay */}
           {categoryName && (
             <div className="absolute top-4 left-4">
-              <span className="badge badge-primary bg-white/90 font-sans text-gray-800">
+              <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${categoryColor} ${categoryTextColor} bg-opacity-90 backdrop-blur-sm`}>
                 {categoryName}
               </span>
             </div>
@@ -86,35 +149,63 @@ if (horizontal) {
         </div>
 
         <div className="p-6">
-          <h2 className="h3-title text-gray-900 mb-2 leading-tight group-hover:text-teal-600 transition-colors">
+          {/* Auteur */}
+          <div className="flex items-center space-x-2 mb-3">
+            <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-xs font-poppins">
+                {typeof author === "object" ? author.name?.charAt(0) : author?.charAt(0)}
+              </span>
+            </div>
+            <span className="text-sm text-gray-700 font-medium font-sans">
+              {typeof author === "object" ? author.name : author}
+            </span>
+          </div>
+
+          {/* Titre */}
+          <h2 className="text-lg font-bold text-gray-900 mb-2 leading-tight group-hover:text-teal-600 transition-colors font-poppins line-clamp-2">
             {title}
           </h2>
 
+          {/* Description */}
           <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
             {description}
           </p>
 
+          {/* Footer avec stats */}
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <div className="flex items-center space-x-4">
-              {author && (
-                <span className="flex font-sans items-center">
-                  <span className="w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full mr-2"></span>
-                  {typeof author === "object" ? author.name : author}
-                </span>
+            <div className="flex items-center space-x-3">
+              {/* Temps de lecture */}
+              {readTime && (
+                <div className="flex items-center space-x-1">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span className="font-sans">{readTime}</span>
+                </div>
               )}
-              {publishedAt && (
-                <span className="flex font-sans items-center">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  {new Date(publishedAt).toLocaleDateString("fr-FR")}
-                </span>
-              )}
+
+              {/* Likes */}
+              <div className="flex items-center space-x-1">
+                <Heart className="w-4 h-4 text-red-500" />
+                <span className="font-sans">{likes?.toLocaleString() || "0"}</span>
+              </div>
+
+              {/* Commentaires */}
+              <div className="flex items-center space-x-1">
+                <MessageCircle className="w-4 h-4 text-blue-500" />
+                <span className="font-sans">{commentsCount || "0"}</span>
+              </div>
             </div>
 
-            {readTime && (
-              <span className="flex font-sans items-center">
-                <Clock className="w-4 h-4 mr-1" />
-                {readTime}
-              </span>
+            {/* Date */}
+            {publishedAt && (
+              <div className="flex items-center space-x-1">
+                <Calendar className="w-4 h-4" />
+                <span className="font-sans">
+                  {new Date(publishedAt).toLocaleDateString("fr-FR", {
+                    day: "numeric",
+                    month: "short"
+                  })}
+                </span>
+              </div>
             )}
           </div>
         </div>
