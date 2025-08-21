@@ -131,4 +131,76 @@ body {
     @apply font-sans text-sm
   }
 
+  /* Utility classes pour line-clamp (limitation du nombre de lignes) */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Mise à jour de votre article-card existante avec animations */
+  .article-card {
+    @apply bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all duration-200;
+  }
+
+  .article-card:hover {
+    @apply transform -translate-y-1;
+  }
+
+  /* Style pour les images dans les cartes d'articles */
+  .article-image {
+    @apply transition-transform duration-300;
+  }
+
+  .article-card:hover .article-image {
+    @apply scale-105;
+  }
+
+  /* Style pour les badges de catégorie */
+  .category-badge {
+    @apply backdrop-blur-sm;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Style pour les stats d'articles */
+  .article-stats {
+    @apply flex items-center space-x-3 text-sm text-gray-500;
+  }
+
+  .article-stat-item {
+    @apply flex items-center space-x-1;
+  }
+
+  /* Style pour les avatars d'auteur */
+  .author-avatar {
+    @apply w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center;
+  }
+
+  /* Style pour le contenu d'article horizontal */
+  .article-horizontal {
+    @apply bg-white border-b border-gray-200 p-6 transition-all duration-200 hover:bg-gray-50 hover:shadow-sm;
+  }
+
 }

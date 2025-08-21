@@ -74,22 +74,22 @@ export default function ArticleList({
     <div>
       {/* Articles List/Grid */}
       {layout === 'horizontal' ? (
-        // Layout horizontal (liste)
+        // Layout horizontal (liste) - Nouvelle version
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 divide-y divide-gray-200 mb-12">
           {articles.map((article, index) => (
             <div key={article.id} className={index === 0 ? 'rounded-t-lg' : index === articles.length - 1 ? 'rounded-b-lg' : ''}>
               <ArticleCard
                 title={article.title}
-                description={article.description}
+                content={article.content} // Contenu complet pour extraire l'extrait
                 readTime={article.readTime}
                 imageColor={article.imageColor}
-                imageUrl={article.imageUrl || null}
+                imageUrl={article.imageUrl || null} // Nouvelle prop pour l'image
                 href={`/articles/${article.slug}`}
                 author={article.author}
                 publishedAt={article.publishedAt}
                 category={article.category}
-                likes={article.likes || 0}
-                commentsCount={article.commentsCount || 0}
+                likes={article.likes || 0} // Stats de likes
+                commentsCount={article.commentsCount || 0} // Stats de commentaires
                 horizontal={true}
               />
             </div>
@@ -102,16 +102,16 @@ export default function ArticleList({
             <ArticleCard
               key={article.id}
               title={article.title}
-              description={article.description}
+              content={article.content} // Contenu complet pour extraire l'extrait
               readTime={article.readTime}
               imageColor={article.imageColor}
-              imageUrl={article.imageUrl || null}
+              imageUrl={article.imageUrl || null} // Nouvelle prop pour l'image
               href={`/articles/${article.slug}`}
               author={article.author}
               publishedAt={article.publishedAt}
               category={article.category}
-              likes={article.likes || 0}
-              commentsCount={article.commentsCount || 0}
+              likes={article.likes || 0} // Stats de likes
+              commentsCount={article.commentsCount || 0} // Stats de commentaires
               horizontal={false}
             />
           ))}

@@ -4,10 +4,10 @@ import { Calendar, Clock, User, Heart, MessageCircle, Star } from "lucide-react"
 
 export default function ArticleCard({
   title,
-  description,
+  content,
   readTime,
   imageColor = "bg-gray-100",
-  imageUrl = null, // Nouvelle prop pour l'image réelle
+  imageUrl = null,
   href = "#",
   author,
   publishedAt,
@@ -21,18 +21,43 @@ export default function ArticleCard({
   const categoryColor = typeof category === "object" ? category?.color : "bg-gray-100";
   const categoryTextColor = typeof category === "object" ? category?.textColor : "text-gray-600";
 
+  // Fonction pour extraire un extrait propre du contenu HTML
+  const getContentExcerpt = (htmlContent, maxLength = 150) => {
+    if (!htmlContent) return '';
+
+    // Supprimer les balises HTML
+    const textOnly = htmlContent
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (textOnly.length <= maxLength) {
+      return textOnly;
+    }
+
+    // Couper au dernier espace pour éviter de couper un mot
+    const excerpt = textOnly.substring(0, maxLength);
+    const lastSpaceIndex = excerpt.lastIndexOf(' ');
+
+    if (lastSpaceIndex > 0) {
+      return excerpt.substring(0, lastSpaceIndex) + '...';
+    }
+
+    return excerpt + '...';
+  };
+
   if (horizontal) {
     // Layout horizontal (liste) - Version mise à jour avec le nouveau design
     return (
       <Link href={href} className="block group w-full">
-        <article className="bg-white border-b border-gray-200 p-6 transition-all duration-200 hover:bg-gray-50 hover:shadow-sm">
+        <article className="article-horizontal">
           <div className="flex items-start space-x-6">
             <div className="flex-1">
               {/* Auteur et catégorie */}
               <div className="flex items-center mb-3 space-x-3">
                 {/* Avatar auteur */}
                 <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+                  <div className="author-avatar">
                     <span className="text-white font-bold text-xs font-poppins">
                       {typeof author === "object" ? author.name?.charAt(0) : author?.charAt(0)}
                     </span>
@@ -55,30 +80,30 @@ export default function ArticleCard({
                 {title}
               </h2>
 
-              {/* Description */}
+              {/* Extrait du contenu */}
               <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-2">
-                {description}
+                {getContentExcerpt(content, 150)}
               </p>
 
               {/* Statistiques et métadonnées */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                <div className="article-stats">
                   {/* Temps de lecture */}
                   {readTime && (
-                    <div className="flex items-center space-x-1">
+                    <div className="article-stat-item">
                       <Star className="w-4 h-4 text-yellow-500" />
                       <span className="font-sans">{readTime}</span>
                     </div>
                   )}
 
                   {/* Likes */}
-                  <div className="flex items-center space-x-1">
+                  <div className="article-stat-item">
                     <Heart className="w-4 h-4 text-red-500" />
                     <span className="font-sans">{likes?.toLocaleString() || "0"}</span>
                   </div>
 
                   {/* Commentaires */}
-                  <div className="flex items-center space-x-1">
+                  <div className="article-stat-item">
                     <MessageCircle className="w-4 h-4 text-blue-500" />
                     <span className="font-sans">{commentsCount || "0"}</span>
                   </div>
@@ -106,7 +131,7 @@ export default function ArticleCard({
                 <img
                   src={imageUrl}
                   alt={title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  className="article-image w-full h-full object-cover"
                 />
               ) : (
                 <div className={`w-full h-full ${imageColor} flex items-center justify-center group-hover:opacity-80 transition-opacity`}>
@@ -130,7 +155,7 @@ export default function ArticleCard({
             <img
               src={imageUrl}
               alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+              className="article-image w-full h-full object-cover"
             />
           ) : (
             <div className={`w-full h-full ${imageColor} relative`}>
@@ -151,7 +176,7 @@ export default function ArticleCard({
         <div className="p-6">
           {/* Auteur */}
           <div className="flex items-center space-x-2 mb-3">
-            <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+            <div className="author-avatar">
               <span className="text-white font-bold text-xs font-poppins">
                 {typeof author === "object" ? author.name?.charAt(0) : author?.charAt(0)}
               </span>
@@ -166,30 +191,30 @@ export default function ArticleCard({
             {title}
           </h2>
 
-          {/* Description */}
+          {/* Extrait du contenu */}
           <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
-            {description}
+            {getContentExcerpt(content, 120)}
           </p>
 
           {/* Footer avec stats */}
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <div className="flex items-center space-x-3">
+            <div className="article-stats">
               {/* Temps de lecture */}
               {readTime && (
-                <div className="flex items-center space-x-1">
+                <div className="article-stat-item">
                   <Star className="w-4 h-4 text-yellow-500" />
                   <span className="font-sans">{readTime}</span>
                 </div>
               )}
 
               {/* Likes */}
-              <div className="flex items-center space-x-1">
+              <div className="article-stat-item">
                 <Heart className="w-4 h-4 text-red-500" />
                 <span className="font-sans">{likes?.toLocaleString() || "0"}</span>
               </div>
 
               {/* Commentaires */}
-              <div className="flex items-center space-x-1">
+              <div className="article-stat-item">
                 <MessageCircle className="w-4 h-4 text-blue-500" />
                 <span className="font-sans">{commentsCount || "0"}</span>
               </div>

@@ -1,78 +1,28 @@
-// src/lib/prisma.js - Singleton PrismaClient corrigé
 import { PrismaClient } from '@prisma/client';
 
-// Utiliser globalThis pour éviter les conflits
+// Utiliser globalThis pour stocker l’instance
 const globalForPrisma = globalThis;
 
-// Configuration optimisée pour la production
+// Configuration Prisma
 const prismaConfig = {
-    // Log des requêtes en développement seulement
     log: process.env.NODE_ENV === 'development'
         ? ['query', 'error', 'warn']
         : ['error'],
-
-    // Configuration des erreurs plus détaillées en dev
     errorFormat: process.env.NODE_ENV === 'development' ? 'pretty' : 'minimal',
 };
 
-// Créer ou réutiliser l'instance Prisma (nom différent pour éviter le conflit)
-const prismaInstance = globalForPrisma.prisma ?? new PrismaClient(prismaConfig);
+// Créer / réutiliser l’instance
+const prismaClient = globalForPrisma._prisma ?? new PrismaClient(prismaConfig);
 
-// En développement, stocker l'instance dans global pour éviter les reconnexions
-// lors du rechargement à chaud (hot reload)
+// En dev, éviter les multiples instances avec HMR
 if (process.env.NODE_ENV !== 'production') {
-    globalForPrisma.prisma = prismaInstance;
+    globalForPrisma._prisma = prismaClient;
 }
 
-// Middleware pour gérer les erreurs de connexion
-prismaInstance.$use(async (params, next) => {
-    const start = Date.now();
-
-    try {
-        const result = await next(params);
-
-        // Log des requêtes lentes en développement
-        if (process.env.NODE_ENV === 'development') {
-            const duration = Date.now() - start;
-            if (duration > 1000) { // Plus de 1 seconde
-                console.warn(`🐌 Requête lente détectée: ${params.model}.${params.action} (${duration}ms)`);
-            }
-        }
-
-        return result;
-    } catch (error) {
-        const duration = Date.now() - start;
-        console.error(`❌ Erreur DB après ${duration}ms:`, {
-            model: params.model,
-            action: params.action,
-            error: error.message
-        });
-        throw error;
-    }
-});
-
-// Gestion propre de la fermeture de l'application
-process.on('beforeExit', async () => {
-    console.log('🔌 Fermeture de la connexion Prisma...');
-    await prismaInstance.$disconnect();
-});
-
-process.on('SIGINT', async () => {
-    console.log('🔌 Arrêt forcé - Fermeture de la connexion Prisma...');
-    await prismaInstance.$disconnect();
-    process.exit(0);
-});
-
-process.on('SIGTERM', async () => {
-    console.log('🔌 Arrêt du processus - Fermeture de la connexion Prisma...');
-    await prismaInstance.$disconnect();
-    process.exit(0);
-});
-
-// Fonction utilitaire pour vérifier la connexion
+// Fonction utilitaire
 export async function checkDatabaseConnection() {
     try {
-        await prismaInstance.$queryRaw`SELECT 1`;
+        await prismaClient.$queryRaw`SELECT 1`;
         console.log('✅ Connexion à la base de données établie');
         return true;
     } catch (error) {
@@ -81,8 +31,8 @@ export async function checkDatabaseConnection() {
     }
 }
 
-// Export de l'instance (nom clair)
-export const prisma = prismaInstance;
+// Export nommé
+export const prisma = prismaClient;
 
-// Export par défaut pour faciliter l'import
-export default prismaInstance;
+// Export par défaut
+export default prismaClient;

@@ -146,7 +146,6 @@ export default function AdminDashboard() {
     }
   };
 
-
   const loadMessages = async () => {
     setMessagesLoading(true);
     try {
@@ -306,7 +305,6 @@ export default function AdminDashboard() {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-
 
   if (loading) {
     return (
