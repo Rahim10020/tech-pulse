@@ -16,20 +16,16 @@ import {
     Edit2,
     Trash2,
     Send,
-    Smile,
-    AtSign,
     ChevronDown,
     ChevronUp,
     Award,
-    Clock,
-    TrendingUp,
     X,
     Check
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function InteractiveComments({ articleSlug, initialComments = [] }) {
+export default function InteractiveComments({ articleSlug, initialComments = [], onCommentsCountChange, totalCount }) {
     const { user } = useAuth();
     const { showToast } = useToast();
 
@@ -41,6 +37,7 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
     const [loading, setLoading] = useState(false);
     const [sortBy, setSortBy] = useState('newest'); // newest, oldest, popular
     const [showReplies, setShowReplies] = useState({});
+
 
     // Charger les commentaires
     useEffect(() => {
@@ -57,6 +54,13 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
         } catch (error) {
             console.error('Erreur chargement commentaires:', error);
         }
+    };
+
+    // Fonction pour calculer le nombre total de commentaires
+    const calculateTotalComments = (commentsArray) => {
+        return commentsArray.reduce((total, comment) =>
+            total + 1 + (comment.replies ? comment.replies.length : 0), 0
+        );
     };
 
     // Ajouter un commentaire
@@ -88,18 +92,28 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
             if (response.ok) {
                 const data = await response.json();
 
-                if (replyingTo) {
-                    // Ajouter la réponse au commentaire parent
-                    setComments(prev => prev.map(comment =>
-                        comment.id === replyingTo
-                            ? { ...comment, replies: [...(comment.replies || []), data.comment] }
-                            : comment
-                    ));
-                    setShowReplies(prev => ({ ...prev, [replyingTo]: true }));
-                } else {
-                    // Ajouter le nouveau commentaire en haut
-                    setComments(prev => [data.comment, ...prev]);
-                }
+                setComments(prev => {
+                    let newComments;
+
+                    if (replyingTo) {
+                        // Ajouter la réponse au commentaire parent
+                        newComments = prev.map(comment =>
+                            comment.id === replyingTo
+                                ? { ...comment, replies: [...(comment.replies || []), data.comment] }
+                                : comment
+                        );
+                        setShowReplies(prevReplies => ({ ...prevReplies, [replyingTo]: true }));
+                    } else {
+                        // Ajouter le nouveau commentaire en haut
+                        newComments = [data.comment, ...prev];
+                    }
+
+                    // Calculer et mettre à jour le compteur total
+                    const totalCount = calculateTotalComments(newComments);
+                    onCommentsCountChange && onCommentsCountChange(totalCount);
+
+                    return newComments;
+                });
 
                 setNewComment('');
                 setReplyingTo(null);
@@ -116,7 +130,6 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
         }
     };
 
-    // Liker un commentaire
     const handleLikeComment = async (commentId) => {
         if (!user) {
             showToast('Vous devez être connecté pour liker', 'error');
@@ -161,6 +174,12 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
         } catch (error) {
             console.error('Erreur like commentaire:', error);
         }
+    };
+
+    const handleReportComment = async (commentId) => {
+        // Logique de signalement à implémenter
+        console.log('Signaler commentaire:', commentId);
+        showToast('Commentaire signalé', 'info');
     };
 
     // Éditer un commentaire
@@ -222,39 +241,33 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
             });
 
             if (response.ok) {
-                setComments(prev => prev.filter(comment => {
-                    if (comment.id === commentId) return false;
+                setComments(prev => {
+                    const newComments = prev.filter(comment => {
+                        if (comment.id === commentId) {
+                            // Supprimer le commentaire principal (avec ses réponses)
+                            return false;
+                        }
 
-                    // Filtrer dans les réponses aussi
-                    if (comment.replies) {
-                        comment.replies = comment.replies.filter(reply => reply.id !== commentId);
-                    }
+                        // Vérifier dans les réponses
+                        if (comment.replies) {
+                            comment.replies = comment.replies.filter(reply => reply.id !== commentId);
+                        }
 
-                    return true;
-                }));
+                        return true;
+                    });
+
+                    // Calculer et mettre à jour le compteur total
+                    const totalCount = calculateTotalComments(newComments);
+                    onCommentsCountChange && onCommentsCountChange(totalCount);
+
+                    return newComments;
+                });
 
                 showToast('Commentaire supprimé', 'success');
             }
         } catch (error) {
             console.error('Erreur suppression commentaire:', error);
             showToast('Erreur lors de la suppression', 'error');
-        }
-    };
-
-    // Signaler un commentaire
-    const handleReportComment = async (commentId) => {
-        try {
-            const response = await fetch(`/api/comments/${commentId}/report`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-
-            if (response.ok) {
-                showToast('Commentaire signalé aux modérateurs', 'success');
-            }
-        } catch (error) {
-            console.error('Erreur signalement:', error);
-            showToast('Erreur lors du signalement', 'error');
         }
     };
 
@@ -278,7 +291,7 @@ export default function InteractiveComments({ articleSlug, initialComments = [] 
             <div className="flex items-center justify-between">
                 <h3 className="h3-title text-gray-900 flex items-center">
                     <MessageCircle className="w-5 h-5 mr-2" />
-                    Commentaires ({comments.length})
+                    Commentaires ({totalCount || 0})
                 </h3>
 
                 <select

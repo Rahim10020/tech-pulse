@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma';
 // PATCH - Modifier un commentaire
 export async function PATCH(request, { params }) {
     try {
-        const { commentId } = params;
+        const { commentId } = await params;
         const token = request.cookies.get('token')?.value;
 
         if (!token) {
@@ -100,7 +100,7 @@ export async function PATCH(request, { params }) {
 // DELETE - Supprimer un commentaire
 export async function DELETE(request, { params }) {
     try {
-        const { commentId } = params;
+        const { commentId } = await params;
         const token = request.cookies.get('token')?.value;
 
         if (!token) {

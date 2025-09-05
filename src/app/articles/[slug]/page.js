@@ -5,7 +5,8 @@ import ArticleDetail from '@/components/articles/ArticleDetail';
 
 export async function generateMetadata({ params }) {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${params.slug}`);
+    const { slug } = await params; // Ajouter await ici
+    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${slug}`);
 
     if (!response.ok) {
       return {
@@ -35,7 +36,8 @@ export async function generateMetadata({ params }) {
 
 export default async function ArticlePage({ params }) {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${params.slug}`);
+    const { slug } = await params; // Ajouter await ici
+    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${slug}`);
 
     if (!response.ok) {
       notFound();

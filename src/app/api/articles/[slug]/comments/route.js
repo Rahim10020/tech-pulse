@@ -111,7 +111,7 @@ export async function GET(request, { params }) {
 // POST - Créer un nouveau commentaire
 export async function POST(request, { params }) {
     try {
-        const { slug } = params;
+        const { slug } = await params;
         const token = request.cookies.get('token')?.value;
 
         if (!token) {

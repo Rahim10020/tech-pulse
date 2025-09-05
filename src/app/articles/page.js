@@ -1,4 +1,4 @@
-// src/app/articles/page.js - CORRIGÉ pour Next.js 15
+// src/app/articles/page.js 
 import Header from '@/components/layout/Header';
 import ArticleList from '@/components/articles/ArticleList';
 import CategoryFilter from '@/components/articles/CategoryFilter';

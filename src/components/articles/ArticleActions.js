@@ -6,7 +6,7 @@ import { Heart, MessageCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
 
-export default function ArticleActions({ article, commentsCount, onCommentsClick }) {
+export default function ArticleActions({ article, commentsCount = [], onCommentsClick }) {
     const { user } = useAuth();
     const { showToast } = useToast();
     const [likes, setLikes] = useState(article.likesCount || 0);
@@ -93,7 +93,7 @@ export default function ArticleActions({ article, commentsCount, onCommentsClick
                 title="Aller aux commentaires"
             >
                 <MessageCircle className="w-5 h-5" />
-                <span>{commentsCount || 0}</span>
+                <span>{commentsCount}</span>
             </button>
         </div>
     );

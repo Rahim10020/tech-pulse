@@ -1,14 +1,30 @@
 // src/components/articles/ArticleDetail.js
+
+"use client";
+
 import Link from 'next/link';
 import { Heart, MessageCircle } from 'lucide-react';
 import NotFound from '@/app/not-found';
+import { useState } from 'react';
 import InteractiveComments from '@/components/comments/InteractiveComments';
 import ArticleActions from '@/components/articles/ArticleActions';
 
 export default function ArticleDetail({ article }) {
+
+  // Calculer le nombre total initial (commentaires + réponses)
+  const calculateInitialCount = () => {
+    if (!Array.isArray(article.comments)) return 0;
+    return article.comments.reduce((total, comment) =>
+      total + 1 + (comment.replies ? comment.replies.length : 0), 0
+    );
+  };
+
+  const [commentsCount, setCommentsCount] = useState(calculateInitialCount());
+
   if (!article) {
     return NotFound()
   }
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,7 +78,7 @@ export default function ArticleDetail({ article }) {
           {/* Actions */}
           <ArticleActions
             article={article}
-            commentsCount={article.comments?.length || 0}
+            commentsCount={commentsCount}
           />
 
           {/* Comments Section */}
@@ -71,6 +87,8 @@ export default function ArticleDetail({ article }) {
             <InteractiveComments
               articleSlug={article.slug}
               initialComments={article.comments || []}
+              onCommentsCountChange={setCommentsCount}
+              totalCount={commentsCount}
             />
           </div>
 
