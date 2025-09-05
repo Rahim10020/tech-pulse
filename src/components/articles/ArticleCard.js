@@ -1,4 +1,4 @@
-// src/components/articles/ArticleCard.js - Nouveau design inspiré de l'image 2
+// src/components/articles/ArticleCard.js
 import Link from "next/link";
 import { Calendar, Clock, User, Heart, MessageCircle, Star } from "lucide-react";
 
@@ -47,7 +47,7 @@ export default function ArticleCard({
   };
 
   if (horizontal) {
-    // Layout horizontal (liste) - Version mise à jour avec le nouveau design
+    // Layout horizontal (liste)
     return (
       <Link href={href} className="block group w-full">
         <article className="article-horizontal">
@@ -91,20 +91,19 @@ export default function ArticleCard({
                   {/* Temps de lecture */}
                   {readTime && (
                     <div className="article-stat-item">
-                      <Star className="w-4 h-4 text-yellow-500" />
                       <span className="font-sans">{readTime}</span>
                     </div>
                   )}
 
                   {/* Likes */}
                   <div className="article-stat-item">
-                    <Heart className="w-4 h-4 text-red-500" />
+                    <Heart className="w-4 h-4" />
                     <span className="font-sans">{likes?.toLocaleString() || "0"}</span>
                   </div>
 
                   {/* Commentaires */}
                   <div className="article-stat-item">
-                    <MessageCircle className="w-4 h-4 text-blue-500" />
+                    <MessageCircle className="w-4 h-4" />
                     <span className="font-sans">{commentsCount || "0"}</span>
                   </div>
                 </div>
@@ -145,7 +144,7 @@ export default function ArticleCard({
     );
   }
 
-  // Layout vertical (grille) - Version mise à jour
+  // Layout vertical (grille)
   return (
     <Link href={href} className="block group">
       <article className="article-card h-full bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200">

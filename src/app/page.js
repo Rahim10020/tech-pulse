@@ -64,13 +64,16 @@ export default function HomePage() {
           >
             <ArticleCard
               title={article.title}
-              description={article.description}
+              content={article.content} // Contenu complet pour extraire l'extrait
               readTime={article.readTime}
               imageColor={article.imageColor}
+              imageUrl={article.imageUrl || null} // Nouvelle prop pour l'image
               href={`/articles/${article.slug}`}
               author={article.author}
               publishedAt={article.publishedAt}
               category={article.category}
+              likes={article.likes || 0} // Stats de likes
+              commentsCount={article.commentsCount || 0} // Stats de commentaires
               horizontal={true}
             />
           </div>

@@ -21,7 +21,6 @@ export default function ArticleList({
   const loadArticles = async () => {
     setLoading(true);
     try {
-      // Utiliser l'API route au lieu de l'import direct
       const response = await fetch(`/api/articles?type=all&page=${currentPage}&limit=6&category=${category}`);
       const result = await response.json();
 
@@ -74,7 +73,7 @@ export default function ArticleList({
     <div>
       {/* Articles List/Grid */}
       {layout === 'horizontal' ? (
-        // Layout horizontal (liste) - Nouvelle version
+        // Layout horizontal (liste)
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 divide-y divide-gray-200 mb-12">
           {articles.map((article, index) => (
             <div key={article.id} className={index === 0 ? 'rounded-t-lg' : index === articles.length - 1 ? 'rounded-b-lg' : ''}>
@@ -96,22 +95,22 @@ export default function ArticleList({
           ))}
         </div>
       ) : (
-        // Layout grille - Version mise à jour
+        // Layout grille
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
           {articles.map((article) => (
             <ArticleCard
               key={article.id}
               title={article.title}
-              content={article.content} // Contenu complet pour extraire l'extrait
+              content={article.content}
               readTime={article.readTime}
               imageColor={article.imageColor}
-              imageUrl={article.imageUrl || null} // Nouvelle prop pour l'image
+              imageUrl={article.imageUrl || null}
               href={`/articles/${article.slug}`}
               author={article.author}
               publishedAt={article.publishedAt}
               category={article.category}
-              likes={article.likes || 0} // Stats de likes
-              commentsCount={article.commentsCount || 0} // Stats de commentaires
+              likes={article.likes || 0}
+              commentsCount={article.commentsCount || 0}
               horizontal={false}
             />
           ))}
