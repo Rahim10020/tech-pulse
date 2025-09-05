@@ -59,13 +59,7 @@ export default function EditProfilePage() {
       <div className="container-sm py-8">
         {/* Header avec bouton retour */}
         <div className="flex items-center mb-8">
-          <button
-            onClick={handleBack}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors mr-4"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="h6-title">Retour</span>
-          </button>
+
           <div>
             <h1 className="h1-title text-gray-900">
               Éditer mon profil
@@ -77,8 +71,8 @@ export default function EditProfilePage() {
         </div>
 
         {/* Formulaire de profil */}
-        <div className="card">
-          <div className="p-8">
+        <div className="">
+          <div className="">
             <ProfileForm
               initialData={user}
               onSubmit={handleUpdateProfile}
@@ -88,7 +82,7 @@ export default function EditProfilePage() {
         </div>
 
         {/* Informations supplémentaires */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <h3 className="h4-title text-blue-800 mb-3">
             Informations importantes
           </h3>

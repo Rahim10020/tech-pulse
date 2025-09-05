@@ -54,7 +54,7 @@ export default function ArticleCard({
           <div className="flex items-start space-x-6">
             <div className="flex-1">
               {/* Auteur et catégorie */}
-              <div className="flex items-center mb-3 space-x-3">
+              <div className="flex items-center mb-3 space-x-6">
                 {/* Avatar auteur */}
                 <div className="flex items-center space-x-2">
                   <div className="author-avatar">

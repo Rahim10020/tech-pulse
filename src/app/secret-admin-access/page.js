@@ -1,4 +1,4 @@
-// src/app/secret-admin-access/page.js - URL secrète pour l'accès admin avec styles pixelpulse
+// src/app/secret-admin-access/page.js - URL secrète pour l'accès admin
 'use client';
 
 import { useState, useEffect } from 'react';

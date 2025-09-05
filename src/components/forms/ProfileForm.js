@@ -21,7 +21,7 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
       ...prev,
       [name]: value
     }));
-    
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -32,22 +32,22 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Le nom est requis';
     }
-    
+
     if (formData.website && !formData.website.startsWith('http')) {
       newErrors.website = 'L\'URL doit commencer par http:// ou https://';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       onSubmit(formData);
     }
@@ -57,14 +57,14 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Informations de base */}
       <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="h3-title text-gray-900 mb-4">
+        <h2 className="h3-title text-gray-900 mb-6">
           Informations personnelles
         </h2>
-        
+
         <div className="grid gap-4">
           {/* Nom */}
           <div>
-            <label htmlFor="name" className="h5-title text-gray-700 mb-1">
+            <label htmlFor="name" className="h5-title text-gray-700 mb-4">
               Nom complet
             </label>
             <input
@@ -83,7 +83,7 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
 
           {/* Bio */}
           <div>
-            <label htmlFor="bio" className="h5-title text-gray-700 mb-1">
+            <label htmlFor="bio" className="h5-title text-gray-700 mb-4">
               Biographie
             </label>
             <textarea
@@ -99,7 +99,7 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
 
           {/* Localisation */}
           <div>
-            <label htmlFor="location" className="h5-title text-gray-700 mb-1">
+            <label htmlFor="location" className="h5-title text-gray-700 mb-4">
               Localisation
             </label>
             <input
@@ -120,7 +120,7 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
         <h2 className="h3-title text-gray-900 mb-4">
           Liens et réseaux sociaux
         </h2>
-        
+
         <div className="grid gap-4">
           {/* Site web */}
           <div>
@@ -216,7 +216,7 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
         >
           Annuler
         </button>
-        
+
         <button
           type="submit"
           disabled={isLoading}
