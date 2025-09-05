@@ -96,7 +96,7 @@ export async function getArticleBySlug(slug, userId = null) {
       },
       include: {
         ...includeRelations,
-        likes: true, // ✅ Inclure les likes complets
+        likes: true,
         _count: {
           select: {
             likes: true,
@@ -140,21 +140,21 @@ export async function getArticleBySlug(slug, userId = null) {
     // Incrémenter les vues
     await incrementArticleViews(article.id);
 
-    // ✅ Calculer si l'utilisateur a liké l'article
+    // Calculer si l'utilisateur a liké l'article
     const isLikedByUser = userId ?
       article.likes.some(like => like.userId === userId) :
       false;
 
-    // ✅ Formatter la réponse avec les nouvelles données
+    // Formatter la réponse avec les nouvelles données
     return {
       ...article,
       likes: article._count.likes, // Nombre total de likes
-      likesCount: article._count.likes, // ✅ Ajout explicite
-      isLikedByUser, // ✅ État du like pour l'utilisateur
+      likesCount: article._count.likes, // Ajout explicite
+      isLikedByUser, // État du like pour l'utilisateur
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
-      // Supprimer les données sensibles
-      likes: undefined, // On supprime l'array complet pour la sécurité
+      imageUrl: article.imageUrl,
+      likes: undefined,
     };
   } catch (error) {
     console.error("Error fetching article by slug:", error);
@@ -199,6 +199,7 @@ export async function getArticleById(id) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     };
   } catch (error) {
     console.error("Error fetching article by ID:", error);
@@ -245,6 +246,7 @@ export async function getArticles(page = 1, limit = 10, categorySlug = null) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
 
     return {
@@ -288,6 +290,7 @@ export async function getFeaturedArticles(limit = 3) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
   } catch (error) {
     console.error("Error fetching featured articles:", error);
@@ -315,6 +318,7 @@ export async function getArticlesByAuthor(authorId, limit = 10) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
   } catch (error) {
     console.error("Error fetching articles by author:", error);
@@ -389,6 +393,7 @@ export async function searchArticles(query, limit = 10) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
   } catch (error) {
     console.error("Error searching articles:", error);
@@ -417,6 +422,7 @@ export async function getPopularArticles(limit = 5) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
   } catch (error) {
     console.error("Error fetching popular articles:", error);
@@ -443,6 +449,7 @@ export async function getRecentArticles(limit = 5) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
   } catch (error) {
     console.error("Error fetching recent articles:", error);
@@ -483,6 +490,7 @@ export async function getRelatedArticles(articleId, limit = 3) {
       likes: article._count.likes,
       commentsCount: article._count.comments,
       publishedAt: article.publishedAt.toISOString().split("T")[0],
+      imageUrl: article.imageUrl,
     }));
   } catch (error) {
     console.error("Error fetching related articles:", error);
@@ -727,6 +735,7 @@ export async function createArticle(articleData) {
       tags = [],
       readTime,
       featured = false,
+      imageUrl,
       authorId,
     } = articleData;
 
@@ -775,6 +784,7 @@ export async function createArticle(articleData) {
         content: content.trim(),
         description: description?.trim() || null,
         readTime: readTime || null,
+        imageUrl: imageUrl || null,
         featured,
         published: true,
         publishedAt: new Date(),
@@ -833,6 +843,7 @@ export async function getDraftsByAuthor(authorId, limit = 10) {
       commentsCount: draft._count.comments,
       createdAt: draft.createdAt.toISOString().split("T")[0],
       updatedAt: draft.updatedAt.toISOString().split("T")[0],
+      imageUrl: draft.imageUrl,
     }));
   } catch (error) {
     console.error("Error fetching drafts by author:", error);
@@ -928,7 +939,7 @@ export async function updateDraft(articleId, authorId, updateData) {
       return { success: false, error: "Brouillon non trouvé" };
     }
 
-    const { title, content, description, category, readTime, featured } = updateData;
+    const { title, content, description, category, readTime, featured, imageUrl } = updateData;
 
     // Déterminer la catégorie
     let categoryId = existingDraft.categoryId;
@@ -955,6 +966,7 @@ export async function updateDraft(articleId, authorId, updateData) {
         ...(description !== undefined && { description: description?.trim() || null }),
         ...(readTime && { readTime }),
         ...(featured !== undefined && { featured }),
+        ...(imageUrl !== undefined && { imageUrl: imageUrl || null }),
         ...(categoryId && { categoryId }),
         updatedAt: new Date(),
       },

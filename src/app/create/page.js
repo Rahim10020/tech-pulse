@@ -30,6 +30,28 @@ export default function CreateArticlePage() {
     featured: false,
   });
 
+
+  // Fonction pour extraire la première image du contenu HTML
+  const extractFirstImageFromContent = useCallback((htmlContent) => {
+    if (!htmlContent) return null;
+
+    // Créer un parser DOM temporaire
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+    // Chercher la première image
+    const firstImg = doc.querySelector('img');
+
+    if (firstImg && firstImg.src) {
+      // Vérifier si c'est une URL locale (uploadée via notre système)
+      if (firstImg.src.startsWith('/uploads/') || firstImg.src.includes('/uploads/')) {
+        return firstImg.src;
+      }
+    }
+
+    return null;
+  }, []);
+
   // Calculer le temps de lecture à partir du contenu HTML
   const calculateReadingTime = useCallback((htmlContent) => {
     const textContent = htmlContent.replace(/<[^>]*>/g, "");
@@ -55,6 +77,9 @@ export default function CreateArticlePage() {
   // fonction d'autosave
   const handleAutoSave = useCallback(async (data) => {
     try {
+      // Extraire la première image du contenu pour les brouillons aussi
+      const imageUrl = extractFirstImageFromContent(data.content);
+
       const response = await fetch("/api/drafts/auto-save", {
         method: "POST",
         headers: {
@@ -63,6 +88,7 @@ export default function CreateArticlePage() {
         credentials: "include",
         body: JSON.stringify({
           ...data,
+          imageUrl,
           readTime: calculateReadingTime(data.content),
           existingDraftId: currentDraftId,
         }),
@@ -84,7 +110,7 @@ export default function CreateArticlePage() {
       console.error("Auto-save failed:", err);
       throw err;
     }
-  }, [currentDraftId, calculateReadingTime]);
+  }, [currentDraftId, calculateReadingTime, extractFirstImageFromContent]);
 
   // Hook de sauvegarde automatique
   const { isSaving, forceSave, lastSaved } = useAutoSave(formData, {
@@ -205,6 +231,9 @@ export default function CreateArticlePage() {
 
     setIsSubmitting(true);
     try {
+      // Extraire la première image du contenu
+      const imageUrl = extractFirstImageFromContent(formData.content);
+
       const response = await fetch("/api/articles", {
         method: "POST",
         headers: {
@@ -213,7 +242,7 @@ export default function CreateArticlePage() {
         credentials: "include",
         body: JSON.stringify({
           ...formData,
-          // Pas de isDraft: false ici, c'est géré côté serveur
+          imageUrl,
         }),
       });
 
@@ -223,9 +252,7 @@ export default function CreateArticlePage() {
         success("Article publié avec succès!");
         setHasUnsavedChanges(false);
 
-        // Si on avait un brouillon, il faut le supprimer ou le marquer comme publié
         if (currentDraftId) {
-          // Le brouillon sera automatiquement "converti" en article publié
           setCurrentDraftId(null);
         }
 

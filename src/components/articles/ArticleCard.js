@@ -130,7 +130,7 @@ export default function ArticleCard({
                 <img
                   src={imageUrl}
                   alt={title}
-                  className="article-image w-full h-full object-cover"
+                  className="article-image w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                 />
               ) : (
                 <div className={`w-full h-full ${imageColor} flex items-center justify-center group-hover:opacity-80 transition-opacity`}>
