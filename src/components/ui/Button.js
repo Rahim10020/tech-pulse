@@ -12,6 +12,7 @@ const Button = forwardRef(({
   disabled = false,
   isLoading = false,
   loadingText = 'Loading...',
+  icon,
   ...props
 }, ref) => {
   const baseClasses = 'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
@@ -51,7 +52,10 @@ const Button = forwardRef(({
           {loadingText}
         </span>
       ) : (
-        children
+        <span className="flex items-center justify-center gap-2">
+          {icon && icon}
+          {children}
+        </span>
       )}
     </button>
   );

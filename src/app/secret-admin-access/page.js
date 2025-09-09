@@ -7,23 +7,25 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function SecretAdminAccess() {
-  const { user } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   // Si l'utilisateur est déjà connecté et admin, rediriger vers la page de profil admin
+  // Si non connecté, rediriger vers la page de connexion
   useEffect(() => {
-    if (user && user.role === 'admin') {
-      router.push('/profile/edit');
+    if (!loading) {
+      if (user === null) {
+        router.push('/login');
+      } else if (user && user.role === 'admin') {
+        router.push('/profile/edit');
+      }
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
-  // Afficher le panel admin après 1 seconde pour l'effet
+  // Afficher le panel admin immédiatement
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowAdminPanel(true);
-    }, 1000);
-    return () => clearTimeout(timer);
+    setShowAdminPanel(true);
   }, []);
 
   return (
@@ -121,15 +123,23 @@ export default function SecretAdminAccess() {
                       </p>
                       <p className="small-text text-orange-700 leading-relaxed">
                         Vous êtes connecté mais n'avez pas les permissions d'administrateur.
-                        Pour publier des articles, contactez l'administrateur.
+                        Pour accéder en tant qu'administrateur, déconnectez-vous et reconnectez-vous avec un compte admin.
                       </p>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="btn-primary inline-block"
-                    >
-                      📧 Contacter l'admin
-                    </Link>
+                    <div className="flex gap-3 justify-center">
+                      <button
+                        onClick={() => logout()}
+                        className="btn-secondary"
+                      >
+                        🚪 Se déconnecter
+                      </button>
+                      <Link
+                        href="/contact"
+                        className="btn-primary inline-block"
+                      >
+                        📧 Contacter l'admin
+                      </Link>
+                    </div>
                   </div>
                 )}
               </div>

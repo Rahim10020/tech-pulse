@@ -4,12 +4,13 @@
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 
-const Input = forwardRef(({ 
+const Input = forwardRef(({
   className = '',
   label,
   error,
   type = 'text',
-  ...props 
+  icon,
+  ...props
 }, ref) => {
   return (
     <div className="w-full">
@@ -21,16 +22,24 @@ const Input = forwardRef(({
           {label}
         </label>
       )}
-      <input
-        ref={ref}
-        type={type}
-        className={clsx(
-          'input-field',
-          error && 'input-error',
-          className
+      <div className="relative">
+        {icon && (
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            {icon}
+          </div>
         )}
-        {...props}
-      />
+        <input
+          ref={ref}
+          type={type}
+          className={clsx(
+            'input-field',
+            error && 'input-error',
+            icon && 'pl-10',
+            className
+          )}
+          {...props}
+        />
+      </div>
       {error && (
         <p className="mt-1 text-sm text-red-600">{error}</p>
       )}
