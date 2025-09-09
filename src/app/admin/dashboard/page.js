@@ -38,7 +38,7 @@ import {
 } from "lucide-react";
 
 export default function AdminDashboard() {
-  const { user, loading } = useAuth();
+  const { user, loading, markMessagesAsRead, refreshUnreadCount } = useAuth();
   const { showToast } = useToast();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
@@ -213,10 +213,14 @@ export default function AdminDashboard() {
         setMessages(messages.map(msg =>
           msg.id === messageId ? { ...msg, isRead: !isRead } : msg
         ));
-        setStats(prev => ({
-          ...prev,
-          unreadMessages: isRead ? prev.unreadMessages + 1 : prev.unreadMessages - 1,
-        }));
+        // Update the global unread count
+        markMessagesAsRead(isRead ? 0 : 1); // If marking as read, decrease by 1; if marking as unread, no change needed here
+        if (!isRead) {
+          // If marking as read, decrease count
+          markMessagesAsRead(1);
+        }
+        // Also refresh to ensure sync
+        setTimeout(() => refreshUnreadCount(), 1000);
         showToast("Message mis à jour", "success");
       }
     } catch (error) {
@@ -238,11 +242,11 @@ export default function AdminDashboard() {
         const deletedMessage = messages.find(m => m.id === messageId);
         setMessages(messages.filter(msg => msg.id !== messageId));
         if (deletedMessage && !deletedMessage.isRead) {
-          setStats(prev => ({
-            ...prev,
-            unreadMessages: prev.unreadMessages - 1,
-          }));
+          // Update the global unread count
+          markMessagesAsRead(1);
         }
+        // Also refresh to ensure sync
+        setTimeout(() => refreshUnreadCount(), 1000);
         showToast("Message deleted", "success");
       }
     } catch (error) {

@@ -16,13 +16,11 @@ import { useAuth } from "@/context/AuthProvider";
 import { useState } from "react";
 import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
 import { useSettings } from "@/hooks/useSettings";
-import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Button } from "@/components/ui/Button";
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { user, logout, unreadCount } = useAuth();
   const { settings } = useSettings();
-  const { unreadCount } = useUnreadMessages();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -98,6 +96,11 @@ export default function Header() {
                 type="text"
                 placeholder="Rechercher..."
                 className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.target.value.trim()) {
+                    window.location.href = `/search?q=${encodeURIComponent(e.target.value.trim())}`;
+                  }
+                }}
               />
             </div>
 

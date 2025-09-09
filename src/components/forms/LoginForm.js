@@ -68,7 +68,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
 
       <p className="small-text text-center text-gray-500 mt-4">
         Don't have an account?{" "}
-        <Link href="/register" className="text-teal-600 hover:text-teal-700 underline">
+        <Link href="/signup" className="text-teal-600 hover:text-teal-700 underline">
           Sign up
         </Link>
       </p>

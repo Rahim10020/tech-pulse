@@ -1,7 +1,8 @@
 // src/components/shared/UnreadBadge.js - Composant badge pour messages non lus
 "use client";
 
-import { useUnreadMessages } from "@/hooks/useUnreadMessages";
+import { useAuth } from "@/context/AuthProvider";
+import { isAdmin } from "@/lib/auth-roles";
 
 export default function UnreadBadge({
   className = "",
@@ -10,10 +11,11 @@ export default function UnreadBadge({
   maxCount = 99,
   showZero = false,
 }) {
-  const { unreadCount, isAdmin } = useUnreadMessages();
+  const { user, unreadCount } = useAuth();
+  const isAdminUser = user && isAdmin(user);
 
   // Ne pas afficher si pas admin ou si count = 0 et showZero = false
-  if (!isAdmin || (!showZero && unreadCount === 0)) {
+  if (!isAdminUser || (!showZero && unreadCount === 0)) {
     return null;
   }
 
@@ -45,9 +47,8 @@ export default function UnreadBadge({
         ${positionClasses[position]}
         ${className}
       `}
-      title={`${unreadCount} message${unreadCount > 1 ? "s" : ""} non lu${
-        unreadCount > 1 ? "s" : ""
-      }`}
+      title={`${unreadCount} message${unreadCount > 1 ? "s" : ""} non lu${unreadCount > 1 ? "s" : ""
+        }`}
     >
       {displayCount}
     </span>
@@ -72,6 +73,7 @@ export function IconWithBadge({
 
 // Hook simplifié pour juste obtenir le count
 export function useUnreadCount() {
-  const { unreadCount, isAdmin } = useUnreadMessages();
-  return isAdmin ? unreadCount : 0;
+  const { user, unreadCount } = useAuth();
+  const isAdminUser = user && isAdmin(user);
+  return isAdminUser ? unreadCount : 0;
 }

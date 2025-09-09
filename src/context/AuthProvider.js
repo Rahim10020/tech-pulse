@@ -1,7 +1,8 @@
 // src/context/AuthProvider.js - Système d'auth avec PostgreSQL
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { isAdmin } from '@/lib/auth-roles';
 
 const AuthContext = createContext();
 
@@ -9,15 +10,39 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Unread messages state
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+
   // Vérifier l'authentification au chargement
   useEffect(() => {
     checkAuth();
   }, []);
 
+  // Fetch unread messages count when user changes
+  useEffect(() => {
+    if (user && isAdmin(user)) {
+      fetchUnreadCount();
+    } else {
+      setUnreadCount(0);
+    }
+  }, [user]);
+
+  // Polling for unread messages
+  useEffect(() => {
+    if (!user || !isAdmin(user)) return;
+
+    const interval = setInterval(() => {
+      fetchUnreadCount();
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [user]);
+
   const checkAuth = async () => {
     try {
       setLoading(true);
-      
+
       // Appeler l'API /me pour vérifier le token dans les cookies
       const response = await fetch('/api/auth/me', {
         method: 'GET',
@@ -41,7 +66,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       setLoading(true);
-      
+
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -70,7 +95,7 @@ export function AuthProvider({ children }) {
   const signup = async (name, username, email, password) => {
     try {
       setLoading(true);
-      
+
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
@@ -99,7 +124,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       setLoading(true);
-      
+
       // Appeler l'API de déconnexion
       await fetch('/api/auth/logout', {
         method: 'POST',
@@ -107,7 +132,7 @@ export function AuthProvider({ children }) {
       });
 
       setUser(null);
-      
+
       // Optionnel : rediriger vers la page d'accueil
       window.location.href = '/';
     } catch (error) {
@@ -122,7 +147,7 @@ export function AuthProvider({ children }) {
   const updateProfile = async (profileData) => {
     try {
       setLoading(true);
-      
+
       const response = await fetch('/api/auth/profile', {
         method: 'PUT',
         headers: {
@@ -151,7 +176,7 @@ export function AuthProvider({ children }) {
   const changePassword = async (currentPassword, newPassword) => {
     try {
       setLoading(true);
-      
+
       const response = await fetch('/api/auth/change-password', {
         method: 'PUT',
         headers: {
@@ -200,6 +225,43 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Fonction pour récupérer le nombre de messages non lus
+  const fetchUnreadCount = useCallback(async () => {
+    if (!user || !isAdmin(user)) {
+      setUnreadCount(0);
+      return;
+    }
+
+    try {
+      setMessagesLoading(true);
+      const response = await fetch('/api/contact?unread=true&limit=1', {
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUnreadCount(data.unreadCount || 0);
+      } else {
+        setUnreadCount(0);
+      }
+    } catch (err) {
+      console.error('Error fetching unread messages count:', err);
+      setUnreadCount(0);
+    } finally {
+      setMessagesLoading(false);
+    }
+  }, [user]);
+
+  // Fonction pour marquer des messages comme lus
+  const markMessagesAsRead = useCallback((count = 1) => {
+    setUnreadCount(prev => Math.max(0, prev - count));
+  }, []);
+
+  // Fonction pour rafraîchir manuellement
+  const refreshUnreadCount = useCallback(() => {
+    fetchUnreadCount();
+  }, [fetchUnreadCount]);
+
   const value = {
     user,
     loading,
@@ -210,7 +272,13 @@ export function AuthProvider({ children }) {
     changePassword,
     checkAuth,
     checkEmailAvailability,
-    checkUsernameAvailability
+    checkUsernameAvailability,
+    // Unread messages
+    unreadCount,
+    messagesLoading,
+    fetchUnreadCount,
+    markMessagesAsRead,
+    refreshUnreadCount
   };
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Calendar,
   MapPin,
@@ -13,10 +13,66 @@ import {
   Heart,
   MessageCircle,
   ExternalLink,
+  LogOut,
+  Settings,
 } from "lucide-react";
+import { useAuth } from "@/context/AuthProvider";
+import Link from "next/link";
 
 export default function UserProfile({ user, articles }) {
   const [activeTab, setActiveTab] = useState("articles");
+  const { currentUser, logout } = useAuth();
+  const [userComments, setUserComments] = useState([]);
+  const [userLikes, setUserLikes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const isOwnProfile = currentUser && currentUser.id === user.id;
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  // Charger les commentaires de l'utilisateur
+  const loadUserComments = async () => {
+    if (activeTab !== "comments") return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/auth/profile/comments/${user.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUserComments(data.comments || []);
+      }
+    } catch (error) {
+      console.error('Erreur chargement commentaires:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Charger les likes de l'utilisateur
+  const loadUserLikes = async () => {
+    if (activeTab !== "likes") return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/auth/profile/likes/${user.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUserLikes(data.likes || []);
+      }
+    } catch (error) {
+      console.error('Erreur chargement likes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "comments") {
+      loadUserComments();
+    } else if (activeTab === "likes") {
+      loadUserLikes();
+    }
+  }, [activeTab]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -136,9 +192,9 @@ export default function UserProfile({ user, articles }) {
                         user.twitter.startsWith("http")
                           ? user.twitter
                           : `https://twitter.com/${user.twitter.replace(
-                              "@",
-                              ""
-                            )}`
+                            "@",
+                            ""
+                          )}`
                       }
                       target="_blank"
                       rel="noopener noreferrer"
@@ -181,31 +237,73 @@ export default function UserProfile({ user, articles }) {
                 </div>
               </div>
             )}
+
+            {/* Actions pour le profil personnel */}
+            {isOwnProfile && (
+              <div className="border-t pt-4 space-y-3">
+                <Link
+                  href="/profile/edit"
+                  className="flex items-center justify-center w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  Modifier le profil
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center justify-center w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Déconnexion
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Contenu principal */}
         <div className="lg:col-span-2">
-          {/* Header simple */}
+          {/* Header avec onglets */}
           <div className="border-b border-gray-200 mb-6">
             <nav className="-mb-px flex">
               <button
                 onClick={() => setActiveTab("articles")}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === "articles"
-                    ? "border-teal-500 text-teal-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
+                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${activeTab === "articles"
+                  ? "border-teal-500 text-teal-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
               >
                 <span className="h6-title">
                   Articles publiés ({articles.length})
                 </span>
               </button>
+              <button
+                onClick={() => setActiveTab("comments")}
+                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${activeTab === "comments"
+                  ? "border-teal-500 text-teal-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
+              >
+                <span className="h6-title">
+                  Commentaires
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab("likes")}
+                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${activeTab === "likes"
+                  ? "border-teal-500 text-teal-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
+              >
+                <span className="h6-title">
+                  Likes ({userLikes.length})
+                </span>
+              </button>
             </nav>
           </div>
 
-          {/* Liste des articles */}
+          {/* Contenu des onglets */}
           <div>
+            {/* Articles */}
             {activeTab === "articles" && (
               <div className="space-y-6">
                 {articles.length > 0 ? (
@@ -220,11 +318,9 @@ export default function UserProfile({ user, articles }) {
                           <div className="flex items-center text-sm text-gray-500 mb-3 space-x-4">
                             {article.category && (
                               <span
-                                className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                                  article.category?.color || "bg-gray-100"
-                                } ${
-                                  article.category?.textColor || "text-gray-600"
-                                }`}
+                                className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${article.category?.color || "bg-gray-100"
+                                  } ${article.category?.textColor || "text-gray-600"
+                                  }`}
                               >
                                 {article.category.name}
                               </span>
@@ -288,12 +384,21 @@ export default function UserProfile({ user, articles }) {
                         </div>
 
                         {/* Image d'aperçu de l'article */}
-                        <div
-                          className={`w-24 h-24 ${
-                            article.imageColor || "bg-gray-200"
-                          } rounded-lg ml-6 flex-shrink-0`}
-                        >
-                          {/* Placeholder pour image */}
+                        <div className="w-24 h-24 rounded-lg ml-6 flex-shrink-0 overflow-hidden">
+                          {article.imageUrl ? (
+                            <img
+                              src={article.imageUrl}
+                              alt={article.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className={`w-full h-full ${article.imageColor || "bg-gray-200"
+                                } flex items-center justify-center`}
+                            >
+                              <span className="text-white text-xs font-semibold opacity-50">IMG</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -308,6 +413,119 @@ export default function UserProfile({ user, articles }) {
                     </h3>
                     <p className="body-text text-gray-500">
                       Cet utilisateur n'a pas encore publié d'articles.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Commentaires */}
+            {activeTab === "comments" && (
+              <div className="space-y-6">
+                {loading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
+                  </div>
+                ) : userComments.length > 0 ? (
+                  userComments.map((comment) => (
+                    <div
+                      key={comment.id}
+                      className="bg-white rounded-lg border border-gray-200 p-6"
+                    >
+                      <div className="flex items-start space-x-4">
+                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-white font-medium text-sm">
+                            {comment.author?.name?.charAt(0) || "U"}
+                          </span>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="h5-title text-gray-900">
+                              {comment.author?.name || "Utilisateur"}
+                            </span>
+                            <span className="small-text text-gray-500">
+                              {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
+                            </span>
+                          </div>
+                          <p className="body-text text-gray-700 mb-3">
+                            {comment.content}
+                          </p>
+                          <div className="text-sm text-gray-600">
+                            Sur l'article:{" "}
+                            <Link
+                              href={`/articles/${comment.article?.slug}`}
+                              className="text-teal-600 hover:text-teal-700"
+                            >
+                              {comment.article?.title || "Article"}
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-12">
+                    <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="h3-title text-gray-900 mb-2">
+                      Aucun commentaire
+                    </h3>
+                    <p className="body-text text-gray-500">
+                      Cet utilisateur n'a pas encore commenté d'articles.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Likes */}
+            {activeTab === "likes" && (
+              <div className="space-y-6">
+                {loading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
+                  </div>
+                ) : userLikes.length > 0 ? (
+                  <div className="bg-white rounded-lg border border-gray-200 p-6">
+                    <div className="mb-4">
+                      <h3 className="h4-title text-gray-900 mb-2">
+                        Total des likes donnés: {userLikes.length}
+                      </h3>
+                    </div>
+                    <div className="space-y-4">
+                      {userLikes.map((like) => (
+                        <div
+                          key={like.id}
+                          className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <Heart className="w-5 h-5 text-red-500 fill-current" />
+                            <div>
+                              <Link
+                                href={`/articles/${like.article?.slug}`}
+                                className="h5-title text-gray-900 hover:text-teal-600"
+                              >
+                                {like.article?.title || "Article"}
+                              </Link>
+                              <p className="small-text text-gray-600">
+                                Par {like.article?.author?.name || "Auteur"}
+                              </p>
+                            </div>
+                          </div>
+                          <span className="small-text text-gray-500">
+                            {new Date(like.createdAt).toLocaleDateString("fr-FR")}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="h3-title text-gray-900 mb-2">
+                      Aucun like
+                    </h3>
+                    <p className="body-text text-gray-500">
+                      Cet utilisateur n'a pas encore liké d'articles.
                     </p>
                   </div>
                 )}

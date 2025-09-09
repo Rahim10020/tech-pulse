@@ -439,6 +439,8 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
                                 setEditingComment(replyId);
                                 setEditContent(content);
                             }}
+                            onSaveEditReply={handleEditComment}
+                            editingCommentId={editingComment}
                         />
                     ))
                 )}
@@ -466,6 +468,8 @@ function CommentItem({
     onLikeReply,
     onDeleteReply,
     onEditReply,
+    onSaveEditReply,
+    editingCommentId,
     isReply = false
 }) {
     const [showMenu, setShowMenu] = useState(false);
@@ -677,13 +681,14 @@ function CommentItem({
                             currentUser={currentUser}
                             onLike={() => onLikeReply(reply.id)}
                             onEdit={(content) => onEditReply(reply.id, content)}
-                            onSaveEdit={onSaveEdit}
+                            onSaveEdit={onSaveEditReply}
                             onCancelEdit={onCancelEdit}
                             onDelete={() => onDeleteReply(reply.id)}
                             onReport={() => onReport(reply.id)}
-                            isEditing={false}
-                            editContent=""
-                            setEditContent={() => { }}
+                            isEditing={editingCommentId === reply.id}
+                            editContent={editingCommentId === reply.id ? editContent : ""}
+                            setEditContent={setEditContent}
+                            editingCommentId={editingCommentId}
                             isReply={true}
                         />
                     ))}
