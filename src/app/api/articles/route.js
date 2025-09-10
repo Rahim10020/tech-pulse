@@ -1,9 +1,9 @@
 // ==========================================
 // 1. app/api/articles/route.js
 // ==========================================
-import { NextResponse } from 'next/server';
+import { successResponse, errorResponse, validationErrorResponse } from '@/lib/api-response';
+import { withAuth } from '@/lib/api-auth';
 import { getArticles, getFeaturedArticles, getRecentArticles, createArticle } from '@/lib/articles';
-import { verifyToken } from '@/lib/auth';
 
 export async function GET(request) {
   try {
@@ -29,60 +29,34 @@ export async function GET(request) {
         articles = await getRecentArticles(limit);
     }
 
-    return NextResponse.json(articles);
+    return successResponse({ articles });
   } catch (error) {
     console.error('Error fetching articles:', error);
-    return NextResponse.json(
-      { error: 'Erreur lors de la récupération des articles' },
-      { status: 500 }
-    );
+    return errorResponse('Erreur lors de la récupération des articles', 'FETCH_ERROR');
   }
 }
 
-export async function POST(request) {
+async function createArticleHandler(request) {
   try {
-    const token = request.cookies.get('token')?.value;
-
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Non authentifié' },
-        { status: 401 }
-      );
-    }
-
-    const decoded = await verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json(
-        { error: 'Token invalide' },
-        { status: 401 }
-      );
-    }
-
     const articleData = await request.json();
 
     // Cette route est UNIQUEMENT pour publier des articles (pas des brouillons)
     const result = await createArticle({
       ...articleData,
-      authorId: decoded.userId
+      authorId: request.user.id
     });
 
     if (result.success) {
-      return NextResponse.json({
-        success: true,
-        article: result.article,
-        message: 'Article publié avec succès'
-      });
+      return successResponse({
+        article: result.article
+      }, 'Article publié avec succès');
     } else {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 400 }
-      );
+      return validationErrorResponse(result.error, 'VALIDATION_ERROR');
     }
   } catch (error) {
     console.error('Error creating article:', error);
-    return NextResponse.json(
-      { error: 'Erreur interne du serveur' },
-      { status: 500 }
-    );
+    return errorResponse('Erreur interne du serveur', 'INTERNAL_ERROR');
   }
 }
+
+export const POST = withAuth(createArticleHandler);

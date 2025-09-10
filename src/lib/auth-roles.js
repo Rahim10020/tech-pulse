@@ -13,19 +13,19 @@ export const PERMISSIONS = {
   EDIT_ARTICLE: 'edit_article',
   DELETE_ARTICLE: 'delete_article',
   PUBLISH_ARTICLE: 'publish_article',
-  
+
   // Commentaires
   CREATE_COMMENT: 'create_comment',
   MODERATE_COMMENT: 'moderate_comment',
   DELETE_ANY_COMMENT: 'delete_any_comment',
-  
+
   // Utilisateurs
   MANAGE_USERS: 'manage_users',
   CHANGE_USER_ROLE: 'change_user_role',
-  
+
   // Likes
   LIKE_ARTICLE: 'like_article',
-  
+
   // Catégories/Tags
   MANAGE_CATEGORIES: 'manage_categories',
   MANAGE_TAGS: 'manage_tags'
@@ -83,7 +83,7 @@ export function isPublisher(user) {
 // Vérifier si un utilisateur a une permission spécifique
 export function hasPermission(user, permission) {
   if (!user || !user.role) return false;
-  
+
   const userPermissions = ROLE_PERMISSIONS[user.role] || [];
   return userPermissions.includes(permission);
 }
@@ -119,46 +119,64 @@ export function canManageUsers(user) {
 
 // Middleware pour les API routes
 export function withRoleAuth(allowedRoles = []) {
-  return function(handler) {
+  return function (handler) {
     return async (req, res) => {
       try {
         // Récupérer le token
         const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
-        
+
         if (!token) {
-          return res.status(401).json({ error: 'Token manquant' });
+          return res.status(401).json({
+            success: false,
+            error: 'Token manquant',
+            code: 'MISSING_TOKEN'
+          });
         }
 
         // Vérifier le token (tu dois avoir cette fonction dans lib/auth.js)
         const { verifyToken } = await import('./auth.js');
         const decoded = await verifyToken(token);
-        
+
         if (!decoded) {
-          return res.status(401).json({ error: 'Token invalide' });
+          return res.status(401).json({
+            success: false,
+            error: 'Token invalide',
+            code: 'INVALID_TOKEN'
+          });
         }
 
         // Récupérer l'utilisateur complet avec son rôle
         const { getUserById } = await import('./auth-db.js');
         const user = await getUserById(decoded.userId);
-        
+
         if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé' });
+          return res.status(401).json({
+            success: false,
+            error: 'Utilisateur non trouvé',
+            code: 'USER_NOT_FOUND'
+          });
         }
 
         // Vérifier les rôles autorisés
         if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-          return res.status(403).json({ 
-            error: 'Accès refusé - Permissions insuffisantes' 
+          return res.status(403).json({
+            success: false,
+            error: 'Accès refusé - Permissions insuffisantes',
+            code: 'INSUFFICIENT_PERMISSIONS'
           });
         }
 
         // Ajouter les données utilisateur à la requête
         req.user = user;
         return handler(req, res);
-        
+
       } catch (error) {
         console.error('Auth middleware error:', error);
-        return res.status(500).json({ error: 'Erreur serveur' });
+        return res.status(500).json({
+          success: false,
+          error: 'Erreur serveur',
+          code: 'INTERNAL_ERROR'
+        });
       }
     };
   };

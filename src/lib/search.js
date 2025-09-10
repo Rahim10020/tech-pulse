@@ -1,219 +1,147 @@
+// lib/search.js - Search utilities
 import { prisma } from '@/lib/prisma';
 
-// ===============================================
-// 4. src/lib/search.js - Fonctions utilitaires pour la recherche
-// ===============================================
-
-// Fonction pour enregistrer les termes de recherche populaires
-export async function logSearchTerm(term, userId = null) {
+// Recherche globale (articles, auteurs, catégories)
+export async function globalSearch(query, limit = 20) {
     try {
-        await prisma.searchLog.create({
-            data: {
-                term: term.toLowerCase().trim(),
-                userId: userId ? parseInt(userId) : null,
-                timestamp: new Date()
-            }
-        });
-    } catch (error) {
-        console.error('Erreur lors de l\'enregistrement du terme de recherche:', error);
-    }
-}
+        const searchTerm = query.toLowerCase();
 
-// Fonction pour obtenir les termes de recherche populaires
-export async function getPopularSearchTerms(limit = 10) {
-    try {
-        const popularTerms = await prisma.searchLog.groupBy({
-            by: ['term'],
-            _count: {
-                term: true
-            },
-            orderBy: {
-                _count: {
-                    term: 'desc'
+        const [articles, authors, categories] = await Promise.all([
+            // Rechercher dans les articles
+            prisma.article.findMany({
+                where: {
+                    published: true,
+                    OR: [
+                        {
+                            title: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        },
+                        {
+                            description: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        },
+                        {
+                            content: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        }
+                    ]
+                },
+                include: {
+                    author: {
+                        select: {
+                            name: true,
+                            username: true
+                        }
+                    },
+                    category: {
+                        select: {
+                            name: true,
+                            slug: true
+                        }
+                    }
+                },
+                take: Math.floor(limit * 0.6), // 60% pour les articles
+                orderBy: {
+                    publishedAt: 'desc'
                 }
-            },
-            take: limit,
-            where: {
-                timestamp: {
-                    gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // 30 derniers jours
-                }
-            }
-        });
+            }),
 
-        return popularTerms.map(item => ({
-            term: item.term,
-            count: item._count.term
-        }));
-    } catch (error) {
-        console.error('Erreur lors de la récupération des termes populaires:', error);
-        return [];
-    }
-}
-
-// Fonction pour la recherche avancée avec scoring
-export async function advancedSearch(query, options = {}) {
-    const {
-        limit = 20,
-        offset = 0,
-        includeContent = false,
-        dateRange = null,
-        categories = [],
-        authors = []
-    } = options;
-
-    try {
-        const searchTerm = query.toLowerCase().trim();
-
-        // Construction de la requête avec scoring
-        const whereConditions = {
-            published: true,
-            OR: [
-                // Score 100: correspondance exacte du titre
-                {
-                    title: {
-                        equals: query,
-                        mode: 'insensitive'
+            // Rechercher dans les auteurs
+            prisma.user.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        },
+                        {
+                            username: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        }
+                    ]
+                },
+                include: {
+                    _count: {
+                        select: {
+                            articles: {
+                                where: {
+                                    published: true
+                                }
+                            }
+                        }
                     }
                 },
-                // Score 80: titre commence par le terme
-                {
-                    title: {
-                        startsWith: searchTerm,
-                        mode: 'insensitive'
+                take: Math.floor(limit * 0.3), // 30% pour les auteurs
+            }),
+
+            // Rechercher dans les catégories
+            prisma.category.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        },
+                        {
+                            description: {
+                                contains: searchTerm,
+                                mode: 'insensitive'
+                            }
+                        }
+                    ]
+                },
+                include: {
+                    _count: {
+                        select: {
+                            articles: {
+                                where: {
+                                    published: true
+                                }
+                            }
+                        }
                     }
                 },
-                // Score 60: titre contient le terme
-                {
-                    title: {
-                        contains: searchTerm,
-                        mode: 'insensitive'
-                    }
-                },
-                // Score 40: description contient le terme
-                {
-                    description: {
-                        contains: searchTerm,
-                        mode: 'insensitive'
-                    }
-                },
-                // Score 20: contenu contient le terme (si activé)
-                ...(includeContent ? [{
-                    content: {
-                        contains: searchTerm,
-                        mode: 'insensitive'
-                    }
-                }] : [])
-            ]
+                take: Math.floor(limit * 0.1), // 10% pour les catégories
+            })
+        ]);
+
+        return {
+            articles: articles.map(article => ({
+                ...article,
+                type: 'article',
+                publishedAt: article.publishedAt.toISOString().split('T')[0]
+            })),
+            authors: authors.map(author => ({
+                ...author,
+                type: 'author',
+                articlesCount: author._count.articles
+            })),
+            categories: categories.map(category => ({
+                ...category,
+                type: 'category',
+                articlesCount: category._count.articles
+            })),
+            total: articles.length + authors.length + categories.length
         };
-
-        // Ajouter les filtres de date
-        if (dateRange) {
-            whereConditions.publishedAt = {
-                gte: dateRange.start,
-                lte: dateRange.end
-            };
-        }
-
-        // Ajouter les filtres de catégorie
-        if (categories.length > 0) {
-            whereConditions.categoryId = {
-                in: categories
-            };
-        }
-
-        // Ajouter les filtres d'auteur
-        if (authors.length > 0) {
-            whereConditions.authorId = {
-                in: authors
-            };
-        }
-
-        const results = await prisma.article.findMany({
-            where: whereConditions,
-            include: {
-                author: {
-                    select: {
-                        id: true,
-                        name: true,
-                        username: true,
-                        avatar: true
-                    }
-                },
-                category: {
-                    select: {
-                        id: true,
-                        name: true,
-                        slug: true,
-                        color: true
-                    }
-                },
-                tags: {
-                    select: {
-                        id: true,
-                        name: true,
-                        slug: true
-                    }
-                },
-                _count: {
-                    select: {
-                        likes: true,
-                        comments: true
-                    }
-                }
-            },
-            orderBy: [
-                { featured: 'desc' }, // Articles en vedette en premier
-                { publishedAt: 'desc' }
-            ],
-            skip: offset,
-            take: limit
-        });
-
-        return results.map(article => ({
-            ...article,
-            likes: article._count.likes,
-            commentsCount: article._count.comments,
-            publishedAt: article.publishedAt.toISOString().split('T')[0]
-        }));
-
     } catch (error) {
-        console.error('Erreur lors de la recherche avancée:', error);
-        return [];
-    }
-}
-
-// Fonction pour obtenir des suggestions intelligentes
-export async function getSmartSuggestions(query, limit = 5) {
-    try {
-        const searchTerm = query.toLowerCase().trim();
-
-        // Suggestions basées sur la popularité et la pertinence
-        const suggestions = await prisma.$queryRaw`
-      SELECT DISTINCT 
-        title as suggestion,
-        'article' as type,
-        views,
-        (
-          CASE 
-            WHEN LOWER(title) LIKE ${`${searchTerm}%`} THEN 100
-            WHEN LOWER(title) LIKE ${`%${searchTerm}%`} THEN 80
-            WHEN LOWER(description) LIKE ${`%${searchTerm}%`} THEN 60
-            ELSE 40
-          END + (views / 100)
-        ) as score
-      FROM Article 
-      WHERE published = true 
-        AND (
-          LOWER(title) LIKE ${`%${searchTerm}%`} 
-          OR LOWER(description) LIKE ${`%${searchTerm}%`}
-        )
-      ORDER BY score DESC, views DESC
-      LIMIT ${limit}
-    `;
-
-        return suggestions.map(s => s.suggestion);
-    } catch (error) {
-        console.error('Erreur suggestions intelligentes:', error);
-        return [];
+        console.error('Error performing global search:', error);
+        return {
+            articles: [],
+            authors: [],
+            categories: [],
+            total: 0
+        };
     }
 }

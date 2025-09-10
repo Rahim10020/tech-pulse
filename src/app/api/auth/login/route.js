@@ -3,6 +3,7 @@
 // ========================================
 
 import { NextResponse } from "next/server";
+import { successResponse, validationErrorResponse, errorResponse } from "@/lib/api-response";
 import { createToken } from "@/lib/auth";
 import { verifyCredentials } from "@/lib/auth-db";
 import { withRateLimit } from "@/lib/rate-limit";
@@ -15,13 +16,7 @@ async function loginHandler(request) {
 
     // Validation des données
     if (!email || !password) {
-      return NextResponse.json(
-        { 
-          error: "Email et mot de passe requis",
-          code: "MISSING_CREDENTIALS"
-        },
-        { status: 400 }
-      );
+      return validationErrorResponse("Email et mot de passe requis", "MISSING_CREDENTIALS");
     }
 
     // Vérifier les identifiants dans PostgreSQL
@@ -29,13 +24,7 @@ async function loginHandler(request) {
 
     if (!result.success) {
       console.log("❌ Login failed:", result.error);
-      return NextResponse.json(
-        { 
-          error: result.error,
-          code: "INVALID_CREDENTIALS"
-        }, 
-        { status: 401 }
-      );
+      return validationErrorResponse(result.error, "INVALID_CREDENTIALS");
     }
 
     const user = result.user;
@@ -51,14 +40,12 @@ async function loginHandler(request) {
     const token = await createToken(tokenPayload);
 
     // Créer la réponse avec le token dans un cookie httpOnly
-    const response = NextResponse.json({
-      success: true,
+    const response = successResponse({
       user: {
         ...user,
         role: user.role || 'reader'
-      },
-      message: "Connexion réussie",
-    });
+      }
+    }, "Connexion réussie");
 
     response.cookies.set("token", token, {
       httpOnly: true,
@@ -71,13 +58,7 @@ async function loginHandler(request) {
     return response;
   } catch (error) {
     console.error("❌ Login error:", error);
-    return NextResponse.json(
-      { 
-        error: "Erreur interne du serveur",
-        code: "INTERNAL_ERROR"
-      },
-      { status: 500 }
-    );
+    return errorResponse("Erreur interne du serveur", "INTERNAL_ERROR");
   }
 }
 

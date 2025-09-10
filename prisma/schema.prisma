@@ -12,78 +12,98 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  name      String
-  username  String   @unique
-  email     String   @unique
-  password  String
-  avatar    String?
-  bio       String?
-  joinedAt  DateTime @default(now())
-  location  String?
-  website   String?
-  role      String   @default("reader")
-  
+  name      String   @db.VarChar(100)
+  username  String   @unique @db.VarChar(50)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  avatar    String?  @db.Text
+  bio       String?  @db.Text
+  joinedAt  DateTime @default(now()) @db.Timestamp(6)
+  location  String?  @db.VarChar(100)
+  website   String?  @db.VarChar(255)
+  role      String   @default("reader") @db.VarChar(20)
+
   // Relations
   articles  Article[]
   comments  Comment[]
   likes     Like[]
-  
+
   // Champs sociaux (optionnel)
-  twitter   String?
-  linkedin  String?
-  github    String?
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  twitter   String?  @db.VarChar(100)
+  linkedin  String?  @db.VarChar(255)
+  github    String?  @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+
+  // Indexes for performance
+  @@index([email])
+  @@index([username])
+  @@index([role])
+  @@index([createdAt])
 
   @@map("users")
 }
 
 model Category {
   id          Int       @id @default(autoincrement())
-  name        String    @unique
-  slug        String    @unique
-  description String?
-  icon        String?
-  color       String?
-  textColor   String?
-  
+  name        String    @unique @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?   @db.Text
+  icon        String?   @db.VarChar(50)
+  color       String?   @db.VarChar(20)
+  textColor   String?   @db.VarChar(20)
+
   // Relations
   articles    Article[]
-  
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt @db.Timestamp(6)
+
+  // Indexes for performance
+  @@index([slug])
+  @@index([name])
 
   @@map("categories")
 }
 
 model Article {
   id          Int      @id @default(autoincrement())
-  title       String
-  slug        String   @unique
-  description String?
+  title       String   @db.VarChar(200)
+  slug        String   @unique @db.VarChar(200)
+  description String?  @db.Text
   content     String   @db.Text
-  imageUrl    String?
+  imageUrl    String?  @db.Text
   featured    Boolean  @default(false)
   published   Boolean  @default(true)
-  publishedAt DateTime @default(now())
-  readTime    String?
-  imageColor  String?
+  publishedAt DateTime @default(now()) @db.Timestamp(6)
+  readTime    String?  @db.VarChar(20)
+  imageColor  String?  @db.VarChar(20)
   views       Int      @default(0)
-  
+
   // Relations
   authorId    Int
   author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  
+
   categoryId  Int
   category    Category @relation(fields: [categoryId], references: [id])
-  
+
   tags        Tag[]
   comments    Comment[]
   likes       Like[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @updatedAt @db.Timestamp(6)
+
+  // Indexes for performance
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([published])
+  @@index([featured])
+  @@index([publishedAt])
+  @@index([slug])
+  @@index([published, publishedAt])
+  @@index([published, featured, publishedAt])
 
   @@map("articles")
 }
@@ -106,21 +126,27 @@ model Comment {
   id        Int      @id @default(autoincrement())
   content   String   @db.Text
   likes     Int      @default(0)
-  
+
   // Relations
   authorId  Int
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  
+
   articleId Int
   article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  
+
   // Auto-référence pour les réponses
   parentId  Int?
   parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id])
   replies   Comment[] @relation("CommentReplies")
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+
+  // Indexes for performance
+  @@index([articleId])
+  @@index([authorId])
+  @@index([parentId])
+  @@index([createdAt])
 
   @@map("comments")
 }

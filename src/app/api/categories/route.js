@@ -1,5 +1,5 @@
 // app/api/categories/route.js - API Route pour les catégories
-import { NextResponse } from 'next/server';
+import { successResponse, validationErrorResponse, errorResponse } from '@/lib/api-response';
 import { getAllCategories, getCategoryBySlug, getPopularCategories } from '@/lib/categories';
 
 export async function GET(request) {
@@ -17,10 +17,7 @@ export async function GET(request) {
         break;
       case 'single':
         if (!slug) {
-          return NextResponse.json(
-            { error: 'Slug requis pour récupérer une catégorie' },
-            { status: 400 }
-          );
+          return validationErrorResponse('Slug requis pour récupérer une catégorie', 'MISSING_SLUG');
         }
         categories = await getCategoryBySlug(slug);
         break;
@@ -30,12 +27,9 @@ export async function GET(request) {
         break;
     }
 
-    return NextResponse.json(categories);
+    return successResponse({ categories });
   } catch (error) {
     console.error('Error fetching categories:', error);
-    return NextResponse.json(
-      { error: 'Erreur lors de la récupération des catégories' },
-      { status: 500 }
-    );
+    return errorResponse('Erreur lors de la récupération des catégories', 'FETCH_ERROR');
   }
 }
