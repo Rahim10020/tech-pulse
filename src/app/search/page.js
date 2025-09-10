@@ -1,32 +1,28 @@
 // src/app/search/page.js - Page de recherche globale avancée
 export const dynamic = 'force-dynamic';
 
+"use client";
+
+const { useState, useEffect, useCallback } = require('react');
+const { useSearchParams, useRouter } = require('next/navigation');
+const Header = require('@/components/layout/Header').default;
+const {
+    Search,
+    Filter,
+    X,
+    Clock,
+    TrendingUp,
+    User,
+    Tag,
+    FileText,
+    ChevronDown,
+    Calendar,
+    Eye,
+    Heart,
+    MessageCircle
+} = require('lucide-react');
+
 export default function SearchPage() {
-    return <div>Search page content will be loaded client-side</div>;
-}
-
-// Composant client qui utilise useSearchParams
-function SearchPageClient() {
-    "use client";
-
-    const { useState, useEffect, useCallback } = require('react');
-    const { useSearchParams, useRouter } = require('next/navigation');
-    const Header = require('@/components/layout/Header').default;
-    const {
-        Search,
-        Filter,
-        X,
-        Clock,
-        TrendingUp,
-        User,
-        Tag,
-        FileText,
-        ChevronDown,
-        Calendar,
-        Eye,
-        Heart,
-        MessageCircle
-    } = require('lucide-react');
 
     // Custom debounce implementation to avoid hook issues
     const useDebounce = (value, delay) => {
@@ -524,8 +520,6 @@ function SearchPageClient() {
     );
 }
 
-export { SearchPageClient };
-
 // Composant pour les cartes d'articles dans les résultats
 function SearchArticleCard({ article, query }) {
     // Fonction pour surligner les termes de recherche
@@ -538,7 +532,15 @@ function SearchArticleCard({ article, query }) {
     return (
         <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-start space-x-4">
-                <div className={`w-16 h-16 ${article.imageColor || 'bg-gray-200'} rounded-lg flex-shrink-0`}></div>
+                {article.imageUrl ? (
+                    <img
+                        src={article.imageUrl}
+                        alt={article.title}
+                        className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                    />
+                ) : (
+                    <div className={`w-16 h-16 ${article.imageColor || 'bg-gray-200'} rounded-lg flex-shrink-0`}></div>
+                )}
 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-2">
