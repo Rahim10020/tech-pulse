@@ -11,7 +11,7 @@ import { ArrowLeft } from "lucide-react";
 
 export default function EditProfilePage() {
   const router = useRouter();
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, changePassword } = useAuth();
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +32,26 @@ export default function EditProfilePage() {
         router.push(`/profile/${user.id}`);
       } else {
         showToast(result.error || "Erreur lors de la mise à jour", "error");
+      }
+    } catch (error) {
+      showToast("Une erreur est survenue", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async (passwordData) => {
+    setIsLoading(true);
+
+    try {
+      const result = await changePassword(passwordData.currentPassword, passwordData.newPassword);
+
+      if (result.success) {
+        showToast("Mot de passe changé avec succès !", "success");
+        // Clear password fields after successful change
+        // This would require passing a reset function from ProfileForm
+      } else {
+        showToast(result.error || "Erreur lors du changement de mot de passe", "error");
       }
     } catch (error) {
       showToast("Une erreur est survenue", "error");
@@ -76,6 +96,7 @@ export default function EditProfilePage() {
             <ProfileForm
               initialData={user}
               onSubmit={handleUpdateProfile}
+              onPasswordChange={handlePasswordChange}
               isLoading={isLoading}
             />
           </div>
@@ -88,7 +109,7 @@ export default function EditProfilePage() {
           </h3>
           <div className="space-y-2 small-text text-blue-700">
             <p>
-              • Votre nom d'utilisateur et email ne peuvent pas être modifiés
+              • Votre nom d&apos;utilisateur et email ne peuvent pas être modifiés
               depuis cette page
             </p>
             <p>
@@ -100,7 +121,7 @@ export default function EditProfilePage() {
               de profil public
             </p>
             <p>
-              • Pour changer votre mot de passe, contactez l'administrateur
+              • Vous pouvez changer votre mot de passe dans la section ci-dessous
             </p>
           </div>
         </div>

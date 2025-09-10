@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function ProfileForm({ initialData, onSubmit, isLoading }) {
+export default function ProfileForm({ initialData, onSubmit, onPasswordChange, isLoading }) {
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
     bio: initialData?.bio || '',
@@ -13,11 +13,32 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
     github: initialData?.github || '',
   });
 
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData(prev => ({
       ...prev,
       [name]: value
     }));
@@ -39,6 +60,29 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
 
     if (formData.website && !formData.website.startsWith('http')) {
       newErrors.website = 'L\'URL doit commencer par http:// ou https://';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validatePasswordForm = () => {
+    const newErrors = {};
+
+    if (!passwordData.currentPassword) {
+      newErrors.currentPassword = 'Le mot de passe actuel est requis';
+    }
+
+    if (!passwordData.newPassword) {
+      newErrors.newPassword = 'Le nouveau mot de passe est requis';
+    } else if (passwordData.newPassword.length < 6) {
+      newErrors.newPassword = 'Le mot de passe doit contenir au moins 6 caractères';
+    }
+
+    if (!passwordData.confirmPassword) {
+      newErrors.confirmPassword = 'La confirmation du mot de passe est requise';
+    } else if (passwordData.newPassword !== passwordData.confirmPassword) {
+      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
     }
 
     setErrors(newErrors);
@@ -203,6 +247,95 @@ export default function ProfileForm({ initialData, onSubmit, isLoading }) {
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Changement de mot de passe */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="h3-title text-gray-900 mb-6">
+          Changer le mot de passe
+        </h2>
+
+        <div className="grid gap-4">
+          {/* Mot de passe actuel */}
+          <div>
+            <label htmlFor="currentPassword" className="h5-title text-gray-700 mb-1">
+              Mot de passe actuel
+            </label>
+            <input
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              value={passwordData.currentPassword}
+              onChange={handlePasswordChange}
+              className={`input-field ${errors.currentPassword ? 'border-red-500' : ''}`}
+              placeholder="Votre mot de passe actuel"
+            />
+            {errors.currentPassword && (
+              <p className="small-text text-red-600 mt-1">{errors.currentPassword}</p>
+            )}
+          </div>
+
+          {/* Nouveau mot de passe */}
+          <div>
+            <label htmlFor="newPassword" className="h5-title text-gray-700 mb-1">
+              Nouveau mot de passe
+            </label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={passwordData.newPassword}
+              onChange={handlePasswordChange}
+              className={`input-field ${errors.newPassword ? 'border-red-500' : ''}`}
+              placeholder="Votre nouveau mot de passe"
+            />
+            {errors.newPassword && (
+              <p className="small-text text-red-600 mt-1">{errors.newPassword}</p>
+            )}
+          </div>
+
+          {/* Confirmation du mot de passe */}
+          <div>
+            <label htmlFor="confirmPassword" className="h5-title text-gray-700 mb-1">
+              Confirmer le nouveau mot de passe
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={passwordData.confirmPassword}
+              onChange={handlePasswordChange}
+              className={`input-field ${errors.confirmPassword ? 'border-red-500' : ''}`}
+              placeholder="Confirmer votre nouveau mot de passe"
+            />
+            {errors.confirmPassword && (
+              <p className="small-text text-red-600 mt-1">{errors.confirmPassword}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Bouton de changement de mot de passe */}
+        <div className="mt-6">
+          <button
+            type="button"
+            onClick={() => {
+              if (validatePasswordForm() && onPasswordChange) {
+                onPasswordChange(passwordData);
+              }
+            }}
+            disabled={isLoading}
+            className="btn-primary"
+          >
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Changement...</span>
+              </div>
+            ) : (
+              'Changer le mot de passe'
+            )}
+          </button>
         </div>
       </div>
 
