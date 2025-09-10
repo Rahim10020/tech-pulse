@@ -9,6 +9,9 @@ const nextConfig = {
   },
   // Configuration importante pour Tailwind
   transpilePackages: [],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

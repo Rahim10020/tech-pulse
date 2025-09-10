@@ -9,6 +9,19 @@ const wrapper = ({ children }) => <AuthProvider>{children}</AuthProvider>
 describe('useAuth', () => {
   beforeEach(() => {
     global.fetch.mockClear()
+    // Mock default response for /api/auth/me (checkAuth)
+    global.fetch.mockImplementation((url) => {
+      if (url === '/api/auth/me') {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ error: 'Not authenticated' })
+        })
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ error: 'Mock not set' })
+      })
+    })
   })
 
   it('should initialize with loading state', () => {
@@ -21,9 +34,16 @@ describe('useAuth', () => {
   it('should handle successful login', async () => {
     const mockUser = { id: 1, name: 'John Doe', email: 'john@example.com' }
 
-    fetch.mockResolvedValueOnce({
+    // Mock checkAuth (first call)
+    global.fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ success: true, user: mockUser })
+      json: () => Promise.resolve({ error: 'Not authenticated' })
+    })
+
+    // Mock login (second call)
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ success: true, user: mockUser })
     })
 
     const { result } = renderHook(() => useAuth(), { wrapper })
@@ -33,7 +53,7 @@ describe('useAuth', () => {
       expect(response.success).toBe(true)
     })
 
-    expect(fetch).toHaveBeenCalledWith('/api/auth/login', expect.objectContaining({
+    expect(global.fetch).toHaveBeenCalledWith('/api/auth/login', expect.objectContaining({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -42,9 +62,16 @@ describe('useAuth', () => {
   })
 
   it('should handle login failure', async () => {
-    fetch.mockResolvedValueOnce({
+    // Mock checkAuth (first call)
+    global.fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ success: false, error: 'Invalid credentials' })
+      json: () => Promise.resolve({ error: 'Not authenticated' })
+    })
+
+    // Mock login failure (second call)
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ success: false, error: 'Invalid credentials' })
     })
 
     const { result } = renderHook(() => useAuth(), { wrapper })

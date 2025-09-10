@@ -28,7 +28,7 @@ export default function ForgotPasswordPage({ isLoading }) {
                 Reset your password
               </h1>
               <p className="text-gray-600 font-poppins text-sm">
-                Enter your email address and we'll send you a link to reset your
+                Enter your email address and we&apos;ll send you a link to reset your
                 password.
               </p>
             </div>
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage({ isLoading }) {
               Check your email
             </h1>
             <p className="text-gray-600 mb-8">
-              We've sent a password reset link to <strong>{email}</strong>
+              We&apos;ve sent a password reset link to <strong>{email}</strong>
             </p>
             <Link
               href="/login"

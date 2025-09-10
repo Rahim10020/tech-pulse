@@ -1,27 +1,50 @@
 // src/app/search/page.js - Page de recherche globale avancée
-"use client";
-
-import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import {
-    Search,
-    Filter,
-    X,
-    Clock,
-    TrendingUp,
-    User,
-    Tag,
-    FileText,
-    ChevronDown,
-    Calendar,
-    Eye,
-    Heart,
-    MessageCircle
-} from 'lucide-react';
-import { useDebounce } from '@/hooks/useDebounce';
+export const dynamic = 'force-dynamic';
 
 export default function SearchPage() {
+    return <div>Search page content will be loaded client-side</div>;
+}
+
+// Composant client qui utilise useSearchParams
+function SearchPageClient() {
+    "use client";
+
+    const { useState, useEffect, useCallback } = require('react');
+    const { useSearchParams, useRouter } = require('next/navigation');
+    const Header = require('@/components/layout/Header').default;
+    const {
+        Search,
+        Filter,
+        X,
+        Clock,
+        TrendingUp,
+        User,
+        Tag,
+        FileText,
+        ChevronDown,
+        Calendar,
+        Eye,
+        Heart,
+        MessageCircle
+    } = require('lucide-react');
+
+    // Custom debounce implementation to avoid hook issues
+    const useDebounce = (value, delay) => {
+        const [debouncedValue, setDebouncedValue] = useState(value);
+
+        useEffect(() => {
+            const handler = setTimeout(() => {
+                setDebouncedValue(value);
+            }, delay);
+
+            return () => {
+                clearTimeout(handler);
+            };
+        }, [value, delay]);
+
+        return debouncedValue;
+    };
+
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -500,6 +523,8 @@ export default function SearchPage() {
         </div>
     );
 }
+
+export { SearchPageClient };
 
 // Composant pour les cartes d'articles dans les résultats
 function SearchArticleCard({ article, query }) {

@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
@@ -81,9 +82,9 @@ export default function HomePage() {
 
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8">
-          <a href="/articles" className="text-blue-500 underline">
+          <Link href="/articles" className="text-blue-500 underline">
             See all articles...
-          </a>
+          </Link>
         </div>
       </div>
     </div>
