@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import {
     MessageCircle,
     Heart,
@@ -37,6 +38,8 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
     const [loading, setLoading] = useState(false);
     const [sortBy, setSortBy] = useState('newest'); // newest, oldest, popular
     const [showReplies, setShowReplies] = useState({});
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState(null);
 
 
     // Charger les commentaires
@@ -230,11 +233,19 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
         }
     };
 
-    // Supprimer un commentaire
-    const handleDeleteComment = async (commentId) => {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
-            return;
-        }
+    // Ouvrir le dialogue de confirmation de suppression
+    const openDeleteDialog = (commentId) => {
+        setCommentToDelete(commentId);
+        setShowDeleteDialog(true);
+    };
+
+    // Confirmer la suppression
+    const confirmDeleteComment = async () => {
+        if (!commentToDelete) return;
+
+        const commentId = commentToDelete;
+        setShowDeleteDialog(false);
+        setCommentToDelete(null);
 
         try {
             const response = await fetch(`/api/comments/${commentId}`, {
@@ -267,6 +278,12 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
             console.error('Erreur suppression commentaire:', error);
             showToast('Erreur lors de la suppression', 'error');
         }
+    };
+
+    // Annuler la suppression
+    const cancelDeleteComment = () => {
+        setShowDeleteDialog(false);
+        setCommentToDelete(null);
     };
 
     // Toggle affichage des réponses
@@ -424,7 +441,7 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
                             }}
                             onSaveEdit={() => handleEditComment(comment.id)}
                             onCancelEdit={cancelEdit}
-                            onDelete={() => handleDeleteComment(comment.id)}
+                            onDelete={() => openDeleteDialog(comment.id)}
                             onReport={() => handleReportComment(comment.id)}
                             onToggleReplies={() => toggleReplies(comment.id)}
                             showReplies={showReplies[comment.id]}
@@ -432,7 +449,7 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
                             editContent={editContent}
                             setEditContent={setEditContent}
                             onLikeReply={handleLikeComment}
-                            onDeleteReply={handleDeleteComment}
+                            onDeleteReply={openDeleteDialog}
                             onEditReply={(replyId, content) => {
                                 setEditingComment(replyId);
                                 setEditContent(content);
@@ -443,6 +460,18 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
                     ))
                 )}
             </div>
+
+            {/* Dialogue de confirmation de suppression */}
+            <ConfirmDialog
+                isOpen={showDeleteDialog}
+                title="Supprimer le commentaire"
+                message="Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible."
+                confirmText="Supprimer"
+                cancelText="Annuler"
+                type="danger"
+                onConfirm={confirmDeleteComment}
+                onCancel={cancelDeleteComment}
+            />
         </div>
     );
 }

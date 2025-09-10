@@ -17,7 +17,7 @@ export default async function ArticlesPage({ searchParams }) {
       <Header />
       <div className="container-sm py-6">
         <h1 className="h2-title text-gray-900 mb-6">
-          Latest Articles
+          Derniers articles
         </h1>
 
         <CategoryFilter activeCategory={category} />

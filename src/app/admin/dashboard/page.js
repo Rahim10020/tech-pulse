@@ -6,6 +6,7 @@ import Header from "@/components/layout/Header";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { isAdmin } from "@/lib/auth-roles";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import {
   Users,
   MessageSquare,
@@ -83,6 +84,8 @@ export default function AdminDashboard() {
     allowRegistration: true,
   });
   const [savingSettings, setSavingSettings] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState(null);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin(user))) {
@@ -227,8 +230,18 @@ export default function AdminDashboard() {
     }
   };
 
-  const deleteMessage = async (messageId) => {
-    if (!confirm("Are you sure you want to delete this message?")) return;
+  const openDeleteDialog = (messageId) => {
+    setMessageToDelete(messageId);
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDeleteMessage = async () => {
+    if (!messageToDelete) return;
+
+    const messageId = messageToDelete;
+    setShowDeleteDialog(false);
+    setMessageToDelete(null);
+
     try {
       const response = await fetch(`/api/contact/${messageId}`, {
         method: "DELETE",
@@ -245,12 +258,17 @@ export default function AdminDashboard() {
         }
         // Also refresh to ensure sync
         setTimeout(() => refreshUnreadCount(), 1000);
-        showToast("Message deleted", "success");
+        showToast("Message supprimé avec succès", "success");
       }
     } catch (error) {
       console.error("Error deleting message:", error);
       showToast("Erreur lors de la suppression", "error");
     }
+  };
+
+  const cancelDeleteMessage = () => {
+    setShowDeleteDialog(false);
+    setMessageToDelete(null);
   };
 
   const changeUserRole = async (userId, newRole) => {
@@ -748,7 +766,7 @@ export default function AdminDashboard() {
                             )}
                           </button>
                           <button
-                            onClick={() => deleteMessage(message.id)}
+                            onClick={() => openDeleteDialog(message.id)}
                             className="p-1 text-gray-400 hover:text-red-600"
                             title="Supprimer"
                           >
@@ -1047,6 +1065,18 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {/* Dialogue de confirmation de suppression */}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        title="Supprimer le message"
+        message="Êtes-vous sûr de vouloir supprimer ce message de contact ? Cette action est irréversible."
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        type="danger"
+        onConfirm={confirmDeleteMessage}
+        onCancel={cancelDeleteMessage}
+      />
     </div>
   );
 }
