@@ -41,7 +41,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function AuthorPage({ params }) {
-  const author = await getAuthorData(params.id);
+  const resolvedParams = await params;
+  const author = await getAuthorData(resolvedParams.id);
 
   if (!author) {
     notFound();

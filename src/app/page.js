@@ -64,16 +64,16 @@ export default function HomePage() {
           >
             <ArticleCard
               title={article.title}
-              content={article.content} // Contenu complet pour extraire l'extrait
+              content={article.content}
               readTime={article.readTime}
               imageColor={article.imageColor}
-              imageUrl={article.imageUrl || null} // Nouvelle prop pour l'image
+              imageUrl={article.imageUrl || null}
               href={`/articles/${article.slug}`}
               author={article.author}
               publishedAt={article.publishedAt}
               category={article.category}
-              likes={article.likes || 0} // Stats de likes
-              commentsCount={article.commentsCount || 0} // Stats de commentaires
+              likes={article.likes || 0}
+              commentsCount={article.commentsCount || 0}
               horizontal={true}
             />
           </div>
@@ -81,8 +81,8 @@ export default function HomePage() {
 
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8">
-          <a href="/articles" className="btn-primary">
-            See all articles
+          <a href="/articles" className="text-blue-500 underline">
+            See all articles...
           </a>
         </div>
       </div>

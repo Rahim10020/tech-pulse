@@ -44,6 +44,12 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
         loadComments();
     }, [articleSlug, sortBy]);
 
+    // Mettre à jour le compteur de commentaires quand les commentaires changent
+    useEffect(() => {
+        const totalCount = calculateTotalComments(comments);
+        onCommentsCountChange && onCommentsCountChange(totalCount);
+    }, [comments, onCommentsCountChange]);
+
     const loadComments = async () => {
         try {
             const response = await fetch(`/api/articles/${articleSlug}/comments?sort=${sortBy}`);
@@ -107,10 +113,6 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
                         // Ajouter le nouveau commentaire en haut
                         newComments = [data.comment, ...prev];
                     }
-
-                    // Calculer et mettre à jour le compteur total
-                    const totalCount = calculateTotalComments(newComments);
-                    onCommentsCountChange && onCommentsCountChange(totalCount);
 
                     return newComments;
                 });
@@ -255,10 +257,6 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
 
                         return true;
                     });
-
-                    // Calculer et mettre à jour le compteur total
-                    const totalCount = calculateTotalComments(newComments);
-                    onCommentsCountChange && onCommentsCountChange(totalCount);
 
                     return newComments;
                 });
