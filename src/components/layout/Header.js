@@ -43,7 +43,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/">
             <img src="/logo.png"
-              alt="Logo pixelpulse"
+              alt={`Logo ${settings.siteName || 'pixelpulse'}`}
               className="h-10" />
           </Link>
 
@@ -56,7 +56,7 @@ export default function Header() {
                 : ""
                 }`}
             >
-              Home
+              Accueil
             </Link>
             <Link
               href="/articles"

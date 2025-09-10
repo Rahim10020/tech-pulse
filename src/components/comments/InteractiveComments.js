@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
+import { useSettings } from '@/hooks/useSettings';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import {
     MessageCircle,
@@ -29,6 +30,7 @@ import { fr } from 'date-fns/locale';
 export default function InteractiveComments({ articleSlug, initialComments = [], onCommentsCountChange, totalCount }) {
     const { user } = useAuth();
     const { showToast } = useToast();
+    const { settings } = useSettings();
 
     const [comments, setComments] = useState(initialComments);
     const [newComment, setNewComment] = useState('');
@@ -299,6 +301,23 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
         setEditingComment(null);
         setEditContent('');
     };
+
+    // Vérifier si les commentaires sont autorisés
+    if (!settings.allowComments) {
+        return (
+            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                <div className="text-center py-8">
+                    <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                    <h4 className="h4-title text-gray-900 mb-2">
+                        Commentaires désactivés
+                    </h4>
+                    <p className="body-text text-gray-600">
+                        Les commentaires sont actuellement désactivés sur ce site.
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">

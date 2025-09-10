@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/context/AuthProvider";
 import { ToastProvider } from "@/context/ToastProvider";
+import MaintenanceWrapper from "@/components/layout/MaintenanceWrapper";
 
 import { Poppins } from "next/font/google";
 
@@ -30,7 +31,11 @@ export default function RootLayout({ children }) {
     <html lang="fr" className={`${inter.variable} ${poppins.variable}`}>
       <body className="bg-gray-50 text-gray-900 antialiased suppressHydrationWarning">
         <AuthProvider>
-          <ToastProvider>{children}</ToastProvider>
+          <ToastProvider>
+            <MaintenanceWrapper>
+              {children}
+            </MaintenanceWrapper>
+          </ToastProvider>
         </AuthProvider>
       </body>
     </html>
