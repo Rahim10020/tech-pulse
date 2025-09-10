@@ -1,4 +1,3 @@
-// src/app/admin/dashboard/page.js - Dashboard admin avec navigation améliorée
 "use client";
 
 import { useState, useEffect } from "react";
@@ -214,9 +213,8 @@ export default function AdminDashboard() {
           msg.id === messageId ? { ...msg, isRead: !isRead } : msg
         ));
         // Update the global unread count
-        markMessagesAsRead(isRead ? 0 : 1); // If marking as read, decrease by 1; if marking as unread, no change needed here
         if (!isRead) {
-          // If marking as read, decrease count
+          // If marking as read, decrease count by 1
           markMessagesAsRead(1);
         }
         // Also refresh to ensure sync
@@ -739,8 +737,9 @@ export default function AdminDashboard() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => toggleMessageRead(message.id, message.isRead)}
-                            className="p-1 text-gray-400 hover:text-gray-600"
-                            title={message.isRead ? "Marquer comme non lu" : "Marquer comme lu"}
+                            className={`p-1 ${message.isRead ? 'text-gray-300 cursor-not-allowed' : 'text-gray-400 hover:text-gray-600'}`}
+                            disabled={message.isRead}
+                            title={message.isRead ? "Message déjà lu" : "Marquer comme lu"}
                           >
                             {message.isRead ? (
                               <EyeOff className="w-4 h-4" />

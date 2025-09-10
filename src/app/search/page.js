@@ -1,7 +1,7 @@
 // src/app/search/page.js - Page de recherche globale avancée
-export const dynamic = 'force-dynamic';
-
 "use client";
+
+export const dynamic = 'force-dynamic';
 
 const { useState, useEffect, useCallback } = require('react');
 const { useSearchParams, useRouter } = require('next/navigation');

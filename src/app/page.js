@@ -1,4 +1,3 @@
-// src/app/page.js - Page d'accueil avec API
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -16,8 +15,8 @@ export default function HomePage() {
     async function fetchArticles() {
       try {
         const response = await fetch('/api/articles?type=recent&limit=3');
-        const articles = await response.json();
-        setRecentArticles(articles);
+        const data = await response.json();
+        setRecentArticles(data.articles || []);
       } catch (error) {
         console.error('Error fetching articles:', error);
       } finally {
@@ -48,7 +47,7 @@ export default function HomePage() {
         />
 
         <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-4">
-          Recent articles
+          Articles recents
         </h2>
 
         {/* Articles en layout horizontal */}
@@ -83,7 +82,7 @@ export default function HomePage() {
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8">
           <Link href="/articles" className="text-blue-500 underline">
-            See all articles...
+            Voir tous les articles...
           </Link>
         </div>
       </div>

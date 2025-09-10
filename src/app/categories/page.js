@@ -24,10 +24,19 @@ export default function CategoriesPage() {
     async function fetchCategories() {
       try {
         const response = await fetch('/api/categories?type=all');
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
         const categoriesData = await response.json();
-        setCategories(categoriesData);
+        if (categoriesData.success) {
+          setCategories(categoriesData.categories || []);
+        } else {
+          console.error('API error:', categoriesData.error);
+          setCategories([]);
+        }
       } catch (error) {
         console.error('Error fetching categories:', error);
+        setCategories([]);
       } finally {
         setLoading(false);
       }

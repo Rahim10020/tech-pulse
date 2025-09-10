@@ -1,4 +1,3 @@
-// src/app/contact/page.js - Page Contact (bonus)
 "use client";
 
 import { useState, useEffect } from "react";

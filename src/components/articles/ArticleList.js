@@ -22,12 +22,23 @@ export default function ArticleList({
     setLoading(true);
     try {
       const response = await fetch(`/api/articles?type=all&page=${currentPage}&limit=6&category=${category}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch articles');
+      }
       const result = await response.json();
 
-      setArticles(result.articles || []);
-      setTotalPages(result.totalPages || 1);
+      if (result.success) {
+        setArticles(result.articles?.articles || []);
+        setTotalPages(result.articles?.totalPages || 1);
+      } else {
+        console.error('API error:', result.error);
+        setArticles([]);
+        setTotalPages(1);
+      }
     } catch (error) {
       console.error('Error loading articles:', error);
+      setArticles([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }

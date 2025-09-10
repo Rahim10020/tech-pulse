@@ -1,4 +1,3 @@
-// src/app/api/admin/settings/route.js - CORRIGÉ
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
@@ -8,7 +7,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET(request) {
   try {
     // Vérifier l'authentification admin
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = request.cookies.get('token')?.value;
     if (!token) {
       return NextResponse.json(
         { error: 'Token d\'authentification requis' },
@@ -68,7 +67,7 @@ export async function GET(request) {
 export async function PUT(request) {
   try {
     // Vérifier l'authentification admin
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = request.cookies.get('token')?.value;
     if (!token) {
       return NextResponse.json(
         { error: 'Token d\'authentification requis' },

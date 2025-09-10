@@ -11,7 +11,7 @@ export async function PATCH(request, { params }) {
     const { isRead } = await request.json();
 
     // Vérifier l'authentification admin
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = request.cookies.get('token')?.value;
     if (!token) {
       return NextResponse.json(
         { error: 'Token d\'authentification requis' },
@@ -65,7 +65,7 @@ export async function DELETE(request, { params }) {
     const { id } = await params;
 
     // Vérifier l'authentification admin
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = request.cookies.get('token')?.value;
     if (!token) {
       return NextResponse.json(
         { error: 'Token d\'authentification requis' },
