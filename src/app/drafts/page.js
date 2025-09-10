@@ -1,4 +1,3 @@
-// app/drafts/page.js - page des brouillons (terminé)
 "use client";
 
 import { useState, useEffect } from "react";
@@ -65,7 +64,7 @@ export default function DraftsPage() {
         // Charger les catégories
         const categoriesResponse = await fetch("/api/categories?type=all");
         const categoriesData = await categoriesResponse.json();
-        setCategories(categoriesData || []);
+        setCategories(categoriesData.success ? categoriesData.categories || [] : []);
       } catch (err) {
         console.error("Error fetching drafts:", err);
         error("Erreur lors du chargement des données");

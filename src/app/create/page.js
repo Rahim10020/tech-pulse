@@ -164,15 +164,15 @@ export default function CreateArticlePage() {
         const response = await fetch("/api/categories?type=all");
         const data = await response.json();
         // Filtrer pour exclure la catégorie "non-classe" des options
-        const filteredCategories = data.filter(cat => cat.slug !== "non-classe");
+        const filteredCategories = data.categories.filter(cat => cat.slug !== "non-classe");
         setCategories(filteredCategories);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
         error("Erreur lors du chargement des catégories");
       }
     }
     fetchCategories();
-  }, [error]);
+  }, []);
 
   // Mettre à jour automatiquement le temps de lecture
   useEffect(() => {
