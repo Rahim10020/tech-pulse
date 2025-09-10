@@ -1,11 +1,14 @@
 // pages/reset-password/[token].js - Page de réinitialisation du mot de passe
+"use client";
+
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 
 export default function ResetPasswordPage() {
   const router = useRouter();
-  const { token } = router.query;
+  const params = useParams();
+  const token = params.token;
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: ''

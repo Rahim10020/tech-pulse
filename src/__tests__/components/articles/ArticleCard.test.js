@@ -6,7 +6,7 @@ import ArticleCard from '@/components/articles/ArticleCard'
 describe('ArticleCard', () => {
   const mockArticle = {
     title: 'Test Article',
-    description: 'This is a test article',
+    content: '<p>This is a test article</p>',
     readTime: '5 min',
     imageColor: 'bg-blue-100',
     href: '/articles/test-article',
@@ -17,11 +17,11 @@ describe('ArticleCard', () => {
 
   it('renders article information correctly', () => {
     render(<ArticleCard {...mockArticle} />)
-    
+
     expect(screen.getByText('Test Article')).toBeInTheDocument()
     expect(screen.getByText('This is a test article')).toBeInTheDocument()
     expect(screen.getByText('5 min')).toBeInTheDocument()
-    expect(screen.getByText('Par John Doe')).toBeInTheDocument()
+    expect(screen.getByText('John Doe')).toBeInTheDocument()
     expect(screen.getByText('Tech')).toBeInTheDocument()
   })
 
@@ -29,7 +29,7 @@ describe('ArticleCard', () => {
     const { container } = render(
       <ArticleCard {...mockArticle} horizontal={true} />
     )
-    
+
     expect(container.querySelector('.flex.items-start.space-x-6')).toBeInTheDocument()
   })
 
@@ -38,7 +38,7 @@ describe('ArticleCard', () => {
       title: 'Minimal Article',
       href: '/articles/minimal'
     }
-    
+
     render(<ArticleCard {...minimalArticle} />)
     expect(screen.getByText('Minimal Article')).toBeInTheDocument()
   })

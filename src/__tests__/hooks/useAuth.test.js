@@ -8,19 +8,19 @@ const wrapper = ({ children }) => <AuthProvider>{children}</AuthProvider>
 
 describe('useAuth', () => {
   beforeEach(() => {
-    fetch.mockClear()
+    global.fetch.mockClear()
   })
 
   it('should initialize with loading state', () => {
     const { result } = renderHook(() => useAuth(), { wrapper })
-    
+
     expect(result.current.loading).toBe(true)
     expect(result.current.user).toBe(null)
   })
 
   it('should handle successful login', async () => {
     const mockUser = { id: 1, name: 'John Doe', email: 'john@example.com' }
-    
+
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, user: mockUser })
