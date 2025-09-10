@@ -243,7 +243,7 @@ export default function AdminEditArticlePage() {
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-                    <p className="body-text text-gray-600">Chargement de l'article...</p>
+                    <p className="body-text text-gray-600">Chargement de l&apos;article...</p>
                 </div>
             </div>
         );
@@ -267,7 +267,7 @@ export default function AdminEditArticlePage() {
                             Retour
                         </button>
                         <div>
-                            <h1 className="h1-title text-gray-900">Modifier l'article</h1>
+                            <h1 className="h1-title text-gray-900">Modifier l&apos;article</h1>
                             <div className="flex items-center gap-4 mt-2">
                                 <div className="flex items-center gap-2">
                                     {article.published ? (
@@ -387,7 +387,7 @@ export default function AdminEditArticlePage() {
                         {/* Éditeur de contenu */}
                         <div className="px-6">
                             <label className="h6-title text-gray-700 block mb-4">
-                                Contenu de l'article
+                                Contenu de l&apos;article
                             </label>
                             <TiptapEditor
                                 content={formData.content}
@@ -415,7 +415,7 @@ export default function AdminEditArticlePage() {
                                         className="btn-secondary w-full sm:w-auto flex items-center gap-2"
                                     >
                                         <Eye className="w-4 h-4" />
-                                        Voir l'article
+                                        Voir l&apos;article
                                     </button>
                                 )}
 
@@ -483,7 +483,7 @@ export default function AdminEditArticlePage() {
                             {!formData.category && formData.title.trim() && formData.content.trim() && (
                                 <div className="mt-3 text-center">
                                     <p className="small-text text-orange-600">
-                                        💡 Sélectionnez une catégorie pour pouvoir publier l'article
+                                        💡 Sélectionnez une catégorie pour pouvoir publier l&apos;article
                                     </p>
                                 </div>
                             )}

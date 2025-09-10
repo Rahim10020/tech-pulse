@@ -335,8 +335,8 @@ export default function AdminCategoriesPage() {
                         >
                             <option value="name-asc">Nom A-Z</option>
                             <option value="name-desc">Nom Z-A</option>
-                            <option value="articles-desc">Plus d'articles</option>
-                            <option value="articles-asc">Moins d'articles</option>
+                            <option value="articles-desc">Plus d&apos;articles</option>
+                            <option value="articles-asc">Moins d&apos;articles</option>
                             <option value="createdAt-desc">Plus récentes</option>
                             <option value="createdAt-asc">Plus anciennes</option>
                         </select>
