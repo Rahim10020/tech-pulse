@@ -159,7 +159,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Error loading messages:", error);
-      showToast("Error loading messages", "error");
+      showToast("Erreur lors du chargement des messages", "error");
     } finally {
       setMessagesLoading(false);
     }
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Error loading users:", error);
-      showToast("Error loading users", "error");
+      showToast("Erreur lors du chargement des utilisateurs", "error");
     } finally {
       setUsersLoading(false);
     }
@@ -283,9 +283,9 @@ export default function AdminDashboard() {
       });
       if (response.ok) {
         setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
-        showToast("User role updated", "success");
+        showToast("Rôle utilisateur mis à jour", "success");
       } else {
-        showToast((await response.json()).error || "Error changing user role", "error");
+        showToast((await response.json()).error || "Erreur lors du changement du rôle utilisateur", "error");
       }
     } catch (error) {
       console.error("Error changing user role:", error);
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
       if (response.ok) {
         showToast("Paramètres sauvegardés avec succès", "success");
       } else {
-        showToast((await response.json()).error || "Error while saving", "error");
+        showToast((await response.json()).error || "Erreur lors de la sauvegarde", "error");
       }
     } catch (error) {
       console.error("Error saving settings:", error);
@@ -660,9 +660,9 @@ export default function AdminDashboard() {
                   onChange={(e) => setRoleFilter(e.target.value)}
                   className="input-field"
                 >
-                  <option value="all">All roles</option>
-                  <option value="admin">Administrators</option>
-                  <option value="reader">Readers</option>
+                  <option value="all">Tous les rôles</option>
+                  <option value="admin">Administrateurs</option>
+                  <option value="reader">Lecteurs</option>
                 </select>
               </div>
 
@@ -718,7 +718,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-12 card">
                   <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">No users found.</p>
+                  <p className="body-text text-gray-500">Aucun utilisateur trouvé.</p>
                 </div>
               )}
             </div>
@@ -727,7 +727,7 @@ export default function AdminDashboard() {
           {activeTab === "messages" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="h2-title text-gray-900">Contact Messages</h2>
+                <h2 className="h2-title text-gray-900">Messages de contact</h2>
                 <span className="small-text text-gray-500">
                   {messages.length} message(s)
                 </span>
@@ -784,7 +784,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-12 card">
                   <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">No contact message.</p>
+                  <p className="body-text text-gray-500">Aucun message de contact.</p>
                 </div>
               )}
             </div>
@@ -799,12 +799,12 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Globe className="w-5 h-5" />
-                    General information
+                    Informations générales
                   </h2>
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Site name</label>
+                        <label className="h6-title block mb-2">Nom du site</label>
                         <input
                           type="text"
                           name="siteName"
@@ -815,7 +815,7 @@ export default function AdminDashboard() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">Site URL</label>
+                        <label className="h6-title block mb-2">URL du site</label>
                         <input
                           type="url"
                           name="siteUrl"
@@ -827,7 +827,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Site description</label>
+                      <label className="h6-title block mb-2">Description du site</label>
                       <textarea
                         name="siteDescription"
                         value={settings.siteDescription}
@@ -844,12 +844,12 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Mail className="w-5 h-5" />
-                    Contact informations
+                    Informations de contact
                   </h2>
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Contact Email</label>
+                        <label className="h6-title block mb-2">Email de contact</label>
                         <input
                           type="email"
                           name="contactEmail"
@@ -860,7 +860,7 @@ export default function AdminDashboard() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">Phone</label>
+                        <label className="h6-title block mb-2">Téléphone</label>
                         <input
                           type="tel"
                           name="contactPhone"
@@ -872,7 +872,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Address</label>
+                      <label className="h6-title block mb-2">Adresse</label>
                       <textarea
                         name="contactAddress"
                         value={settings.contactAddress}
@@ -889,7 +889,7 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Twitter className="w-5 h-5" />
-                    Social networks
+                    Réseaux sociaux
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
@@ -932,11 +932,11 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Activity className="w-5 h-5" />
-                    SEO Settings
+                    Paramètres SEO
                   </h2>
                   <div className="space-y-6">
                     <div>
-                      <label className="h6-title block mb-2">SEO title</label>
+                      <label className="h6-title block mb-2">Titre SEO</label>
                       <input
                         type="text"
                         name="seoTitle"
@@ -947,7 +947,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">SEO description</label>
+                      <label className="h6-title block mb-2">Description SEO</label>
                       <textarea
                         name="seoDescription"
                         value={settings.seoDescription}
@@ -958,7 +958,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">SEO Keywords</label>
+                      <label className="h6-title block mb-2">Mots-clés SEO</label>
                       <input
                         type="text"
                         name="seoKeywords"
@@ -975,7 +975,7 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Settings className="w-5 h-5" />
-                    Features
+                    Fonctionnalités
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="flex items-center">
@@ -986,7 +986,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Maintenance mode</label>
+                      <label className="h6-title ml-2">Mode maintenance</label>
                     </div>
                     <div className="flex items-center">
                       <input
@@ -996,7 +996,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Allow comments</label>
+                      <label className="h6-title ml-2">Autoriser les commentaires</label>
                     </div>
                     <div className="flex items-center">
                       <input
@@ -1006,7 +1006,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Allow registration</label>
+                      <label className="h6-title ml-2">Autoriser l'inscription</label>
                     </div>
                   </div>
                 </div>
@@ -1015,7 +1015,7 @@ export default function AdminDashboard() {
                 <div className="card p-6 mb-6">
                   <h2 className="h2-title text-gray-900 mb-4 flex items-center gap-2">
                     <Activity className="w-5 h-5" />
-                    Analytics
+                    Analyses
                   </h2>
                   <div>
                     <label className="h6-title block mb-2">Code Google Analytics</label>
@@ -1028,7 +1028,7 @@ export default function AdminDashboard() {
                       placeholder="<!-- Code de tracking Google Analytics -->"
                     />
                     <p className="small-text text-gray-500 mt-1">
-                      Paste your Google Analytics tracking code here
+                      Collez votre code de suivi Google Analytics ici
                     </p>
                   </div>
                 </div>
@@ -1043,12 +1043,12 @@ export default function AdminDashboard() {
                     {savingSettings ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        <span>Saving...</span>
+                        <span>Sauvegarde...</span>
                       </>
                     ) : (
                       <>
                         <Settings className="w-4 h-4" />
-                        <span>Save</span>
+                        <span>Sauvegarder</span>
                       </>
                     )}
                   </button>
@@ -1056,7 +1056,7 @@ export default function AdminDashboard() {
                   {settings.maintenanceMode && (
                     <div className="flex items-center gap-2 text-orange-600">
                       <AlertTriangle className="w-4 h-4" />
-                      <span className="h6-title">Maintenance Mode activated</span>
+                      <span className="h6-title">Mode maintenance activé</span>
                     </div>
                   )}
                 </div>

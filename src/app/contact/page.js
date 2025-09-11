@@ -150,7 +150,7 @@ export default function ContactPage() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">Email</label>
+                        <label className="h6-title block mb-2">Adresse e-mail</label>
                         <input
                           type="email"
                           name="email"

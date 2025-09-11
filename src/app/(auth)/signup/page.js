@@ -77,7 +77,7 @@ export default function SignupPage() {
   return (
     <div className="max-w-md mx-auto pt-6 px-6">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-2">Create your account</h1>
+        <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-2">Créez votre compte</h1>
       </div>
 
       <SignupForm onSubmit={handleSignup} isLoading={isLoading} />

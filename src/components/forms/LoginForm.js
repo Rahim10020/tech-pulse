@@ -56,7 +56,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
           />
         </svg>
-        Continue with Google
+        Continuer avec Google
       </Button>
 
       {/* Divider */}
@@ -65,29 +65,29 @@ export default function LoginForm({ onSubmit, isLoading }) {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
+          <span className="bg-white px-2 text-muted-foreground">Ou continuer avec</span>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          label="Email"
+          label="Adresse e-mail"
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Email"
+          placeholder="Adresse e-mail"
           required
           className="h5-title"
         />
 
         <Input
-          label="Password"
+          label="Mot de passe"
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Password"
+          placeholder="Mot de passe"
           required
           className="h5-title"
           showPasswordToggle={true}
@@ -98,7 +98,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
             href="/forgot-password"
             className="small-text text-gray-500 hover:text-gray-700 underline"
           >
-            Forgot password?
+            Mot de passe oublié ?
           </Link>
         </div>
 
@@ -108,13 +108,13 @@ export default function LoginForm({ onSubmit, isLoading }) {
           className="w-full h5-title"
           isLoading={isLoading}
         >
-          {isLoading ? "Connecting..." : "Log in"}
+          {isLoading ? "Connexion..." : "Se connecter"}
         </Button>
 
         <p className="small-text text-center text-gray-500 mt-4">
-          Don't have an account?{" "}
+          Vous n'avez pas de compte ?{" "}
           <Link href="/signup" className="text-teal-600 hover:text-teal-700 underline">
-            Sign up
+            S'inscrire
           </Link>
         </p>
       </form>

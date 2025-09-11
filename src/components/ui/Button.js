@@ -11,7 +11,7 @@ const Button = forwardRef(({
   children,
   disabled = false,
   isLoading = false,
-  loadingText = 'Loading...',
+  loadingText = 'Chargement...',
   icon,
   ...props
 }, ref) => {

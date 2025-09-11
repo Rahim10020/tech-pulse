@@ -5,23 +5,23 @@ export const validateEmail = (email) => {
 
 export const validatePassword = (password) => {
   const errors = [];
-  
+
   if (password.length < 8) {
-    errors.push('Password must be at least 8 characters long');
+    errors.push('Le mot de passe doit contenir au moins 8 caractères');
   }
-  
+
   if (!/(?=.*[a-z])/.test(password)) {
-    errors.push('Password must contain at least one lowercase letter');
+    errors.push('Le mot de passe doit contenir au moins une lettre minuscule');
   }
-  
+
   if (!/(?=.*[A-Z])/.test(password)) {
-    errors.push('Password must contain at least one uppercase letter');
+    errors.push('Le mot de passe doit contenir au moins une lettre majuscule');
   }
-  
+
   if (!/(?=.*\d)/.test(password)) {
-    errors.push('Password must contain at least one number');
+    errors.push('Le mot de passe doit contenir au moins un chiffre');
   }
-  
+
   return {
     isValid: errors.length === 0,
     errors
@@ -30,19 +30,19 @@ export const validatePassword = (password) => {
 
 export const validateUsername = (username) => {
   const errors = [];
-  
+
   if (username.length < 3) {
-    errors.push('Username must be at least 3 characters long');
+    errors.push('Le nom d\'utilisateur doit contenir au moins 3 caractères');
   }
-  
+
   if (username.length > 20) {
-    errors.push('Username must be less than 20 characters');
+    errors.push('Le nom d\'utilisateur doit contenir moins de 20 caractères');
   }
-  
+
   if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-    errors.push('Username can only contain letters, numbers, and underscores');
+    errors.push('Le nom d\'utilisateur ne peut contenir que des lettres, des chiffres et des underscores');
   }
-  
+
   return {
     isValid: errors.length === 0,
     errors

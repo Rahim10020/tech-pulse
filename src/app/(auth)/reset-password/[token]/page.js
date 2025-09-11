@@ -33,13 +33,13 @@ export default function ResetPasswordPage() {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError('Les mots de passe ne correspondent pas');
       setIsLoading(false);
       return;
     }
 
     if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
+      setError('Le mot de passe doit contenir au moins 8 caractères');
       setIsLoading(false);
       return;
     }
@@ -61,10 +61,10 @@ export default function ResetPasswordPage() {
         setIsSuccess(true);
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'An error occurred');
+        setError(errorData.message || 'Une erreur est survenue');
       }
     } catch (error) {
-      setError('Network error. Please try again.');
+      setError('Erreur réseau. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
@@ -88,8 +88,8 @@ export default function ResetPasswordPage() {
         {!isSuccess ? (
           <>
             <div className="text-center mb-12">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Set new password</h1>
-              <p className="text-gray-600">Please enter your new password below.</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Définir un nouveau mot de passe</h1>
+              <p className="text-gray-600">Veuillez entrer votre nouveau mot de passe ci-dessous.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -100,23 +100,23 @@ export default function ResetPasswordPage() {
               )}
 
               <Input
-                label="New Password"
+                label="Nouveau mot de passe"
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                placeholder="Enter new password"
+                placeholder="Entrez le nouveau mot de passe"
                 showPasswordToggle={true}
                 required
               />
 
               <Input
-                label="Confirm New Password"
+                label="Confirmer le nouveau mot de passe"
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                placeholder="Confirm new password"
+                placeholder="Confirmez le nouveau mot de passe"
                 showPasswordToggle={true}
                 required
               />
@@ -126,7 +126,7 @@ export default function ResetPasswordPage() {
                 disabled={isLoading}
                 className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Updating...' : 'Update password'}
+                {isLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
               </button>
             </form>
           </>
@@ -137,15 +137,15 @@ export default function ResetPasswordPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Password updated!</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Mot de passe mis à jour !</h1>
             <p className="text-gray-600 mb-8">
-              Your password has been successfully updated. You can now sign in with your new password.
+              Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.
             </p>
             <Link
               href="/login"
               className="inline-block bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors"
             >
-              Sign in
+              Se connecter
             </Link>
           </div>
         )}

@@ -21,18 +21,18 @@ export default function Error({ error, reset }) {
 
         {/* Titre - Utilisation de h1-title */}
         <h1 className="h1-title text-gray-900 mb-4">
-          Oops! Something went wrong
+          Oups ! Quelque chose s'est mal passé
         </h1>
 
         {/* Message d'erreur - Utilisation de body-text */}
         <p className="body-text text-gray-600 mb-8">
-          We are experiencing a technical issue. Please try again or return to the home page.
+          Nous rencontrons un problème technique. Veuillez réessayer ou retourner à la page d'accueil.
         </p>
 
         {/* Détails de l'erreur en mode développement */}
         {process.env.NODE_ENV === 'development' && error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
-            <h3 className="h6-title text-red-800 mb-2">Error Details :</h3>
+            <h3 className="h6-title text-red-800 mb-2">Détails de l'erreur :</h3>
             <pre className="small-text text-red-700 overflow-auto">
               {error.message || 'Erreur inconnue'}
             </pre>
@@ -46,7 +46,7 @@ export default function Error({ error, reset }) {
             className="btn-primary flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
-            Try again
+            Réessayer
           </button>
 
           <Link
@@ -54,13 +54,13 @@ export default function Error({ error, reset }) {
             className="btn-secondary flex items-center justify-center gap-2"
           >
             <Home className="w-4 h-4" />
-            Return to home
+            Retour à l'accueil
           </Link>
         </div>
 
         {/* Message de support - Utilisation de small-text */}
         <p className="small-text text-gray-500 mt-8">
-          If the problem persists, please{' '}
+          Si le problème persiste, veuillez{' '}
           <Link href="/contact" className="text-gray-700 hover:text-gray-900 underline">
             contact us
           </Link>

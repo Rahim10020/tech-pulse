@@ -21,12 +21,12 @@ export default function NotFound() {
 
         {/* Titre */}
         <h1 className="h2-title text-gray-900 mb-4">
-          Page not found
+          Page non trouvée
         </h1>
 
         {/* Message */}
         <p className="body-text text-gray-600 mb-8">
-          Sorry, the page you are looking for does not exist or has been moved.
+          Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
         </p>
 
         {/* Barre de recherche */}
@@ -46,7 +46,7 @@ export default function NotFound() {
             variant="primary"
             icon={<Home className="w-4 h-4" />}
           >
-            Return to home
+            Retour à l'accueil
           </Button>
 
           <Button
@@ -54,31 +54,31 @@ export default function NotFound() {
             onClick={() => window.history.back()}
             icon={<ArrowLeft className="w-4 h-4" />}
           >
-            Back
+            Retour
           </Button>
         </div>
 
         {/* Liens suggérés */}
         <div className="mt-12">
-          <h3 className="h5-title text-gray-900 mb-4">Popular pages :</h3>
+          <h3 className="h5-title text-gray-900 mb-4">Pages populaires :</h3>
           <div className="space-y-2">
             <Link
               href="/articles"
               className="block small-text text-gray-600 hover:text-gray-900 underline"
             >
-              All articles
+              Tous les articles
             </Link>
             <Link
               href="/categories"
               className="block small-text text-gray-600 hover:text-gray-900 underline"
             >
-              Categories
+              Catégories
             </Link>
             <Link
               href="/about"
               className="block small-text text-gray-600 hover:text-gray-900 underline"
             >
-              About
+              À propos
             </Link>
           </div>
         </div>

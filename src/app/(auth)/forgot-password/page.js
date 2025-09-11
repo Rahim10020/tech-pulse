@@ -71,7 +71,7 @@ export default function ForgotPasswordPage({ isLoading }) {
                 </div>
               )}
               <Input
-                label="Email"
+                label="Adresse e-mail"
                 type="email"
                 name="email"
                 value={email}

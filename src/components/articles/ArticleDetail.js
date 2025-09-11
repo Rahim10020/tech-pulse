@@ -31,7 +31,7 @@ export default function ArticleDetail({ article }) {
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <nav className="text-sm font-sans text-gray-500 mb-6">
-          <Link href="/" className="hover:text-gray-700">Home</Link>
+          <Link href="/" className="hover:text-gray-700">Accueil</Link>
           <span className="mx-2">/</span>
           <Link href="/articles" className="hover:text-gray-700">Articles</Link>
         </nav>
@@ -44,7 +44,7 @@ export default function ArticleDetail({ article }) {
 
           {/* Author & Meta */}
           <div className="flex items-center text-sm font-sans text-gray-600 mb-6">
-            <span>Published by </span>
+            <span>Publié par </span>
             <Link
               href={`/author/${article.author.username}`}
               className="mx-1 text-gray-900 hover:text-teal-600 transition-colors font-medium"
@@ -54,7 +54,7 @@ export default function ArticleDetail({ article }) {
             <span className="mx-2">•</span>
             <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
             <span className="mx-2">•</span>
-            <span>{article.readTime} reading</span>
+            <span>{article.readTime} min de lecture</span>
           </div>
         </header>
 

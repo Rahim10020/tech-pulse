@@ -23,7 +23,7 @@ export default function ArticleList({
     try {
       const response = await fetch(`/api/articles?type=all&page=${currentPage}&limit=6&category=${category}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch articles');
+        throw new Error('Échec de la récupération des articles');
       }
       const result = await response.json();
 

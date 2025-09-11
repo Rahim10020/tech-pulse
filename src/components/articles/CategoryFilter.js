@@ -18,7 +18,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
       try {
         const response = await fetch('/api/categories?type=all');
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error('Échec de la récupération des catégories');
         }
         const categoriesData = await response.json();
         if (categoriesData.success) {

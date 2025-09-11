@@ -440,7 +440,7 @@ export default function AdminArticlesPage() {
                                         onChange={toggleSelectAll}
                                         className="w-4 h-4 cursor-pointer text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                     />
-                                    <span className="ml-4 h6-title text-gray-900">All</span>
+                                    <span className="ml-4 h6-title text-gray-900">Tous</span>
                                 </div>
                             </div>
 
