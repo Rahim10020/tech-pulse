@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { Input } from '@/components/ui/Input';
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -98,37 +99,27 @@ export default function ResetPasswordPage() {
                 </div>
               )}
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-900 mb-2">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter new password"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent text-gray-900 placeholder-gray-400"
-                  required
-                />
-              </div>
+              <Input
+                label="New Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Enter new password"
+                showPasswordToggle={true}
+                required
+              />
 
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-900 mb-2">
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm new password"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent text-gray-900 placeholder-gray-400"
-                  required
-                />
-              </div>
+              <Input
+                label="Confirm New Password"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                placeholder="Confirm new password"
+                showPasswordToggle={true}
+                required
+              />
 
               <button
                 type="submit"

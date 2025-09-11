@@ -46,6 +46,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
         placeholder="Password"
         required
         className="h5-title"
+        showPasswordToggle={true}
       />
 
       <div className="text-right">

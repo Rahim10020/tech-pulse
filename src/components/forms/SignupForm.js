@@ -114,6 +114,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         disabled={isLoading}
         autoComplete="new-password"
         className="h5-title"
+        showPasswordToggle={true}
       />
 
       {/* Confirm Password Field */}
@@ -128,6 +129,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         disabled={isLoading}
         autoComplete="new-password"
         className="h5-title"
+        showPasswordToggle={true}
       />
 
       {/* Submit Button */}

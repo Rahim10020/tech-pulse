@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Input } from '@/components/ui/Input';
 
 export default function ProfileForm({ initialData, onSubmit, onPasswordChange, isLoading }) {
   const [formData, setFormData] = useState({
@@ -258,61 +259,40 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
 
         <div className="grid gap-4">
           {/* Mot de passe actuel */}
-          <div>
-            <label htmlFor="currentPassword" className="h5-title text-gray-700 mb-1">
-              Mot de passe actuel
-            </label>
-            <input
-              type="password"
-              id="currentPassword"
-              name="currentPassword"
-              value={passwordData.currentPassword}
-              onChange={handlePasswordChange}
-              className={`input-field ${errors.currentPassword ? 'border-red-500' : ''}`}
-              placeholder="Votre mot de passe actuel"
-            />
-            {errors.currentPassword && (
-              <p className="small-text text-red-600 mt-1">{errors.currentPassword}</p>
-            )}
-          </div>
+          <Input
+            label="Mot de passe actuel"
+            type="password"
+            name="currentPassword"
+            value={passwordData.currentPassword}
+            onChange={handlePasswordChange}
+            error={errors.currentPassword}
+            placeholder="Votre mot de passe actuel"
+            showPasswordToggle={true}
+          />
 
           {/* Nouveau mot de passe */}
-          <div>
-            <label htmlFor="newPassword" className="h5-title text-gray-700 mb-1">
-              Nouveau mot de passe
-            </label>
-            <input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={passwordData.newPassword}
-              onChange={handlePasswordChange}
-              className={`input-field ${errors.newPassword ? 'border-red-500' : ''}`}
-              placeholder="Votre nouveau mot de passe"
-            />
-            {errors.newPassword && (
-              <p className="small-text text-red-600 mt-1">{errors.newPassword}</p>
-            )}
-          </div>
+          <Input
+            label="Nouveau mot de passe"
+            type="password"
+            name="newPassword"
+            value={passwordData.newPassword}
+            onChange={handlePasswordChange}
+            error={errors.newPassword}
+            placeholder="Votre nouveau mot de passe"
+            showPasswordToggle={true}
+          />
 
           {/* Confirmation du mot de passe */}
-          <div>
-            <label htmlFor="confirmPassword" className="h5-title text-gray-700 mb-1">
-              Confirmer le nouveau mot de passe
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={passwordData.confirmPassword}
-              onChange={handlePasswordChange}
-              className={`input-field ${errors.confirmPassword ? 'border-red-500' : ''}`}
-              placeholder="Confirmer votre nouveau mot de passe"
-            />
-            {errors.confirmPassword && (
-              <p className="small-text text-red-600 mt-1">{errors.confirmPassword}</p>
-            )}
-          </div>
+          <Input
+            label="Confirmer le nouveau mot de passe"
+            type="password"
+            name="confirmPassword"
+            value={passwordData.confirmPassword}
+            onChange={handlePasswordChange}
+            error={errors.confirmPassword}
+            placeholder="Confirmer votre nouveau mot de passe"
+            showPasswordToggle={true}
+          />
         </div>
 
         {/* Bouton de changement de mot de passe */}
