@@ -182,6 +182,42 @@ model Contact {
   @@map("contacts")
 }
 
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.VarChar(255)
+  email     String   @db.VarChar(255)
+  expiresAt DateTime @db.Timestamp(6)
+  used      Boolean  @default(false)
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+
+  // Indexes for performance
+  @@index([token])
+  @@index([email])
+  @@index([expiresAt])
+
+  @@map("password_reset_tokens")
+}
+
+model PasswordResetCode {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique @db.VarChar(6)
+  email     String   @db.VarChar(255)
+  expiresAt DateTime @db.Timestamp(6)
+  used      Boolean  @default(false)
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+
+  // Indexes for performance
+  @@index([code])
+  @@index([email])
+  @@index([expiresAt])
+
+  @@map("password_reset_codes")
+}
+
 model SiteSettings {
   id                Int      @id @default(autoincrement())
   siteName          String   @default("pixelpulse")
@@ -200,7 +236,7 @@ model SiteSettings {
   maintenanceMode   Boolean  @default(false)
   allowComments     Boolean  @default(true)
   allowRegistration Boolean  @default(true)
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

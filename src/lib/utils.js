@@ -18,3 +18,11 @@ export {
   stripHtml,
   getHtmlExcerpt
 } from './text-utils';
+
+// Re-export authentication utilities
+export {
+  generatePasswordResetCode,
+  generatePasswordResetToken,
+  isExpired,
+  isValidEmail
+} from './auth-utils';
