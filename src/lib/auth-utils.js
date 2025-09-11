@@ -38,3 +38,32 @@ export function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
+
+/**
+ * Generate a unique username from email for OAuth users
+ * @param {string} email - User's email
+ * @returns {string} Generated username
+ */
+export function generateUsernameFromEmail(email) {
+    const baseUsername = email.split('@')[0];
+    const randomSuffix = Math.random().toString(36).substring(2, 8);
+    return `${baseUsername}_${randomSuffix}`;
+}
+
+/**
+ * Check if user is authenticated via OAuth
+ * @param {Object} user - User object
+ * @returns {boolean} True if OAuth user
+ */
+export function isOAuthUser(user) {
+    return user?.provider && user.provider !== 'local';
+}
+
+/**
+ * Get user authentication method
+ * @param {Object} user - User object
+ * @returns {string} Authentication method ('local', 'google', etc.)
+ */
+export function getAuthMethod(user) {
+    return user?.provider || 'local';
+}

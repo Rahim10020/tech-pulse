@@ -1,5 +1,11 @@
 // lib/auth.js - Compatible avec Edge Runtime et Node.js
 import { SignJWT, jwtVerify } from 'jose';
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
@@ -162,3 +168,90 @@ export function withAuth(handler) {
     return handler(req, res);
   };
 }
+
+// NextAuth configuration
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account.provider === 'google') {
+        try {
+          // Check if user exists with this Google ID
+          let existingUser = await prisma.user.findUnique({
+            where: { googleId: profile.sub }
+          });
+
+          if (!existingUser) {
+            // Check if user exists with this email
+            existingUser = await prisma.user.findUnique({
+              where: { email: profile.email }
+            });
+
+            if (existingUser) {
+              // Link Google account to existing user
+              await prisma.user.update({
+                where: { id: existingUser.id },
+                data: {
+                  googleId: profile.sub,
+                  provider: 'google',
+                  avatar: profile.picture || existingUser.avatar,
+                }
+              });
+            } else {
+              // Create new user
+              const username = profile.email.split('@')[0] + Math.random().toString(36).substring(2, 8);
+              existingUser = await prisma.user.create({
+                data: {
+                  name: profile.name,
+                  username: username,
+                  email: profile.email,
+                  googleId: profile.sub,
+                  provider: 'google',
+                  avatar: profile.picture,
+                }
+              });
+            }
+          }
+
+          user.id = existingUser.id;
+          user.role = existingUser.role;
+          return true;
+        } catch (error) {
+          console.error('Error during Google sign in:', error);
+          return false;
+        }
+      }
+      return true;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: '/login',
+    error: '/login',
+  },
+  session: {
+    strategy: 'jwt',
+  },
+  secret: JWT_SECRET,
+};
+
+export default NextAuth(authOptions);

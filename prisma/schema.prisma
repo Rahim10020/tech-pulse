@@ -15,13 +15,17 @@ model User {
   name      String   @db.VarChar(100)
   username  String   @unique @db.VarChar(50)
   email     String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
+  password  String?  @db.VarChar(255) // Made optional for OAuth users
   avatar    String?  @db.Text
   bio       String?  @db.Text
   joinedAt  DateTime @default(now()) @db.Timestamp(6)
   location  String?  @db.VarChar(100)
   website   String?  @db.VarChar(255)
   role      String   @default("reader") @db.VarChar(20)
+
+  // OAuth fields
+  googleId    String? @unique @db.VarChar(255)
+  provider    String? @default("local") @db.VarChar(20) // 'local', 'google', etc.
 
   // Relations
   articles  Article[]
@@ -41,6 +45,8 @@ model User {
   @@index([username])
   @@index([role])
   @@index([createdAt])
+  @@index([googleId])
+  @@index([provider])
 
   @@map("users")
 }

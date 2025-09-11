@@ -23,6 +23,7 @@
     "test:ci": "npm run test:coverage"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.10.0",
     "@prisma/client": "^6.13.0",
     "@tiptap/extension-dropcursor": "^3.0.7",
     "@tiptap/extension-image": "^3.0.7",
@@ -48,6 +49,7 @@
     "lucide-react": "^0.528.0",
     "mime-types": "^3.0.1",
     "next": "15.4.4",
+    "next-auth": "^4.24.11",
     "nodemailer": "^7.0.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
