@@ -1,7 +1,3 @@
-// ===============================================
-// 1. src/components/comments/InteractiveComments.js
-// ===============================================
-
 "use client";
 
 import { useState, useEffect } from 'react';
