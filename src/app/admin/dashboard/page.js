@@ -808,7 +808,7 @@ export default function AdminDashboard() {
                         <input
                           type="text"
                           name="siteName"
-                          value={settings.siteName}
+                          value={settings.siteName || ""}
                           onChange={handleSettingsChange}
                           className="input-field"
                           placeholder="pixelpulse"
@@ -819,7 +819,7 @@ export default function AdminDashboard() {
                         <input
                           type="url"
                           name="siteUrl"
-                          value={settings.siteUrl}
+                          value={settings.siteUrl || ""}
                           onChange={handleSettingsChange}
                           className="input-field"
                           placeholder="https://pixelpulse.com"
@@ -830,7 +830,7 @@ export default function AdminDashboard() {
                       <label className="h6-title block mb-2">Description du site</label>
                       <textarea
                         name="siteDescription"
-                        value={settings.siteDescription}
+                        value={settings.siteDescription || ""}
                         onChange={handleSettingsChange}
                         rows="3"
                         className="input-field"
@@ -853,7 +853,7 @@ export default function AdminDashboard() {
                         <input
                           type="email"
                           name="contactEmail"
-                          value={settings.contactEmail}
+                          value={settings.contactEmail || ""}
                           onChange={handleSettingsChange}
                           className="input-field"
                           placeholder="contact@pixelpulse.com"
@@ -864,7 +864,7 @@ export default function AdminDashboard() {
                         <input
                           type="tel"
                           name="contactPhone"
-                          value={settings.contactPhone}
+                          value={settings.contactPhone || ""}
                           onChange={handleSettingsChange}
                           className="input-field"
                           placeholder="+228 90 89 59 00"
@@ -875,7 +875,7 @@ export default function AdminDashboard() {
                       <label className="h6-title block mb-2">Adresse</label>
                       <textarea
                         name="contactAddress"
-                        value={settings.contactAddress}
+                        value={settings.contactAddress || ""}
                         onChange={handleSettingsChange}
                         rows="2"
                         className="input-field"
@@ -897,7 +897,7 @@ export default function AdminDashboard() {
                       <input
                         type="url"
                         name="socialTwitter"
-                        value={settings.socialTwitter}
+                        value={settings.socialTwitter || ""}
                         onChange={handleSettingsChange}
                         className="input-field"
                         placeholder="https://twitter.com/pixelpulse"
@@ -908,7 +908,7 @@ export default function AdminDashboard() {
                       <input
                         type="url"
                         name="socialLinkedin"
-                        value={settings.socialLinkedin}
+                        value={settings.socialLinkedin || ""}
                         onChange={handleSettingsChange}
                         className="input-field"
                         placeholder="https://linkedin.com/company/pixelpulse"
@@ -919,7 +919,7 @@ export default function AdminDashboard() {
                       <input
                         type="url"
                         name="socialGithub"
-                        value={settings.socialGithub}
+                        value={settings.socialGithub || ""}
                         onChange={handleSettingsChange}
                         className="input-field"
                         placeholder="https://github.com/pixelpulse"
@@ -940,7 +940,7 @@ export default function AdminDashboard() {
                       <input
                         type="text"
                         name="seoTitle"
-                        value={settings.seoTitle}
+                        value={settings.seoTitle || ""}
                         onChange={handleSettingsChange}
                         className="input-field"
                         placeholder="pixelpulse - Blog Technologique"
@@ -950,7 +950,7 @@ export default function AdminDashboard() {
                       <label className="h6-title block mb-2">Description SEO</label>
                       <textarea
                         name="seoDescription"
-                        value={settings.seoDescription}
+                        value={settings.seoDescription || ""}
                         onChange={handleSettingsChange}
                         rows="3"
                         className="input-field"
@@ -962,7 +962,7 @@ export default function AdminDashboard() {
                       <input
                         type="text"
                         name="seoKeywords"
-                        value={settings.seoKeywords}
+                        value={settings.seoKeywords || ""}
                         onChange={handleSettingsChange}
                         className="input-field"
                         placeholder="tech, technology, innovation, blog, articles"
@@ -1021,7 +1021,7 @@ export default function AdminDashboard() {
                     <label className="h6-title block mb-2">Code Google Analytics</label>
                     <textarea
                       name="analyticsCode"
-                      value={settings.analyticsCode}
+                      value={settings.analyticsCode || ""}
                       onChange={handleSettingsChange}
                       rows="4"
                       className="input-field font-mono text-sm"

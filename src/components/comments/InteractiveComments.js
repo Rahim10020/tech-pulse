@@ -727,7 +727,7 @@ function CommentItem({
                             currentUser={currentUser}
                             onLike={() => onLikeReply(reply.id)}
                             onEdit={(content) => onEditReply(reply.id, content)}
-                            onSaveEdit={onSaveEditReply}
+                            onSaveEdit={() => onSaveEditReply(reply.id)}
                             onCancelEdit={onCancelEdit}
                             onDelete={() => onDeleteReply(reply.id)}
                             onReport={() => onReport(reply.id)}
