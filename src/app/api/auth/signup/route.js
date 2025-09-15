@@ -1,12 +1,27 @@
-// ========================================
-// 4. MODIFIER src/app/api/auth/signup/route.js
-// ========================================
-
-import { NextResponse } from 'next/server';
-import { createToken } from '@/lib/auth';
-import { createUser } from '@/lib/auth-db';
-import { withRateLimit } from '@/lib/rate-limit';
-
+/**
+ * POST /api/auth/signup
+ * Creates a new user account.
+ *
+ * @param {Request} request - The request object containing user registration data in JSON body
+ * @returns {NextResponse} Response with created user data and JWT token in httpOnly cookie
+ *
+ * Request body:
+ * - name: string (required) - User's full name
+ * - username: string (required) - Unique username (3+ chars, alphanumeric + _ -)
+ * - email: string (required) - Valid email address
+ * - password: string (required) - Password (6+ characters)
+ *
+ * Response (success):
+ * - success: boolean
+ * - user: object - Created user data without password
+ * - message: string
+ *
+ * Response (error):
+ * - error: string
+ * - code: string - Error code (MISSING_FIELDS, INVALID_EMAIL, INVALID_USERNAME, WEAK_PASSWORD, USER_CREATION_FAILED)
+ *
+ * Sets httpOnly cookie 'token' with JWT containing user info
+ */
 async function signupHandler(request) {
   try {
     const { name, username, email, password } = await request.json();
@@ -14,7 +29,7 @@ async function signupHandler(request) {
     // Validation des données
     if (!name || !username || !email || !password) {
       return NextResponse.json(
-        { 
+        {
           error: 'Tous les champs sont requis',
           code: 'MISSING_FIELDS'
         },
@@ -26,7 +41,7 @@ async function signupHandler(request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { 
+        {
           error: 'Format d\'email invalide',
           code: 'INVALID_EMAIL'
         },
@@ -38,7 +53,7 @@ async function signupHandler(request) {
     const usernameRegex = /^[a-zA-Z0-9_-]+$/;
     if (!usernameRegex.test(username) || username.length < 3) {
       return NextResponse.json(
-        { 
+        {
           error: 'Le nom d\'utilisateur doit contenir au moins 3 caractères alphanumériques',
           code: 'INVALID_USERNAME'
         },
@@ -49,7 +64,7 @@ async function signupHandler(request) {
     // Validation du mot de passe
     if (password.length < 6) {
       return NextResponse.json(
-        { 
+        {
           error: 'Le mot de passe doit contenir au moins 6 caractères',
           code: 'WEAK_PASSWORD'
         },
@@ -67,7 +82,7 @@ async function signupHandler(request) {
 
     if (!result.success) {
       return NextResponse.json(
-        { 
+        {
           error: result.error,
           code: 'USER_CREATION_FAILED'
         },
@@ -78,8 +93,8 @@ async function signupHandler(request) {
     const user = result.user;
 
     // Créer le token JWT
-    const token = await createToken({ 
-      userId: user.id, 
+    const token = await createToken({
+      userId: user.id,
       email: user.email,
       username: user.username,
       role: user.role || 'reader'
@@ -104,7 +119,7 @@ async function signupHandler(request) {
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json(
-      { 
+      {
         error: 'Erreur interne du serveur',
         code: 'INTERNAL_ERROR'
       },

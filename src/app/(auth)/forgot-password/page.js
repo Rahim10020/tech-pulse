@@ -1,4 +1,4 @@
-// pages/forgot-password.js - Page mot de passe oublié
+/** @description Page de récupération de mot de passe oublié */
 "use client";
 
 import { Input } from "@/components/ui/Input";

@@ -1,24 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Calendar,
-  MapPin,
-  Twitter,
-  Linkedin,
-  Github,
-  Globe,
-  Shield,
-  Eye,
-  Heart,
-  MessageCircle,
-  ExternalLink,
-  LogOut,
-  Settings,
-} from "lucide-react";
-import { useAuth } from "@/context/AuthProvider";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/context/AuthProvider';
+import { Shield, MapPin, Globe, ExternalLink, Calendar, Twitter, Linkedin, Github, Settings, LogOut, Eye, Heart, MessageCircle } from 'lucide-react';
 
+/**
+ * UserProfile component displays a user's profile with articles, comments, likes, and profile management.
+ *
+ * @param {Object} props - The component props
+ * @param {Object} props.user - The user object with profile information
+ * @param {Array} props.articles - Array of articles published by the user
+ * @returns {JSX.Element} The user profile element
+ */
 export default function UserProfile({ user, articles }) {
   const [activeTab, setActiveTab] = useState("articles");
   const { currentUser, logout } = useAuth();

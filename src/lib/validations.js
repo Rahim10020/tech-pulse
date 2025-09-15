@@ -1,8 +1,18 @@
+/**
+ * Validates an email address format
+ * @param {string} email - The email address to validate
+ * @returns {boolean} True if the email format is valid
+ */
 export const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
+/**
+ * Validates a password based on security requirements
+ * @param {string} password - The password to validate
+ * @returns {Object} Validation result with isValid boolean and errors array
+ */
 export const validatePassword = (password) => {
   const errors = [];
 
@@ -28,6 +38,11 @@ export const validatePassword = (password) => {
   };
 };
 
+/**
+ * Validates a username based on format and length requirements
+ * @param {string} username - The username to validate
+ * @returns {Object} Validation result with isValid boolean and errors array
+ */
 export const validateUsername = (username) => {
   const errors = [];
 

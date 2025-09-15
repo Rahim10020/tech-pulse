@@ -1,13 +1,25 @@
-// ========================================
-// 3. MODIFIER src/app/api/auth/login/route.js
-// ========================================
-
-import { NextResponse } from "next/server";
-import { successResponse, validationErrorResponse, errorResponse } from "@/lib/api-response";
-import { createToken } from "@/lib/auth";
-import { verifyCredentials } from "@/lib/auth-db";
-import { withRateLimit } from "@/lib/rate-limit";
-
+/**
+ * POST /api/auth/login
+ * Authenticates a user with email and password.
+ *
+ * @param {Request} request - The request object containing email and password in JSON body
+ * @returns {NextResponse} Response with user data and JWT token in httpOnly cookie
+ *
+ * Request body:
+ * - email: string (required) - User's email address
+ * - password: string (required) - User's password
+ *
+ * Response (success):
+ * - success: boolean
+ * - user: object - User data without password
+ * - message: string
+ *
+ * Response (error):
+ * - error: string
+ * - code: string - Error code for client handling
+ *
+ * Sets httpOnly cookie 'token' with JWT containing user info
+ */
 async function loginHandler(request) {
   try {
     const { email, password } = await request.json();

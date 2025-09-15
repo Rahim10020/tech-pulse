@@ -1,9 +1,14 @@
-// src/components/shared/UnreadBadge.js - Composant badge pour messages non lus
-"use client";
-
-import { useAuth } from "@/context/AuthProvider";
-import { isAdmin } from "@/lib/auth-roles";
-
+/**
+ * UnreadBadge component displays a badge with unread message count for admin users.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @param {'xs'|'sm'|'md'|'lg'} [props.size='sm'] - Size of the badge
+ * @param {'top-right'|'top-left'|'bottom-right'|'bottom-left'|'inline'} [props.position='top-right'] - Position of the badge
+ * @param {number} [props.maxCount=99] - Maximum count to display before showing "99+"
+ * @param {boolean} [props.showZero=false] - Whether to show the badge when count is 0
+ * @returns {JSX.Element|null} The badge element or null if not visible
+ */
 export default function UnreadBadge({
   className = "",
   size = "sm", // "xs", "sm", "md", "lg"

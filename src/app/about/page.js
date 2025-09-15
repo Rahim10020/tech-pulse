@@ -1,4 +1,4 @@
-// src/app/about/page.js - Page About avec animations Framer Motion
+/** @description Page À propos du blog avec animations Framer Motion */
 "use client";
 
 import { motion, useInView, useAnimation } from 'framer-motion';

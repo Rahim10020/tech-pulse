@@ -1,4 +1,4 @@
-// src/app/profile/edit/page.js - Page d'édition de profil simplifiée
+/** @description Page d'édition du profil utilisateur */
 "use client";
 
 import { useState, useEffect } from "react";

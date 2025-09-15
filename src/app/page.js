@@ -1,3 +1,8 @@
+/**
+ * Home page component for Tech Pulse.
+ * Displays featured articles, search functionality, and navigation.
+ * Fetches and shows recent articles from the API.
+ */
 "use client";
 
 import { useState, useEffect } from 'react';

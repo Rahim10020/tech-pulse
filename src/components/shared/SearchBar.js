@@ -1,11 +1,17 @@
-// components/shared/SearchBar.js - Composant de recherche simple
-'use client';
-
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 
-export default function SearchBar({ 
-  placeholder = "Rechercher...", 
+/**
+ * SearchBar component provides a simple search input with submit functionality.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.placeholder='Rechercher...'] - Placeholder text for the input
+ * @param {Function} props.onSearch - Callback function called with search query on submit
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @returns {JSX.Element} The search bar form element
+ */
+export default function SearchBar({
+  placeholder = "Rechercher...",
   onSearch,
   className = ""
 }) {

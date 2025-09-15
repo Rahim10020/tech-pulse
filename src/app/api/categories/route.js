@@ -1,7 +1,16 @@
-// app/api/categories/route.js - API Route pour les catégories
+/**
+ * API route for categories management
+ * Handles GET requests for fetching categories
+ */
 import { successResponse, validationErrorResponse, errorResponse } from '@/lib/api-response';
 import { getAllCategories, getCategoryBySlug, getPopularCategories } from '@/lib/categories';
 
+/**
+ * GET /api/categories
+ * Retrieves categories based on type and filters
+ * @param {Request} request - The request object with query parameters
+ * @returns {NextResponse} Response with categories data
+ */
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);

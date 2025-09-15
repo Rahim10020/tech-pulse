@@ -1,14 +1,21 @@
-// components/ui/Toast.js - Composant Toast
-'use client';
-
 import { useState, useEffect } from 'react';
-import { X, CheckCircle, AlertCircle, XCircle, Info } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react';
 
-export default function Toast({ 
-  message, 
-  type = 'info', 
-  duration = 5000, 
-  onClose 
+/**
+ * A toast notification component that displays messages with auto-dismiss functionality.
+ *
+ * @param {Object} props - The component props
+ * @param {string} props.message - The message to display
+ * @param {'success'|'error'|'warning'|'info'} [props.type='info'] - The toast type affecting styling
+ * @param {number} [props.duration=5000] - Duration in milliseconds before auto-dismiss
+ * @param {Function} props.onClose - Callback when the toast is closed
+ * @returns {JSX.Element} The toast element
+ */
+export default function Toast({
+  message,
+  type = 'info',
+  duration = 5000,
+  onClose
 }) {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -36,9 +43,8 @@ export default function Toast({
   };
 
   return (
-    <div className={`transition-all duration-300 ${
-      isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-    }`}>
+    <div className={`transition-all duration-300 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+      }`}>
       <div className={`flex items-center p-4 rounded-lg border ${bgColors[type]} shadow-lg min-w-[300px]`}>
         {icons[type]}
         <span className="ml-3 text-sm font-medium text-gray-900 flex-1">

@@ -1,4 +1,4 @@
-// app/articles/[slug]/page.js - Version avec API
+/** @description Page d'affichage d'un article spécifique */
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import ArticleDetail from '@/components/articles/ArticleDetail';

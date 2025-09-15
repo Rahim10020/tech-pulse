@@ -1,3 +1,8 @@
+/**
+ * 404 Not Found page component.
+ * Displays when a user navigates to a non-existent route.
+ * Provides search functionality and navigation options.
+ */
 "use client";
 
 import Link from 'next/link';

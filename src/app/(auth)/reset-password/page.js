@@ -1,4 +1,4 @@
-// pages/reset-password/page.js - Page de réinitialisation du mot de passe avec code
+/** @description Page de réinitialisation du mot de passe avec code de vérification */
 "use client";
 
 import { useState } from 'react';

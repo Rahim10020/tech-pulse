@@ -1,4 +1,4 @@
-// app/(auth)/signup/page.js - Page d'inscription
+/** @description Page d'inscription utilisateur */
 'use client';
 
 import { useState, useEffect } from 'react';

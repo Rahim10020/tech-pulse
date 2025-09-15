@@ -6,6 +6,14 @@ import { verifyToken } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 // PATCH - Modifier un commentaire
+/**
+ * PATCH /api/comments/[commentId]
+ * Updates an existing comment's content
+ * @param {Request} request - The request object containing comment data
+ * @param {Object} params - Route parameters
+ * @param {string} params.commentId - The ID of the comment to update
+ * @returns {NextResponse} Response with updated comment data or error
+ */
 export async function PATCH(request, { params }) {
     try {
         const { commentId } = await params;
@@ -98,6 +106,14 @@ export async function PATCH(request, { params }) {
 }
 
 // DELETE - Supprimer un commentaire
+/**
+ * DELETE /api/comments/[commentId]
+ * Deletes an existing comment
+ * @param {Request} request - The request object
+ * @param {Object} params - Route parameters
+ * @param {string} params.commentId - The ID of the comment to delete
+ * @returns {NextResponse} Response confirming deletion or error
+ */
 export async function DELETE(request, { params }) {
     try {
         const { commentId } = await params;

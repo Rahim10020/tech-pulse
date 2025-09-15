@@ -1,9 +1,21 @@
-// components/ui/Button.js - Composant Button corrigé
-'use client';
-
 import { forwardRef } from 'react';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
+/**
+ * A versatile button component with support for different variants, sizes, loading states, and icons.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.className=''] - Additional CSS classes to apply
+ * @param {'primary'|'secondary'|'outline'|'ghost'} [props.variant='primary'] - The button style variant
+ * @param {'sm'|'md'|'lg'} [props.size='md'] - The button size
+ * @param {React.ReactNode} props.children - The button content
+ * @param {boolean} [props.disabled=false] - Whether the button is disabled
+ * @param {boolean} [props.isLoading=false] - Whether to show loading state
+ * @param {string} [props.loadingText='Chargement...'] - Text to show when loading
+ * @param {React.ReactNode} props.icon - Optional icon to display
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} The button element
+ */
 const Button = forwardRef(({
   className = '',
   variant = 'primary',

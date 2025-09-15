@@ -1,3 +1,8 @@
+/**
+ * Contact page component.
+ * Provides a contact form for users to send messages to site administrators.
+ * Includes contact information display and form submission handling.
+ */
 "use client";
 
 import { useState, useEffect } from "react";

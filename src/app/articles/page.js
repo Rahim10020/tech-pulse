@@ -1,4 +1,4 @@
-// src/app/articles/page.js 
+/** @description Page listant tous les articles */
 import Header from '@/components/layout/Header';
 import ArticleList from '@/components/articles/ArticleList';
 import CategoryFilter from '@/components/articles/CategoryFilter';

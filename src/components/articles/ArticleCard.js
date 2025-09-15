@@ -1,23 +1,47 @@
-// src/components/articles/ArticleCard.js
-import React from "react";
-import Link from "next/link";
-import { Calendar, Clock, Heart, MessageCircle, Star } from "lucide-react";
-import { getHtmlExcerpt } from "@/lib/utils";
 
-// Extracted components for better reusability
-const ArticleImage = React.memo(function ArticleImage({ imageUrl, title, imageColor, categoryName, categoryColor, categoryTextColor, horizontal }) {
+import React from 'react';
+import Link from 'next/link';
+import { Star, Heart, MessageCircle, Calendar } from 'lucide-react';
+import { getHtmlExcerpt } from '@/lib/text-utils';
+
+/**
+ * ArticleImage component displays the article image with category overlay
+ * @param {Object} props - Component props
+ * @param {string} props.imageUrl - URL of the article image
+ * @param {string} props.title - Article title for alt text
+ * @param {string} props.imageColor - Background color for placeholder
+ * @param {string} props.categoryName - Category name
+ * @param {string} props.categoryColor - Category background color
+ * @param {string} props.categoryTextColor - Category text color
+ * @param {boolean} props.horizontal - Whether to use horizontal layout
+ * @returns {JSX.Element} Article image element
+ */
+const ArticleImage = React.memo(function ArticleImage({
+  imageUrl,
+  title,
+  imageColor,
+  categoryName,
+  categoryColor,
+  categoryTextColor,
+  horizontal
+}) {
   if (horizontal) {
     return (
-      <div className="flex-shrink-0 w-32 h-24 rounded-lg overflow-hidden">
+      <div className="flex-shrink-0 w-32 h-24 relative">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={title}
-            className="article-image w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+            className="w-full h-full object-cover rounded-lg"
           />
         ) : (
-          <div className={`w-full h-full ${imageColor} flex items-center justify-center group-hover:opacity-80 transition-opacity`}>
-            <span className="text-white text-xs font-semibold opacity-50">IMG</span>
+          <div className={`w-full h-full ${imageColor} rounded-lg flex items-center justify-center`}>
+            <span className="text-gray-400 text-xs">No image</span>
+          </div>
+        )}
+        {categoryName && (
+          <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${categoryColor} ${categoryTextColor}`}>
+            {categoryName}
           </div>
         )}
       </div>
@@ -30,25 +54,32 @@ const ArticleImage = React.memo(function ArticleImage({ imageUrl, title, imageCo
         <img
           src={imageUrl}
           alt={title}
-          className="article-image w-full h-full object-cover"
+          className="w-full h-full object-cover"
         />
       ) : (
-        <div className={`w-full h-full ${imageColor} relative`}>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        <div className={`w-full h-full ${imageColor} flex items-center justify-center`}>
+          <span className="text-gray-400">No image</span>
         </div>
       )}
-
       {categoryName && (
-        <div className="absolute top-4 left-4">
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${categoryColor} ${categoryTextColor} bg-opacity-90 backdrop-blur-sm`}>
-            {categoryName}
-          </span>
+        <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium ${categoryColor} ${categoryTextColor}`}>
+          {categoryName}
         </div>
       )}
     </div>
   );
 });
 
+/**
+ * ArticleMeta component displays article author and category information
+ * @param {Object} props - Component props
+ * @param {string|Object} props.author - Author name or author object
+ * @param {string} props.categoryName - Category name
+ * @param {string} props.categoryColor - Category background color
+ * @param {string} props.categoryTextColor - Category text color
+ * @param {boolean} props.horizontal - Whether to use horizontal layout
+ * @returns {JSX.Element} Article meta information
+ */
 const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, categoryColor, categoryTextColor, horizontal }) {
   const authorName = typeof author === "object" ? author.name : author;
   const authorInitial = authorName?.charAt(0);
@@ -90,6 +121,16 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
   );
 });
 
+/**
+ * ArticleStats component displays article statistics like read time, likes, comments, and publication date
+ * @param {Object} props - Component props
+ * @param {string} props.readTime - Estimated reading time
+ * @param {number} props.likes - Number of likes
+ * @param {number} props.commentsCount - Number of comments
+ * @param {string} props.publishedAt - Publication date
+ * @param {boolean} props.horizontal - Whether to use horizontal layout
+ * @returns {JSX.Element} Article statistics
+ */
 const ArticleStats = React.memo(function ArticleStats({ readTime, likes, commentsCount, publishedAt, horizontal }) {
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("fr-FR", {
@@ -153,6 +194,25 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
   );
 });
 
+/**
+ * ArticleCard component displays an article preview with image, meta information, and stats.
+ * Supports both vertical and horizontal layouts.
+ *
+ * @param {Object} props - The component props
+ * @param {string} props.title - The article title
+ * @param {string} props.content - The article content (HTML)
+ * @param {string} props.readTime - Estimated reading time
+ * @param {string} [props.imageColor='bg-gray-100'] - Background color for placeholder image
+ * @param {string} [props.imageUrl=null] - URL of the article image
+ * @param {string} [props.href='#'] - Link to the full article
+ * @param {string|Object} props.author - Author name or author object
+ * @param {string} props.publishedAt - Publication date
+ * @param {string|Object} props.category - Category name or category object
+ * @param {number} [props.likes=0] - Number of likes
+ * @param {number} [props.commentsCount=0] - Number of comments
+ * @param {boolean} [props.horizontal=false] - Whether to use horizontal layout
+ * @returns {JSX.Element} The article card element
+ */
 const ArticleCard = React.memo(function ArticleCard({
   title,
   content,

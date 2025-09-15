@@ -2,6 +2,17 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useToast } from "@/context/ToastProvider";
 
+/**
+ * Custom hook for automatic saving of form data with debouncing
+ * @param {Object} formData - The form data to auto-save
+ * @param {Object} options - Configuration options
+ * @param {number} options.delay - Delay in milliseconds before saving (default: 30000)
+ * @param {number} options.minLength - Minimum content length to trigger save (default: 10)
+ * @param {boolean} options.enabled - Whether auto-save is enabled (default: true)
+ * @param {Function} options.onSave - Callback function called when saving
+ * @param {Function} options.onError - Callback function called on save error
+ * @returns {Object} Object containing isSaving state, forceSave function, and lastSaved timestamp
+ */
 export function useAutoSave(formData, options = {}) {
   const {
     delay = 30000, // 30 secondes par défaut

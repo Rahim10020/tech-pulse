@@ -1,10 +1,17 @@
-// ==========================================
-// 1. app/api/articles/route.js
-// ==========================================
+/**
+ * API route for articles management
+ * Handles GET requests for fetching articles and POST requests for creating articles
+ */
 import { successResponse, errorResponse, validationErrorResponse } from '@/lib/api-response';
 import { withAuth } from '@/lib/api-auth';
 import { getArticles, getFeaturedArticles, getRecentArticles, createArticle } from '@/lib/articles';
 
+/**
+ * GET /api/articles
+ * Retrieves articles based on type and filters
+ * @param {Request} request - The request object with query parameters
+ * @returns {NextResponse} Response with articles data
+ */
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -36,6 +43,11 @@ export async function GET(request) {
   }
 }
 
+/**
+ * Handler for creating a new article
+ * @param {Request} request - The request object with article data and authenticated user
+ * @returns {NextResponse} Response with created article data
+ */
 async function createArticleHandler(request) {
   try {
     const articleData = await request.json();

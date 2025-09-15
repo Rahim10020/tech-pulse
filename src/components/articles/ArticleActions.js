@@ -1,11 +1,17 @@
-// src/components/articles/ArticleActions.js
-"use client";
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Heart, MessageCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
 
+/**
+ * ArticleActions component provides like and comment interaction buttons for articles.
+ *
+ * @param {Object} props - The component props
+ * @param {Object} props.article - The article object with slug, likesCount, isLikedByUser
+ * @param {number} [props.commentsCount=[]] - Number of comments on the article
+ * @param {Function} [props.onCommentsClick] - Callback when comments button is clicked
+ * @returns {JSX.Element} The article actions element
+ */
 export default function ArticleActions({ article, commentsCount = [], onCommentsClick }) {
     const { user } = useAuth();
     const { showToast } = useToast();

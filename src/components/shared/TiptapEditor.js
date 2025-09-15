@@ -1,29 +1,24 @@
-"use client";
+import { useState, useEffect, useCallback } from 'react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
+import DropCursor from '@tiptap/extension-dropcursor';
+import { Bold, Italic, Strikethrough, Code, Heading1, Heading2, Heading3, List, ListOrdered, Quote, LinkIcon, ImageIcon, Undo, Redo } from 'lucide-react';
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
-import Placeholder from "@tiptap/extension-placeholder";
-import DropCursor from "@tiptap/extension-dropcursor";
-import { useCallback, useEffect, useState } from "react";
-import {
-  Bold,
-  Italic,
-  Strikethrough,
-  Code,
-  Heading1,
-  Heading2,
-  Heading3,
-  List,
-  ListOrdered,
-  Quote,
-  Undo,
-  Redo,
-  Link as LinkIcon,
-  Image as ImageIcon,
-} from "lucide-react";
-
+/**
+ * TiptapEditor component provides a rich text editor using Tiptap with toolbar for formatting.
+ * Supports images, links, headings, lists, and other rich text features.
+ *
+ * @param {Object} props - The component props
+ * @param {string} props.content - Initial HTML content for the editor
+ * @param {Function} props.onChange - Callback when content changes, receives HTML string
+ * @param {string} [props.placeholder='Commencez à écrire votre article...'] - Placeholder text
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @param {Function} props.onImageUpload - Callback for image uploads, should return {fileUrl, originalName}
+ * @returns {JSX.Element} The rich text editor element
+ */
 export default function TiptapEditor({
   content,
   onChange,

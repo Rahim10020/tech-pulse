@@ -6,6 +6,13 @@ import { isAdmin } from '@/lib/auth-roles';
 
 const AuthContext = createContext();
 
+/**
+ * Authentication context provider component
+ * Manages user authentication state and provides auth-related functions
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components to render
+ * @returns {JSX.Element} AuthContext provider wrapping children
+ */
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -289,6 +296,12 @@ export function AuthProvider({ children }) {
 }
 
 // Hook useAuth dans le même fichier
+/**
+ * Custom hook to access authentication context
+ * Must be used within an AuthProvider component
+ * @returns {Object} Authentication context object with user state and auth functions
+ * @throws {Error} If used outside of AuthProvider
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

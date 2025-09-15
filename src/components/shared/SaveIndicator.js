@@ -1,14 +1,22 @@
-// components/shared/SaveIndicator.js - Indicateur de statut de sauvegarde
-'use client';
-
 import { useState, useEffect } from 'react';
-import { Cloud, CloudOff, Loader2, Check } from 'lucide-react';
+import { Loader2, CloudOff, Check, Cloud } from 'lucide-react';
 
-export default function SaveIndicator({ 
-  isSaving = false, 
-  lastSaved = null, 
+/**
+ * SaveIndicator component shows the current save status with visual feedback.
+ * Displays saving progress, unsaved changes warning, or last saved time.
+ *
+ * @param {Object} props - The component props
+ * @param {boolean} [props.isSaving=false] - Whether content is currently being saved
+ * @param {Date} [props.lastSaved=null] - Date when content was last saved
+ * @param {boolean} [props.hasUnsavedChanges=false] - Whether there are unsaved changes
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @returns {JSX.Element} The save status indicator element
+ */
+export default function SaveIndicator({
+  isSaving = false,
+  lastSaved = null,
   hasUnsavedChanges = false,
-  className = '' 
+  className = ''
 }) {
   const [timeAgo, setTimeAgo] = useState('');
 

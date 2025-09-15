@@ -1,3 +1,8 @@
+/**
+ * Admin dashboard page component.
+ * Provides comprehensive admin interface for managing site content, users, messages, and settings.
+ * Includes statistics overview, user management, content moderation, and site configuration.
+ */
 "use client";
 
 import { useState, useEffect } from "react";

@@ -1,3 +1,9 @@
+/**
+ * Maintenance mode page component.
+ * Displays when the site is in maintenance mode.
+ * Shows maintenance message and contact information to regular users.
+ * Allows admin users to bypass maintenance mode.
+ */
 "use client";
 
 import { useSettings } from "@/hooks/useSettings";

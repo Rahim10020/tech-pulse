@@ -1,10 +1,20 @@
-// components/ui/Input.js - Composant Input de base
-'use client';
-
 import { forwardRef, useState } from 'react';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { Eye, EyeOff } from 'lucide-react';
 
+/**
+ * A customizable input component with support for labels, error states, icons, and password visibility toggle.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.className=''] - Additional CSS classes to apply
+ * @param {string} props.label - The input label text
+ * @param {string} props.error - Error message to display
+ * @param {string} [props.type='text'] - The input type (text, password, email, etc.)
+ * @param {React.ReactNode} props.icon - Optional icon to display inside the input
+ * @param {boolean} [props.showPasswordToggle=false] - Whether to show password visibility toggle for password inputs
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} The input element with label and error handling
+ */
 const Input = forwardRef(({
   className = '',
   label,

@@ -1,9 +1,13 @@
-// src/components/articles/AuthorProfile.js - Version avec styles cohérents
-'use client';
-
 import { useState } from 'react';
-import { Calendar, MapPin, Globe, Twitter, Linkedin, Github } from 'lucide-react';
+import { Twitter, Linkedin, Github, MapPin, Calendar, Globe } from 'lucide-react';
 
+/**
+ * AuthorProfile component displays an author's profile with bio, stats, articles, and social links.
+ *
+ * @param {Object} props - The component props
+ * @param {Object} props.author - The author object with name, bio, articles, stats, etc.
+ * @returns {JSX.Element} The author profile element
+ */
 export default function AuthorProfile({ author }) {
   const [activeTab, setActiveTab] = useState('articles');
 
@@ -139,31 +143,28 @@ export default function AuthorProfile({ author }) {
             <nav className="-mb-px flex space-x-8">
               <button
                 onClick={() => setActiveTab('articles')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${
-                  activeTab === 'articles'
-                    ? 'border-teal-500 text-teal-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${activeTab === 'articles'
+                  ? 'border-teal-500 text-teal-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
               >
                 Articles ({articles.length})
               </button>
               <button
                 onClick={() => setActiveTab('likes')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${
-                  activeTab === 'likes'
-                    ? 'border-teal-500 text-teal-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${activeTab === 'likes'
+                  ? 'border-teal-500 text-teal-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
               >
                 Likes reçus
               </button>
               <button
                 onClick={() => setActiveTab('comments')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${
-                  activeTab === 'comments'
-                    ? 'border-teal-500 text-teal-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${activeTab === 'comments'
+                  ? 'border-teal-500 text-teal-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
               >
                 Commentaires ({author.stats?.comments || 0})
               </button>
@@ -198,7 +199,7 @@ export default function AuthorProfile({ author }) {
                             <span>{article.commentsCount || 0} commentaires</span>
                             <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
                           </div>
-                          
+
                           {/* Tags si disponibles */}
                           {article.tags && article.tags.length > 0 && (
                             <div className="flex flex-wrap gap-1 mt-3">

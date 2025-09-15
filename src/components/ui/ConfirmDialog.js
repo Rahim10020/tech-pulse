@@ -1,8 +1,19 @@
-// src/components/ui/ConfirmDialog.js
-"use client";
+import { AlertTriangle, X } from 'lucide-react';
 
-import { X, AlertTriangle } from 'lucide-react';
-
+/**
+ * A modal dialog component for confirming user actions with customizable styling and messages.
+ *
+ * @param {Object} props - The component props
+ * @param {boolean} props.isOpen - Whether the dialog is visible
+ * @param {string} [props.title='Confirmer l\'action'] - The dialog title
+ * @param {string} [props.message='Êtes-vous sûr de vouloir continuer ?'] - The dialog message
+ * @param {string} [props.confirmText='Confirmer'] - Text for the confirm button
+ * @param {string} [props.cancelText='Annuler'] - Text for the cancel button
+ * @param {Function} props.onConfirm - Callback when confirm button is clicked
+ * @param {Function} props.onCancel - Callback when cancel button is clicked or dialog is closed
+ * @param {'warning'|'danger'|'info'} [props.type='warning'] - The dialog type affecting styling
+ * @returns {JSX.Element|null} The dialog element or null if not open
+ */
 export default function ConfirmDialog({
     isOpen,
     title = "Confirmer l'action",

@@ -19,7 +19,10 @@ if (process.env.NODE_ENV !== 'production') {
     globalForPrisma._prisma = prismaClient;
 }
 
-// Fonction utilitaire
+/**
+ * Vérifie la connexion à la base de données
+ * @returns {Promise<boolean>} True si la connexion est établie, false sinon
+ */
 export async function checkDatabaseConnection() {
     try {
         await prismaClient.$queryRaw`SELECT 1`;

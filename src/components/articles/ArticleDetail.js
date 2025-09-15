@@ -1,14 +1,18 @@
-// src/components/articles/ArticleDetail.js
-
 "use client";
 
-import Link from 'next/link';
-import { Heart, MessageCircle } from 'lucide-react';
-import NotFound from '@/app/not-found';
 import { useState } from 'react';
-import InteractiveComments from '@/components/comments/InteractiveComments';
-import ArticleActions from '@/components/articles/ArticleActions';
+import Link from 'next/link';
+import ArticleActions from './ArticleActions';
+import InteractiveComments from '../comments/InteractiveComments';
+import NotFound from '../../app/not-found';
 
+/**
+ * ArticleDetail component displays a full article with content, actions, and comments section.
+ *
+ * @param {Object} props - The component props
+ * @param {Object} props.article - The article object with title, content, author, comments, etc.
+ * @returns {JSX.Element} The article detail page element
+ */
 export default function ArticleDetail({ article }) {
 
   // Calculer le nombre total initial (commentaires + réponses)

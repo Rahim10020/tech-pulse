@@ -1,4 +1,4 @@
-// src/app/profile/[id]/page.js - Page de profil utilisateur corrigée
+/** @description Page de profil public d'un utilisateur */
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import UserProfile from '@/components/articles/UserProfile';

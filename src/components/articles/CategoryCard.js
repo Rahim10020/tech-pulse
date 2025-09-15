@@ -1,5 +1,15 @@
-import Link from "next/link";
+import Link from 'next/link';
 
+/**
+ * CategoryCard component displays a category with icon, title, description, and link.
+ *
+ * @param {Object} props - The component props
+ * @param {React.ReactNode} props.icon - The category icon
+ * @param {string} props.title - The category title
+ * @param {string} props.description - The category description
+ * @param {string} props.href - The link to the category page
+ * @returns {JSX.Element} The category card element
+ */
 export default function CategoryCard({ icon, title, description, href }) {
   return (
     <Link href={href} className="block group">

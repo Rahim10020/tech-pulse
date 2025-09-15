@@ -1,4 +1,4 @@
-// pages/reset-password/[token].js - Page de réinitialisation du mot de passe
+/** @description Page de réinitialisation du mot de passe via token */
 "use client";
 
 import { useState, useEffect } from 'react';

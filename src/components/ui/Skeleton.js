@@ -1,4 +1,10 @@
-// src/components/ui/Skeleton.js
+/**
+ * A basic skeleton loading component for displaying placeholder content.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.className=''] - Additional CSS classes to apply
+ * @returns {JSX.Element} The skeleton element
+ */
 export default function Skeleton({ className = "", ...props }) {
     return (
         <div
@@ -8,7 +14,13 @@ export default function Skeleton({ className = "", ...props }) {
     );
 }
 
-// Skeleton pour une carte d'article
+/**
+ * Skeleton component for article cards with optional horizontal layout.
+ *
+ * @param {Object} props - The component props
+ * @param {boolean} [props.horizontal=false] - Whether to use horizontal layout
+ * @returns {JSX.Element} The article card skeleton
+ */
 export function ArticleCardSkeleton({ horizontal = false }) {
     if (horizontal) {
         return (
@@ -52,7 +64,11 @@ export function ArticleCardSkeleton({ horizontal = false }) {
     );
 }
 
-// Skeleton pour les catégories
+/**
+ * Skeleton component for category cards.
+ *
+ * @returns {JSX.Element} The category card skeleton
+ */
 export function CategoryCardSkeleton() {
     return (
         <div className="bg-white rounded-lg border border-gray-200 p-6">

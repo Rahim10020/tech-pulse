@@ -1,3 +1,8 @@
+/**
+ * Drafts management page component.
+ * Allows users to view, edit, publish, and delete their article drafts.
+ * Includes search, filtering, and bulk operations functionality.
+ */
 "use client";
 
 import { useState, useEffect } from "react";

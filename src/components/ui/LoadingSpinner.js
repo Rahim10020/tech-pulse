@@ -1,6 +1,9 @@
-// src/components/ui/LoadingSpinner.js
-export default function LoadingSpinner(
-) {
+/**
+ * A loading spinner component displaying the application logo and loading text.
+ *
+ * @returns {JSX.Element} The loading spinner element
+ */
+export default function LoadingSpinner() {
   return (
     <div className="flex flex-col items-center">
 

@@ -21,7 +21,13 @@ const createTransporter = () => {
   return transporter;
 };
 
-// Fonction pour envoyer un email de réinitialisation de mot de passe avec code
+/**
+ * Envoie un email de réinitialisation de mot de passe avec code
+ * @param {string} email - L'adresse email du destinataire
+ * @param {string} resetCode - Le code de réinitialisation
+ * @returns {Promise<Object>} Résultat de l'envoi avec success et messageId
+ * @throws {Error} Si l'envoi échoue
+ */
 export const sendPasswordResetEmail = async (email, resetCode) => {
   try {
     const transporter = createTransporter();
@@ -114,7 +120,15 @@ export const sendPasswordResetEmail = async (email, resetCode) => {
   }
 };
 
-// Fonction générique pour envoyer des emails
+/**
+ * Fonction générique pour envoyer des emails
+ * @param {string} to - L'adresse email du destinataire
+ * @param {string} subject - Le sujet de l'email
+ * @param {string} html - Le contenu HTML de l'email
+ * @param {string|null} text - Le contenu texte de l'email (optionnel)
+ * @returns {Promise<Object>} Résultat de l'envoi avec success et messageId
+ * @throws {Error} Si l'envoi échoue
+ */
 export const sendEmail = async (to, subject, html, text = null) => {
   try {
     const transporter = createTransporter();

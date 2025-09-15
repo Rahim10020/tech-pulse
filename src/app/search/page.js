@@ -1,4 +1,4 @@
-// src/app/search/page.js - Page de recherche globale avancée
+/** @description Page de recherche globale avancée */
 "use client";
 
 export const dynamic = 'force-dynamic';

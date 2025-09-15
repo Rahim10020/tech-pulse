@@ -1,3 +1,8 @@
+/**
+ * Article creation page component.
+ * Provides a rich text editor interface for creating and publishing articles.
+ * Includes auto-save functionality, image upload, and draft management.
+ */
 "use client";
 
 import { useState, useEffect, useCallback } from "react";

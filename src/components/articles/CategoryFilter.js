@@ -1,9 +1,16 @@
-'use client';
+"use client";
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+/**
+ * CategoryFilter component provides a scrollable filter interface for article categories.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.activeCategory='all'] - The currently active category slug
+ * @returns {JSX.Element} The category filter element
+ */
 export default function CategoryFilter({ activeCategory = 'all' }) {
   const router = useRouter();
   const searchParams = useSearchParams();

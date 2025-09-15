@@ -87,6 +87,12 @@ async function getDefaultCategory() {
 }
 
 // Récupérer un article par son slug avec les likes
+/**
+ * Retrieves an article by its slug with full details including likes and comments
+ * @param {string} slug - The article slug
+ * @param {number|null} userId - The user ID to check if they liked the article
+ * @returns {Object|null} The article object with additional metadata or null if not found
+ */
 export async function getArticleBySlug(slug, userId = null) {
   try {
     const article = await prisma.article.findUnique({
@@ -208,6 +214,13 @@ export async function getArticleById(id) {
 }
 
 // Récupérer tous les articles avec pagination
+/**
+ * Retrieves articles with pagination and optional category filtering
+ * @param {number} page - The page number (default: 1)
+ * @param {number} limit - Number of articles per page (default: 10)
+ * @param {string|null} categorySlug - Category slug to filter by (default: null)
+ * @returns {Object} Object containing articles array and pagination metadata
+ */
 export async function getArticles(page = 1, limit = 10, categorySlug = null) {
   try {
     const skip = (page - 1) * limit;
@@ -725,6 +738,20 @@ export async function createDraft(draftData) {
 }
 
 // **FONCTION PRINCIPALE - Créer un article publié**
+/**
+ * Creates a new published article
+ * @param {Object} articleData - The article data
+ * @param {string} articleData.title - Article title
+ * @param {string} articleData.content - Article content
+ * @param {string} articleData.description - Article description
+ * @param {string} articleData.category - Category slug
+ * @param {Array} articleData.tags - Array of tag names
+ * @param {number} articleData.readTime - Estimated reading time
+ * @param {boolean} articleData.featured - Whether article is featured
+ * @param {string} articleData.imageUrl - Article image URL
+ * @param {number} articleData.authorId - Author user ID
+ * @returns {Object} Result object with success status and article data or error
+ */
 export async function createArticle(articleData) {
   try {
     const {

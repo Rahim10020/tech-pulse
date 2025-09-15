@@ -1,10 +1,18 @@
-// src/components/articles/ArticleList.js - Mise à jour pour le nouveau design
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import ArticleCard from './ArticleCard';
-import { ArticleCardSkeleton } from '@/components/ui/Skeleton';
+import { ArticleCardSkeleton } from '../ui';
 
+/**
+ * ArticleList component displays a list of articles with pagination and loading states.
+ * Supports both horizontal list and grid layouts.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.category='all'] - The category slug to filter articles
+ * @param {'horizontal'|'grid'} [props.layout='horizontal'] - The layout style for articles
+ * @returns {JSX.Element} The article list element
+ */
 export default function ArticleList({
   category = 'all',
   layout = 'horizontal' // 'horizontal' ou 'grid'

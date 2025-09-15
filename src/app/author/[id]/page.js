@@ -1,3 +1,8 @@
+/**
+ * Author profile page component.
+ * Displays detailed information about a specific author including their articles and bio.
+ * Supports both username and ID-based routing.
+ */
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import AuthorProfile from '@/components/articles/AuthorProfile';

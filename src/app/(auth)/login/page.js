@@ -1,4 +1,4 @@
-// app/(auth)/login/page.js - Page de connexion
+/** @description Page de connexion utilisateur */
 'use client';
 
 import { useState } from 'react';

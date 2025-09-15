@@ -1,6 +1,12 @@
-// lib/text-utils.js - Text processing utilities
+/**
+ * Text processing utilities
+ */
 
-// Fonction pour générer un slug à partir d'un titre
+/**
+ * Génère un slug à partir d'un titre
+ * @param {string} title - Le titre à convertir en slug
+ * @returns {string} Le slug généré
+ */
 export function generateSlug(title) {
     return title
         .toLowerCase()
@@ -10,7 +16,11 @@ export function generateSlug(title) {
         .replace(/^-+|-+$/g, ''); // Supprimer les tirets au début/fin
 }
 
-// Fonction pour calculer le temps de lecture estimé
+/**
+ * Calcule le temps de lecture estimé d'un contenu
+ * @param {string} content - Le contenu texte
+ * @returns {string} Le temps de lecture estimé en minutes
+ */
 export function calculateReadTime(content) {
     const wordsPerMinute = 200; // Vitesse moyenne de lecture
     const words = content.trim().split(/\s+/).length;
@@ -18,7 +28,12 @@ export function calculateReadTime(content) {
     return `${time} min`;
 }
 
-// Fonction pour formater une date
+/**
+ * Formate une date selon la locale spécifiée
+ * @param {string|Date} date - La date à formater
+ * @param {string} locale - La locale pour le formatage (défaut: 'fr-FR')
+ * @returns {string} La date formatée
+ */
 export function formatDate(date, locale = 'fr-FR') {
     return new Intl.DateTimeFormat(locale, {
         year: 'numeric',
@@ -27,7 +42,12 @@ export function formatDate(date, locale = 'fr-FR') {
     }).format(new Date(date));
 }
 
-// Fonction pour obtenir un extrait d'un texte
+/**
+ * Obtient un extrait d'un texte avec une longueur maximale
+ * @param {string} text - Le texte source
+ * @param {number} maxLength - La longueur maximale de l'extrait (défaut: 150)
+ * @returns {string} L'extrait du texte
+ */
 export function getExcerpt(text, maxLength = 150) {
     if (text.length <= maxLength) {
         return text;
@@ -43,7 +63,11 @@ export function getExcerpt(text, maxLength = 150) {
     return excerpt + '...';
 }
 
-// Fonction pour nettoyer le HTML et obtenir du texte brut
+/**
+ * Nettoie le HTML et obtient du texte brut
+ * @param {string} html - Le contenu HTML à nettoyer
+ * @returns {string} Le texte brut sans balises HTML
+ */
 export function stripHtml(html) {
     return html
         .replace(/<[^>]*>/g, '')
@@ -51,7 +75,12 @@ export function stripHtml(html) {
         .trim();
 }
 
-// Fonction pour obtenir un extrait d'un contenu HTML
+/**
+ * Obtient un extrait d'un contenu HTML
+ * @param {string} htmlContent - Le contenu HTML source
+ * @param {number} maxLength - La longueur maximale de l'extrait (défaut: 150)
+ * @returns {string} L'extrait du contenu HTML
+ */
 export function getHtmlExcerpt(htmlContent, maxLength = 150) {
     const textOnly = stripHtml(htmlContent);
     return getExcerpt(textOnly, maxLength);
