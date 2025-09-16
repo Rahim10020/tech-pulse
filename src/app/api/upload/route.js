@@ -3,8 +3,6 @@ import { verifyToken } from '@/lib/auth';
 import { withRateLimit } from '@/lib/rate-limit';
 import { put } from '@vercel/blob';
 
-export const runtime = 'edge';
-
 async function uploadHandler(request) {
   try {
     // 1. Vérifier l'authentification
@@ -43,7 +41,7 @@ async function uploadHandler(request) {
     const size = typeof file.size === 'number' ? file.size : 0;
     const originalName = typeof file.name === 'string' ? file.name : 'upload';
 
-    const allowed = ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'];
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
     if (!allowed.includes(mimeType)) {
       return NextResponse.json({ success: false, error: 'Type de fichier non autorisé', code: 'INVALID_TYPE' }, { status: 400 });
     }
@@ -112,7 +110,7 @@ export async function GET() {
   return NextResponse.json({
     security: {
       maxFileSize: { images: '5MB', gifs: '10MB', videos: '50MB' },
-      allowedTypes: ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'],
+      allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'],
       features: [
         'Validation stricte des types MIME',
         'Noms de fichiers sécurisés',

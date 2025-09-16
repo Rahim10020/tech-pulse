@@ -1,3 +1,8 @@
+import { NextResponse } from 'next/server';
+import { createToken } from '@/lib/auth';
+import { createUser } from '@/lib/auth-db';
+import { withRateLimit } from '@/lib/rate-limit';
+
 /**
  * POST /api/auth/signup
  * Creates a new user account.

@@ -10,7 +10,7 @@ import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import { LoadingSpinner } from '@/components/ui';
 
 export default function HomePage() {
   const [recentArticles, setRecentArticles] = useState([]);

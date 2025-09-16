@@ -1,23 +1,17 @@
 // src/app/layout.js - Layout AVEC AuthProvider
 import "./globals.css";
-import { Inter } from "next/font/google";
 import Providers from "@/components/Providers";
 
-import { Poppins } from "next/font/google";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
-  display: "swap",
-});
-
-// Configuration Inter
-const inter = Inter({
-  subsets: ["latin"],
+// Using system fonts as fallback to avoid Google Fonts network issues during build
+const inter = {
   variable: "--font-inter",
-  display: "swap",
-});
+  className: "",
+};
+
+const poppins = {
+  variable: "--font-poppins",
+  className: "",
+};
 
 export const metadata = {
   title: "pixelpulse - Blog Tech",
