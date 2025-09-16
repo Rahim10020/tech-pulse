@@ -83,7 +83,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
       <Button
         type="button"
         onClick={handleGoogleLogin}
-        className="w-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2"
+        className="w-full bg-gray-50 text-gray-700 border border-gray-300 hover:text-white flex items-center justify-center gap-2"
         disabled={isLoading}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -126,7 +126,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
           value={formData.username}
           onChange={handleChange}
           error={errors.username}
-          placeholder="Votre nom d'utilisateur"
+          placeholder=""
           disabled={isLoading}
           autoComplete="username"
           className="h5-title"
@@ -140,7 +140,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
           value={formData.email}
           onChange={handleChange}
           error={errors.email}
-          placeholder="votre@email.com"
+          placeholder=""
           disabled={isLoading}
           autoComplete="email"
           className="h5-title"
@@ -154,7 +154,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
           value={formData.password}
           onChange={handleChange}
           error={errors.password}
-          placeholder="Mot de passe sécurisé"
+          placeholder=""
           disabled={isLoading}
           autoComplete="new-password"
           className="h5-title"
@@ -169,7 +169,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
           value={formData.confirmPassword}
           onChange={handleChange}
           error={errors.confirmPassword}
-          placeholder="Confirmez votre mot de passe"
+          placeholder=""
           disabled={isLoading}
           autoComplete="new-password"
           className="h5-title"
@@ -187,7 +187,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         </Button>
 
         <p className="small-text text-center text-gray-500 mt-4">
-          Déjà un compte ?{' '}
+          Vous avez déjà un compte ?{' '}
           <a href="/login" className="text-teal-600 hover:text-teal-700 underline">
             Se connecter
           </a>

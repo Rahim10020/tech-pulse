@@ -35,7 +35,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
       <Button
         type="button"
         onClick={handleGoogleLogin}
-        className="w-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2"
+        className="w-full bg-gray-50 text-gray-700 border border-gray-300 hover:text-white flex items-center justify-center gap-2"
         disabled={isLoading}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Adresse e-mail"
+          placeholder=""
           required
           className="h5-title"
         />
@@ -87,7 +87,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          placeholder="Mot de passe"
+          placeholder=""
           required
           className="h5-title"
           showPasswordToggle={true}

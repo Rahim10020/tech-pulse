@@ -35,7 +35,7 @@ export default function LoginPage() {
   return (
     <div className="max-w-md mx-auto pt-24 px-6">
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-2">Bienvenue de retour</h1>
+        <h1 className="text-3xl font-poppins font-bold text-gray-900 mb-2">Connexion</h1>
       </div>
 
       <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
