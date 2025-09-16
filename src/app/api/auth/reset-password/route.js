@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+export const runtime = 'nodejs';
 import bcrypt from 'bcryptjs';
 import { withRateLimit } from '@/lib/rate-limit';
 import { isExpired } from '@/lib/utils';

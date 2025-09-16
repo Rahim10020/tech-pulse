@@ -1,19 +1,9 @@
-// ========================================
-// 3. MODIFIER src/app/api/upload/route.js
-// ========================================
-
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir, access } from 'fs/promises';
-import { join } from 'path';
 import { verifyToken } from '@/lib/auth';
 import { withRateLimit } from '@/lib/rate-limit';
-import { 
-  validateFileType, 
-  scanFileContent, 
-  optimizeImage, 
-  generateSecureFilename,
-  checkUserQuota 
-} from '@/lib/upload-security';
+import { put } from '@vercel/blob';
+
+export const runtime = 'edge';
 
 async function uploadHandler(request) {
   try {
@@ -48,76 +38,49 @@ async function uploadHandler(request) {
       }, { status: 400 });
     }
 
-    // 3. Convertir en buffer pour validation
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // 3. Validation basique et nom de fichier sécurisé
+    const mimeType = file.type ?? 'application/octet-stream';
+    const size = typeof file.size === 'number' ? file.size : 0;
+    const originalName = typeof file.name === 'string' ? file.name : 'upload';
 
-    console.log(`🔍 Upload sécurisé: ${file.name} (${buffer.length} bytes) par user ${decoded.userId}`);
-
-    // 4. VALIDATION DE SÉCURITÉ STRICTE
-    
-    // 4a. Vérifier le quota utilisateur
-    await checkUserQuota(decoded.userId, buffer.length);
-    
-    // 4b. Valider le type de fichier
-    const fileValidation = await validateFileType(buffer, file.name);
-    
-    // 4c. Scanner le contenu pour malware/scripts
-    await scanFileContent(buffer, file.name);
-    
-    // 4d. Générer un nom de fichier sécurisé
-    const secureFilename = generateSecureFilename(file.name, decoded.userId);
-
-    // 5. TRAITEMENT DU FICHIER
-    
-    let processedBuffer = buffer;
-    
-    // 5a. Optimiser les images si nécessaire
-    if (fileValidation.config.needsOptimization) {
-      console.log('🖼️ Optimisation de l\'image...');
-      processedBuffer = await optimizeImage(buffer, fileValidation.mimeType);
-      console.log(`📊 Optimisation: ${buffer.length} → ${processedBuffer.length} bytes (${Math.round((1 - processedBuffer.length / buffer.length) * 100)}% de réduction)`);
+    const allowed = ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'];
+    if (!allowed.includes(mimeType)) {
+      return NextResponse.json({ success: false, error: 'Type de fichier non autorisé', code: 'INVALID_TYPE' }, { status: 400 });
     }
 
-    // 6. STOCKAGE SÉCURISÉ
-    
-    // 6a. Créer le dossier de destination
-    const uploadsDir = join(process.cwd(), 'public', 'uploads', 'articles', fileValidation.config.category);
-    
-    try {
-      await access(uploadsDir);
-    } catch {
-      await mkdir(uploadsDir, { recursive: true });
-      console.log(`📁 Dossier créé: ${uploadsDir}`);
+    const sizeMB = size / (1024 * 1024);
+    if (mimeType.startsWith('image/') && mimeType !== 'image/gif' && sizeMB > 5) {
+      return NextResponse.json({ success: false, error: 'Image trop lourde (>5MB)', code: 'FILE_TOO_LARGE' }, { status: 400 });
+    }
+    if (mimeType === 'image/gif' && sizeMB > 10) {
+      return NextResponse.json({ success: false, error: 'GIF trop lourd (>10MB)', code: 'FILE_TOO_LARGE' }, { status: 400 });
+    }
+    if (mimeType.startsWith('video/') && sizeMB > 50) {
+      return NextResponse.json({ success: false, error: 'Vidéo trop lourde (>50MB)', code: 'FILE_TOO_LARGE' }, { status: 400 });
     }
 
-    // 6b. Écrire le fichier
-    const filePath = join(uploadsDir, secureFilename);
-    await writeFile(filePath, processedBuffer);
+    const safeBase = originalName
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]/g, '-')
+      .replace(/-+/g, '-')
+      .slice(0, 80);
+    const ext = safeBase.includes('.') ? safeBase.split('.').pop() : '';
+    const nameNoExt = ext ? safeBase.slice(0, -(ext.length + 1)) : safeBase;
+    const unique = `${nameNoExt}-${decoded.userId}-${Date.now()}`;
+    const fileName = ext ? `${unique}.${ext}` : unique;
 
-    // 7. RÉPONSE AVEC MÉTADONNÉES
-    const fileUrl = `/uploads/articles/${fileValidation.config.category}/${secureFilename}`;
-    const fileSizeMB = (processedBuffer.length / (1024 * 1024)).toFixed(2);
-
-    console.log(`✅ Upload réussi: ${fileUrl}`);
+    // 4. Upload direct vers Vercel Blob (public)
+    const { url } = await put(`articles/${fileName}`, file, { access: 'public', contentType: mimeType });
 
     return NextResponse.json({
       success: true,
-      fileUrl,
-      fileName: secureFilename,
-      originalName: file.name,
-      fileType: fileValidation.mimeType,
-      fileSize: processedBuffer.length,
-      fileSizeMB: parseFloat(fileSizeMB),
-      mediaCategory: fileValidation.config.category,
-      optimized: fileValidation.config.needsOptimization,
-      security: {
-        scanned: true,
-        validated: true,
-        optimized: fileValidation.config.needsOptimization
-      },
-      message: `${fileValidation.config.category === 'video' ? 'Vidéo' : 
-                fileValidation.config.category === 'gif' ? 'GIF' : 'Image'} uploadé${fileValidation.config.category === 'video' ? 'e' : ''} et sécurisé${fileValidation.config.category === 'video' ? 'e' : ''} avec succès`
+      fileUrl: url,
+      fileName,
+      originalName,
+      fileType: mimeType,
+      fileSize: size,
+      fileSizeMB: Number(sizeMB.toFixed(2)),
+      message: 'Fichier uploadé avec succès'
     });
 
   } catch (error) {
@@ -148,18 +111,11 @@ export const POST = withRateLimit('upload')(uploadHandler);
 export async function GET() {
   return NextResponse.json({
     security: {
-      maxFileSize: {
-        images: '5MB',
-        gifs: '10MB', 
-        videos: '50MB'
-      },
-      allowedTypes: Object.keys(SECURITY_CONFIG.allowedTypes),
+      maxFileSize: { images: '5MB', gifs: '10MB', videos: '50MB' },
+      allowedTypes: ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'],
       features: [
         'Validation stricte des types MIME',
-        'Scan anti-malware',
-        'Optimisation automatique des images',
         'Noms de fichiers sécurisés',
-        'Quota utilisateur (100MB)',
         'Rate limiting (10 uploads/minute)'
       ]
     }

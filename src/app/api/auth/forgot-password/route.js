@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getUserByEmail } from '@/lib/auth-db';
 import { prisma } from '@/lib/prisma';
+export const runtime = 'nodejs';
 import { withRateLimit } from '@/lib/rate-limit';
 import { sendPasswordResetEmail } from '@/lib/email';
 import { generatePasswordResetCode } from '@/lib/utils';

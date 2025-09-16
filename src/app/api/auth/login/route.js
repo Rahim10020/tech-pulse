@@ -1,24 +1,10 @@
+import { NextResponse } from 'next/server';
+import { verifyCredentials } from '@/lib/auth-db';
+import { createToken } from '@/lib/auth';
+export const runtime = 'nodejs';
+
 /**
  * POST /api/auth/login
- * Authenticates a user with email and password.
- *
- * @param {Request} request - The request object containing email and password in JSON body
- * @returns {NextResponse} Response with user data and JWT token in httpOnly cookie
- *
- * Request body:
- * - email: string (required) - User's email address
- * - password: string (required) - User's password
- *
- * Response (success):
- * - success: boolean
- * - user: object - User data without password
- * - message: string
- *
- * Response (error):
- * - error: string
- * - code: string - Error code for client handling
- *
- * Sets httpOnly cookie 'token' with JWT containing user info
  */
 async function loginHandler(request) {
   try {
@@ -28,7 +14,7 @@ async function loginHandler(request) {
 
     // Validation des données
     if (!email || !password) {
-      return validationErrorResponse("Email et mot de passe requis", "MISSING_CREDENTIALS");
+      return NextResponse.json({ success: false, error: 'Email et mot de passe requis', code: 'MISSING_CREDENTIALS' }, { status: 400 });
     }
 
     // Vérifier les identifiants dans PostgreSQL
@@ -36,7 +22,7 @@ async function loginHandler(request) {
 
     if (!result.success) {
       console.log("❌ Login failed:", result.error);
-      return validationErrorResponse(result.error, "INVALID_CREDENTIALS");
+      return NextResponse.json({ success: false, error: result.error, code: 'INVALID_CREDENTIALS' }, { status: 401 });
     }
 
     const user = result.user;
@@ -52,12 +38,7 @@ async function loginHandler(request) {
     const token = await createToken(tokenPayload);
 
     // Créer la réponse avec le token dans un cookie httpOnly
-    const response = successResponse({
-      user: {
-        ...user,
-        role: user.role || 'reader'
-      }
-    }, "Connexion réussie");
+    const response = NextResponse.json({ success: true, user: { ...user, role: user.role || 'reader' }, message: 'Connexion réussie' });
 
     response.cookies.set("token", token, {
       httpOnly: true,
@@ -70,9 +51,10 @@ async function loginHandler(request) {
     return response;
   } catch (error) {
     console.error("❌ Login error:", error);
-    return errorResponse("Erreur interne du serveur", "INTERNAL_ERROR");
+    return NextResponse.json({ success: false, error: 'Erreur interne du serveur', code: 'INTERNAL_ERROR' }, { status: 500 });
   }
 }
 
 // ✅ APPLIQUER LE RATE LIMITING
+import { withRateLimit } from '@/lib/rate-limit';
 export const POST = withRateLimit('auth')(loginHandler);

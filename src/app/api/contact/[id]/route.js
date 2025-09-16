@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-roles';
 import { prisma } from '@/lib/prisma';
+export const runtime = 'nodejs';
 
 // PATCH - Marquer un message comme lu (admin seulement)
 export async function PATCH(request, { params }) {

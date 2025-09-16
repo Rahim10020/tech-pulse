@@ -16,13 +16,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:integration": "jest --config jest.integration.config.js",
+    "test:integration": "jest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "npm run test",
     "test:ci": "npm run test:coverage"
   },
   "dependencies": {
+    "@vercel/blob": "^0.26.0",
     "@auth/prisma-adapter": "^2.10.0",
     "@prisma/client": "^6.13.0",
     "@tiptap/extension-dropcursor": "^3.0.7",

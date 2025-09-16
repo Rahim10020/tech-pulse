@@ -3,19 +3,14 @@ import { SignJWT, jwtVerify } from 'jose';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
-// Validation au démarrage de l'application
+// Validation non bloquante au chargement
 if (!JWT_SECRET) {
-  console.error('🚨 ERREUR CRITIQUE: JWT_SECRET manquant dans les variables d\'environnement');
-  console.error('💡 Ajoutez JWT_SECRET="votre-clé-ultra-secrète" dans votre fichier .env');
-  console.error('🔧 Générez une clé sécurisée avec: openssl rand -base64 32');
-  process.exit(1);
+  console.warn('JWT_SECRET manquant dans les variables d\'environnement. Les fonctions JWT échoueront à l\'exécution.');
 }
 
 // Validation de la qualité de la clé
@@ -45,6 +40,9 @@ function parseExpiresIn(expiresIn) {
 // Créer un token JWT avec jose (compatible Edge Runtime)
 export async function createToken(payload) {
   try {
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET manquant');
+    }
     const secret = new TextEncoder().encode(JWT_SECRET);
     const expiresInSeconds = parseExpiresIn(JWT_EXPIRES_IN);
 
@@ -76,7 +74,10 @@ export async function verifyToken(token) {
     if (!token || typeof token !== 'string') {
       return null;
     }
-
+    if (!JWT_SECRET) {
+      console.error('JWT_SECRET manquant');
+      return null;
+    }
     const secret = new TextEncoder().encode(JWT_SECRET);
 
     const { payload } = await jwtVerify(token, secret, {

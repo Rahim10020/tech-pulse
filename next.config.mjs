@@ -5,7 +5,7 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react'],
   },
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    domains: ['images.unsplash.com', 'via.placeholder.com', 'blob.vercel-storage.com'],
   },
   // Configuration importante pour Tailwind
   transpilePackages: [],

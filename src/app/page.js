@@ -10,7 +10,7 @@ import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 export default function HomePage() {
   const [recentArticles, setRecentArticles] = useState([]);
@@ -45,7 +45,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="container-sm py-4">
+      <div className="container mx-auto max-w-5xl py-4">
         <SearchBar
           placeholder="Rechercher des articles par mots-clés ou catégories"
           className="mb-6"
