@@ -174,10 +174,16 @@ export function withAuth(handler) {
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+    // Only include Google provider if credentials are properly configured
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET &&
+      process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id' &&
+      process.env.GOOGLE_CLIENT_SECRET !== 'your-google-client-secret'
+      ? [Google({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      })]
+      : []
+    ),
   ],
   callbacks: {
     async signIn({ user, account, profile }) {

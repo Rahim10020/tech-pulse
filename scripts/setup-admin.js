@@ -1,4 +1,5 @@
 // scripts/setup-admin.js - Script pour configurer ton compte admin
+require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 
