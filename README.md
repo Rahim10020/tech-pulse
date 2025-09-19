@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TechPulse - Plateforme de blogs pour développeurs
 
-## Getting Started
+PixelPulse est une plateforme de blogs moderne et performante, conçue pour les développeurs, créateurs de contenu et passionnés de technologie. Elle offre un Riche Ecosystème pour partager connaissances, Veille Technologique et interagir avec une communauté grandissante.
 
-First, run the development server:
+![Capture d'écran 1](placeholder_screenshot_1.png)
+![Capture d'écran 2](placeholder_screenshot_2.png)
+![Capture d'écran 3](placeholder_screenshot_3.png)
+![Capture d'écran 4](placeholder_screenshot_4.png)
+## 🌐 Démo en direct
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Visitez la version live du projet sur Vercel : [PixelPulse Live](https://pixelpulse-blog.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🔥 Fonctionnalités
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*   **Publication d'articles** : Un éditeur de texte riche pour créer et publier vos articles.
+*   **Gestion des catégories** : Organisez vos articles en catégories pour une navigation facile.
+*   **Commentaires interactifs** : Interagissez avec vos lecteurs grâce à un système de commentaires.
+*   **Recherche puissante** : Trouvez rapidement des articles grâce à une recherche performante.
+*   **Profils d'auteur** : Mettez en avant votre biographie et vos contributions.
 
-## Learn More
+## 🚀 Démarrage rapide
 
-To learn more about Next.js, take a look at the following resources:
+Pour lancer le projet en local, suivez ces étapes :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1.  **Clonez le dépôt**
+    ```bash
+    git clone https://github.com/Rahim10020/tech-pulse
+    cd votre-projet
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2.  **Installez les dépendances**
+    ```bash
+    npm install
+    ```
 
-## Deploy on Vercel
+3.  **Configurez la base de données**
+    Créez un fichier `.env` à la racine et ajoutez votre `DATABASE_URL` pour PostgreSQL.
+    ```
+    DATABASE_URL="postgresql://user:password@host:port/database"
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4.  **Appliquez les migrations**
+    ```bash
+    npx prisma migrate dev
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5.  **Lancez le serveur de développement**
+    ```bash
+    npm run dev
+    ```
+
+Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour voir l'application.
+
+## 🛠️ Stack technique
+
+*   **Framework** : [Next.js](https://nextjs.org/)
+*   **Base de données** : [PostgreSQL](https://www.postgresql.org/) avec [Prisma](https://www.prisma.io/)
+*   **Authentification** : [NextAuth.js](https://next-auth.js.org/)
+*   **Styling** : [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+*Ce projet est un exemple. N'hésitez pas à le personnaliser selon vos besoins.*
