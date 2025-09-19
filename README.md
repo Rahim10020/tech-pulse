@@ -2,7 +2,7 @@
 
 PixelPulse est une plateforme de blogs moderne et performante, conçue pour les développeurs, créateurs de contenu et passionnés de technologie. Elle offre un Riche Ecosystème pour partager connaissances, Veille Technologique et interagir avec une communauté grandissante.
 
-![Capture d'écran 1](placeholder_screenshot_1.png)
+![Capture d'écran 1](./public/acceuil.png)
 ![Capture d'écran 2](placeholder_screenshot_2.png)
 ![Capture d'écran 3](placeholder_screenshot_3.png)
 ![Capture d'écran 4](placeholder_screenshot_4.png)
