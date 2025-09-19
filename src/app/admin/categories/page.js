@@ -1,4 +1,3 @@
-// src/app/admin/categories/page.js - Page de gestion des catégories (admin)
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -97,8 +96,10 @@ export default function AdminCategoriesPage() {
 
             if (response.ok) {
                 const data = await response.json();
-                setCategories(data.categories);
-                setStats(data.stats);
+                setCategories(Array.isArray(data.categories) ? data.categories : []);
+                if (data.stats) {
+                    setStats(data.stats);
+                }
             } else {
                 showToast("Erreur lors du chargement des catégories", "error");
             }

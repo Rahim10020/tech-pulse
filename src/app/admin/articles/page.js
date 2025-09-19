@@ -1,4 +1,3 @@
-// src/app/admin/articles/page.js - Page de gestion des articles (admin)
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -74,7 +73,7 @@ export default function AdminArticlesPage() {
                 const response = await fetch("/api/categories?type=all");
                 if (response.ok) {
                     const data = await response.json();
-                    setCategories(data);
+                    setCategories(Array.isArray(data) ? data : []);
                 }
             } catch (error) {
                 console.error("Error loading categories:", error);
