@@ -1,4 +1,4 @@
-# TechPulse - Plateforme de blogs pour développeurs
+# PixelPulse - Plateforme de blogs pour développeurs
 
 PixelPulse est une plateforme de blogs moderne et performante, conçue pour les développeurs, créateurs de contenu et passionnés de technologie. Elle offre un Riche Ecosystème pour partager connaissances, Veille Technologique et interagir avec une communauté grandissante.
 
