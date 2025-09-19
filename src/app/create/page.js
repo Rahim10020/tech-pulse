@@ -46,11 +46,17 @@ export default function CreateArticlePage() {
     // Chercher la première image
     const firstImg = doc.querySelector('img');
 
-    if (firstImg && firstImg.src) {
-      // Vérifier si c'est une URL locale (uploadée via notre système)
-      if (firstImg.src.startsWith('/uploads/') || firstImg.src.includes('/uploads/')) {
-        return firstImg.src;
-      }
+    if (!firstImg) return null;
+
+    const src = firstImg.getAttribute('src') || firstImg.src || '';
+    if (!src) return null;
+
+    // Accepter soit un chemin local d'upload, soit une URL absolue http(s)
+    const isLocalUpload = src.startsWith('/uploads/') || src.includes('/uploads/');
+    const isHttpUrl = /^https?:\/\//i.test(src);
+
+    if (isLocalUpload || isHttpUrl) {
+      return src;
     }
 
     return null;
