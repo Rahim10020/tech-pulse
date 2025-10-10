@@ -39,11 +39,6 @@ const ArticleImage = React.memo(function ArticleImage({
             <span className="text-gray-400 text-xs">No image</span>
           </div>
         )}
-        {categoryName && (
-          <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${categoryColor} ${categoryTextColor}`}>
-            {categoryName}
-          </div>
-        )}
       </div>
     );
   }
@@ -59,11 +54,6 @@ const ArticleImage = React.memo(function ArticleImage({
       ) : (
         <div className={`w-full h-full ${imageColor} flex items-center justify-center`}>
           <span className="text-gray-400">No image</span>
-        </div>
-      )}
-      {categoryName && (
-        <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium ${categoryColor} ${categoryTextColor}`}>
-          {categoryName}
         </div>
       )}
     </div>
