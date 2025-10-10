@@ -1,64 +1,64 @@
-# PixelPulse - Plateforme de blogs pour développeurs
+# PixelPulse - Blog Platform for Developers
 
-PixelPulse est une plateforme de blogs moderne et performante, conçue pour les développeurs, créateurs de contenu et passionnés de technologie. Elle offre un Riche Ecosystème pour partager connaissances, Veille Technologique et interagir avec une communauté grandissante.
+PixelPulse is a modern and high-performance blog platform designed for developers, content creators, and technology enthusiasts. It offers a rich ecosystem for sharing knowledge, technology insights, and interacting with a growing community.
 
-![Capture d'écran 1](./public/acceuil.png)
-![Capture d'écran 2](placeholder_screenshot_2.png)
-![Capture d'écran 3](placeholder_screenshot_3.png)
-![Capture d'écran 4](placeholder_screenshot_4.png)
-## 🌐 Démo en direct
+![Screenshot 1](./public/acceuil.png)
+![Screenshot 2](placeholder_screenshot_2.png)
+![Screenshot 3](placeholder_screenshot_3.png)
+![Screenshot 4](placeholder_screenshot_4.png)
 
-Visitez la version live du projet sur Vercel : [PixelPulse Live](https://pixelpulse-blog.vercel.app/)
+## 🌐 Live Demo
 
+Visit the live version of the project on Vercel: [PixelPulse Live](https://pixelpulse-blog.vercel.app/)
 
-## 🔥 Fonctionnalités
+## 🔥 Features
 
-*   **Publication d'articles** : Un éditeur de texte riche pour créer et publier vos articles.
-*   **Gestion des catégories** : Organisez vos articles en catégories pour une navigation facile.
-*   **Commentaires interactifs** : Interagissez avec vos lecteurs grâce à un système de commentaires.
-*   **Recherche puissante** : Trouvez rapidement des articles grâce à une recherche performante.
-*   **Profils d'auteur** : Mettez en avant votre biographie et vos contributions.
+* **Article Publishing**: A rich text editor to create and publish your articles.
+* **Category Management**: Organize your articles into categories for easy navigation.
+* **Interactive Comments**: Engage with your readers through a commenting system.
+* **Powerful Search**: Quickly find articles with efficient search functionality.
+* **Author Profiles**: Showcase your biography and contributions.
 
-## 🚀 Démarrage rapide
+## 🚀 Quick Start
 
-Pour lancer le projet en local, suivez ces étapes :
+To run the project locally, follow these steps:
 
-1.  **Clonez le dépôt**
-    ```bash
-    git clone https://github.com/Rahim10020/tech-pulse
-    cd votre-projet
-    ```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Rahim10020/tech-pulse
+   cd your-project
+   ```
 
-2.  **Installez les dépendances**
-    ```bash
-    npm install
-    ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-3.  **Configurez la base de données**
-    Créez un fichier `.env` à la racine et ajoutez votre `DATABASE_URL` pour PostgreSQL.
-    ```
-    DATABASE_URL="postgresql://user:password@host:port/database"
-    ```
+3. **Configure the database**
+   Create a `.env` file at the root and add your `DATABASE_URL` for PostgreSQL.
+   ```
+   DATABASE_URL="postgresql://user:password@host:port/database"
+   ```
 
-4.  **Appliquez les migrations**
-    ```bash
-    npx prisma migrate dev
-    ```
+4. **Apply migrations**
+   ```bash
+   npx prisma migrate dev
+   ```
 
-5.  **Lancez le serveur de développement**
-    ```bash
-    npm run dev
-    ```
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour voir l'application.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## 🛠️ Stack technique
+## 🛠️ Tech Stack
 
-*   **Framework** : [Next.js](https://nextjs.org/)
-*   **Base de données** : [PostgreSQL](https://www.postgresql.org/) avec [Prisma](https://www.prisma.io/)
-*   **Authentification** : [NextAuth.js](https://next-auth.js.org/)
-*   **Styling** : [Tailwind CSS](https://tailwindcss.com/)
+* **Framework**: [Next.js](https://nextjs.org/)
+* **Database**: [PostgreSQL](https://www.postgresql.org/) with [Prisma](https://www.prisma.io/)
+* **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+* **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 
 ---
 
-*Ce projet est un exemple. N'hésitez pas à le personnaliser selon vos besoins.*
+*This project is an example. Feel free to customize it according to your needs.*
