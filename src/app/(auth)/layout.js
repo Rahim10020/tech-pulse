@@ -15,7 +15,7 @@ export default function AuthLayout({ children }) {
 
           <nav className="flex items-center space-x-8">
             <Link href="/" className="text-gray-700 font-poppins hover:text-gray-900 text-sm">
-              Home
+              Acceuil
             </Link>
             <Link
               href="/articles"
@@ -24,7 +24,7 @@ export default function AuthLayout({ children }) {
               Articles
             </Link>
             <Link href="/about" className="text-gray-700 hover:text-gray-900 text-sm font-poppins">
-              About
+              A propos
             </Link>
           </nav>
         </div>
