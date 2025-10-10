@@ -3,8 +3,8 @@
 PixelPulse is a modern and high-performance blog platform designed for developers, content creators, and technology enthusiasts. It offers a rich ecosystem for sharing knowledge, technology insights, and interacting with a growing community.
 
 ![Screenshot 1](./public/acceuil.png)
-![Screenshot 2](placeholder_screenshot_2.png)
-![Screenshot 3](placeholder_screenshot_3.png)
+![Screenshot 2](./public/detail.png)
+![Screenshot 3](./public/tous.png)
 ![Screenshot 4](placeholder_screenshot_4.png)
 
 ## 🌐 Live Demo
