@@ -17,6 +17,10 @@ const poppins = {
 export const metadata = {
   title: "pixelpulse - Blog Tech",
   description: "Blog technologique moderne",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
