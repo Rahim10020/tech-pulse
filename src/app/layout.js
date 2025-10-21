@@ -1,6 +1,7 @@
 // src/app/layout.js - Layout AVEC AuthProvider
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { Analytics } from "@vercel/analytics/react";
 
 // Using system fonts as fallback to avoid Google Fonts network issues during build
 const inter = {
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       <body className="bg-gray-50 text-gray-900 antialiased suppressHydrationWarning">
         <Providers>
           {children}
+          <Analytics />
         </Providers>
       </body>
     </html>
