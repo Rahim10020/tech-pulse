@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { withRateLimit } from '@/lib/rate-limit';
 import { put } from '@vercel/blob';
+import { validateFileType, scanFileContent } from '@/lib/upload-security';
 
 async function uploadHandler(request) {
   try {
@@ -36,39 +37,48 @@ async function uploadHandler(request) {
       }, { status: 400 });
     }
 
-    // 3. Validation basique et nom de fichier sécurisé
-    const mimeType = file.type ?? 'application/octet-stream';
-    const size = typeof file.size === 'number' ? file.size : 0;
+    // 3. Convertir le fichier en buffer et valider avec upload-security
     const originalName = typeof file.name === 'string' ? file.name : 'upload';
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
-    if (!allowed.includes(mimeType)) {
-      return NextResponse.json({ success: false, error: 'Type de fichier non autorisé', code: 'INVALID_TYPE' }, { status: 400 });
-    }
-
-    const sizeMB = size / (1024 * 1024);
-    if (mimeType.startsWith('image/') && mimeType !== 'image/gif' && sizeMB > 5) {
-      return NextResponse.json({ success: false, error: 'Image trop lourde (>5MB)', code: 'FILE_TOO_LARGE' }, { status: 400 });
-    }
-    if (mimeType === 'image/gif' && sizeMB > 10) {
-      return NextResponse.json({ success: false, error: 'GIF trop lourd (>10MB)', code: 'FILE_TOO_LARGE' }, { status: 400 });
-    }
-    if (mimeType.startsWith('video/') && sizeMB > 50) {
-      return NextResponse.json({ success: false, error: 'Vidéo trop lourde (>50MB)', code: 'FILE_TOO_LARGE' }, { status: 400 });
+    // Validation stricte du type de fichier basée sur le contenu réel
+    let validation;
+    try {
+      validation = await validateFileType(buffer, originalName);
+    } catch (error) {
+      return NextResponse.json({
+        success: false,
+        error: error.message,
+        code: error.code || 'VALIDATION_FAILED'
+      }, { status: 400 });
     }
 
+    // Scan de sécurité du contenu
+    try {
+      await scanFileContent(buffer, originalName);
+    } catch (error) {
+      return NextResponse.json({
+        success: false,
+        error: error.message,
+        code: error.code || 'SECURITY_SCAN_FAILED'
+      }, { status: 400 });
+    }
+
+    // 4. Nom de fichier sécurisé
+    const mimeType = validation.mimeType;
+    const size = buffer.length;
+    const ext = validation.extension;
     const safeBase = originalName
       .toLowerCase()
       .replace(/[^a-z0-9._-]/g, '-')
       .replace(/-+/g, '-')
       .slice(0, 80);
-    const ext = safeBase.includes('.') ? safeBase.split('.').pop() : '';
     const nameNoExt = ext ? safeBase.slice(0, -(ext.length + 1)) : safeBase;
     const unique = `${nameNoExt}-${decoded.userId}-${Date.now()}`;
     const fileName = ext ? `${unique}.${ext}` : unique;
 
-    // 4. Upload direct vers Vercel Blob (public)
-    const { url } = await put(`articles/${fileName}`, file, { access: 'public', contentType: mimeType });
+    // 5. Upload vers Vercel Blob (utilise le buffer validé)
+    const { url } = await put(`articles/${fileName}`, buffer, { access: 'public', contentType: mimeType });
 
     return NextResponse.json({
       success: true,

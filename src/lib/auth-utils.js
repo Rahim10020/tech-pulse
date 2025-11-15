@@ -1,4 +1,5 @@
 // Authentication utilities
+import { randomBytes } from 'crypto';
 
 /**
  * Generate a secure 6-digit code for password reset
@@ -17,7 +18,7 @@ export function generatePasswordResetCode() {
  * @returns {string} Random token
  */
 export function generatePasswordResetToken() {
-    return require('crypto').randomBytes(32).toString('hex');
+    return randomBytes(32).toString('hex');
 }
 
 /**

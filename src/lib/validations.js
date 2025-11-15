@@ -4,7 +4,8 @@
  * @returns {boolean} True if the email format is valid
  */
 export const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Improved regex requiring at least 2 characters in TLD
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   return emailRegex.test(email);
 };
 

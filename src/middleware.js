@@ -42,15 +42,8 @@ async function verifyTokenEdge(token) {
       audience: 'pixelpulse-users'
     });
 
-    // Vérifier que le token n'est pas trop ancien
-    const now = Math.floor(Date.now() / 1000);
-    const maxAge = 7 * 24 * 60 * 60; // 7 jours en secondes
-
-    if (payload.iat && (now - payload.iat) > maxAge) {
-      console.warn('Token trop ancien, considéré comme invalide');
-      return null;
-    }
-
+    // jwtVerify vérifie automatiquement l'expiration (exp claim)
+    // Pas besoin de vérification manuelle de l'âge du token
     return payload;
   } catch (error) {
     if (error.code === 'ERR_JWT_EXPIRED') {
@@ -68,11 +61,13 @@ export async function middleware(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("token")?.value;
 
-  console.log("Middleware Debug:", {
-    pathname,
-    hasToken: !!token,
-    tokenPreview: token ? token.substring(0, 20) + "..." : "none",
-  });
+  // Log en mode debug uniquement, sans exposer de données sensibles
+  if (process.env.DEBUG === 'true') {
+    console.log("Middleware:", {
+      pathname,
+      hasToken: !!token,
+    });
+  }
 
   // Permettre l'accès à toutes les routes API sans restrictions
   if (pathname.startsWith("/api/")) {

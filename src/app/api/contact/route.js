@@ -7,6 +7,7 @@ import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
 import { withRateLimit } from "@/lib/rate-limit";
 import { prisma } from '@/lib/prisma';
+import { validatePaginationParams } from '@/lib/validation-utils';
 
 async function contactHandler(request) {
   try {
@@ -110,8 +111,7 @@ export async function GET(request) {
 
     // Récupérer les paramètres de requête
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get("page")) || 1;
-    const limit = parseInt(searchParams.get("limit")) || 10;
+    const { page, limit } = validatePaginationParams(searchParams);
     const unreadOnly = searchParams.get("unread") === "true";
     const search = searchParams.get("search");
 

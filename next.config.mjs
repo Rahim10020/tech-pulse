@@ -10,7 +10,9 @@ const nextConfig = {
   // Configuration importante pour Tailwind
   transpilePackages: [],
   eslint: {
-    ignoreDuringBuilds: true,
+    // Activer la validation ESLint pendant les builds pour assurer la qualité du code
+    ignoreDuringBuilds: false,
+    dirs: ['src/app', 'src/lib', 'src/components', 'src/context']
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

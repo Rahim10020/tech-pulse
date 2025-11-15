@@ -6,6 +6,7 @@ import {
   getAuthorByUsername,
   getAuthorProfile,
 } from "@/lib/authors";
+import { validatePaginationParams } from '@/lib/validation-utils';
 
 export async function GET(request) {
   try {
@@ -13,7 +14,7 @@ export async function GET(request) {
     const type = searchParams.get("type") || "all";
     const id = searchParams.get("id");
     const username = searchParams.get("username");
-    const limit = parseInt(searchParams.get("limit")) || 10;
+    const { limit } = validatePaginationParams(searchParams);
 
     let result;
 

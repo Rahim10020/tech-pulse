@@ -8,15 +8,21 @@ import { prisma } from '@/lib/prisma';
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
-// Validation non bloquante au chargement
+// Validation stricte au chargement - BLOQUANTE pour la sécurité
 if (!JWT_SECRET) {
-  console.warn('JWT_SECRET manquant dans les variables d\'environnement. Les fonctions JWT échoueront à l\'exécution.');
+  throw new Error(
+    '❌ JWT_SECRET manquant dans les variables d\'environnement.\n' +
+    'Ajoutez JWT_SECRET dans votre fichier .env avec au moins 64 caractères aléatoires.'
+  );
 }
 
-// Validation de la qualité de la clé
-if (JWT_SECRET.length < 32) {
-  console.warn('⚠️  ATTENTION: JWT_SECRET trop court (< 32 caractères)');
-  console.warn('🔧 Utilisez une clé plus longue pour une sécurité optimale');
+// Validation de la qualité de la clé - minimum 64 caractères pour HS256
+if (JWT_SECRET.length < 64) {
+  throw new Error(
+    `❌ JWT_SECRET trop court (${JWT_SECRET.length} caractères).\n` +
+    'Pour une sécurité optimale avec HS256, utilisez au moins 64 caractères.\n' +
+    'Générez une clé sécurisée : openssl rand -base64 64'
+  );
 }
 
 // Convertir l'expiration en secondes
@@ -86,15 +92,8 @@ export async function verifyToken(token) {
       audience: 'pixelpulse-users'
     });
 
-    // Vérifier que le token n'est pas trop ancien
-    const now = Math.floor(Date.now() / 1000);
-    const maxAge = 7 * 24 * 60 * 60; // 7 jours en secondes
-
-    if (payload.iat && (now - payload.iat) > maxAge) {
-      console.warn('Token trop ancien, considéré comme invalide');
-      return null;
-    }
-
+    // jwtVerify vérifie automatiquement l'expiration (exp claim)
+    // Pas besoin de vérification manuelle de l'âge du token
     return payload;
   } catch (error) {
     if (error.code === 'ERR_JWT_EXPIRED') {

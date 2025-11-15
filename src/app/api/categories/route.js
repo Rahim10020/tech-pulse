@@ -4,6 +4,7 @@
  */
 import { successResponse, validationErrorResponse, errorResponse } from '@/lib/api-response';
 import { getAllCategories, getCategoryBySlug, getPopularCategories } from '@/lib/categories';
+import { validatePaginationParams } from '@/lib/validation-utils';
 
 /**
  * GET /api/categories
@@ -16,7 +17,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'all';
     const slug = searchParams.get('slug');
-    const limit = parseInt(searchParams.get('limit')) || 10;
+    const { limit } = validatePaginationParams(searchParams);
 
     let categories;
 
