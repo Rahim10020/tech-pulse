@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { getDraftsByAuthor, publishDraft, updateDraft } from '@/lib/articles';
+import { validatePaginationParams } from '@/lib/validation-utils';
 
 export async function GET(request) {
   try {
@@ -23,7 +24,7 @@ export async function GET(request) {
     }
 
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get('limit')) || 10;
+    const { limit } = validatePaginationParams(searchParams);
 
     const drafts = await getDraftsByAuthor(decoded.userId, limit);
 

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createToken } from '@/lib/auth';
 import { createUser } from '@/lib/auth-db';
 import { withRateLimit } from '@/lib/rate-limit';
+import { validateEmail, validatePassword, validateUsername } from '@/lib/validations';
 
 /**
  * POST /api/auth/signup
@@ -12,9 +13,9 @@ import { withRateLimit } from '@/lib/rate-limit';
  *
  * Request body:
  * - name: string (required) - User's full name
- * - username: string (required) - Unique username (3+ chars, alphanumeric + _ -)
+ * - username: string (required) - Unique username (3+ chars, alphanumeric + _)
  * - email: string (required) - Valid email address
- * - password: string (required) - Password (6+ characters)
+ * - password: string (required) - Password (8+ characters, must contain uppercase, lowercase, and number)
  *
  * Response (success):
  * - success: boolean
@@ -42,9 +43,8 @@ async function signupHandler(request) {
       );
     }
 
-    // Validation de l'email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // Validation de l'email avec la fonction centralisée
+    if (!validateEmail(email)) {
       return NextResponse.json(
         {
           error: 'Format d\'email invalide',
@@ -54,23 +54,24 @@ async function signupHandler(request) {
       );
     }
 
-    // Validation du username
-    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
-    if (!usernameRegex.test(username) || username.length < 3) {
+    // Validation du username avec la fonction centralisée
+    const usernameValidation = validateUsername(username);
+    if (!usernameValidation.isValid) {
       return NextResponse.json(
         {
-          error: 'Le nom d\'utilisateur doit contenir au moins 3 caractères alphanumériques',
+          error: usernameValidation.errors[0],
           code: 'INVALID_USERNAME'
         },
         { status: 400 }
       );
     }
 
-    // Validation du mot de passe
-    if (password.length < 6) {
+    // Validation du mot de passe avec la fonction centralisée
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
       return NextResponse.json(
         {
-          error: 'Le mot de passe doit contenir au moins 6 caractères',
+          error: passwordValidation.errors.join(', '),
           code: 'WEAK_PASSWORD'
         },
         { status: 400 }

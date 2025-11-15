@@ -5,6 +5,7 @@
 import { successResponse, errorResponse, validationErrorResponse } from '@/lib/api-response';
 import { withAuth } from '@/lib/api-auth';
 import { getArticles, getFeaturedArticles, getRecentArticles, createArticle } from '@/lib/articles';
+import { validatePaginationParams } from '@/lib/validation-utils';
 
 /**
  * GET /api/articles
@@ -16,8 +17,9 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'recent';
-    const page = parseInt(searchParams.get('page')) || 1;
-    const limit = parseInt(searchParams.get('limit')) || 10;
+
+    // Validation stricte des paramètres de pagination
+    const { page, limit } = validatePaginationParams(searchParams);
     const category = searchParams.get('category');
 
     let articles;

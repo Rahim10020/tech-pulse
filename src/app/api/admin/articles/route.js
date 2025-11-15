@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
 import { prisma } from '@/lib/prisma';
+import { validatePaginationParams } from '@/lib/validation-utils';
 
 // GET - Récupérer tous les articles pour l'admin
 export async function GET(request) {
@@ -32,10 +33,9 @@ export async function GET(request) {
             );
         }
 
-        // Récupérer les paramètres de requête
+        // Récupérer et valider les paramètres de requête
         const { searchParams } = new URL(request.url);
-        const page = parseInt(searchParams.get("page")) || 1;
-        const limit = parseInt(searchParams.get("limit")) || 20;
+        const { page, limit } = validatePaginationParams(searchParams, { page: 1, limit: 20 });
         const search = searchParams.get("search") || "";
         const status = searchParams.get("status") || "all"; // all, published, draft, featured
         const category = searchParams.get("category") || "";

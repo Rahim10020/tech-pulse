@@ -5,14 +5,14 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { validatePaginationParams } from '@/lib/validation-utils';
 export const runtime = 'nodejs';
 
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url);
         const query = searchParams.get('q');
-        const page = parseInt(searchParams.get('page')) || 1;
-        const limit = parseInt(searchParams.get('limit')) || 12;
+        const { page, limit } = validatePaginationParams(searchParams, { page: 1, limit: 12 });
         const tab = searchParams.get('tab') || 'all';
         const dateRange = searchParams.get('dateRange') || 'all';
         const sortBy = searchParams.get('sortBy') || 'relevance';
