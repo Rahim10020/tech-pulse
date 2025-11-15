@@ -1,7 +1,9 @@
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
 import { Star, Heart, MessageCircle, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { getHtmlExcerpt } from '@/lib/text-utils';
 
 /**
@@ -27,15 +29,17 @@ const ArticleImage = React.memo(function ArticleImage({
 }) {
   if (horizontal) {
     return (
-      <div className="flex-shrink-0 w-32 h-24 relative">
+      <div className="flex-shrink-0 w-32 h-24 relative overflow-hidden rounded-lg">
         {imageUrl ? (
-          <img
+          <motion.img
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.3 }}
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover"
           />
         ) : (
-          <div className={`w-full h-full ${imageColor} rounded-lg flex items-center justify-center`}>
+          <div className={`w-full h-full ${imageColor} flex items-center justify-center`}>
             <span className="text-gray-400 text-xs">No image</span>
           </div>
         )}
@@ -44,9 +48,11 @@ const ArticleImage = React.memo(function ArticleImage({
   }
 
   return (
-    <div className="relative h-48 overflow-hidden">
+    <div className="relative h-48 overflow-hidden group">
       {imageUrl ? (
-        <img
+        <motion.img
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.4 }}
           src={imageUrl}
           alt={title}
           className="w-full h-full object-cover"
@@ -54,6 +60,13 @@ const ArticleImage = React.memo(function ArticleImage({
       ) : (
         <div className={`w-full h-full ${imageColor} flex items-center justify-center`}>
           <span className="text-gray-400">No image</span>
+        </div>
+      )}
+      {categoryName && (
+        <div className="absolute top-3 left-3">
+          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-white/80 dark:bg-gray-800/80 border border-white/20 ${categoryTextColor} shadow-lg`}>
+            {categoryName}
+          </span>
         </div>
       )}
     </div>
@@ -78,18 +91,21 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
     return (
       <div className="flex items-center mb-3 space-x-6">
         <div className="flex items-center space-x-2">
-          <div className="author-avatar">
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            className="author-avatar"
+          >
             <span className="text-white font-bold text-xs font-poppins">
               {authorInitial}
             </span>
-          </div>
-          <span className="text-sm text-gray-700 font-medium font-sans">
+          </motion.div>
+          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium font-sans">
             {authorName}
           </span>
         </div>
 
         {categoryName && (
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${categoryColor} ${categoryTextColor}`}>
+          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm bg-opacity-80 ${categoryColor} ${categoryTextColor} shadow-sm`}>
             {categoryName}
           </span>
         )}
@@ -99,12 +115,15 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
 
   return (
     <div className="flex items-center space-x-2 mb-3">
-      <div className="author-avatar">
+      <motion.div
+        whileHover={{ scale: 1.1, rotate: 5 }}
+        className="author-avatar"
+      >
         <span className="text-white font-bold text-xs font-poppins">
           {authorInitial}
         </span>
-      </div>
-      <span className="text-sm text-gray-700 font-medium font-sans">
+      </motion.div>
+      <span className="text-sm text-gray-700 dark:text-gray-300 font-medium font-sans">
         {authorName}
       </span>
     </div>
@@ -162,7 +181,7 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
       <div className="flex items-center justify-between">
         {stats}
         {publishedAt && (
-          <div className="flex items-center space-x-1 text-sm text-gray-500">
+          <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
             <Calendar className="w-4 h-4" />
             <span className="font-sans">{formatDate(publishedAt)}</span>
           </div>
@@ -172,7 +191,7 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
   }
 
   return (
-    <div className="flex items-center justify-between text-sm text-gray-500">
+    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
       {stats}
       {publishedAt && (
         <div className="flex items-center space-x-1">
@@ -228,7 +247,11 @@ const ArticleCard = React.memo(function ArticleCard({
   if (horizontal) {
     return (
       <Link href={href} className="block group w-full">
-        <article className="article-horizontal">
+        <motion.article
+          whileHover={{ x: 4 }}
+          transition={{ duration: 0.2 }}
+          className="article-horizontal"
+        >
           <div className="flex items-start space-x-6">
             <div className="flex-1">
               <ArticleMeta
@@ -239,11 +262,11 @@ const ArticleCard = React.memo(function ArticleCard({
                 horizontal={horizontal}
               />
 
-              <h2 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors font-poppins line-clamp-2">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 leading-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors font-poppins line-clamp-2">
                 {title}
               </h2>
 
-              <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-2">
+              <p className="text-gray-600 dark:text-gray-400 text-sm font-sans leading-relaxed mb-4 line-clamp-2">
                 {excerpt}
               </p>
 
@@ -266,14 +289,21 @@ const ArticleCard = React.memo(function ArticleCard({
               horizontal={horizontal}
             />
           </div>
-        </article>
+        </motion.article>
       </Link>
     );
   }
 
   return (
     <Link href={href} className="block group">
-      <article className="article-card h-full bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200">
+      <motion.article
+        whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
+        transition={{ duration: 0.3 }}
+        className="article-card h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden relative"
+      >
+        {/* Glassmorphism overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 to-orange-500/0 group-hover:from-teal-500/5 group-hover:to-orange-500/5 transition-all duration-300 pointer-events-none z-10" />
+
         <ArticleImage
           imageUrl={imageUrl}
           title={title}
@@ -284,7 +314,7 @@ const ArticleCard = React.memo(function ArticleCard({
           horizontal={horizontal}
         />
 
-        <div className="p-6">
+        <div className="p-6 relative z-20">
           <ArticleMeta
             author={author}
             categoryName={categoryName}
@@ -293,11 +323,11 @@ const ArticleCard = React.memo(function ArticleCard({
             horizontal={horizontal}
           />
 
-          <h2 className="text-lg font-bold text-gray-900 mb-2 leading-tight group-hover:text-teal-600 transition-colors font-poppins line-clamp-2">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 leading-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors font-poppins line-clamp-2">
             {title}
           </h2>
 
-          <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
             {excerpt}
           </p>
 
@@ -309,7 +339,16 @@ const ArticleCard = React.memo(function ArticleCard({
             horizontal={horizontal}
           />
         </div>
-      </article>
+
+        {/* Bottom accent line */}
+        <motion.div
+          className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-teal-500 to-orange-500"
+          initial={{ width: 0 }}
+          whileInView={{ width: '0%' }}
+          whileHover={{ width: '100%' }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.article>
     </Link>
   );
 });

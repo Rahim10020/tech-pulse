@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * A toast notification component that displays messages with auto-dismiss functionality.
@@ -32,34 +35,73 @@ export default function Toast({
     success: <CheckCircle className="w-5 h-5 text-green-500" />,
     error: <XCircle className="w-5 h-5 text-red-500" />,
     warning: <AlertCircle className="w-5 h-5 text-yellow-500" />,
-    info: <Info className="w-5 h-5 text-blue-500" />
+    info: <Info className="w-5 h-5 text-teal-500" />
   };
 
   const bgColors = {
-    success: 'bg-green-50 border-green-200',
-    error: 'bg-red-50 border-red-200',
-    warning: 'bg-yellow-50 border-yellow-200',
-    info: 'bg-blue-50 border-blue-200'
+    success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+    error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
+    warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
+    info: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800'
+  };
+
+  const progressColors = {
+    success: 'bg-green-500',
+    error: 'bg-red-500',
+    warning: 'bg-yellow-500',
+    info: 'bg-teal-500'
   };
 
   return (
-    <div className={`transition-all duration-300 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-      }`}>
-      <div className={`flex items-center p-4 rounded-lg border ${bgColors[type]} shadow-lg min-w-[300px]`}>
-        {icons[type]}
-        <span className="ml-3 text-sm font-medium text-gray-900 flex-1">
-          {message}
-        </span>
-        <button
-          onClick={() => {
-            setIsVisible(false);
-            setTimeout(onClose, 300);
-          }}
-          className="ml-3 text-gray-400 hover:text-gray-600"
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, x: 100, scale: 0.8 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: 100, scale: 0.8 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          className="relative"
         >
-          <X className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
+          <div className={`flex items-start p-4 rounded-xl border ${bgColors[type]} backdrop-blur-md shadow-xl min-w-[320px] max-w-md overflow-hidden`}>
+            {/* Icon with animation */}
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
+            >
+              {icons[type]}
+            </motion.div>
+
+            {/* Message */}
+            <div className="ml-3 flex-1">
+              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 block leading-relaxed">
+                {message}
+              </span>
+            </div>
+
+            {/* Close button */}
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                setIsVisible(false);
+                setTimeout(onClose, 300);
+              }}
+              className="ml-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </motion.button>
+
+            {/* Progress bar */}
+            <motion.div
+              initial={{ width: '100%' }}
+              animate={{ width: '0%' }}
+              transition={{ duration: duration / 1000, ease: 'linear' }}
+              className={`absolute bottom-0 left-0 h-1 ${progressColors[type]}`}
+            />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

@@ -1,5 +1,8 @@
+'use client';
+
 import { forwardRef } from 'react';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 
 /**
  * A versatile button component with support for different variants, sizes, loading states, and icons.
@@ -27,13 +30,13 @@ const Button = forwardRef(({
   icon,
   ...props
 }, ref) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+  const baseClasses = 'inline-flex items-center justify-center font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:opacity-50 disabled:pointer-events-none';
 
   const variants = {
-    primary: 'bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-500',
-    secondary: 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 focus:ring-gray-500',
-    outline: 'border border-gray-200 bg-transparent hover:bg-gray-50 focus:ring-gray-500',
-    ghost: 'text-gray-700 hover:bg-gray-100',
+    primary: 'bg-gradient-to-r from-teal-600 to-teal-500 dark:from-teal-500 dark:to-teal-600 text-white hover:from-teal-500 hover:to-teal-600 dark:hover:from-teal-600 dark:hover:to-teal-700 focus:ring-teal-500 shadow-md hover:shadow-lg',
+    secondary: 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-gray-500 shadow-sm hover:shadow-md',
+    outline: 'border-2 border-gray-300 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:ring-gray-500',
+    ghost: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
   };
 
   const sizes = {
@@ -42,10 +45,15 @@ const Button = forwardRef(({
     lg: 'px-6 py-3 text-base rounded-lg',
   };
 
+  const MotionButton = motion.button;
+
   return (
-    <button
+    <MotionButton
       ref={ref}
       disabled={disabled || isLoading}
+      whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
+      whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       className={clsx(
         baseClasses,
         variants[variant],
@@ -56,20 +64,28 @@ const Button = forwardRef(({
       {...props}
     >
       {isLoading ? (
-        <span className="flex items-center justify-center gap-2">
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center justify-center gap-2"
+        >
           <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
           {loadingText}
-        </span>
+        </motion.span>
       ) : (
-        <span className="flex items-center justify-center gap-2">
-          {icon && icon}
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center justify-center gap-2"
+        >
+          {icon && <motion.span whileHover={{ rotate: [0, -10, 10, 0] }}>{icon}</motion.span>}
           {children}
-        </span>
+        </motion.span>
       )}
-    </button>
+    </MotionButton>
   );
 });
 
