@@ -11,18 +11,32 @@ import {
   PenTool,
   Shield,
   MessageSquare,
+  X,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
 import { useSettings } from "@/hooks/useSettings";
 import { Button } from "@/components/ui/Button";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Header() {
   const { user, logout, unreadCount } = useAuth();
   const { settings } = useSettings();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -37,7 +51,18 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <motion.header
+      initial={false}
+      animate={{
+        backgroundColor: isScrolled
+          ? 'rgba(255, 255, 255, 0.95)'
+          : 'rgba(255, 255, 255, 1)',
+        boxShadow: isScrolled
+          ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          : '0 0 0 0 rgba(0, 0, 0, 0)',
+      }}
+      className="dark:bg-gray-800/95 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 backdrop-blur-md transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -51,8 +76,8 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+              className={`h6-title text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative pb-1 ${isActiveLink("/")
+                ? 'text-gray-900 dark:text-white after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 dark:after:bg-teal-400'
                 : ""
                 }`}
             >
@@ -60,8 +85,8 @@ export default function Header() {
             </Link>
             <Link
               href="/articles"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/articles")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+              className={`h6-title text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative pb-1 ${isActiveLink("/articles")
+                ? 'text-gray-900 dark:text-white after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 dark:after:bg-teal-400'
                 : ""
                 }`}
             >
@@ -69,8 +94,8 @@ export default function Header() {
             </Link>
             <Link
               href="/categories"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/categories")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+              className={`h6-title text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative pb-1 ${isActiveLink("/categories")
+                ? 'text-gray-900 dark:text-white after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 dark:after:bg-teal-400'
                 : ""
                 }`}
             >
@@ -78,8 +103,8 @@ export default function Header() {
             </Link>
             <Link
               href="/about"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/about")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+              className={`h6-title text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors relative pb-1 ${isActiveLink("/about")
+                ? 'text-gray-900 dark:text-white after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 dark:after:bg-teal-400'
                 : ""
                 }`}
             >
@@ -91,11 +116,11 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             {/* Search */}
             <div className="hidden md:block relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="bg-gray-100 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64"
+                className="bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600 w-64 transition-colors"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && e.target.value.trim()) {
                     window.location.href = `/search?q=${encodeURIComponent(e.target.value.trim())}`;
@@ -103,6 +128,9 @@ export default function Header() {
                 }}
               />
             </div>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {user ? (
               <>
@@ -148,13 +176,13 @@ export default function Header() {
                   </button>
 
                   {isProfileMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
                       {/* Informations utilisateur */}
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="h5-title text-gray-900 truncate">
+                      <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-700">
+                        <p className="h5-title text-gray-900 dark:text-gray-100 truncate">
                           {user.name}
                         </p>
-                        <p className="small-text text-gray-500">
+                        <p className="small-text text-gray-500 dark:text-gray-400">
                           {user.role === "admin"
                             ? "👑 Admin"
                             : user.role === "publisher"
@@ -165,7 +193,7 @@ export default function Header() {
 
                       <Link
                         href={`/profile/${user.id}`}
-                        className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
+                        className="flex items-center px-4 py-2 h6-title text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <User className="w-4 h-4 mr-3" />
@@ -176,7 +204,7 @@ export default function Header() {
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/create"
-                          className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
+                          className="flex items-center px-4 py-2 h6-title text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <PenTool className="w-4 h-4 mr-3" />
@@ -188,7 +216,7 @@ export default function Header() {
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/drafts"
-                          className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
+                          className="flex items-center px-4 py-2 h6-title text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <svg
@@ -211,10 +239,10 @@ export default function Header() {
                       {/* Lien Administration */}
                       {user && isAdmin(user) && (
                         <>
-                          <div className="border-t border-gray-100 my-1"></div>
+                          <div className="border-t border-gray-100 dark:border-gray-700 my-1"></div>
                           <Link
                             href="/admin/dashboard"
-                            className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
+                            className="flex items-center px-4 py-2 h6-title text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                             onClick={() => setIsProfileMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4 mr-3" />
@@ -231,17 +259,17 @@ export default function Header() {
                       {/* Lien Paramètres */}
                       <Link
                         href="/profile/edit"
-                        className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
+                        className="flex items-center px-4 py-2 h6-title text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <Settings className="w-4 h-4 mr-3" />
                         Paramètres
                       </Link>
 
-                      <div className="border-t border-gray-100 my-1"></div>
+                      <div className="border-t border-gray-100 dark:border-gray-700 my-1"></div>
                       <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
+                        className="flex items-center w-full px-4 py-2 h6-title text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                       >
                         <LogOut className="w-4 h-4 mr-3" />
                         Déconnexion
@@ -264,12 +292,89 @@ export default function Header() {
             )}
 
             {/* Mobile menu button */}
-            <button className="md:hidden p-2">
-              <Menu className="w-5 h-5" />
-            </button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              ) : (
+                <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              )}
+            </motion.button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden overflow-hidden"
+            >
+              <nav className="py-4 space-y-2 border-t border-gray-200 dark:border-gray-700 mt-4">
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/")
+                      ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  Accueil
+                </Link>
+                <Link
+                  href="/articles"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/articles")
+                      ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  Articles
+                </Link>
+                <Link
+                  href="/categories"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/categories")
+                      ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  Catégories
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/about")
+                      ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  À propos
+                </Link>
+                {!user && (
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    Contact
+                  </Link>
+                )}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </header>
+    </motion.header>
   );
 }

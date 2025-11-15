@@ -2,6 +2,7 @@
 
 import { AuthProvider } from '@/context/AuthProvider';
 import { ToastProvider } from '@/context/ToastProvider';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import MaintenanceWrapper from '@/components/layout/MaintenanceWrapper';
 /**
  * Providers component wraps the application with necessary context providers.
@@ -16,12 +17,14 @@ import MaintenanceWrapper from '@/components/layout/MaintenanceWrapper';
 
 export default function Providers({ children }) {
     return (
-        <AuthProvider>
-            <ToastProvider>
-                <MaintenanceWrapper>
-                    {children}
-                </MaintenanceWrapper>
-            </ToastProvider>
-        </AuthProvider>
+        <ThemeProvider>
+            <AuthProvider>
+                <ToastProvider>
+                    <MaintenanceWrapper>
+                        {children}
+                    </MaintenanceWrapper>
+                </ToastProvider>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
