@@ -205,7 +205,7 @@ export default function SearchPage() {
                 <div className="max-w-4xl mx-auto mb-8">
                     <div className="text-center mb-8">
                         <h1 className="h1-title text-gray-900 mb-4">
-                            Rechercher dans TechPulse
+                            Rechercher dans PixelPulse
                         </h1>
                         <p className="body-text text-gray-600">
                             Trouvez des articles, auteurs et catégories

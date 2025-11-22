@@ -19,7 +19,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { isAdmin, isPublisher, isReader } from "@/lib/auth-roles";
 import { useSettings } from "@/hooks/useSettings";
 import { Button } from "@/components/ui/Button";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Header() {
   const { user, logout, unreadCount } = useAuth();
@@ -85,8 +84,8 @@ export default function Header() {
             </Link>
             <Link
               href="/articles"
-              className={`h6-title text-gray-700 "/articles")
-                ? 'text-gray-900 ""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/articles")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                 : ""
                 }`}
             >
@@ -94,8 +93,8 @@ export default function Header() {
             </Link>
             <Link
               href="/categories"
-              className={`h6-title text-gray-700 "/categories")
-                ? 'text-gray-900 ""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/categories")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                 : ""
                 }`}
             >
@@ -103,8 +102,8 @@ export default function Header() {
             </Link>
             <Link
               href="/about"
-              className={`h6-title text-gray-700 "/about")
-                ? 'text-gray-900 ""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600 
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/about")
+                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                 : ""
                 }`}
             >
@@ -116,11 +115,11 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             {/* Search */}
             <div className="hidden md:block relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 " />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="bg-gray-100 "
+                className="bg-gray-100 text-gray-900 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64 transition-colors"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && e.target.value.trim()) {
                     window.location.href = `/search?q=${encodeURIComponent(e.target.value.trim())}`;
@@ -128,9 +127,6 @@ export default function Header() {
                 }}
               />
             </div>
-
-            {/* Theme Toggle */}
-            <ThemeToggle />
 
             {user ? (
               <>
@@ -176,13 +172,13 @@ export default function Header() {
                   </button>
 
                   {isProfileMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white ">
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                       {/* Informations utilisateur */}
-                      <div className="px-4 py-2 border-b border-gray-100 ">
-                        <p className="h5-title text-gray-900 ">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="h5-title text-gray-900">
                           {user.name}
                         </p>
-                        <p className="small-text text-gray-500 ">
+                        <p className="small-text text-gray-500">
                           {user.role === "admin"
                             ? "👑 Admin"
                             : user.role === "publisher"
@@ -193,7 +189,7 @@ export default function Header() {
 
                       <Link
                         href={`/profile/${user.id}`}
-                        className="flex items-center px-4 py-2 h6-title text-gray-700 "
+                        className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <User className="w-4 h-4 mr-3" />
@@ -204,7 +200,7 @@ export default function Header() {
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/create"
-                          className="flex items-center px-4 py-2 h6-title text-gray-700 "
+                          className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <PenTool className="w-4 h-4 mr-3" />
@@ -216,7 +212,7 @@ export default function Header() {
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
                           href="/drafts"
-                          className="flex items-center px-4 py-2 h6-title text-gray-700 "
+                          className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
                           <svg
@@ -242,7 +238,7 @@ export default function Header() {
                           <div className="border-t border-gray-100 "></div>
                           <Link
                             href="/admin/dashboard"
-                            className="flex items-center px-4 py-2 h6-title text-gray-700 "
+                            className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                             onClick={() => setIsProfileMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4 mr-3" />
@@ -259,7 +255,7 @@ export default function Header() {
                       {/* Lien Paramètres */}
                       <Link
                         href="/profile/edit"
-                        className="flex items-center px-4 py-2 h6-title text-gray-700 "
+                        className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
                         <Settings className="w-4 h-4 mr-3" />
@@ -295,12 +291,12 @@ export default function Header() {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 "
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               {isMobileMenuOpen ? (
-                <X className="w-5 h-5 text-gray-700 " />
+                <X className="w-5 h-5 text-gray-700" />
               ) : (
-                <Menu className="w-5 h-5 text-gray-700 " />
+                <Menu className="w-5 h-5 text-gray-700" />
               )}
             </motion.button>
           </div>
@@ -316,7 +312,7 @@ export default function Header() {
               transition={{ duration: 0.3 }}
               className="md:hidden overflow-hidden"
             >
-              <nav className="py-4 space-y-2 border-t border-gray-200 ">
+              <nav className="py-4 space-y-2 border-t border-gray-200 mt-4">
                 <Link
                   href="/"
                   onClick={() => setIsMobileMenuOpen(false)}
