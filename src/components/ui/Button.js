@@ -30,13 +30,13 @@ const Button = forwardRef(({
   icon,
   ...props
 }, ref) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 disabled:opacity-50 disabled:pointer-events-none';
+  const baseClasses = 'inline-flex items-center justify-center font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
 
   const variants = {
-    primary: 'bg-gradient-to-r from-teal-600 to-teal-500 dark:from-teal-500 dark:to-teal-600 text-white hover:from-teal-500 hover:to-teal-600 dark:hover:from-teal-600 dark:hover:to-teal-700 focus:ring-teal-500 shadow-md hover:shadow-lg',
-    secondary: 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-gray-500 shadow-sm hover:shadow-md',
-    outline: 'border-2 border-gray-300 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:ring-gray-500',
-    ghost: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
+    primary: 'bg-gradient-to-r from-teal-600 to-teal-500 text-white hover:from-teal-500 hover:to-teal-600 focus:ring-teal-500 shadow-md hover:shadow-lg',
+    secondary: 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 focus:ring-gray-500 shadow-sm hover:shadow-md',
+    outline: 'border-2 border-gray-300 bg-transparent hover:bg-gray-50 text-gray-700 focus:ring-gray-500',
+    ghost: 'text-gray-700 hover:bg-gray-100',
   };
 
   const sizes = {

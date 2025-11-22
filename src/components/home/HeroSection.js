@@ -38,7 +38,7 @@ export default function HeroSection() {
     <motion.section
       ref={heroRef}
       style={{ y, opacity }}
-      className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-teal-50/30 to-orange-50/20 dark:from-gray-900 dark:via-teal-900/20 dark:to-orange-900/10 py-20 md:py-32"
+      className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-teal-50/30 to-orange-50/20"
     >
       {/* Animated gradient orbs */}
       <div className="absolute inset-0 overflow-hidden">
@@ -53,7 +53,7 @@ export default function HeroSection() {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="absolute top-0 left-1/4 w-96 h-96 bg-teal-400/20 dark:bg-teal-500/10 rounded-full blur-3xl"
+          className="absolute top-0 left-1/4 w-96 h-96 bg-teal-400/20"
         />
         <motion.div
           animate={{
@@ -66,7 +66,7 @@ export default function HeroSection() {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-400/20 dark:bg-orange-500/10 rounded-full blur-3xl"
+          className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-400/20"
         />
       </div>
 
@@ -75,7 +75,7 @@ export default function HeroSection() {
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-teal-500/20 dark:bg-teal-400/20 rounded-full"
+            className="absolute w-2 h-2 bg-teal-500/20"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -102,10 +102,10 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 dark:border-gray-700"
+            className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/80"
           >
             <div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse" />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-medium text-gray-700">
               La plateforme tech de référence
             </span>
           </motion.div>
@@ -117,11 +117,11 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-5xl md:text-7xl font-bold mb-6 font-poppins"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-teal-600 to-orange-500 dark:from-gray-100 dark:via-teal-400 dark:to-orange-400">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-teal-600 to-orange-500">
               Explorez le futur
             </span>
             <br />
-            <span className="text-gray-900 dark:text-gray-100">
+            <span className="text-gray-900">
               de la technologie
             </span>
           </motion.h1>
@@ -131,7 +131,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-gray-600"
           >
             Découvrez des articles de qualité sur l'IA, le développement web,
             la cybersécurité et bien plus encore.
@@ -158,7 +158,7 @@ export default function HeroSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-full font-semibold text-lg shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
+                className="px-8 py-4 bg-white"
               >
                 En savoir plus
               </motion.button>
@@ -179,17 +179,17 @@ export default function HeroSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+                className="bg-white/60"
               >
                 <div className="flex items-center justify-center mb-3">
-                  <div className="p-3 bg-gradient-to-br from-teal-500 to-teal-600 dark:from-teal-400 dark:to-teal-500 rounded-xl">
+                  <div className="p-3 bg-gradient-to-br from-teal-500 to-teal-600">
                     <stat.icon className="w-6 h-6 text-white" />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+                <div className="text-3xl font-bold text-gray-900">
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                <div className="text-sm text-gray-600">
                   {stat.label}
                 </div>
               </motion.div>
@@ -201,7 +201,7 @@ export default function HeroSection() {
       {/* Wave separator */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg
-          className="w-full h-12 md:h-24 text-gray-50 dark:text-gray-900"
+          className="w-full h-12 md:h-24 text-gray-50"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >

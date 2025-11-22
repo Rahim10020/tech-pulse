@@ -36,7 +36,7 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50">
         <div className="text-center">
           <LoadingSpinner />
         </div>
@@ -45,7 +45,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <Header />
 
       {/* Hero Section */}
@@ -57,7 +57,7 @@ export default function HomePage() {
           className="mb-8"
         />
 
-        <h2 className="text-2xl font-poppins font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h2 className="text-2xl font-poppins font-bold text-gray-900">
           Articles récents
         </h2>
 
@@ -92,7 +92,7 @@ export default function HomePage() {
 
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8 mb-12">
-          <Link href="/articles" className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 underline font-semibold transition-colors">
+          <Link href="/articles" className="text-teal-600">
             Voir tous les articles...
           </Link>
         </div>

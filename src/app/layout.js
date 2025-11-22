@@ -26,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fr" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
-      <body className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300" suppressHydrationWarning>
+      <body className="bg-gray-50 text-gray-900 antialiased" suppressHydrationWarning>
         <Providers>
           {children}
           <Analytics />

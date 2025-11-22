@@ -64,7 +64,7 @@ const ArticleImage = React.memo(function ArticleImage({
       )}
       {categoryName && (
         <div className="absolute top-3 left-3">
-          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-white/80 dark:bg-gray-800/80 border border-white/20 ${categoryTextColor} shadow-lg`}>
+          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-white/80 border border-white/20 ${categoryTextColor} shadow-lg`}>
             {categoryName}
           </span>
         </div>
@@ -99,7 +99,7 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
               {authorInitial}
             </span>
           </motion.div>
-          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium font-sans">
+          <span className="text-sm text-gray-700 font-medium font-sans">
             {authorName}
           </span>
         </div>
@@ -123,7 +123,7 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
           {authorInitial}
         </span>
       </motion.div>
-      <span className="text-sm text-gray-700 dark:text-gray-300 font-medium font-sans">
+      <span className="text-sm text-gray-700 font-medium font-sans">
         {authorName}
       </span>
     </div>
@@ -181,7 +181,7 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
       <div className="flex items-center justify-between">
         {stats}
         {publishedAt && (
-          <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center space-x-1 text-sm text-gray-500">
             <Calendar className="w-4 h-4" />
             <span className="font-sans">{formatDate(publishedAt)}</span>
           </div>
@@ -191,7 +191,7 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
   }
 
   return (
-    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+    <div className="flex items-center justify-between text-sm text-gray-500">
       {stats}
       {publishedAt && (
         <div className="flex items-center space-x-1">
@@ -262,11 +262,11 @@ const ArticleCard = React.memo(function ArticleCard({
                 horizontal={horizontal}
               />
 
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 leading-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors font-poppins line-clamp-2">
+              <h2 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-teal-600 transition-colors font-poppins line-clamp-2">
                 {title}
               </h2>
 
-              <p className="text-gray-600 dark:text-gray-400 text-sm font-sans leading-relaxed mb-4 line-clamp-2">
+              <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-2">
                 {excerpt}
               </p>
 
@@ -299,7 +299,7 @@ const ArticleCard = React.memo(function ArticleCard({
       <motion.article
         whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
         transition={{ duration: 0.3 }}
-        className="article-card h-full bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden relative"
+        className="article-card h-full bg-white rounded-lg border border-gray-200 overflow-hidden relative"
       >
         {/* Glassmorphism overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 to-orange-500/0 group-hover:from-teal-500/5 group-hover:to-orange-500/5 transition-all duration-300 pointer-events-none z-10" />
@@ -323,11 +323,11 @@ const ArticleCard = React.memo(function ArticleCard({
             horizontal={horizontal}
           />
 
-          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 leading-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors font-poppins line-clamp-2">
+          <h2 className="text-lg font-bold text-gray-900 mb-2 leading-tight group-hover:text-teal-600 transition-colors font-poppins line-clamp-2">
             {title}
           </h2>
 
-          <p className="text-gray-600 dark:text-gray-400 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
+          <p className="text-gray-600 text-sm font-sans leading-relaxed mb-4 line-clamp-3">
             {excerpt}
           </p>
 

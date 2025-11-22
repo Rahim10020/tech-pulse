@@ -39,10 +39,10 @@ export default function Toast({
   };
 
   const bgColors = {
-    success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
-    error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
-    warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
-    info: 'bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800'
+    success: 'bg-green-50 border-green-200',
+    error: 'bg-red-50 border-red-200',
+    warning: 'bg-yellow-50 border-yellow-200',
+    info: 'bg-teal-50 border-teal-200'
   };
 
   const progressColors = {
@@ -74,7 +74,7 @@ export default function Toast({
 
             {/* Message */}
             <div className="ml-3 flex-1">
-              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 block leading-relaxed">
+              <span className="text-sm font-semibold text-gray-900 block leading-relaxed">
                 {message}
               </span>
             </div>
@@ -87,7 +87,7 @@ export default function Toast({
                 setIsVisible(false);
                 setTimeout(onClose, 300);
               }}
-              className="ml-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="ml-3 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <X className="w-4 h-4" />
             </motion.button>

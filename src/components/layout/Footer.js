@@ -44,7 +44,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors">
+    <footer className="bg-white">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
@@ -57,7 +57,7 @@ export default function Footer() {
                 className="h-10"
               />
             </Link>
-            <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-md">
+            <p className="text-gray-600">
               Votre source d'information tech de confiance. Découvrez les dernières tendances en IA,
               développement web, cybersécurité et plus encore.
             </p>
@@ -72,7 +72,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-teal-500 hover:text-white dark:hover:bg-teal-600 transition-colors"
+                  className="w-10 h-10 rounded-full bg-gray-100"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -84,7 +84,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 font-poppins">
+              <h3 className="font-semibold text-gray-900">
                 {title}
               </h3>
               <ul className="space-y-2">
@@ -92,7 +92,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors inline-block"
+                      className="text-gray-600"
                     >
                       <motion.span whileHover={{ x: 4 }} className="inline-block">
                         {link.name}
@@ -106,15 +106,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 border-t border-gray-200 dark:border-gray-800">
+        <div className="pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+            <p className="text-sm text-gray-600">
               © {new Date().getFullYear()} PixelPulse. Made with
               <Heart className="w-4 h-4 text-red-500 fill-red-500 inline" />
               by our team
             </p>
 
-            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-4 text-sm text-gray-600">
               <span>Version 1.0.0</span>
               <span className="w-1 h-1 bg-gray-400 rounded-full" />
               <span>Status: <span className="text-green-500">Operational</span></span>
@@ -130,7 +130,7 @@ export default function Footer() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-full shadow-lg flex items-center justify-center z-50 transition-colors"
+          className="fixed bottom-8 right-8 w-12 h-12 bg-teal-600 hover:bg-teal-700"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           aria-label="Retour en haut"

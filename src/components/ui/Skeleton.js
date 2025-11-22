@@ -8,7 +8,7 @@
 export default function Skeleton({ className = "", ...props }) {
     return (
         <div
-            className={`animate-shimmer bg-gray-200 dark:bg-gray-700 rounded ${className}`}
+            className={`animate-shimmer bg-gray-200 rounded ${className}`}
             {...props}
         />
     );
@@ -24,7 +24,7 @@ export default function Skeleton({ className = "", ...props }) {
 export function ArticleCardSkeleton({ horizontal = false }) {
     if (horizontal) {
         return (
-            <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-8 transition-colors">
+            <div className="bg-white border-b border-gray-200 p-8 transition-colors">
                 <div className="flex items-start space-x-6">
                     <div className="flex-1">
                         <div className="flex items-center mb-3 space-x-3">
@@ -46,7 +46,7 @@ export function ArticleCardSkeleton({ horizontal = false }) {
     }
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden transition-colors">
             <Skeleton className="h-48 w-full" />
             <div className="p-6">
                 <div className="flex items-center space-x-2 mb-3">
@@ -75,7 +75,7 @@ export function ArticleCardSkeleton({ horizontal = false }) {
  */
 export function CategoryCardSkeleton() {
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 transition-colors">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 transition-colors">
             <Skeleton className="w-12 h-12 mb-4 rounded-xl" />
             <Skeleton className="h-5 w-2/3 mb-2 rounded-lg" />
             <Skeleton className="h-4 w-full mb-2 rounded-lg" />
