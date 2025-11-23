@@ -42,7 +42,7 @@ export default function UserProfile({ user, articles }) {
     } finally {
       setLoading(false);
     }
-  }, [user.id]);
+  }, [user.id, activeTab]);
 
   // Charger les likes de l'utilisateur
   const loadUserLikes = useCallback(async () => {
@@ -59,7 +59,7 @@ export default function UserProfile({ user, articles }) {
     } finally {
       setLoading(false);
     }
-  }, [user.id]);
+  }, [user.id, activeTab]);
 
   useEffect(() => {
     if (activeTab === "comments") {
@@ -409,7 +409,7 @@ export default function UserProfile({ user, articles }) {
                       Aucun article publi&eacute;
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n'a pas encore publi&eacute; d'articles.
+                      Cet utilisateur n&apos;a pas encore publié d&apos;articles.
                     </p>
                   </div>
                 )}
@@ -448,7 +448,7 @@ export default function UserProfile({ user, articles }) {
                             {comment.content}
                           </p>
                           <div className="text-sm text-gray-600">
-                            Sur l'article:{" "}
+                            Sur l&apos;article:{" "}
                             <Link
                               href={`/articles/${comment.article?.slug}`}
                               className="text-teal-600 hover:text-teal-700"
@@ -467,7 +467,7 @@ export default function UserProfile({ user, articles }) {
                       Aucun commentaire
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n'a pas encore comment&eacute; d'articles.
+                      Cet utilisateur n&apos;a pas encore commenté d&apos;articles.
                     </p>
                   </div>
                 )}
@@ -522,7 +522,7 @@ export default function UserProfile({ user, articles }) {
                       Aucun like
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n'a pas encore lik&eacute; d'articles.
+                      Cet utilisateur n&apos;a pas encore liké d&apos;articles.
                     </p>
                   </div>
                 )}

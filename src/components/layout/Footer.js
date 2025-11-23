@@ -92,7 +92,7 @@ export default function Footer() {
               </motion.div>
             </Link>
             <p className="text-gray-600 leading-relaxed">
-              Votre source d'information tech de confiance. Découvrez les dernières
+              Votre source d&apos;information tech de confiance. Découvrez les dernières
               tendances en IA, développement web, cybersécurité et plus encore.
             </p>
             <div className="flex space-x-4 pt-2">

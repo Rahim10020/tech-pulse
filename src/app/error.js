@@ -21,18 +21,18 @@ export default function Error({ error, reset }) {
 
         {/* Titre - Utilisation de h1-title */}
         <h1 className="h1-title text-gray-900 mb-4">
-          Oups ! Quelque chose s'est mal passé
+          Oups ! Quelque chose s&apos;est mal passé
         </h1>
 
         {/* Message d'erreur - Utilisation de body-text */}
         <p className="body-text text-gray-600 mb-8">
-          Nous rencontrons un problème technique. Veuillez réessayer ou retourner à la page d'accueil.
+          Nous rencontrons un problème technique. Veuillez réessayer ou retourner à la page d&apos;accueil.
         </p>
 
         {/* Détails de l'erreur en mode développement */}
         {process.env.NODE_ENV === 'development' && error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
-            <h3 className="h6-title text-red-800 mb-2">Détails de l'erreur :</h3>
+            <h3 className="h6-title text-red-800 mb-2">Détails de l&apos;erreur :</h3>
             <pre className="small-text text-red-700 overflow-auto">
               {error.message || 'Erreur inconnue'}
             </pre>
@@ -54,7 +54,7 @@ export default function Error({ error, reset }) {
             className="btn-secondary flex items-center justify-center gap-2"
           >
             <Home className="w-4 h-4" />
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Link>
         </div>
 

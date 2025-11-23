@@ -118,7 +118,7 @@ export default function DraftFilters({
               </label>
               <select className="w-full input-field">
                 <option value="all">Toute période</option>
-                <option value="today">Aujourd'hui</option>
+                <option value="today">Aujourd&apos;hui</option>
                 <option value="week">Cette semaine</option>
                 <option value="month">Ce mois</option>
                 <option value="quarter">Ce trimestre</option>
@@ -188,8 +188,8 @@ export default function DraftFilters({
 
             {searchQuery.trim() && (
               <span className="badge badge-primary">
-                Recherche: "{searchQuery.substring(0, 20)}
-                {searchQuery.length > 20 ? "..." : ""}
+                Recherche: &quot;{searchQuery.substring(0, 20)}
+                {searchQuery.length > 20 ? "..." : ""}&quot;
                 <button
                   onClick={() => setSearchQuery("")}
                   className="ml-2 text-teal-600 hover:text-teal-800"

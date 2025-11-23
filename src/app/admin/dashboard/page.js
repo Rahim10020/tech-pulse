@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
 import { useAuth } from "@/context/AuthProvider";
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const loadMessages = async () => {
+  const loadMessages = useCallback(async () => {
     setMessagesLoading(true);
     try {
       const response = await fetch("/api/contact", {
@@ -168,9 +168,9 @@ export default function AdminDashboard() {
     } finally {
       setMessagesLoading(false);
     }
-  };
+  }, [showToast]);
 
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setUsersLoading(true);
     try {
       const params = new URLSearchParams({
@@ -189,9 +189,9 @@ export default function AdminDashboard() {
     } finally {
       setUsersLoading(false);
     }
-  };
+  }, [searchTerm, roleFilter, showToast]);
 
-  const loadSettings = async () => {
+  const loadSettings = useCallback(async () => {
     try {
       const response = await fetch("/api/admin/settings", {
         headers: {
@@ -199,12 +199,30 @@ export default function AdminDashboard() {
         },
       });
       if (response.ok) {
-        setSettings((await response.json()).settings || settings);
+        const data = await response.json();
+        setSettings(data.settings || {
+          siteName: "pixelpulse",
+          siteDescription: "",
+          siteUrl: "",
+          contactEmail: "",
+          contactPhone: "",
+          contactAddress: "",
+          socialTwitter: "",
+          socialLinkedin: "",
+          socialGithub: "",
+          analyticsCode: "",
+          seoTitle: "",
+          seoDescription: "",
+          seoKeywords: "",
+          maintenanceMode: false,
+          allowComments: true,
+          allowRegistration: true,
+        });
       }
     } catch (error) {
       console.error("Error loading settings:", error);
     }
-  };
+  }, []);
 
   const toggleMessageRead = async (messageId, isRead) => {
     try {
@@ -1011,7 +1029,7 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Autoriser l'inscription</label>
+                      <label className="h6-title ml-2">Autoriser l&apos;inscription</label>
                     </div>
                   </div>
                 </div>

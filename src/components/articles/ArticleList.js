@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ArticleCard from './ArticleCard';
 import { ArticleCardSkeleton } from '../ui';
 
@@ -22,11 +22,7 @@ export default function ArticleList({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    loadArticles();
-  }, [category, currentPage]);
-
-  const loadArticles = async () => {
+  const loadArticles = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/articles?type=all&page=${currentPage}&limit=6&category=${category}`);
@@ -50,7 +46,11 @@ export default function ArticleList({
     } finally {
       setLoading(false);
     }
-  };
+  }, [category, currentPage]);
+
+  useEffect(() => {
+    loadArticles();
+  }, [loadArticles]);
 
   if (loading) {
     return (

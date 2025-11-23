@@ -156,7 +156,7 @@ export default function TiptapEditor({
   if (!editor) {
     return (
       <div className="border border-gray-200 rounded-lg p-4 min-h-[400px] flex items-center justify-center">
-        <div className="text-gray-500">Chargement de l'éditeur...</div>
+        <div className="text-gray-500">Chargement de l&apos;éditeur...</div>
       </div>
     );
   }
