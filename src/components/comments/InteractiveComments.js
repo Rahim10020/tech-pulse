@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/context/ToastProvider';
 import { useSettings } from '@/hooks/useSettings';
@@ -40,18 +40,7 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
     const [commentToDelete, setCommentToDelete] = useState(null);
 
 
-    // Charger les commentaires
-    useEffect(() => {
-        loadComments();
-    }, [articleSlug, sortBy]);
-
-    // Mettre à jour le compteur de commentaires quand les commentaires changent
-    useEffect(() => {
-        const totalCount = calculateTotalComments(comments);
-        onCommentsCountChange && onCommentsCountChange(totalCount);
-    }, [comments, onCommentsCountChange]);
-
-    const loadComments = async () => {
+    const loadComments = useCallback(async () => {
         try {
             const response = await fetch(`/api/articles/${articleSlug}/comments?sort=${sortBy}`);
             if (response.ok) {
@@ -61,7 +50,18 @@ export default function InteractiveComments({ articleSlug, initialComments = [],
         } catch (error) {
             console.error('Erreur chargement commentaires:', error);
         }
-    };
+    }, [articleSlug, sortBy]);
+
+    // Charger les commentaires
+    useEffect(() => {
+        loadComments();
+    }, [loadComments]);
+
+    // Mettre à jour le compteur de commentaires quand les commentaires changent
+    useEffect(() => {
+        const totalCount = calculateTotalComments(comments);
+        onCommentsCountChange && onCommentsCountChange(totalCount);
+    }, [comments, onCommentsCountChange]);
 
     // Fonction pour calculer le nombre total de commentaires
     const calculateTotalComments = (commentsArray) => {

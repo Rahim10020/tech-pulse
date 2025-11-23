@@ -189,7 +189,7 @@ export default function DraftFilters({
             {searchQuery.trim() && (
               <span className="badge badge-primary">
                 Recherche: "{searchQuery.substring(0, 20)}
-                {searchQuery.length > 20 ? "..." : ""}"
+                {searchQuery.length > 20 ? "..." : ""}
                 <button
                   onClick={() => setSearchQuery("")}
                   className="ml-2 text-teal-600 hover:text-teal-800"
@@ -218,8 +218,8 @@ export default function DraftFilters({
                 {sortBy === "created"
                   ? "Date de création"
                   : sortBy === "title"
-                  ? "Titre"
-                  : "Mots"}
+                    ? "Titre"
+                    : "Mots"}
                 <button
                   onClick={() => setSortBy("updated")}
                   className="ml-2 text-purple-600 hover:text-purple-800"

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Bell, MessageSquare, Search, Menu, X, User, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
@@ -107,7 +108,7 @@ export default function Navigation() {
                   className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400"
                 >
                   {user.avatar ? (
-                    <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                    <Image src={user.avatar} alt={user.name} width={40} height={40} className="w-full h-full rounded-full object-cover" />
                   ) : (
                     <span className="text-white font-medium text-sm">
                       {user.name?.charAt(0) || user.email?.charAt(0) || 'U'}

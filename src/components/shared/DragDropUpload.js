@@ -2,9 +2,10 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import Image from "next/image";
 import {
   Upload,
-  Image,
+  Image as ImageIcon,
   Video,
   File,
   X,
@@ -16,11 +17,11 @@ import {
 } from "lucide-react";
 
 const ACCEPTED_TYPES = {
-  "image/jpeg": { category: "image", icon: Image },
-  "image/jpg": { category: "image", icon: Image },
-  "image/png": { category: "image", icon: Image },
-  "image/webp": { category: "image", icon: Image },
-  "image/gif": { category: "gif", icon: Image },
+  "image/jpeg": { category: "image", icon: ImageIcon },
+  "image/jpg": { category: "image", icon: ImageIcon },
+  "image/png": { category: "image", icon: ImageIcon },
+  "image/webp": { category: "image", icon: ImageIcon },
+  "image/gif": { category: "gif", icon: ImageIcon },
   "video/mp4": { category: "video", icon: Video },
   "video/webm": { category: "video", icon: Video },
   "video/ogg": { category: "video", icon: Video },
@@ -107,7 +108,7 @@ export default function DragDropUpload({
         uploadFiles(validFiles);
       }
     },
-    [maxFiles, validateFile, onError]
+    [maxFiles, validateFile, onError, generatePreviews, uploadFiles]
   );
 
   // Générer les aperçus
@@ -160,11 +161,11 @@ export default function DragDropUpload({
               prev.map((item) =>
                 item.id === fileItem.id
                   ? {
-                      ...item,
-                      status: "success",
-                      progress: 100,
-                      uploadData: data,
-                    }
+                    ...item,
+                    status: "success",
+                    progress: 100,
+                    uploadData: data,
+                  }
                   : item
               )
             );
@@ -197,7 +198,7 @@ export default function DragDropUpload({
 
       setIsUploading(false);
     },
-    [onFilesUploaded, onError]
+    [onFilesUploaded, onError, insertMediaIntoTextarea]
   );
 
   // Insérer le média dans le textarea
@@ -388,9 +389,11 @@ function FileUploadItem({ item, onRemove }) {
       {/* Aperçu ou icône */}
       <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
         {item.preview ? (
-          <img
+          <Image
             src={item.preview}
             alt={item.file.name}
+            width={48}
+            height={48}
             className="w-full h-full object-cover"
           />
         ) : (

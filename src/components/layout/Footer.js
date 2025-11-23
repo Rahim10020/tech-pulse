@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Github, Twitter, Linkedin, Mail, Heart, ArrowUp, Rocket } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -81,9 +82,11 @@ export default function Footer() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <img
+                <Image
                   src="/logo.png"
                   alt="PixelPulse Logo"
+                  width={40}
+                  height={40}
                   className="h-10"
                 />
               </motion.div>

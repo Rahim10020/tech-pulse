@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     } else {
       setUnreadCount(0);
     }
-  }, [user]);
+  }, [user, fetchUnreadCount]);
 
   // Polling for unread messages
   useEffect(() => {
@@ -44,7 +44,7 @@ export function AuthProvider({ children }) {
     }, 30000); // 30 seconds
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user, fetchUnreadCount]);
 
   const checkAuth = async () => {
     try {

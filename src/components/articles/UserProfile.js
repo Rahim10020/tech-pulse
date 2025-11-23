@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthProvider';
 import { Shield, MapPin, Globe, ExternalLink, Calendar, Twitter, Linkedin, Github, Settings, LogOut, Eye, Heart, MessageCircle } from 'lucide-react';
 
@@ -27,7 +28,7 @@ export default function UserProfile({ user, articles }) {
   };
 
   // Charger les commentaires de l'utilisateur
-  const loadUserComments = async () => {
+  const loadUserComments = useCallback(async () => {
     if (activeTab !== "comments") return;
     setLoading(true);
     try {
@@ -41,10 +42,10 @@ export default function UserProfile({ user, articles }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user.id]);
 
   // Charger les likes de l'utilisateur
-  const loadUserLikes = async () => {
+  const loadUserLikes = useCallback(async () => {
     if (activeTab !== "likes") return;
     setLoading(true);
     try {
@@ -58,7 +59,7 @@ export default function UserProfile({ user, articles }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user.id]);
 
   useEffect(() => {
     if (activeTab === "comments") {
@@ -66,7 +67,7 @@ export default function UserProfile({ user, articles }) {
     } else if (activeTab === "likes") {
       loadUserLikes();
     }
-  }, [activeTab]);
+  }, [activeTab, loadUserComments, loadUserLikes]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -380,9 +381,11 @@ export default function UserProfile({ user, articles }) {
                         {/* Image d'aperçu de l'article */}
                         <div className="w-24 h-24 rounded-lg ml-6 flex-shrink-0 overflow-hidden">
                           {article.imageUrl ? (
-                            <img
+                            <Image
                               src={article.imageUrl}
                               alt={article.title}
+                              width={96}
+                              height={96}
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -403,10 +406,10 @@ export default function UserProfile({ user, articles }) {
                       <Eye className="w-8 h-8 text-gray-400" />
                     </div>
                     <h3 className="h3-title text-gray-900 mb-2">
-                      Aucun article publié
+                      Aucun article publi&eacute;
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n'a pas encore publié d'articles.
+                      Cet utilisateur n'a pas encore publi&eacute; d'articles.
                     </p>
                   </div>
                 )}
@@ -464,7 +467,7 @@ export default function UserProfile({ user, articles }) {
                       Aucun commentaire
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n'a pas encore commenté d'articles.
+                      Cet utilisateur n'a pas encore comment&eacute; d'articles.
                     </p>
                   </div>
                 )}
@@ -519,7 +522,7 @@ export default function UserProfile({ user, articles }) {
                       Aucun like
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n'a pas encore liké d'articles.
+                      Cet utilisateur n'a pas encore lik&eacute; d'articles.
                     </p>
                   </div>
                 )}

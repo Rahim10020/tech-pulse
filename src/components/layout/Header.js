@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Search,
@@ -66,8 +67,10 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/">
-            <img src="/logo.png"
+            <Image src="/logo.png"
               alt={`Logo ${settings.siteName || 'pixelpulse'}`}
+              width={40}
+              height={40}
               className="h-10" />
           </Link>
 
@@ -317,8 +320,8 @@ export default function Header() {
                   href="/"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/")
-                      ? "bg-teal-50 "
-                      : "text-gray-700 "
+                    ? "bg-teal-50 "
+                    : "text-gray-700 "
                     }`}
                 >
                   Accueil
@@ -327,8 +330,8 @@ export default function Header() {
                   href="/articles"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/articles")
-                      ? "bg-teal-50 "
-                      : "text-gray-700 "
+                    ? "bg-teal-50 "
+                    : "text-gray-700 "
                     }`}
                 >
                   Articles
@@ -337,8 +340,8 @@ export default function Header() {
                   href="/categories"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/categories")
-                      ? "bg-teal-50 "
-                      : "text-gray-700 "
+                    ? "bg-teal-50 "
+                    : "text-gray-700 "
                     }`}
                 >
                   Catégories
@@ -347,8 +350,8 @@ export default function Header() {
                   href="/about"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/about")
-                      ? "bg-teal-50 "
-                      : "text-gray-700 "
+                    ? "bg-teal-50 "
+                    : "text-gray-700 "
                     }`}
                 >
                   À propos
