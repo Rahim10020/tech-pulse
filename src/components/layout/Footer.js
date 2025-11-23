@@ -76,17 +76,17 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block">
-              <div className="flex items-center space-x-2 group">
-                <motion.div
-                  whileHover={{ rotate: 10, scale: 1.1 }}
-                  className="p-2 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg shadow-md"
-                >
-                  <Rocket className="w-5 h-5 text-white" />
-                </motion.div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-teal-600 bg-clip-text text-transparent">
-                  PixelPulse
-                </span>
-              </div>
+              <motion.div
+                className="flex items-center space-x-2 group"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <img
+                  src="/logo.png"
+                  alt="PixelPulse Logo"
+                  className="h-10"
+                />
+              </motion.div>
             </Link>
             <p className="text-gray-600 leading-relaxed">
               Votre source d'information tech de confiance. Découvrez les dernières
@@ -99,7 +99,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 text-gray-500 hover:text-white hover:bg-teal-100 rounded-full transition-all duration-300"
+                  className="p-2 text-gray-500 hover:text-[#111111] hover:bg-teal-100 rounded-full transition-all duration-300"
                   whileHover={{ y: -3, scale: 1.1, backgroundColor: 'rgba(13, 148, 136, 0.3)' }}
                   whileTap={{ scale: 0.9 }}
                   variants={item}
