@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from "react";
 import Header from "@/components/layout/Header";
+import Image from "next/image";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useToast } from "@/context/ToastProvider";
 import { useSettings } from "@/hooks/useSettings";
@@ -90,11 +91,13 @@ export default function ContactPage() {
     return (
       <div className="relative h-full w-full">
         {images.map((src, index) => (
-          <img
+          <Image
             key={index}
+            fill
             src={src}
             alt={`Image ${index + 1}`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+            style={{ objectFit: 'cover' }}
+            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
               }`}
           />
         ))}

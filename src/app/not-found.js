@@ -6,6 +6,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Search, Home, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -16,8 +17,10 @@ export default function NotFound() {
       <div className="max-w-md w-full text-center">
         {/* Logo pixelpulse */}
         <div className="mb-8">
-          <img src="/logo.png"
+          <Image src="/logo.png"
             alt="Logo pixelpulse"
+            width={40}
+            height={40}
             className="h-10" />
         </div>
 

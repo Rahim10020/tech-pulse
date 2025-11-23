@@ -182,7 +182,7 @@ export default function CreateArticlePage() {
       }
     }
     fetchCategories();
-  }, []);
+  }, [error]);
 
   // Mettre à jour automatiquement le temps de lecture
   useEffect(() => {
@@ -204,7 +204,7 @@ export default function CreateArticlePage() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [formData.title]);
+  }, [formData.title, handleSaveDraft]);
 
   // Avertir avant de quitter si changements non sauvegardés
   useEffect(() => {

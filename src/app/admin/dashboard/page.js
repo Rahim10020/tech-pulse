@@ -104,7 +104,7 @@ export default function AdminDashboard() {
       loadSettings();
       loadRecentContent();
     }
-  }, [user]);
+  }, [user, loadSettings]);
 
   useEffect(() => {
     if (user && isAdmin(user)) {
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
         loadUsers();
       }
     }
-  }, [activeTab, user, searchTerm, roleFilter]);
+  }, [activeTab, user, searchTerm, roleFilter, loadMessages, loadUsers]);
 
   const loadStats = async () => {
     try {

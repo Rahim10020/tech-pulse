@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic';
 const { useState, useEffect, useCallback } = require('react');
 const { useSearchParams, useRouter } = require('next/navigation');
 const Header = require('@/components/layout/Header').default;
+const Image = require('next/image').default;
 const {
     Search,
     Filter,
@@ -126,7 +127,7 @@ export default function SearchPage() {
     useEffect(() => {
         performSearch(debouncedQuery, 1);
         setCurrentPage(1);
-    }, [debouncedQuery, activeTab, filters]);
+    }, [debouncedQuery, activeTab, filters, performSearch]);
 
     // Fonction pour les suggestions en temps réel
     const fetchSuggestions = useCallback(async (searchQuery) => {
@@ -533,9 +534,11 @@ function SearchArticleCard({ article, query }) {
         <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-start space-x-4">
                 {article.imageUrl ? (
-                    <img
+                    <Image
                         src={article.imageUrl}
                         alt={article.title}
+                        width={64}
+                        height={64}
                         className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
                     />
                 ) : (

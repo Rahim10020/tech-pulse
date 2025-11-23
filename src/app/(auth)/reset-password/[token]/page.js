@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Input } from '@/components/ui/Input';
 
 export default function ResetPasswordPage() {
@@ -76,8 +77,10 @@ export default function ResetPasswordPage() {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/">
-            <img src="/logo.png"
+            <Image src="/logo.png"
               alt="Logo pixelpulse"
+              width={40}
+              height={40}
               className="h-10" />
           </Link>
         </div>
