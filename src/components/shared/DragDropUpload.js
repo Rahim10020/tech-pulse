@@ -319,7 +319,7 @@ export default function DragDropUpload({
         <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-sm font-medium text-gray-700 font-poppins">
-              Fichiers en cours d'upload
+              Fichiers en cours d&apos;upload
             </h4>
             {isUploading && (
               <div className="flex items-center space-x-2 text-sm text-teal-600">

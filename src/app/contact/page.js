@@ -138,7 +138,7 @@ export default function ContactPage() {
 
                   <p className="h4-title text-gray-600 max-w-2xl mb-4 mx-auto">
                     Une question, une suggestion ou envie de collaborer ? Nous serions
-                    ravis d'échanger avec vous !
+                    ravis d&apos;échanger avec vous !
                   </p>
                   <h2 className="h2-title text-gray-900 mb-6">
                     Envoyez-nous un message

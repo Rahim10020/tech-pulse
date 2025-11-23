@@ -112,9 +112,9 @@ export default function LoginForm({ onSubmit, isLoading }) {
         </Button>
 
         <p className="small-text text-center text-gray-500 mt-4">
-          Vous n'avez pas de compte ?{" "}
+          Vous n&apos;avez pas de compte ?{" "}
           <Link href="/signup" className="text-teal-600 hover:text-teal-700 underline">
-            S'inscrire
+            S&apos;inscrire
           </Link>
         </p>
       </form>

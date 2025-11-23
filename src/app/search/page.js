@@ -367,7 +367,7 @@ export default function SearchPage() {
                             <div>
                                 <h2 className="h3-title text-gray-900">
                                     {loading ? 'Recherche en cours...' : `${results.total} résultat${results.total !== 1 ? 's' : ''}`}
-                                    {query && <span className="text-teal-600"> pour "{query}"</span>}
+                                    {query && <span className="text-teal-600"> pour &quot;{query}&quot;</span>}
                                 </h2>
                                 {!loading && results.total > 0 && (
                                     <p className="small-text text-gray-500 mt-1">

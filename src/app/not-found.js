@@ -34,7 +34,7 @@ export default function NotFound() {
 
         {/* Message */}
         <p className="body-text text-gray-600 mb-8">
-          Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+          Désolé, la page que vous recherchez n&apos;existe pas ou a été déplacée.
         </p>
 
         {/* Barre de recherche */}
@@ -54,7 +54,7 @@ export default function NotFound() {
             variant="primary"
             icon={<Home className="w-4 h-4" />}
           >
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Button>
 
           <Button

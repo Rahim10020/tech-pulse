@@ -122,8 +122,8 @@ export default function SecretAdminAccess() {
                         ⚠️ Accès limité
                       </p>
                       <p className="small-text text-orange-700 leading-relaxed">
-                        Vous êtes connecté mais n'avez pas les permissions d'administrateur.
-                        Pour accéder en tant qu'administrateur, déconnectez-vous et reconnectez-vous avec un compte admin.
+                        Vous êtes connecté mais n&apos;avez pas les permissions d&apos;administrateur.
+                        Pour accéder en tant qu&apos;administrateur, déconnectez-vous et reconnectez-vous avec un compte admin.
                       </p>
                     </div>
                     <div className="flex gap-3 justify-center">
@@ -137,7 +137,7 @@ export default function SecretAdminAccess() {
                         href="/contact"
                         className="btn-primary inline-block"
                       >
-                        📧 Contacter l'admin
+                        📧 Contacter l&apos;admin
                       </Link>
                     </div>
                   </div>
@@ -159,7 +159,7 @@ export default function SecretAdminAccess() {
           {/* Warning de sécurité */}
           <div className="text-center">
             <p className="small-text text-gray-400">
-              Cette page est confidentielle. L'URL ne doit pas être partagée.
+              Cette page est confidentielle. L&apos;URL ne doit pas être partagée.
             </p>
           </div>
         </div>

@@ -132,7 +132,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
           >
-            Découvrez des articles de qualité sur l'IA, le développement web,
+            Découvrez des articles de qualité sur l&apos;IA, le développement web,
             la cybersécurité et bien plus encore.
           </motion.p>
 

@@ -279,7 +279,7 @@ export default function CreateArticlePage() {
   };
 
   // fonction de sauvegarde manuelle
-  const handleSaveDraft = async () => {
+  const handleSaveDraft = useCallback(async () => {
     if (!formData.title.trim() && !formData.content.trim()) {
       error("Au moins un titre ou du contenu est requis pour sauvegarder");
       return;
@@ -295,7 +295,7 @@ export default function CreateArticlePage() {
     } finally {
       setIsSavingDraft(false);
     }
-  };
+  }, [formData.title, formData.content, error, success, forceSave]);
 
   const handleBack = () => {
     if (hasUnsavedChanges) {
@@ -481,7 +481,7 @@ export default function CreateArticlePage() {
                         <span>Publication...</span>
                       </>
                     ) : (
-                      <span>Publier l'article</span>
+                      <span>Publier l&apos;article</span>
                     )}
                   </button>
                 </div>
