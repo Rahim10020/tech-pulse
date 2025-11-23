@@ -1,10 +1,1 @@
-⚠️ PROBLÈMES NON RÉSOLUS (Nécessitent infrastructure)
-Ces problèmes nécessitent des modifications d'infrastructure plus importantes :
-
-Blacklist JWT en mémoire src/lib/auth.js:125 - Nécessite Redis/Prisma
-Rate limiting en mémoire src/lib/rate-limit.js:51 - Nécessite Redis
-213 console.log() en production - Nécessite logger structuré
-Pas de soft delete - Nécessite migration Prisma
-N+1 queries potentielles - Nécessite optimisation Prisma
-
-- revoir le dak mode qui n'agit pas bien,  tester toutes les fonctionnalites et deployer.
+- apres tester encore toutes les fonctionnalites
