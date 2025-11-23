@@ -62,7 +62,7 @@ export default function Header() {
       }}
       className="border-b border-gray-200 sticky top-0 z-50 backdrop-blur-md transition-colors duration-300"
     >
-      <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-6 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/">
@@ -316,44 +316,40 @@ export default function Header() {
                 <Link
                   href="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/")
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/")
                       ? "bg-teal-50 "
                       : "text-gray-700 "
-                  }`}
+                    }`}
                 >
                   Accueil
                 </Link>
                 <Link
                   href="/articles"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/articles")
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/articles")
                       ? "bg-teal-50 "
                       : "text-gray-700 "
-                  }`}
+                    }`}
                 >
                   Articles
                 </Link>
                 <Link
                   href="/categories"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/categories")
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/categories")
                       ? "bg-teal-50 "
                       : "text-gray-700 "
-                  }`}
+                    }`}
                 >
                   Catégories
                 </Link>
                 <Link
                   href="/about"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/about")
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/about")
                       ? "bg-teal-50 "
                       : "text-gray-700 "
-                  }`}
+                    }`}
                 >
                   À propos
                 </Link>
