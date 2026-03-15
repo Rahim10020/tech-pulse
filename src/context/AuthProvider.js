@@ -21,6 +21,57 @@ export function AuthProvider({ children }) {
   const [unreadCount, setUnreadCount] = useState(0);
   const [messagesLoading, setMessagesLoading] = useState(false);
 
+  const checkAuth = async () => {
+    try {
+      setLoading(true);
+
+      // Appeler l'API /me pour vérifier le token dans les cookies
+      const response = await fetch('/api/auth/me', {
+        method: 'GET',
+        credentials: 'include' // Important pour inclure les cookies
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fonction pour récupérer le nombre de messages non lus
+  const fetchUnreadCount = useCallback(async () => {
+    if (!user || !isAdmin(user)) {
+      setUnreadCount(0);
+      return;
+    }
+
+    try {
+      setMessagesLoading(true);
+      const response = await fetch('/api/contact?unread=true&limit=1', {
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUnreadCount(data.unreadCount || 0);
+      } else {
+        setUnreadCount(0);
+      }
+    } catch (err) {
+      console.error('Error fetching unread messages count:', err);
+      setUnreadCount(0);
+    } finally {
+      setMessagesLoading(false);
+    }
+  }, [user]);
+
   // Vérifier l'authentification au chargement
   useEffect(() => {
     checkAuth();
@@ -45,30 +96,6 @@ export function AuthProvider({ children }) {
 
     return () => clearInterval(interval);
   }, [user, fetchUnreadCount]);
-
-  const checkAuth = async () => {
-    try {
-      setLoading(true);
-
-      // Appeler l'API /me pour vérifier le token dans les cookies
-      const response = await fetch('/api/auth/me', {
-        method: 'GET',
-        credentials: 'include' // Important pour inclure les cookies
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const login = async (email, password) => {
     try {
@@ -231,33 +258,6 @@ export function AuthProvider({ children }) {
       return false;
     }
   };
-
-  // Fonction pour récupérer le nombre de messages non lus
-  const fetchUnreadCount = useCallback(async () => {
-    if (!user || !isAdmin(user)) {
-      setUnreadCount(0);
-      return;
-    }
-
-    try {
-      setMessagesLoading(true);
-      const response = await fetch('/api/contact?unread=true&limit=1', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUnreadCount(data.unreadCount || 0);
-      } else {
-        setUnreadCount(0);
-      }
-    } catch (err) {
-      console.error('Error fetching unread messages count:', err);
-      setUnreadCount(0);
-    } finally {
-      setMessagesLoading(false);
-    }
-  }, [user]);
 
   // Fonction pour marquer des messages comme lus
   const markMessagesAsRead = useCallback((count = 1) => {
