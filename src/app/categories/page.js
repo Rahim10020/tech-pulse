@@ -19,6 +19,7 @@ const iconMap = {
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [skeletonCount, setSkeletonCount] = useState(0);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -29,7 +30,9 @@ export default function CategoriesPage() {
         }
         const categoriesData = await response.json();
         if (categoriesData.success) {
-          setCategories(categoriesData.categories || []);
+          const fetchedCategories = categoriesData.categories || [];
+          setCategories(fetchedCategories);
+          setSkeletonCount(fetchedCategories.length || 0);
         } else {
           console.error('API error:', categoriesData.error);
           setCategories([]);
@@ -56,7 +59,7 @@ export default function CategoriesPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: skeletonCount || 0 }).map((_, i) => (
               <CategoryCardSkeleton key={i} />
             ))}
           </div>
