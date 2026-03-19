@@ -1,10 +1,19 @@
 /** @description Page À propos du blog avec animations Framer Motion */
 "use client";
 
-import { motion, useInView, useAnimation } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
-import Header from '@/components/layout/Header';
-import { Code, Users, Target, Award, ArrowRight, Github, Twitter, Linkedin } from 'lucide-react';
+import { motion, useInView, useAnimation } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import Header from "@/components/layout/Header";
+import {
+  Code,
+  Users,
+  Target,
+  Award,
+  ArrowRight,
+  Github,
+  Twitter,
+  Linkedin,
+} from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -65,20 +74,21 @@ function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="h1-title text-gray-900 mb-14"
+            className="h1-title text-gray-900 mb-14 text-4xl md:text-6xl"
           >
-            About <span className="text-teal-600">pixelpulse</span>
+            À propos de <span className="text-teal-600">pixelpulse</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="h4-title text-gray-600 mb-8"
+            className="h4-title text-gray-600 mb-8 text-xl md:text-2xl"
           >
-            Your go-to source for staying on the cutting edge of technology.
-            We share the latest trends, tutorials, and analysis in the world of development,
-            artificial intelligence, and cybersecurity.
+            Votre source de référence pour rester à la pointe de la technologie.
+            Nous partageons les dernières tendances, des tutoriels et des
+            analyses dans le monde du développement, de l’intelligence
+            artificielle et de la cybersécurité.
           </motion.p>
 
           <motion.div
@@ -89,20 +99,20 @@ function HeroSection() {
           >
             <motion.a
               href="/articles"
-              className="btn-primary flex items-center"
+              className="btn-primary flex items-center text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Discover our articles
+              Découvrir nos articles
               <ArrowRight className="w-4 h-4 ml-2" />
             </motion.a>
             <motion.a
               href="/contact"
-              className="btn-secondary"
+              className="btn-secondary text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Contact us
+              Nous contacter
             </motion.a>
           </motion.div>
         </div>
@@ -114,10 +124,10 @@ function HeroSection() {
 // Stats Section avec compteurs animés
 function StatsSection() {
   const stats = [
-    { label: "Published articles", value: 150, suffix: "+" },
-    { label: "Monthly Readers", value: 50, suffix: "K+" },
-    { label: "Countries covered", value: 25, suffix: "+" },
-    { label: "Years of experience", value: 5, suffix: "+" }
+    { label: "Articles publiés", value: 150, suffix: "+" },
+    { label: "Lecteurs mensuels", value: 50, suffix: "K+" },
+    { label: "Pays couverts", value: 25, suffix: "+" },
+    { label: "Années d’expérience", value: 5, suffix: "+" },
   ];
 
   return (
@@ -126,11 +136,7 @@ function StatsSection() {
         <div className="container-sm">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <StatCounter
-                key={index}
-                {...stat}
-                delay={index * 0.2}
-              />
+              <StatCounter key={index} {...stat} delay={index * 0.2} />
             ))}
           </div>
         </div>
@@ -153,14 +159,14 @@ function StatCounter({ label, value, suffix, delay }) {
       transition={{ duration: 0.5, delay }}
     >
       <motion.div
-        className="h2-title text-gray-900 mb-2"
+        className="h2-title text-gray-900 mb-2 text-3xl md:text-4xl"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 2, delay: delay + 0.5 }}
       >
         <AnimatedCounter value={value} suffix={suffix} isInView={isInView} />
       </motion.div>
-      <div className="body-text text-gray-600">{label}</div>
+      <div className="body-text text-gray-600 text-lg">{label}</div>
     </motion.div>
   );
 }
@@ -190,7 +196,12 @@ function AnimatedCounter({ value, suffix, isInView }) {
     return () => clearInterval(timer);
   }, [isInView, value]);
 
-  return <span>{count}{suffix}</span>;
+  return (
+    <span>
+      {count}
+      {suffix}
+    </span>
+  );
 }
 
 // Mission Section
@@ -200,45 +211,46 @@ function MissionSection() {
       <section className="py-28 bg-white">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-8 text-center"
+            className="h2-title text-gray-900 mb-8 text-center text-3xl md:text-4xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Our Mission
+            Notre mission
           </motion.h2>
           <div className="text-center">
             <motion.p
-              className="h4-title text-gray-600 mb-8"
+              className="h4-title text-gray-600 mb-8 text-xl md:text-2xl"
               whileInView={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              At pixelpulse, we believe technology should be accessible to everyone.
-              Our mission is to democratize technical knowledge by offering
-              quality content, practical tutorials, and in-depth analyses.
+              Chez pixelpulse, nous pensons que la technologie doit être
+              accessible à tous. Notre mission est de démocratiser le savoir
+              technique en proposant du contenu de qualité, des tutoriels
+              pratiques et des analyses approfondies.
             </motion.p>
             <div className="grid md:grid-cols-2 gap-8 mt-12">
               <MissionCard
-                title="What we do"
+                title="Ce que nous faisons"
                 items={[
-                  "In-depth technical articles",
-                  "Step-by-step tutorials",
-                  "Analysis of the latest trends",
-                  "Guides for beginners and experts"
+                  "Articles techniques approfondis",
+                  "Tutoriels pas à pas",
+                  "Analyse des dernières tendances",
+                  "Guides pour débutants et experts",
                 ]}
                 color="teal"
                 delay={0.3}
               />
               <MissionCard
-                title="Our areas of expertise"
+                title="Nos domaines d’expertise"
                 items={[
-                  "Web and Mobile Development",
-                  "Artificial intelligence",
-                  "Cybersecurity",
-                  "Cloud Computing"
+                  "Développement Web et Mobile",
+                  "Intelligence artificielle",
+                  "Cybersécurité",
+                  "Cloud Computing",
                 ]}
                 color="orange"
                 delay={0.5}
@@ -254,26 +266,27 @@ function MissionSection() {
 function MissionCard({ title, items, color, delay }) {
   return (
     <motion.div
+      className="text-left"
       whileInView={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6, delay }}
       viewport={{ once: true }}
     >
-      <h3 className="h3-title text-gray-900 mb-4">
-        {title}
-      </h3>
-      <ul className="space-y-3 text-gray-700">
+      <h3 className="h3-title text-gray-900 mb-4 text-2xl">{title}</h3>
+      <ul className="space-y-3 text-gray-700 text-lg">
         {items.map((item, i) => (
           <motion.li
             key={i}
             className="flex items-start"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: delay + (i * 0.1) }}
+            transition={{ duration: 0.4, delay: delay + i * 0.1 }}
             viewport={{ once: true }}
           >
-            <span className={`w-2 h-2 bg-${color}-500 rounded-full mt-2 mr-3 flex-shrink-0`}></span>
-            <span className="body-text">{item}</span>
+            <span
+              className={`w-2 h-2 bg-${color}-500 rounded-full mt-2 mr-3 flex-shrink-0`}
+            ></span>
+            <span className="body-text text-lg">{item}</span>
           </motion.li>
         ))}
       </ul>
@@ -286,24 +299,28 @@ function ValuesSection() {
   const values = [
     {
       icon: <Code className="w-8 h-8 text-teal-600" />,
-      title: "Technical Excellence",
-      description: "We are committed to providing the highest quality technical content, verified by our experts."
+      title: "Excellence technique",
+      description:
+        "Nous nous engageons à fournir un contenu technique de la plus haute qualité, vérifié par nos experts.",
     },
     {
       icon: <Users className="w-8 h-8 text-orange-500" />,
-      title: "Community",
-      description: "We believe in the power of community to share knowledge and advance technology."
+      title: "Communauté",
+      description:
+        "Nous croyons au pouvoir de la communauté pour partager le savoir et faire avancer la technologie.",
     },
     {
       icon: <Target className="w-8 h-8 text-blue-500" />,
       title: "Innovation",
-      description: "We are constantly exploring the latest trends to keep you informed of technological developments."
+      description:
+        "Nous explorons en permanence les dernières tendances pour vous tenir informé des évolutions technologiques.",
     },
     {
       icon: <Award className="w-8 h-8 text-green-500" />,
-      title: "Pedagogy",
-      description: "We make complex concepts accessible to everyone, from beginner to seasoned expert."
-    }
+      title: "Pédagogie",
+      description:
+        "Nous rendons les concepts complexes accessibles à tous, du débutant à l’expert confirmé.",
+    },
   ];
 
   return (
@@ -311,13 +328,13 @@ function ValuesSection() {
       <section className="py-20 bg-gray-50">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center"
+            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-4xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Our Values
+            Nos valeurs
           </motion.h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
@@ -340,7 +357,8 @@ function ValueCard({ icon, title, description, delay }) {
       viewport={{ once: true }}
       whileHover={{
         y: -10,
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+        boxShadow:
+          "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       }}
     >
       <motion.div
@@ -350,12 +368,8 @@ function ValueCard({ icon, title, description, delay }) {
       >
         {icon}
       </motion.div>
-      <h3 className="h4-title text-gray-900 mb-3">
-        {title}
-      </h3>
-      <p className="body-text text-gray-600">
-        {description}
-      </p>
+      <h3 className="h4-title text-gray-900 mb-3 text-xl">{title}</h3>
+      <p className="body-text text-gray-600 text-lg">{description}</p>
     </motion.div>
   );
 }
@@ -365,39 +379,40 @@ function TimelineSection() {
   const milestones = [
     {
       year: "2020",
-      title: "Birth of Pixelpulse",
-      description: "Creation of the blog with a simple vision: democratize tech",
+      title: "Naissance de Pixelpulse",
+      description:
+        "Création du blog avec une vision simple : démocratiser la tech",
       icon: "🚀",
-      color: "from-blue-400 to-purple-500"
+      color: "from-blue-400 to-purple-500",
     },
     {
       year: "2021",
-      title: "First community",
-      description: "10K monthly readers and newsletter launch",
+      title: "Première communauté",
+      description: "10k lecteurs mensuels et lancement de la newsletter",
       icon: "👥",
-      color: "from-green-400 to-teal-500"
+      color: "from-green-400 to-teal-500",
     },
     {
       year: "2022",
-      title: "Extended team",
-      description: "Recruitment of experts and diversification of content",
+      title: "Équipe élargie",
+      description: "Recrutement d’experts et diversification du contenu",
       icon: "⭐",
-      color: "from-orange-400 to-red-500"
+      color: "from-orange-400 to-red-500",
     },
     {
       year: "2023",
-      title: "International recognition",
-      description: "50K+ readers in 25 countries, tech partnerships",
+      title: "Reconnaissance internationale",
+      description: "50k+ lecteurs dans 25 pays, partenariats tech",
       icon: "🌍",
-      color: "from-purple-400 to-pink-500"
+      color: "from-purple-400 to-pink-500",
     },
     {
       year: "2024",
-      title: "Continuous innovation",
-      description: "AI, advanced cybersecurity and new technologies",
+      title: "Innovation continue",
+      description: "IA, cybersécurité avancée et nouvelles technologies",
       icon: "🔮",
-      color: "from-cyan-400 to-blue-500"
-    }
+      color: "from-cyan-400 to-blue-500",
+    },
   ];
 
   const [activeStep, setActiveStep] = useState(0);
@@ -407,13 +422,13 @@ function TimelineSection() {
       <section className="py-20 bg-gray-50">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center"
+            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-4xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Our history
+            Notre histoire
           </motion.h2>
 
           <div className="relative">
@@ -447,12 +462,21 @@ function TimelineSection() {
   );
 }
 
-function TimelineStep({ year, title, description, icon, color, index, isActive, onClick }) {
+function TimelineStep({
+  year,
+  title,
+  description,
+  icon,
+  color,
+  index,
+  isActive,
+  onClick,
+}) {
   const isEven = index % 2 === 0;
 
   return (
     <motion.div
-      className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+      className={`relative flex items-center ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
       initial={{ opacity: 0, x: isEven ? -100 : 100 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
@@ -460,26 +484,28 @@ function TimelineStep({ year, title, description, icon, color, index, isActive, 
     >
       {/* Content Card */}
       <motion.div
-        className={`w-full md:w-5/12 ${isEven ? 'md:pr-8' : 'md:pl-8'}`}
+        className={`w-full md:w-5/12 ${isEven ? "md:pr-8" : "md:pl-8"}`}
         whileHover={{ scale: 1.02 }}
         onClick={onClick}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
       >
         <motion.div
-          className={`card p-6 ${isActive ? 'ring-2 ring-teal-400 shadow-lg' : ''}`}
+          className={`card p-6 ${isActive ? "ring-2 ring-teal-400 shadow-lg" : ""}`}
           animate={isActive ? { scale: 1.05 } : { scale: 1 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="flex items-center mb-3">
-            <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${color} flex items-center justify-center text-white text-xl mr-4`}>
+            <div
+              className={`w-12 h-12 rounded-full bg-gradient-to-r ${color} flex items-center justify-center text-white text-xl mr-4`}
+            >
               {icon}
             </div>
             <div>
-              <h3 className="h4-title text-gray-900">{title}</h3>
+              <h3 className="h4-title text-gray-900 text-xl">{title}</h3>
               <span className="text-teal-600 font-bold">{year}</span>
             </div>
           </div>
-          <p className="body-text text-gray-600">{description}</p>
+          <p className="body-text text-gray-600 text-lg">{description}</p>
         </motion.div>
       </motion.div>
 
@@ -487,7 +513,9 @@ function TimelineStep({ year, title, description, icon, color, index, isActive, 
       <motion.div
         className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-white border-4 border-teal-500 hidden md:block z-10"
         whileHover={{ scale: 1.5 }}
-        animate={isActive ? { scale: 1.3, borderColor: "#f97316" } : { scale: 1 }}
+        animate={
+          isActive ? { scale: 1.3, borderColor: "#f97316" } : { scale: 1 }
+        }
         transition={{ type: "spring", stiffness: 300 }}
       />
     </motion.div>
@@ -501,67 +529,72 @@ function TeamSection() {
       name: "Sophie Martin",
       role: "Fondatrice & Rédactrice en Chef",
       bio: "Développeuse Full Stack passionnée par l'IA et les nouvelles technologies. 8 ans d'expérience en développement web moderne.",
-      detailedBio: "Sophie a fondé pixelpulse avec une vision claire : rendre la technologie accessible à tous. Diplômée en informatique de l'École Polytechnique, elle a travaillé chez Google et Microsoft avant de se lancer dans l'entrepreneuriat. Experte en React, Node.js et intelligence artificielle, elle écrit principalement sur les frameworks modernes et les tendances emerging tech.",
+      detailedBio:
+        "Sophie a fondé pixelpulse avec une vision claire : rendre la technologie accessible à tous. Diplômée en informatique de l'École Polytechnique, elle a travaillé chez Google et Microsoft avant de se lancer dans l'entrepreneuriat. Experte en React, Node.js et intelligence artificielle, elle écrit principalement sur les frameworks modernes et les tendances technologiques émergentes.",
       avatar: "SM",
       specialties: ["React", "Node.js", "IA", "Leadership"],
       social: {
         github: "#",
         twitter: "#",
-        linkedin: "#"
-      }
+        linkedin: "#",
+      },
     },
     {
       name: "Thomas Dubois",
       role: "Expert Cybersécurité",
       bio: "Spécialiste en sécurité informatique avec plus de 10 ans d'expérience dans la protection des systèmes critiques.",
-      detailedBio: "Thomas est un ancien consultant en cybersécurité pour des institutions bancaires européennes. Certifié CISSP et CEH, il a dirigé des équipes de response d'incident et de penetration testing. Chez pixelpulse, il démystifie les concepts de sécurité et partage les meilleures pratiques pour protéger applications et données.",
+      detailedBio:
+        "Thomas est un ancien consultant en cybersécurité pour des institutions bancaires européennes. Certifié CISSP et CEH, il a dirigé des équipes de réponse aux incidents et de tests d’intrusion. Chez pixelpulse, il démystifie les concepts de sécurité et partage les meilleures pratiques pour protéger applications et données.",
       avatar: "TD",
-      specialties: ["Pentest", "SOC", "Forensics", "GDPR"],
+      specialties: ["Pentest", "SOC", "Forensique", "RGPD"],
       social: {
         github: "#",
         twitter: "#",
-        linkedin: "#"
-      }
+        linkedin: "#",
+      },
     },
     {
       name: "Clara Dupont",
       role: "Développeuse Frontend",
       bio: "Experte en interfaces utilisateur modernes et en expérience utilisateur. Passionnée par React et les nouvelles technologies web.",
-      detailedBio: "Clara combine design et développement pour créer des expériences utilisateur exceptionnelles. Formée aux Gobelins puis en autodidacte sur les technologies web, elle maîtrise Figma, React, Vue.js et les principes d'accessibilité. Elle écrit sur l'UX/UI, les animations web et les dernières tendances design.",
+      detailedBio:
+        "Clara combine design et développement pour créer des expériences utilisateur exceptionnelles. Formée aux Gobelins puis en autodidacte sur les technologies web, elle maîtrise Figma, React, Vue.js et les principes d'accessibilité. Elle écrit sur l'UX/UI, les animations web et les dernières tendances design.",
       avatar: "CD",
       specialties: ["React", "Vue.js", "UX/UI", "Figma"],
       social: {
         github: "#",
         twitter: "#",
-        linkedin: "#"
-      }
+        linkedin: "#",
+      },
     },
     {
       name: "Marc Rousseau",
       role: "Expert DevOps & Cloud",
       bio: "Architecte cloud et spécialiste DevOps, il optimise les infrastructures et automatise les déploiements.",
-      detailedBio: "Marc a 12 ans d'expérience dans l'infrastructure et le cloud computing. Il a migré des centaines d'applications vers AWS, Azure et GCP. Expert Kubernetes et Terraform, il prône l'Infrastructure as Code et l'automatisation. Ses articles couvrent DevOps, microservices, monitoring et bonnes pratiques cloud.",
+      detailedBio:
+        "Marc a 12 ans d'expérience dans l'infrastructure et le cloud computing. Il a migré des centaines d'applications vers AWS, Azure et GCP. Expert Kubernetes et Terraform, il prône l'Infrastructure as Code et l'automatisation. Ses articles couvrent DevOps, microservices, monitoring et bonnes pratiques cloud.",
       avatar: "MR",
       specialties: ["AWS", "Kubernetes", "Terraform", "CI/CD"],
       social: {
         github: "#",
         twitter: "#",
-        linkedin: "#"
-      }
+        linkedin: "#",
+      },
     },
     {
       name: "Léa Chen",
       role: "Data Scientist",
       bio: "Spécialisée en machine learning et analyse de données, elle explore l'IA appliquée au quotidien.",
-      detailedBio: "Léa possède un PhD en informatique de Sorbonne Université, spécialisée en apprentissage automatique. Elle a travaillé dans la recherche chez Facebook AI avant de rejoindre des startups fintech. Elle vulgarise les concepts de ML, deep learning, NLP et computer vision pour les rendre accessibles aux développeurs.",
+      detailedBio:
+        "Léa possède un doctorat en informatique de Sorbonne Université, spécialisée en apprentissage automatique. Elle a travaillé dans la recherche chez Facebook AI avant de rejoindre des startups fintech. Elle vulgarise les concepts de ML, deep learning, NLP et vision par ordinateur pour les rendre accessibles aux développeurs.",
       avatar: "LC",
       specialties: ["Python", "TensorFlow", "ML", "Data Viz"],
       social: {
         github: "#",
         twitter: "#",
-        linkedin: "#"
-      }
-    }
+        linkedin: "#",
+      },
+    },
   ];
 
   const [currentMember, setCurrentMember] = useState(0);
@@ -572,7 +605,9 @@ function TeamSection() {
   };
 
   const prevMember = () => {
-    setCurrentMember((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
+    setCurrentMember(
+      (prev) => (prev - 1 + teamMembers.length) % teamMembers.length,
+    );
   };
 
   return (
@@ -580,13 +615,13 @@ function TeamSection() {
       <section className="py-20 bg-white">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center"
+            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-4xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Our Team
+            Notre équipe
           </motion.h2>
 
           {/* Carrousel Desktop */}
@@ -594,7 +629,7 @@ function TeamSection() {
             <div className="relative overflow-hidden">
               <motion.div
                 className="flex transition-transform duration-500 ease-in-out"
-                animate={{ x: -currentMember * (100 / 3) + '%' }}
+                animate={{ x: -currentMember * (100 / 3) + "%" }}
                 style={{ width: `${(teamMembers.length / 3) * 100}%` }}
               >
                 {teamMembers.map((member, index) => (
@@ -628,10 +663,11 @@ function TeamSection() {
                   <motion.button
                     key={index}
                     onClick={() => setCurrentMember(index)}
-                    className={`w-3 h-3 rounded-full transition-colors ${index >= currentMember && index < currentMember + 3
-                      ? 'bg-teal-500'
-                      : 'bg-gray-300'
-                      }`}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index >= currentMember && index < currentMember + 3
+                        ? "bg-teal-500"
+                        : "bg-gray-300"
+                    }`}
                     whileHover={{ scale: 1.2 }}
                   />
                 ))}
@@ -675,7 +711,16 @@ function TeamSection() {
   );
 }
 
-function TeamMemberCard({ name, role, bio, avatar, social, specialties, delay, onViewDetails }) {
+function TeamMemberCard({
+  name,
+  role,
+  bio,
+  avatar,
+  social,
+  specialties,
+  delay,
+  onViewDetails,
+}) {
   return (
     <motion.div
       className="card p-6 text-center hover:shadow-lg transition-shadow relative overflow-hidden"
@@ -698,18 +743,12 @@ function TeamMemberCard({ name, role, bio, avatar, social, specialties, delay, o
           whileHover={{ scale: 1.1, rotate: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <span className="text-white font-bold text-lg">
-            {avatar}
-          </span>
+          <span className="text-white font-bold text-lg">{avatar}</span>
         </motion.div>
 
-        <h3 className="h4-title text-gray-900 mb-2">
-          {name}
-        </h3>
-        <p className="text-teal-600 h5-title mb-3">
-          {role}
-        </p>
-        <p className="body-text text-gray-600 mb-4 line-clamp-3">
+        <h3 className="h4-title text-gray-900 mb-2 text-xl">{name}</h3>
+        <p className="text-teal-600 h5-title mb-3 text-lg">{role}</p>
+        <p className="body-text text-gray-600 mb-4 line-clamp-3 text-lg">
           {bio}
         </p>
 
@@ -717,7 +756,10 @@ function TeamMemberCard({ name, role, bio, avatar, social, specialties, delay, o
         {specialties && (
           <div className="flex flex-wrap justify-center gap-2 mb-4">
             {specialties.slice(0, 3).map((skill, index) => (
-              <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+              <span
+                key={index}
+                className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+              >
                 {skill}
               </span>
             ))}
@@ -727,11 +769,11 @@ function TeamMemberCard({ name, role, bio, avatar, social, specialties, delay, o
         {/* Bouton Voir plus */}
         <motion.button
           onClick={onViewDetails}
-          className="mb-4 text-teal-600 hover:text-teal-700 text-sm font-medium"
+          className="mb-4 text-teal-600 hover:text-teal-700 text-base font-medium"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Learn more →
+          En savoir plus →
         </motion.button>
 
         {/* Social links */}
@@ -740,7 +782,7 @@ function TeamMemberCard({ name, role, bio, avatar, social, specialties, delay, o
             const icons = {
               github: Github,
               twitter: Twitter,
-              linkedin: Linkedin
+              linkedin: Linkedin,
             };
             const Icon = icons[platform];
 
@@ -790,12 +832,10 @@ function TeamMemberModal({ member, isOpen, onClose }) {
               </span>
             </div>
             <div className="flex-1">
-              <h3 className="h3-title text-gray-900 mb-1">
+              <h3 className="h3-title text-gray-900 mb-1 text-2xl">
                 {member.name}
               </h3>
-              <p className="text-teal-600 h5-title">
-                {member.role}
-              </p>
+              <p className="text-teal-600 h5-title text-lg">{member.role}</p>
             </div>
             <button
               onClick={onClose}
@@ -807,18 +847,21 @@ function TeamMemberModal({ member, isOpen, onClose }) {
 
           {/* Bio détaillée */}
           <div className="mb-6">
-            <h4 className="h4-title text-gray-900 mb-3">Biography</h4>
-            <p className="body-text text-gray-700 leading-relaxed">
+            <h4 className="h4-title text-gray-900 mb-3 text-xl">Biographie</h4>
+            <p className="body-text text-gray-700 leading-relaxed text-lg">
               {member.detailedBio}
             </p>
           </div>
 
           {/* Spécialités */}
           <div className="mb-6">
-            <h4 className="h4-title text-gray-900 mb-3">Specialties</h4>
+            <h4 className="h4-title text-gray-900 mb-3 text-xl">Spécialités</h4>
             <div className="flex flex-wrap gap-2">
               {member.specialties?.map((skill, index) => (
-                <span key={index} className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-base font-medium"
+                >
                   {skill}
                 </span>
               ))}
@@ -827,19 +870,21 @@ function TeamMemberModal({ member, isOpen, onClose }) {
 
           {/* Social Links */}
           <div>
-            <h4 className="h4-title text-gray-900 mb-3">follow {member.name.split(' ')[0]}</h4>
+            <h4 className="h4-title text-gray-900 mb-3 text-xl">
+              Suivre {member.name.split(" ")[0]}
+            </h4>
             <div className="flex gap-4">
               {Object.entries(member.social).map(([platform, url]) => {
                 const icons = {
                   github: Github,
                   twitter: Twitter,
-                  linkedin: Linkedin
+                  linkedin: Linkedin,
                 };
                 const Icon = icons[platform];
                 const labels = {
-                  github: 'GitHub',
-                  twitter: 'Twitter',
-                  linkedin: 'LinkedIn'
+                  github: "GitHub",
+                  twitter: "Twitter",
+                  linkedin: "LinkedIn",
                 };
 
                 return (
@@ -850,7 +895,7 @@ function TeamMemberModal({ member, isOpen, onClose }) {
                     whileHover={{ x: 5 }}
                   >
                     <Icon className="w-5 h-5" />
-                    <span className="text-sm">{labels[platform]}</span>
+                    <span className="text-base">{labels[platform]}</span>
                   </motion.a>
                 );
               })}
@@ -869,23 +914,23 @@ function CTASection() {
       <section className="py-20 bg-gradient-to-r from-teal-500 to-orange-500">
         <div className="container-sm text-center">
           <motion.h2
-            className="h2-title text-white mb-6"
+            className="h2-title text-white mb-6 text-3xl md:text-4xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Join the Pixelpulse Community
+            Rejoignez la communauté Pixelpulse
           </motion.h2>
           <motion.p
-            className="h4-title text-white/90 mb-8"
+            className="h4-title text-white/90 mb-8 text-xl md:text-2xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Stay up-to-date on the latest technology trends and
-            access exclusive content by joining our community.
+            Restez à jour sur les dernières tendances tech et accédez à du
+            contenu exclusif en rejoignant notre communauté.
           </motion.p>
           <motion.div
             className="flex flex-wrap justify-center gap-4"
@@ -896,19 +941,19 @@ function CTASection() {
           >
             <motion.a
               href="/articles"
-              className="bg-white text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+              className="bg-white text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Discover the articles
+              Découvrir les articles
             </motion.a>
             <motion.a
               href="/contact"
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900 transition-colors"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900 transition-colors text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Contact us
+              Nous contacter
             </motion.a>
           </motion.div>
         </div>
