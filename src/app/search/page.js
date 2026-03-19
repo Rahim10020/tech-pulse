@@ -7,6 +7,7 @@ const { useState, useEffect, useCallback } = require("react");
 const { useSearchParams, useRouter } = require("next/navigation");
 const Header = require("@/components/layout/Header").default;
 const Image = require("next/image").default;
+const { useSettings } = require("@/hooks/useSettings");
 const {
   Search,
   Filter,
@@ -43,6 +44,7 @@ export default function SearchPage() {
 
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { settings } = useSettings();
 
   // État de la recherche
   const [query, setQuery] = useState(searchParams.get("q") || "");
@@ -212,7 +214,7 @@ export default function SearchPage() {
         <div className="max-w-4xl mx-auto mb-8">
           <div className="text-center mb-8">
             <h1 className="h1-title text-gray-900 mb-4">
-              Rechercher dans{" "}
+              Rechercher dans
               <span>
                 <Image
                   src="/logo.png"
