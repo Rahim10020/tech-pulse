@@ -283,9 +283,7 @@ export default function Header() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link href="/contact">
-                  <Button variant="primary" size="sm">
-                    Contact
-                  </Button>
+                  <button className="btn-primary">Contact</button>
                 </Link>
               </div>
             )}

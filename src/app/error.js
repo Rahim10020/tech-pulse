@@ -62,7 +62,7 @@ export default function Error({ error, reset }) {
         <p className="small-text text-gray-500 mt-8">
           Si le problème persiste, veuillez{' '}
           <Link href="/contact" className="text-gray-700 hover:text-gray-900 underline">
-            contact us
+            nous contacter
           </Link>
         </p>
       </div>
