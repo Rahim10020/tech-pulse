@@ -5,14 +5,14 @@
  */
 "use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ArticleCard from "@/components/articles/ArticleCard";
 import SearchBar from "@/components/shared/SearchBar";
 import HeroSection from "@/components/home/HeroSection";
-import { LoadingSpinner } from '@/components/ui';
+import { LoadingSpinner } from "@/components/ui";
 
 export default function HomePage() {
   const [recentArticles, setRecentArticles] = useState([]);
@@ -21,11 +21,11 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchArticles() {
       try {
-        const response = await fetch('/api/articles?type=recent&limit=3');
+        const response = await fetch("/api/articles?type=recent&limit=3");
         const data = await response.json();
         setRecentArticles(data.articles || []);
       } catch (error) {
-        console.error('Error fetching articles:', error);
+        console.error("Error fetching articles:", error);
       } finally {
         setLoading(false);
       }
@@ -92,7 +92,7 @@ export default function HomePage() {
 
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8 mb-12">
-          <Link href="/articles" className="text-teal-600">
+          <Link href="/articles" className="text-teal-600 hover:underline">
             Voir tous les articles...
           </Link>
         </div>

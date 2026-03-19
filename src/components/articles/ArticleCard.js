@@ -1,35 +1,25 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { Star, Heart, MessageCircle, Calendar } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { getHtmlExcerpt } from '@/lib/text-utils';
+import React from "react";
+import Link from "next/link";
+import { Star, Heart, MessageCircle, Calendar } from "lucide-react";
+import { motion } from "framer-motion";
+import { getHtmlExcerpt } from "@/lib/text-utils";
 
 /**
  * ArticleImage component displays the article image with category overlay
- * @param {Object} props - Component props
- * @param {string} props.imageUrl - URL of the article image
- * @param {string} props.title - Article title for alt text
- * @param {string} props.imageColor - Background color for placeholder
- * @param {string} props.categoryName - Category name
- * @param {string} props.categoryColor - Category background color
- * @param {string} props.categoryTextColor - Category text color
- * @param {boolean} props.horizontal - Whether to use horizontal layout
- * @returns {JSX.Element} Article image element
  */
 const ArticleImage = React.memo(function ArticleImage({
   imageUrl,
   title,
   imageColor,
   categoryName,
-  categoryColor,
   categoryTextColor,
-  horizontal
+  horizontal,
 }) {
   if (horizontal) {
     return (
-      <div className="flex-shrink-0 w-32 h-24 relative overflow-hidden rounded-lg">
+      <div className="flex-shrink-0 w-32 h-24 relative overflow-hidden">
         {imageUrl ? (
           <motion.img
             whileHover={{ scale: 1.1 }}
@@ -39,7 +29,9 @@ const ArticleImage = React.memo(function ArticleImage({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className={`w-full h-full ${imageColor} flex items-center justify-center`}>
+          <div
+            className={`w-full h-full ${imageColor} flex items-center justify-center`}
+          >
             <span className="text-gray-400 text-xs">No image</span>
           </div>
         )}
@@ -58,13 +50,17 @@ const ArticleImage = React.memo(function ArticleImage({
           className="w-full h-full object-cover"
         />
       ) : (
-        <div className={`w-full h-full ${imageColor} flex items-center justify-center`}>
+        <div
+          className={`w-full h-full ${imageColor} flex items-center justify-center`}
+        >
           <span className="text-gray-400">No image</span>
         </div>
       )}
       {categoryName && (
         <div className="absolute top-3 left-3">
-          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-white/80 border border-white/20 ${categoryTextColor} shadow-lg`}>
+          <span
+            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-white/80 border border-white/20 ${categoryTextColor} shadow-lg`}
+          >
             {categoryName}
           </span>
         </div>
@@ -75,15 +71,14 @@ const ArticleImage = React.memo(function ArticleImage({
 
 /**
  * ArticleMeta component displays article author and category information
- * @param {Object} props - Component props
- * @param {string|Object} props.author - Author name or author object
- * @param {string} props.categoryName - Category name
- * @param {string} props.categoryColor - Category background color
- * @param {string} props.categoryTextColor - Category text color
- * @param {boolean} props.horizontal - Whether to use horizontal layout
- * @returns {JSX.Element} Article meta information
  */
-const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, categoryColor, categoryTextColor, horizontal }) {
+const ArticleMeta = React.memo(function ArticleMeta({
+  author,
+  categoryName,
+  categoryColor,
+  categoryTextColor,
+  horizontal,
+}) {
   const authorName = typeof author === "object" ? author.name : author;
   const authorInitial = authorName?.charAt(0);
 
@@ -105,7 +100,9 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
         </div>
 
         {categoryName && (
-          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm bg-opacity-80 ${categoryColor} ${categoryTextColor} shadow-sm`}>
+          <span
+            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm bg-opacity-80 ${categoryColor} ${categoryTextColor} shadow-sm`}
+          >
             {categoryName}
           </span>
         )}
@@ -132,20 +129,19 @@ const ArticleMeta = React.memo(function ArticleMeta({ author, categoryName, cate
 
 /**
  * ArticleStats component displays article statistics like read time, likes, comments, and publication date
- * @param {Object} props - Component props
- * @param {string} props.readTime - Estimated reading time
- * @param {number} props.likes - Number of likes
- * @param {number} props.commentsCount - Number of comments
- * @param {string} props.publishedAt - Publication date
- * @param {boolean} props.horizontal - Whether to use horizontal layout
- * @returns {JSX.Element} Article statistics
  */
-const ArticleStats = React.memo(function ArticleStats({ readTime, likes, commentsCount, publishedAt, horizontal }) {
+const ArticleStats = React.memo(function ArticleStats({
+  readTime,
+  likes,
+  commentsCount,
+  publishedAt,
+  horizontal,
+}) {
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("fr-FR", {
       day: "numeric",
       month: horizontal ? "short" : "short",
-      year: horizontal ? "numeric" : undefined
+      year: horizontal ? "numeric" : undefined,
     });
   };
 
@@ -165,12 +161,14 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
       )}
 
       <div className="article-stat-item">
-        <Heart className={`w-4 h-4 ${horizontal ? '' : 'text-red-500'}`} />
+        <Heart className={`w-4 h-4 ${horizontal ? "" : "text-red-500"}`} />
         <span className="font-sans">{likes?.toLocaleString() || "0"}</span>
       </div>
 
       <div className="article-stat-item">
-        <MessageCircle className={`w-4 h-4 ${horizontal ? '' : 'text-blue-500'}`} />
+        <MessageCircle
+          className={`w-4 h-4 ${horizontal ? "" : "text-blue-500"}`}
+        />
         <span className="font-sans">{commentsCount || "0"}</span>
       </div>
     </div>
@@ -206,21 +204,6 @@ const ArticleStats = React.memo(function ArticleStats({ readTime, likes, comment
 /**
  * ArticleCard component displays an article preview with image, meta information, and stats.
  * Supports both vertical and horizontal layouts.
- *
- * @param {Object} props - The component props
- * @param {string} props.title - The article title
- * @param {string} props.content - The article content (HTML)
- * @param {string} props.readTime - Estimated reading time
- * @param {string} [props.imageColor='bg-gray-100'] - Background color for placeholder image
- * @param {string} [props.imageUrl=null] - URL of the article image
- * @param {string} [props.href='#'] - Link to the full article
- * @param {string|Object} props.author - Author name or author object
- * @param {string} props.publishedAt - Publication date
- * @param {string|Object} props.category - Category name or category object
- * @param {number} [props.likes=0] - Number of likes
- * @param {number} [props.commentsCount=0] - Number of comments
- * @param {boolean} [props.horizontal=false] - Whether to use horizontal layout
- * @returns {JSX.Element} The article card element
  */
 const ArticleCard = React.memo(function ArticleCard({
   title,
@@ -238,11 +221,13 @@ const ArticleCard = React.memo(function ArticleCard({
 }) {
   // Handle category as object or string
   const categoryName = typeof category === "object" ? category?.name : category;
-  const categoryColor = typeof category === "object" ? category?.color : "bg-gray-100";
-  const categoryTextColor = typeof category === "object" ? category?.textColor : "text-gray-600";
+  const categoryColor =
+    typeof category === "object" ? category?.color : "bg-gray-100";
+  const categoryTextColor =
+    typeof category === "object" ? category?.textColor : "text-gray-600";
 
   // Use utility function for excerpt
-  const excerpt = getHtmlExcerpt(content || '', horizontal ? 150 : 120);
+  const excerpt = getHtmlExcerpt(content || "", horizontal ? 150 : 120);
 
   if (horizontal) {
     return (
@@ -297,7 +282,7 @@ const ArticleCard = React.memo(function ArticleCard({
   return (
     <Link href={href} className="block group">
       <motion.article
-        whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
+        whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
         transition={{ duration: 0.3 }}
         className="article-card h-full bg-white rounded-lg border border-gray-200 overflow-hidden relative"
       >
@@ -344,8 +329,8 @@ const ArticleCard = React.memo(function ArticleCard({
         <motion.div
           className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-teal-500 to-orange-500"
           initial={{ width: 0 }}
-          whileInView={{ width: '0%' }}
-          whileHover={{ width: '100%' }}
+          whileInView={{ width: "0%" }}
+          whileHover={{ width: "100%" }}
           transition={{ duration: 0.3 }}
         />
       </motion.article>

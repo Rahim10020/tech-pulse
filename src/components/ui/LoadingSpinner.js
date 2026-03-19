@@ -7,7 +7,7 @@ import Image from "next/image";
  */
 export default function LoadingSpinner() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center">
       <Image src="/logo.png" alt="Logo pixelpulse" width={40} height={40} />
 
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
