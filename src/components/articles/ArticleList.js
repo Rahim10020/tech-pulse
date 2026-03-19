@@ -16,13 +16,21 @@ export default function ArticleList({
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [skeletonCount, setSkeletonCount] = useState(6);
+  const [skeletonCount, setSkeletonCount] = useState(0);
+  const [countsByCategory, setCountsByCategory] = useState({});
+  const pageLimit = 6;
 
   const loadArticles = useCallback(async () => {
     setLoading(true);
+    const cachedTotal = countsByCategory[category];
+    if (cachedTotal === undefined) {
+      setSkeletonCount(2);
+    } else {
+      setSkeletonCount(Math.min(cachedTotal, pageLimit) || 2);
+    }
     try {
       const response = await fetch(
-        `/api/articles?type=all&page=${currentPage}&limit=6&category=${category}`,
+        `/api/articles?type=all&page=${currentPage}&limit=${pageLimit}&category=${category}`,
       );
       if (!response.ok) {
         throw new Error("Échec de la récupération des articles");
@@ -31,9 +39,14 @@ export default function ArticleList({
 
       if (result.success) {
         const fetchedArticles = result.articles?.articles || [];
+        const totalArticles = result.articles?.totalArticles || 0;
         setArticles(fetchedArticles);
         setTotalPages(result.articles?.totalPages || 1);
-        setSkeletonCount(fetchedArticles.length || 0);
+        setSkeletonCount(Math.min(totalArticles, pageLimit) || 2);
+        setCountsByCategory((prev) => ({
+          ...prev,
+          [category]: totalArticles,
+        }));
       } else {
         console.error("API error:", result.error);
         setArticles([]);

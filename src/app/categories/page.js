@@ -19,7 +19,7 @@ const iconMap = {
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [skeletonCount, setSkeletonCount] = useState(0);
+  const [skeletonCount, setSkeletonCount] = useState(2);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -32,7 +32,7 @@ export default function CategoriesPage() {
         if (categoriesData.success) {
           const fetchedCategories = categoriesData.categories || [];
           setCategories(fetchedCategories);
-          setSkeletonCount(fetchedCategories.length || 0);
+          setSkeletonCount(fetchedCategories.length || 2);
         } else {
           console.error('API error:', categoriesData.error);
           setCategories([]);
