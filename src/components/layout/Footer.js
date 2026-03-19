@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSettings } from "@/hooks/useSettings";
 
@@ -60,10 +60,13 @@ export default function Footer() {
   };
 
   const socials = [
-    { icon: Github, href: "https://github.com", name: "GitHub" },
-    { icon: Twitter, href: "https://twitter.com", name: "Twitter" },
-    { icon: Linkedin, href: "https://linkedin.com", name: "LinkedIn" },
-    { icon: Mail, href: "mailto:contact@pixelpulse.com", name: "Email" },
+    { icon: Github, href: "https://github.com/Rahim10020", name: "GitHub" },
+    {
+      icon: Linkedin,
+      href: "https://www.linkedin.com/in/rahim-ali-a6003226b",
+      name: "LinkedIn",
+    },
+    { icon: Mail, href: "mailto:rahim100codeur@gmail.com", name: "Email" },
   ];
 
   return (
