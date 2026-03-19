@@ -1,26 +1,17 @@
 /** @description Page À propos du blog avec animations Framer Motion */
 "use client";
 
-import { motion, useInView, useAnimation } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
-import {
-  Code,
-  Users,
-  Target,
-  Award,
-  ArrowRight,
-  Github,
-  Twitter,
-  Linkedin,
-} from "lucide-react";
+import { ArrowRight, Github, Twitter, Linkedin } from "lucide-react";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main>
+      <main className="max-w-8xl">
         {/* Hero Section avec animation */}
         <HeroSection />
 
@@ -32,9 +23,6 @@ export default function AboutPage() {
 
         {/* Timeline interactive */}
         <TimelineSection />
-
-        {/* Values Section avec cards animées */}
-        <ValuesSection />
 
         {/* Team Section avec hover effects */}
         <TeamSection />
@@ -133,7 +121,7 @@ function StatsSection() {
   return (
     <AnimatedSection>
       <section className="py-20 bg-gray-100">
-        <div className="container-sm">
+        <div className="container-sm max-w-6xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <StatCounter key={index} {...stat} delay={index * 0.2} />
@@ -208,7 +196,7 @@ function AnimatedCounter({ value, suffix, isInView }) {
 function MissionSection() {
   return (
     <AnimatedSection>
-      <section className="py-28 bg-white">
+      <section className="py-28 bg-white w-full">
         <div className="container-sm">
           <motion.h2
             className="h2-title text-gray-900 mb-8 text-center text-3xl md:text-5xl"
@@ -290,86 +278,6 @@ function MissionCard({ title, items, color, delay }) {
           </motion.li>
         ))}
       </ul>
-    </motion.div>
-  );
-}
-
-// Values Section avec animations de cartes
-function ValuesSection() {
-  const values = [
-    {
-      icon: <Code className="w-8 h-8 text-teal-600" />,
-      title: "Excellence technique",
-      description:
-        "Nous nous engageons à fournir un contenu technique de la plus haute qualité, vérifié par nos experts.",
-    },
-    {
-      icon: <Users className="w-8 h-8 text-orange-500" />,
-      title: "Communauté",
-      description:
-        "Nous croyons au pouvoir de la communauté pour partager le savoir et faire avancer la technologie.",
-    },
-    {
-      icon: <Target className="w-8 h-8 text-blue-500" />,
-      title: "Innovation",
-      description:
-        "Nous explorons en permanence les dernières tendances pour vous tenir informé des évolutions technologiques.",
-    },
-    {
-      icon: <Award className="w-8 h-8 text-green-500" />,
-      title: "Pédagogie",
-      description:
-        "Nous rendons les concepts complexes accessibles à tous, du débutant à l’expert confirmé.",
-    },
-  ];
-
-  return (
-    <AnimatedSection>
-      <section className="py-20 bg-gray-50">
-        <div className="container-sm">
-          <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-5xl"
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 30 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Nos valeurs
-          </motion.h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <ValueCard key={index} {...value} delay={index * 0.2} />
-            ))}
-          </div>
-        </div>
-      </section>
-    </AnimatedSection>
-  );
-}
-
-function ValueCard({ icon, title, description, delay }) {
-  return (
-    <motion.div
-      className="text-center card p-6 h-full"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay }}
-      viewport={{ once: true }}
-      whileHover={{
-        y: -10,
-        boxShadow:
-          "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-      }}
-    >
-      <motion.div
-        className="mb-4 flex justify-center"
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        {icon}
-      </motion.div>
-      <h3 className="h4-title text-gray-900 mb-3 text-xl">{title}</h3>
-      <p className="body-text text-gray-600 text-lg">{description}</p>
     </motion.div>
   );
 }
@@ -598,10 +506,10 @@ function TeamSection() {
 
   return (
     <AnimatedSection>
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white min-w-5xl">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-4xl"
+            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-5xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
@@ -612,14 +520,14 @@ function TeamSection() {
 
           {/* Carrousel Desktop */}
           <div className="hidden md:block">
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden max-w-6xl mx-auto">
               <motion.div
                 className="flex transition-transform duration-500 ease-in-out"
                 animate={{ x: -currentMember * (100 / 3) + "%" }}
                 style={{ width: `${(teamMembers.length / 3) * 100}%` }}
               >
                 {teamMembers.map((member, index) => (
-                  <div key={index} className="w-1/3 px-4">
+                  <div key={index} className="w-1/3 px-4 flex h-full">
                     <TeamMemberCard
                       {...member}
                       delay={0}
@@ -709,7 +617,7 @@ function TeamMemberCard({
 }) {
   return (
     <motion.div
-      className="card p-6 text-center hover:shadow-lg transition-shadow relative overflow-hidden"
+      className="card p-6 text-center hover:shadow-md transition-shadow relative overflow-hidden h-full w-full flex flex-col"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
@@ -723,12 +631,8 @@ function TeamMemberCard({
         transition={{ duration: 0.3 }}
       />
 
-      <div className="relative z-10">
-        <motion.div
-          className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4"
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
+      <div className="relative z-10 flex flex-col h-full">
+        <motion.div className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
           <span className="text-white font-bold text-lg">{avatar}</span>
         </motion.div>
 
@@ -755,7 +659,7 @@ function TeamMemberCard({
         {/* Bouton Voir plus */}
         <motion.button
           onClick={onViewDetails}
-          className="mb-4 text-teal-600 hover:text-teal-700 text-base font-medium"
+          className="mt-auto mb-4 text-teal-600 hover:text-teal-700 text-base font-medium"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -763,7 +667,7 @@ function TeamMemberCard({
         </motion.button>
 
         {/* Social links */}
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-3 mt-2">
           {Object.entries(social).map(([platform, url]) => {
             const icons = {
               github: Github,
@@ -897,10 +801,10 @@ function TeamMemberModal({ member, isOpen, onClose }) {
 function CTASection() {
   return (
     <AnimatedSection>
-      <section className="py-20 bg-gradient-to-r from-teal-500 to-orange-500">
+      <section className="py-20 bg-teal-500">
         <div className="container-sm text-center">
           <motion.h2
-            className="h2-title text-white mb-6 text-3xl md:text-4xl"
+            className="h2-title text-white mb-6 text-3xl md:text-6xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
@@ -909,7 +813,7 @@ function CTASection() {
             Rejoignez la communauté Pixelpulse
           </motion.h2>
           <motion.p
-            className="h4-title text-white/90 mb-8 text-xl md:text-2xl"
+            className="h4-title text-white/90 mb-8 text-xl md:text-3xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -927,7 +831,7 @@ function CTASection() {
           >
             <motion.a
               href="/articles"
-              className="bg-white text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors text-lg"
+              className="bg-white text-gray-900 px-8 py-3 font-medium hover:bg-gray-100 transition-colors text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -935,7 +839,7 @@ function CTASection() {
             </motion.a>
             <motion.a
               href="/contact"
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900 transition-colors text-lg"
+              className="border-2 border-white text-white px-8 py-3 font-medium hover:underline text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
