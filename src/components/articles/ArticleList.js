@@ -111,7 +111,7 @@ export default function ArticleList({
       {/* Articles List/Grid */}
       {layout === "horizontal" ? (
         // Layout horizontal (liste)
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 divide-y divide-gray-200 mb-12">
+        <div className="bg-white shadow-sm border border-gray-200 divide-y divide-gray-200 mb-12">
           {articles.map((article, index) => (
             <div
               key={article.id}
@@ -209,7 +209,7 @@ export default function ArticleList({
                 <span className="px-2 text-gray-500 font-sans">...</span>
                 <button
                   onClick={() => setCurrentPage(totalPages)}
-                  className={`w-10 h-10 text-sm font-poppins font-medium rounded-lg transition-colors ${
+                  className={`w-10 h-10 text-sm font-poppins font-medium transition-colors ${
                     currentPage === totalPages
                       ? "bg-gray-900 text-white"
                       : "text-gray-500 hover:bg-gray-100"
