@@ -228,7 +228,7 @@ export default function SearchPage() {
                   value={query}
                   onChange={handleQueryChange}
                   placeholder="Rechercher des articles, auteurs, catégories..."
-                  className="w-full pl-12 pr-20 py-4 text-lg border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm"
+                  className="w-full pl-12 pr-20 py-4 text-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm"
                   autoComplete="off"
                 />
 
@@ -246,7 +246,7 @@ export default function SearchPage() {
                   <button
                     type="button"
                     onClick={() => setShowFilters(!showFilters)}
-                    className={`p-2 rounded-lg transition-colors ${showFilters ? "bg-teal-100 text-teal-600" : "text-gray-400 hover:text-gray-600"}`}
+                    className={`p-2 transition-colors ${showFilters ? "bg-teal-100 text-teal-600" : "text-gray-400 hover:text-gray-600"}`}
                   >
                     <Filter className="w-4 h-4" />
                   </button>
@@ -257,7 +257,7 @@ export default function SearchPage() {
             {/* Suggestions et historique */}
             {showSuggestions &&
               (suggestions.length > 0 || searchHistory.length > 0) && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 shadow-lg z-50 max-h-80 overflow-y-auto">
                   {/* Suggestions */}
                   {suggestions.length > 0 && (
                     <div className="p-4 border-b border-gray-100">
@@ -290,7 +290,7 @@ export default function SearchPage() {
                         <button
                           key={index}
                           onClick={() => selectSuggestion(historyItem)}
-                          className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors flex items-center justify-between"
+                          className="w-full text-left px-3 py-2 hover:bg-gray-50 transition-colors flex items-center justify-between"
                         >
                           <span className="body-text text-gray-700">
                             {historyItem}
@@ -306,7 +306,7 @@ export default function SearchPage() {
 
           {/* Filtres avancés */}
           {showFilters && (
-            <div className="mt-6 p-6 bg-white border border-gray-200 rounded-xl">
+            <div className="mt-6 p-6 bg-white border border-gray-200">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="h6-title text-gray-700 mb-2">Période</label>
@@ -403,7 +403,7 @@ export default function SearchPage() {
               </div>
 
               {/* Onglets de résultats */}
-              <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+              <div className="flex space-x-1 bg-gray-100 p-1">
                 {[
                   { key: "all", label: "Tout", count: results.total },
                   {
@@ -425,7 +425,7 @@ export default function SearchPage() {
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                    className={`px-3 py-1.5 text-sm font-medium transition-colors ${
                       activeTab === tab.key
                         ? "bg-white text-gray-900 shadow-sm"
                         : "text-gray-600 hover:text-gray-900"
@@ -545,7 +545,7 @@ export default function SearchPage() {
                     <button
                       key={page}
                       onClick={() => handlePageChange(page)}
-                      className={`w-10 h-10 text-sm font-medium rounded-lg transition-colors ${
+                      className={`w-10 h-10 text-sm font-medium transition-colors ${
                         currentPage === page
                           ? "bg-teal-600 text-white"
                           : "text-gray-500 hover:bg-gray-100"
@@ -582,7 +582,7 @@ function SearchArticleCard({ article, query }) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div className="bg-white border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start space-x-4">
         {article.imageUrl ? (
           <Image
@@ -590,11 +590,11 @@ function SearchArticleCard({ article, query }) {
             alt={article.title}
             width={64}
             height={64}
-            className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+            className="w-16 h-16 object-cover flex-shrink-0"
           />
         ) : (
           <div
-            className={`w-16 h-16 ${article.imageColor || "bg-gray-200"} rounded-lg flex-shrink-0`}
+            className={`w-16 h-16 ${article.imageColor || "bg-gray-200"} flex-shrink-0`}
           ></div>
         )}
 
