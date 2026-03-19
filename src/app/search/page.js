@@ -214,19 +214,8 @@ export default function SearchPage() {
         <div className="max-w-4xl mx-auto mb-8">
           <div className="text-center mb-8">
             <h1 className="h1-title text-gray-900 mb-4">
-              Rechercher dans
-              <span>
-                <Image
-                  src="/logo.png"
-                  alt={`Logo ${settings.siteName || "pixelpulse"}`}
-                  width={100}
-                  height={100}
-                />
-              </span>
+              Rechercher des articles, auteurs et catégories
             </h1>
-            <p className="body-text text-gray-600">
-              Trouvez des articles, auteurs et catégories
-            </p>
           </div>
 
           {/* Barre de recherche principale */}
