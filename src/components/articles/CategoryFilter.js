@@ -53,10 +53,16 @@ export default function CategoryFilter({ activeCategory = "all" }) {
     router.push(`/articles?${params.toString()}`);
   };
 
-  const totalArticles = categories.reduce((sum, cat) => sum + cat.count, 0);
+  const totalArticles = categories.reduce(
+    (sum, cat) => sum + (Number(cat.count) || 0),
+    0
+  );
+  const visibleCategories = categories.filter(
+    (cat) => (Number(cat.count) || 0) > 0
+  );
   const allCategories = [
     { id: 0, name: "Tous", slug: "all", count: totalArticles },
-    ...categories,
+    ...visibleCategories,
   ];
 
   const checkScrollButtons = () => {
