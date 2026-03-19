@@ -1,17 +1,13 @@
 "use client";
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRouter, useSearchParams } from "next/navigation";
+import { useRef, useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 /**
  * CategoryFilter component provides a scrollable filter interface for article categories.
- *
- * @param {Object} props - The component props
- * @param {string} [props.activeCategory='all'] - The currently active category slug
- * @returns {JSX.Element} The category filter element
  */
-export default function CategoryFilter({ activeCategory = 'all' }) {
+export default function CategoryFilter({ activeCategory = "all" }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const scrollContainerRef = useRef(null);
@@ -23,19 +19,19 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch('/api/categories?type=all');
+        const response = await fetch("/api/categories?type=all");
         if (!response.ok) {
-          throw new Error('Échec de la récupération des catégories');
+          throw new Error("Échec de la récupération des catégories");
         }
         const categoriesData = await response.json();
         if (categoriesData.success) {
           setCategories(categoriesData.categories || []);
         } else {
-          console.error('API error:', categoriesData.error);
+          console.error("API error:", categoriesData.error);
           setCategories([]);
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
         setCategories([]);
       } finally {
         setLoading(false);
@@ -48,10 +44,10 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
   const handleCategoryChange = (categorySlug) => {
     const params = new URLSearchParams(searchParams);
 
-    if (categorySlug === 'all') {
-      params.delete('category');
+    if (categorySlug === "all") {
+      params.delete("category");
     } else {
-      params.set('category', categorySlug);
+      params.set("category", categorySlug);
     }
 
     router.push(`/articles?${params.toString()}`);
@@ -59,13 +55,14 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
 
   const totalArticles = categories.reduce((sum, cat) => sum + cat.count, 0);
   const allCategories = [
-    { id: 0, name: 'Tous', slug: 'all', count: totalArticles },
-    ...categories
+    { id: 0, name: "Tous", slug: "all", count: totalArticles },
+    ...categories,
   ];
 
   const checkScrollButtons = () => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
       setShowLeftArrow(scrollLeft > 0);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth);
     }
@@ -73,16 +70,16 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
 
   useEffect(() => {
     checkScrollButtons();
-    window.addEventListener('resize', checkScrollButtons);
-    return () => window.removeEventListener('resize', checkScrollButtons);
+    window.addEventListener("resize", checkScrollButtons);
+    return () => window.removeEventListener("resize", checkScrollButtons);
   }, [categories]);
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
       const scrollAmount = 200;
       scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
       });
     }
   };
@@ -92,7 +89,10 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
       <div className="mb-12 border-b border-gray-200">
         <div className="flex space-x-4 pb-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="animate-pulse bg-gray-200 rounded h-8 w-20 flex-shrink-0" />
+            <div
+              key={i}
+              className="animate-pulse bg-gray-200 rounded h-8 w-20 flex-shrink-0"
+            />
           ))}
         </div>
       </div>
@@ -105,18 +105,20 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
         <div
           ref={scrollContainerRef}
           onScroll={checkScrollButtons}
-          className={`flex space-x-1 overflow-x-auto scrollbar-hide transition-all duration-200 ${showLeftArrow ? 'pl-10' : ''
-            } ${showRightArrow ? 'pr-10' : ''}`}
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className={`flex space-x-1 overflow-x-auto scrollbar-hide transition-all duration-200 ${
+            showLeftArrow ? "pl-10" : ""
+          } ${showRightArrow ? "pr-10" : ""}`}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {allCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => handleCategoryChange(category.slug)}
-              className={`pb-4 px-4 h6-title whitespace-nowrap transition-colors flex-shrink-0 ${activeCategory === category.slug
-                ? 'text-gray-900 border-b-2 border-teal-600'
-                : 'text-gray-500 hover:text-gray-700'
-                }`}
+              className={`pb-4 px-4 h6-title whitespace-nowrap transition-colors flex-shrink-0 ${
+                activeCategory === category.slug
+                  ? "text-gray-900 border-b-2 border-teal-600"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
             >
               {category.name}
               {category.count !== undefined && (
@@ -130,7 +132,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
 
         {showLeftArrow && (
           <button
-            onClick={() => scroll('left')}
+            onClick={() => scroll("left")}
             className="absolute left-0 top-0 z-10 h-full w-6 flex items-center justify-center bg-gray-100 transition-colors"
           >
             <ChevronLeft className="w-4 h-4 text-gray-700 hover:text-gray-900" />
@@ -139,7 +141,7 @@ export default function CategoryFilter({ activeCategory = 'all' }) {
 
         {showRightArrow && (
           <button
-            onClick={() => scroll('right')}
+            onClick={() => scroll("right")}
             className="absolute right-0 top-0 z-10 h-full w-6 flex items-center justify-center bg-gray-100 transition-colors"
           >
             <ChevronRight className="w-4 h-4 text-gray-700 hover:text-gray-900" />
