@@ -211,7 +211,7 @@ function MissionSection() {
       <section className="py-28 bg-white">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-8 text-center text-3xl md:text-4xl"
+            className="h2-title text-gray-900 mb-8 text-center text-3xl md:text-5xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
@@ -328,7 +328,7 @@ function ValuesSection() {
       <section className="py-20 bg-gray-50">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-4xl"
+            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-5xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
@@ -422,7 +422,7 @@ function TimelineSection() {
       <section className="py-20 bg-gray-50">
         <div className="container-sm">
           <motion.h2
-            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-4xl"
+            className="h2-title text-gray-900 mb-12 text-center text-3xl md:text-5xl"
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.6 }}
@@ -462,16 +462,7 @@ function TimelineSection() {
   );
 }
 
-function TimelineStep({
-  year,
-  title,
-  description,
-  icon,
-  color,
-  index,
-  isActive,
-  onClick,
-}) {
+function TimelineStep({ year, title, description, index, isActive, onClick }) {
   const isEven = index % 2 === 0;
 
   return (
@@ -495,11 +486,6 @@ function TimelineStep({
           transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="flex items-center mb-3">
-            <div
-              className={`w-12 h-12 rounded-full bg-gradient-to-r ${color} flex items-center justify-center text-white text-xl mr-4`}
-            >
-              {icon}
-            </div>
             <div>
               <h3 className="h4-title text-gray-900 text-xl">{title}</h3>
               <span className="text-teal-600 font-bold">{year}</span>
@@ -739,7 +725,7 @@ function TeamMemberCard({
 
       <div className="relative z-10">
         <motion.div
-          className="w-20 h-20 bg-gradient-to-br from-teal-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4"
+          className="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-4"
           whileHover={{ scale: 1.1, rotate: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
