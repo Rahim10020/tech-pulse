@@ -269,7 +269,7 @@ export default function SearchPage() {
                         <button
                           key={index}
                           onClick={() => selectSuggestion(suggestion)}
-                          className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors"
+                          className="w-full text-left px-3 py-2 hover:bg-gray-50 transition-colors"
                         >
                           <span className="body-text text-gray-900">
                             {suggestion}
@@ -666,9 +666,9 @@ function SearchAuthorCard({ author, query }) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-white border border-gray-200 p-4 hover:shadow-md transition-shadow">
       <div className="text-center">
-        <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center mx-auto mb-3">
           <span className="text-white font-bold">{author.name.charAt(0)}</span>
         </div>
 
@@ -706,7 +706,7 @@ function SearchCategoryCard({ category, query }) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-white border border-gray-200 p-4 hover:shadow-md transition-shadow">
       <div className="text-center">
         <Tag className="w-8 h-8 text-gray-600 mx-auto mb-3" />
 

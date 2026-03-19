@@ -5,11 +5,16 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react'],
   },
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com', 'blob.vercel-storage.com'],
+    domains: [
+      'images.unsplash.com',
+      'via.placeholder.com',
+      'blob.vercel-storage.com',
+      '63rj7xefobpbdvlx.public.blob.vercel-storage.com'
+    ],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.public.blob.vercel-storage.com',
+        hostname: '63rj7xefobpbdvlx.public.blob.vercel-storage.com',
         pathname: '/**',
       },
     ],
