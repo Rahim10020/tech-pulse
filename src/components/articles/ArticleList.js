@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import ArticleCard from "./ArticleCard";
 import { ArticleCardSkeleton } from "../ui";
 
@@ -17,53 +17,61 @@ export default function ArticleList({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [skeletonCount, setSkeletonCount] = useState(0);
-  const [countsByCategory, setCountsByCategory] = useState({});
+  const countsByCategoryRef = useRef({});
   const pageLimit = 6;
 
-  const loadArticles = useCallback(async () => {
-    setLoading(true);
-    const cachedTotal = countsByCategory[category];
-    if (cachedTotal === undefined) {
-      setSkeletonCount(2);
-    } else {
-      setSkeletonCount(Math.min(cachedTotal, pageLimit) || 2);
-    }
-    try {
-      const response = await fetch(
-        `/api/articles?type=all&page=${currentPage}&limit=${pageLimit}&category=${category}`,
-      );
-      if (!response.ok) {
-        throw new Error("Échec de la récupération des articles");
-      }
-      const result = await response.json();
+  useEffect(() => {
+    let isActive = true;
 
-      if (result.success) {
-        const fetchedArticles = result.articles?.articles || [];
-        const totalArticles = result.articles?.totalArticles || 0;
-        setArticles(fetchedArticles);
-        setTotalPages(result.articles?.totalPages || 1);
-        setSkeletonCount(Math.min(totalArticles, pageLimit) || 2);
-        setCountsByCategory((prev) => ({
-          ...prev,
-          [category]: totalArticles,
-        }));
+    async function loadArticles() {
+      setLoading(true);
+      const cachedTotal = countsByCategoryRef.current[category];
+      if (cachedTotal === undefined) {
+        setSkeletonCount(2);
       } else {
-        console.error("API error:", result.error);
+        setSkeletonCount(Math.min(cachedTotal, pageLimit) || 2);
+      }
+      try {
+        const response = await fetch(
+          `/api/articles?type=all&page=${currentPage}&limit=${pageLimit}&category=${category}`,
+        );
+        if (!response.ok) {
+          throw new Error("Échec de la récupération des articles");
+        }
+        const result = await response.json();
+
+        if (!isActive) return;
+
+        if (result.success) {
+          const fetchedArticles = result.articles?.articles || [];
+          const totalArticles = result.articles?.totalArticles || 0;
+          setArticles(fetchedArticles);
+          setTotalPages(result.articles?.totalPages || 1);
+          setSkeletonCount(Math.min(totalArticles, pageLimit) || 2);
+          countsByCategoryRef.current = {
+            ...countsByCategoryRef.current,
+            [category]: totalArticles,
+          };
+        } else {
+          console.error("API error:", result.error);
+          setArticles([]);
+          setTotalPages(1);
+        }
+      } catch (error) {
+        if (!isActive) return;
+        console.error("Error loading articles:", error);
         setArticles([]);
         setTotalPages(1);
+      } finally {
+        if (isActive) setLoading(false);
       }
-    } catch (error) {
-      console.error("Error loading articles:", error);
-      setArticles([]);
-      setTotalPages(1);
-    } finally {
-      setLoading(false);
     }
-  }, [category, currentPage]);
 
-  useEffect(() => {
     loadArticles();
-  }, [loadArticles]);
+    return () => {
+      isActive = false;
+    };
+  }, [category, currentPage, pageLimit]);
 
   if (loading) {
     return (
