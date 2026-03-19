@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail, Heart, ArrowUp, Rocket } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Github, Twitter, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSettings } from "@/hooks/useSettings";
 
 export default function Footer() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { settings } = useSettings();
   const currentYear = new Date().getFullYear();
-  const appVersion = '1.0.0';
+  const appVersion = "1.0.0";
   const isSystemOperational = true;
 
   // Animation variants for staggered children
@@ -19,14 +21,14 @@ export default function Footer() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const item = {
     hidden: { opacity: 0, y: 10 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
   useEffect(() => {
@@ -34,34 +36,34 @@ export default function Footer() {
       setShowScrollTop(window.scrollY > 500);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const footerLinks = {
     Platform: [
-      { name: 'Accueil', href: '/' },
-      { name: 'Articles', href: '/articles' },
-      { name: 'Catégories', href: '/categories' },
-      { name: 'À propos', href: '/about' },
+      { name: "Accueil", href: "/" },
+      { name: "Articles", href: "/articles" },
+      { name: "Catégories", href: "/categories" },
+      { name: "À propos", href: "/about" },
     ],
     Resources: [
-      { name: 'Contact', href: '/contact' },
-      { name: 'Mentions légales', href: '#' },
-      { name: 'Politique de confidentialité', href: '#' },
-      { name: 'CGU', href: '#' },
+      { name: "Contact", href: "/contact" },
+      { name: "Mentions légales", href: "#" },
+      { name: "Politique de confidentialité", href: "#" },
+      { name: "CGU", href: "#" },
     ],
   };
 
   const socials = [
-    { icon: Github, href: 'https://github.com', name: 'GitHub' },
-    { icon: Twitter, href: 'https://twitter.com', name: 'Twitter' },
-    { icon: Linkedin, href: 'https://linkedin.com', name: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:contact@pixelpulse.com', name: 'Email' },
+    { icon: Github, href: "https://github.com", name: "GitHub" },
+    { icon: Twitter, href: "https://twitter.com", name: "Twitter" },
+    { icon: Linkedin, href: "https://linkedin.com", name: "LinkedIn" },
+    { icon: Mail, href: "mailto:contact@pixelpulse.com", name: "Email" },
   ];
 
   return (
@@ -85,15 +87,15 @@ export default function Footer() {
                 <Image
                   src="/logo.png"
                   alt="PixelPulse Logo"
-                  width={40}
-                  height={40}
-                  className="h-10"
+                  width={100}
+                  height={100}
                 />
               </motion.div>
             </Link>
             <p className="text-gray-600 leading-relaxed">
-              Votre source d&apos;information tech de confiance. Découvrez les dernières
-              tendances en IA, développement web, cybersécurité et plus encore.
+              Votre source d&apos;information tech de confiance. Découvrez les
+              dernières tendances en IA, développement web, cybersécurité et
+              plus encore.
             </p>
             <div className="flex space-x-4 pt-2">
               {socials.map((social) => (
@@ -103,7 +105,11 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 text-gray-500 hover:text-[#111111] hover:bg-teal-100 rounded-full transition-all duration-300"
-                  whileHover={{ y: -3, scale: 1.1, backgroundColor: 'rgba(13, 148, 136, 0.3)' }}
+                  whileHover={{
+                    y: -3,
+                    scale: 1.1,
+                    backgroundColor: "rgba(13, 148, 136, 0.3)",
+                  }}
                   whileTap={{ scale: 0.9 }}
                   variants={item}
                 >
@@ -117,9 +123,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([title, links], index) => (
             <motion.div key={title} variants={item} className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                {title}
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
               <ul className="space-y-3">
                 {links.map((link, linkIndex) => (
                   <motion.li
@@ -132,9 +136,7 @@ export default function Footer() {
                       href={link.href}
                       className="group relative text-gray-600 hover:text-teal-600 transition-colors duration-300"
                     >
-                      <motion.span
-                        className="inline-block relative group-hover:translate-x-1 transition-transform duration-300"
-                      >
+                      <motion.span className="inline-block relative group-hover:translate-x-1 transition-transform duration-300">
                         {link.name}
                         <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-500 group-hover:w-full transition-all duration-300"></span>
                       </motion.span>
@@ -152,9 +154,16 @@ export default function Footer() {
           className="pt-8 mt-8 border-t border-gray-200"
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600">
-              {currentYear} PixelPulse. Tous droits réservés.
-            </p>
+            <div className="flex items-center gap-3">
+              <p>{currentYear}</p>
+              <Image
+                src="/logo.png"
+                alt={`Logo ${settings.siteName || "pixelpulse"}`}
+                width={90}
+                height={90}
+              />
+              <p>Tous droits réservés.</p>
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600">
               <span className="inline-flex items-center px-3 py-1 bg-gray-100 rounded-full">
@@ -162,15 +171,18 @@ export default function Footer() {
               </span>
               <span className="inline-flex items-center">
                 <span
-                  className={`w-2 h-2 rounded-full mr-2 ${isSystemOperational ? 'bg-green-500' : 'bg-red-500'
-                    }`}
+                  className={`w-2 h-2 rounded-full mr-2 ${
+                    isSystemOperational ? "bg-green-500" : "bg-red-500"
+                  }`}
                 />
                 <span className="text-sm">
-                  {isSystemOperational ? 'Status: Opérationnel' : 'En maintenance'}
+                  {isSystemOperational
+                    ? "Status: Opérationnel"
+                    : "En maintenance"}
                 </span>
               </span>
               <motion.button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 className="flex items-center text-teal-600 hover:text-teal-700 transition-colors group"
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
