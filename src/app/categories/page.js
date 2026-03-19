@@ -1,19 +1,19 @@
 // src/app/categories/page.js
 "use client";
 
-import { useState, useEffect } from 'react';
-import Header from '@/components/layout/Header';
-import Link from 'next/link';
-import { CategoryCardSkeleton } from '@/components/ui/Skeleton';
-import { Code, Database, Cloud, Brain, Smartphone, Globe } from 'lucide-react';
+import { useState, useEffect } from "react";
+import Header from "@/components/layout/Header";
+import Link from "next/link";
+import { CategoryCardSkeleton } from "@/components/ui/Skeleton";
+import { Code, Database, Cloud, Brain, Smartphone, Globe } from "lucide-react";
 
 const iconMap = {
-  'Code': Code,
-  'Database': Database,
-  'Cloud': Cloud,
-  'Brain': Brain,
-  'Smartphone': Smartphone,
-  'Globe': Globe,
+  Code: Code,
+  Database: Database,
+  Cloud: Cloud,
+  Brain: Brain,
+  Smartphone: Smartphone,
+  Globe: Globe,
 };
 
 export default function CategoriesPage() {
@@ -24,9 +24,9 @@ export default function CategoriesPage() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch('/api/categories?type=all');
+        const response = await fetch("/api/categories?type=all");
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error("Failed to fetch categories");
         }
         const categoriesData = await response.json();
         if (categoriesData.success) {
@@ -34,11 +34,11 @@ export default function CategoriesPage() {
           setCategories(fetchedCategories);
           setSkeletonCount(fetchedCategories.length || 2);
         } else {
-          console.error('API error:', categoriesData.error);
+          console.error("API error:", categoriesData.error);
           setCategories([]);
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
         setCategories([]);
       } finally {
         setLoading(false);
@@ -73,52 +73,60 @@ export default function CategoriesPage() {
       <Header />
       <div className="container-sm py-6">
         <div className="mb-8">
-          <h1 className="h2-title text-gray-900 mb-4">
-            Categories
-          </h1>
+          <h1 className="h2-title text-gray-900 mb-4">Categories</h1>
           <p className="body-text text-gray-600">
             Explore our articles by area of technology expertise.
           </p>
         </div>
 
-        {/* Layout en grille */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {categories.map((category) => {
-            const IconComponent = iconMap[category.icon] || Code;
+        {categories.length === 0 ? (
+          <div className="text-center py-12">
+            <h3 className="h3-title text-gray-900 mb-2">
+              Aucune catégorie trouvée
+            </h3>
+            <p className="text-gray-600 font-sans">
+              Aucune catégorie disponible pour le moment.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {categories.map((category) => {
+              const IconComponent = iconMap[category.icon] || Code;
 
-            return (
-              <Link
-                key={category.id}
-                href={`/articles?category=${category.slug}`}
-                className="block group h-full"
-              >
-                <div className="card p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300 h-full flex flex-col">
-                  {/* Icône en haut à gauche */}
-                  <div className="mb-4">
-                    <IconComponent className="w-6 h-6 text-gray-700" />
+              return (
+                <Link
+                  key={category.id}
+                  href={`/articles?category=${category.slug}`}
+                  className="block group h-full"
+                >
+                  <div className="card p-6 hover:shadow-md transition-all duration-200 group-hover:border-gray-300 h-full flex flex-col">
+                    {/* Icône en haut à gauche */}
+                    <div className="mb-4">
+                      <IconComponent className="w-6 h-6 text-gray-700" />
+                    </div>
+
+                    {/* Titre */}
+                    <h3 className="h4-title text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
+                      {category.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="small-text text-gray-600 leading-relaxed line-clamp-3 flex-grow">
+                      {category.description}
+                    </p>
+
+                    {/* Compteur d'articles */}
+                    <div className="mt-4 pt-4 border-t border-gray-100">
+                      <span className="small-text text-gray-500">
+                        {category.count} article{category.count > 1 ? "s" : ""}
+                      </span>
+                    </div>
                   </div>
-
-                  {/* Titre */}
-                  <h3 className="h4-title text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
-                    {category.name}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="small-text text-gray-600 leading-relaxed line-clamp-3 flex-grow">
-                    {category.description}
-                  </p>
-
-                  {/* Compteur d'articles */}
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="small-text text-gray-500">
-                      {category.count} article{category.count > 1 ? 's' : ''}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
