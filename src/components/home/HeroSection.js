@@ -135,7 +135,7 @@ export default function HeroSection() {
                   boxShadow: "0 10px 25px -5px rgba(20, 184, 166, 0.3)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-teal-600 text-white rounded-full font-semibold text-base sm:text-lg shadow-md flex items-center gap-2 transition-all duration-300"
+                className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-teal-600 text-white font-semibold text-base sm:text-lg shadow-md flex items-center gap-2 transition-all duration-300"
               >
                 Explorer les articles
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
@@ -149,7 +149,7 @@ export default function HeroSection() {
                   boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white/90 backdrop-blur-sm text-gray-800 hover:text-gray-900 border border-gray-200 rounded-full font-medium text-base sm:text-lg shadow-sm flex items-center gap-2 transition-all duration-300"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white/90 backdrop-blur-sm text-gray-800 hover:text-gray-900 border border-gray-200 font-medium text-base sm:text-lg shadow-sm flex items-center gap-2 transition-all duration-300"
               >
                 En savoir plus
               </motion.button>

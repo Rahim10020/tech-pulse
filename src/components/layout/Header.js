@@ -127,7 +127,7 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="bg-gray-100 text-gray-900 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64 transition-colors"
+                className="bg-gray-100 text-gray-900 pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64 transition-colors"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && e.target.value.trim()) {
                     window.location.href = `/search?q=${encodeURIComponent(e.target.value.trim())}`;

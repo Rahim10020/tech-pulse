@@ -6,6 +6,13 @@ const nextConfig = {
   },
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com', 'blob.vercel-storage.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        pathname: '/**',
+      },
+    ],
   },
   // Configuration importante pour Tailwind
   transpilePackages: [],
