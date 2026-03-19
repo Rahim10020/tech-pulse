@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Variables CSS pour pixelpulse */
 :root {
   --background: #fafafa;
@@ -32,7 +31,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-
 /* Dans globals.css ou tailwind.css */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -42,7 +40,6 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
 
 /* Composants pixelpulse */
 @layer components {
@@ -67,11 +64,11 @@ body {
   }
 
   .input-field {
-    @apply w-full px-4 py-2 text-gray-900 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors;
+    @apply w-full px-4 py-2 text-gray-900 placeholder-gray-400 bg-white ring-2 outline-none focus:ring-gray-300 transition-colors;
   }
 
   .search-input-field {
-    @apply bg-gray-100 text-gray-900 rounded-sm px-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors;
+    @apply bg-gray-100 text-gray-900 px-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors;
   }
 
   .special-input-field {
@@ -79,7 +76,7 @@ body {
   }
 
   .article-card {
-    @apply bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all;
+    @apply bg-white border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all;
   }
 
   .article-title {
@@ -107,35 +104,35 @@ body {
   }
 
   .h1-title {
-    @apply text-3xl md:text-4xl font-poppins font-bold
+    @apply text-3xl md:text-4xl font-poppins font-bold;
   }
 
   .h2-title {
-    @apply text-2xl font-poppins font-bold
+    @apply text-2xl font-poppins font-bold;
   }
 
   .h3-title {
-    @apply text-xl font-poppins font-semibold
+    @apply text-xl font-poppins font-semibold;
   }
 
   .h4-title {
-    @apply text-lg font-poppins font-medium
+    @apply text-lg font-poppins font-medium;
   }
 
   .h5-title {
-    @apply text-base font-poppins font-medium
+    @apply text-base font-poppins font-medium;
   }
 
   .h6-title {
-    @apply text-sm font-poppins font-medium
+    @apply text-sm font-poppins font-medium;
   }
 
   .body-text {
-    @apply font-sans text-base
+    @apply font-sans text-base;
   }
 
   .small-text {
-    @apply font-sans text-sm
+    @apply font-sans text-sm;
   }
 
   /* Utility classes pour line-clamp (limitation du nombre de lignes) */
@@ -169,7 +166,7 @@ body {
 
   /* Mise à jour de votre article-card existante avec animations */
   .article-card {
-    @apply bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all duration-200;
+    @apply bg-white border border-gray-200 overflow-hidden hover:shadow-lg cursor-pointer transition-all duration-200;
   }
 
   .article-card:hover {
@@ -222,14 +219,7 @@ body {
 
   .animate-shimmer {
     animation: shimmer 2s infinite linear;
-    background: linear-gradient(
-      to right,
-      #f0f0f0 4%,
-      #f8f8f8 25%,
-      #f0f0f0 36%
-    );
+    background: linear-gradient(to right, #f0f0f0 4%, #f8f8f8 25%, #f0f0f0 36%);
     background-size: 1000px 100%;
   }
-
-
 }

@@ -21,14 +21,14 @@ export default function ContactPage() {
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -37,10 +37,10 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -49,20 +49,20 @@ export default function ContactPage() {
 
       if (response.ok) {
         setIsSubmitted(true);
-        showToast('Message envoyé avec succès !', 'success');
+        showToast("Message envoyé avec succès !", "success");
         // Reset form
         setFormData({
           name: "",
           email: "",
           subject: "",
-          message: ""
+          message: "",
         });
       } else {
-        showToast(result.error || 'Erreur lors de l\'envoi', 'error');
+        showToast(result.error || "Erreur lors de l'envoi", "error");
       }
     } catch (error) {
-      console.error('Error submitting contact form:', error);
-      showToast('Erreur lors de l\'envoi du message', 'error');
+      console.error("Error submitting contact form:", error);
+      showToast("Erreur lors de l'envoi du message", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -76,8 +76,7 @@ export default function ContactPage() {
       "/person1.png",
       "/person2.png",
       "/person3.png",
-      "/person4.png"
-
+      "/person4.png",
     ];
 
     useEffect(() => {
@@ -96,9 +95,10 @@ export default function ContactPage() {
             fill
             src={src}
             alt={`Image ${index + 1}`}
-            style={{ objectFit: 'cover' }}
-            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
-              }`}
+            style={{ objectFit: "cover" }}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentIndex ? "opacity-100" : "opacity-0"
+            }`}
           />
         ))}
       </div>
@@ -111,7 +111,6 @@ export default function ContactPage() {
 
       <main className="py-7">
         <div className="container">
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <div className="card p-8">
@@ -124,7 +123,8 @@ export default function ContactPage() {
                     Message envoyé !
                   </h3>
                   <p className="body-text text-gray-600 mb-6">
-                    Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
+                    Merci pour votre message. Nous vous répondrons dans les plus
+                    brefs délais.
                   </p>
                   <button
                     onClick={() => setIsSubmitted(false)}
@@ -135,18 +135,20 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <>
-
-                  <p className="h4-title text-gray-600 max-w-2xl mb-4 mx-auto">
-                    Une question, une suggestion ou envie de collaborer ? Nous serions
-                    ravis d&apos;échanger avec vous !
-                  </p>
-                  <h2 className="h2-title text-gray-900 mb-6">
+                  <h2 className="h2-title text-gray-900 mb-3">
                     Envoyez-nous un message
                   </h2>
+                  <p className="h4-title text-gray-600 max-w-2xl mb-10 mx-auto">
+                    Une question, une suggestion ou envie de collaborer ? Nous
+                    serions ravis d&apos;échanger avec vous !
+                  </p>
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Nom complet</label>
+                        <label className="h6-title block mb-2">
+                          Nom complet
+                        </label>
                         <input
                           type="text"
                           name="name"
@@ -158,7 +160,9 @@ export default function ContactPage() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">Adresse e-mail</label>
+                        <label className="h6-title block mb-2">
+                          Adresse e-mail
+                        </label>
                         <input
                           type="email"
                           name="email"
@@ -211,7 +215,6 @@ export default function ContactPage() {
                         </>
                       )}
                     </button>
-
                   </form>
                 </>
               )}
