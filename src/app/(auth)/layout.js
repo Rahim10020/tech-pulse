@@ -1,4 +1,3 @@
-// app/(auth)/layout.js - Layout pour les pages d'authentification
 import Link from "next/link";
 import Image from "next/image";
 
@@ -9,27 +8,13 @@ export default function AuthLayout({ children }) {
       <header className="bg-white border-b border-gray-200 px-6 py-3 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/">
-            <Image src="/logo.png"
+            <Image
+              src="/logo.png"
               alt="Logo pixelpulse"
-              width={40}
-              height={40}
-              className="h-10" />
+              width={100}
+              height={100}
+            />
           </Link>
-
-          <nav className="flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 font-poppins hover:text-gray-900 text-sm">
-              Acceuil
-            </Link>
-            <Link
-              href="/articles"
-              className="text-gray-700 hover:text-gray-900 font-poppins text-sm"
-            >
-              Articles
-            </Link>
-            <Link href="/about" className="text-gray-700 hover:text-gray-900 text-sm font-poppins">
-              A propos
-            </Link>
-          </nav>
         </div>
       </header>
       {children}

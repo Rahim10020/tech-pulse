@@ -6,18 +6,6 @@ import { motion } from "framer-motion";
 
 /**
  * A versatile button component with support for different variants, sizes, loading states, and icons.
- *
- * @param {Object} props - The component props
- * @param {string} [props.className=''] - Additional CSS classes to apply
- * @param {'primary'|'secondary'|'outline'|'ghost'} [props.variant='primary'] - The button style variant
- * @param {'sm'|'md'|'lg'} [props.size='md'] - The button size
- * @param {React.ReactNode} props.children - The button content
- * @param {boolean} [props.disabled=false] - Whether the button is disabled
- * @param {boolean} [props.isLoading=false] - Whether to show loading state
- * @param {string} [props.loadingText='Chargement...'] - Text to show when loading
- * @param {React.ReactNode} props.icon - Optional icon to display
- * @param {React.Ref} ref - Forwarded ref
- * @returns {JSX.Element} The button element
  */
 const Button = forwardRef(
   (
@@ -48,9 +36,9 @@ const Button = forwardRef(
     };
 
     const sizes = {
-      sm: "px-3 py-1.5 text-sm rounded-md",
-      md: "px-4 py-2 text-sm rounded-lg",
-      lg: "px-6 py-3 text-base rounded-lg",
+      sm: "px-3 py-1.5 text-sm",
+      md: "px-4 py-2 text-sm",
+      lg: "px-6 py-3 text-base",
     };
 
     const MotionButton = motion.button;
@@ -59,7 +47,6 @@ const Button = forwardRef(
       <MotionButton
         ref={ref}
         disabled={disabled || isLoading}
-        whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
         whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
         className={clsx(
