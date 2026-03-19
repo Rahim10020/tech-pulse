@@ -34,8 +34,8 @@ export default function Header() {
       setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleLogout = () => {
@@ -55,11 +55,11 @@ export default function Header() {
       initial={false}
       animate={{
         backgroundColor: isScrolled
-          ? 'rgba(255, 255, 255, 0.95)'
-          : 'rgba(255, 255, 255, 1)',
+          ? "rgba(255, 255, 255, 0.95)"
+          : "rgba(255, 255, 255, 1)",
         boxShadow: isScrolled
-          ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-          : '0 0 0 0 rgba(0, 0, 0, 0)',
+          ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+          : "0 0 0 0 rgba(0, 0, 0, 0)",
       }}
       className="border-b border-gray-200 sticky top-0 z-50 backdrop-blur-md transition-colors duration-300"
     >
@@ -67,48 +67,53 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/">
-            <Image src="/logo.png"
-              alt={`Logo ${settings.siteName || 'pixelpulse'}`}
-              width={40}
-              height={40}
-              className="h-10" />
+            <Image
+              src="/logo.png"
+              alt={`Logo ${settings.siteName || "pixelpulse"}`}
+              width={100}
+              height={100}
+            />
           </Link>
 
           {/* Navigation Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                : ""
-                }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
+                isActiveLink("/")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               Accueil
             </Link>
             <Link
               href="/articles"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/articles")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                : ""
-                }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
+                isActiveLink("/articles")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               Articles
             </Link>
             <Link
               href="/categories"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/categories")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                : ""
-                }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
+                isActiveLink("/categories")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               Catégories
             </Link>
             <Link
               href="/about"
-              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${isActiveLink("/about")
-                ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
-                : ""
-                }`}
+              className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
+                isActiveLink("/about")
+                  ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
+                  : ""
+              }`}
             >
               À propos
             </Link>
@@ -124,7 +129,7 @@ export default function Header() {
                 placeholder="Rechercher..."
                 className="bg-gray-100 text-gray-900 rounded-lg pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64 transition-colors"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && e.target.value.trim()) {
+                  if (e.key === "Enter" && e.target.value.trim()) {
                     window.location.href = `/search?q=${encodeURIComponent(e.target.value.trim())}`;
                   }
                 }}
@@ -178,9 +183,7 @@ export default function Header() {
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                       {/* Informations utilisateur */}
                       <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="h5-title text-gray-900">
-                          {user.name}
-                        </p>
+                        <p className="h5-title text-gray-900">{user.name}</p>
                         <p className="small-text text-gray-500">
                           {user.role === "admin"
                             ? "👑 Admin"
@@ -280,10 +283,7 @@ export default function Header() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link href="/contact">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                  >
+                  <Button variant="primary" size="sm">
                     Contact
                   </Button>
                 </Link>
@@ -310,7 +310,7 @@ export default function Header() {
           {isMobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
               className="md:hidden overflow-hidden"
@@ -319,40 +319,38 @@ export default function Header() {
                 <Link
                   href="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/")
-                    ? "bg-teal-50 "
-                    : "text-gray-700 "
-                    }`}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/") ? "bg-teal-50 " : "text-gray-700 "
+                  }`}
                 >
                   Accueil
                 </Link>
                 <Link
                   href="/articles"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/articles")
-                    ? "bg-teal-50 "
-                    : "text-gray-700 "
-                    }`}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/articles") ? "bg-teal-50 " : "text-gray-700 "
+                  }`}
                 >
                   Articles
                 </Link>
                 <Link
                   href="/categories"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/categories")
-                    ? "bg-teal-50 "
-                    : "text-gray-700 "
-                    }`}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/categories")
+                      ? "bg-teal-50 "
+                      : "text-gray-700 "
+                  }`}
                 >
                   Catégories
                 </Link>
                 <Link
                   href="/about"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${isActiveLink("/about")
-                    ? "bg-teal-50 "
-                    : "text-gray-700 "
-                    }`}
+                  className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActiveLink("/about") ? "bg-teal-50 " : "text-gray-700 "
+                  }`}
                 >
                   À propos
                 </Link>
