@@ -186,7 +186,7 @@ export default function Footer() {
               </span>
               <motion.button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="flex items-center text-teal-600 hover:text-teal-700 transition-colors group"
+                className="flex items-center text-black transition-colors group"
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
