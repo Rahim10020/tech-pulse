@@ -173,7 +173,7 @@ export default function ResetPasswordPage() {
               <p className="text-gray-600">
                 Vous n&apos;avez pas reçu le code ?{" "}
                 <Link
-                  href="/forgot-password"
+                  href={ROUTES.FORGOT_PASSWORD}
                   className="text-black font-medium hover:underline"
                 >
                   Renvoyer un code

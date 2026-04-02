@@ -150,7 +150,7 @@ export default function Navigation() {
                       View Profile
                     </Link>
                     <Link
-                      href="/profile/edit"
+                      href={ROUTES.PROFILE_EDIT}
                       className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >

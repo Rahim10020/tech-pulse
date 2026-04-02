@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ArticleCard from "@/components/articles/ArticleCard";
@@ -92,7 +93,10 @@ export default function HomePage() {
 
         {/* Lien vers tous les articles */}
         <div className="text-center mt-8 mb-12">
-          <Link href="/articles" className="text-teal-600 hover:underline">
+          <Link
+            href={ROUTES.ARTICLES}
+            className="text-teal-600 hover:underline"
+          >
             Voir tous les articles...
           </Link>
         </div>

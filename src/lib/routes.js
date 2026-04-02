@@ -43,5 +43,7 @@ export const getProfileRoute = (userId) => `/profile/${userId}`;
 export const getAdminEditArticleRoute = (id) => `/admin/articles/${id}/edit`;
 export const getCreateDraftRoute = (draftId) => `/create?draft=${draftId}`;
 export const getArticlesWithQueryRoute = (query) => `/articles?${query}`;
+export const getSearchRoute = (query) =>
+  `/search?q=${encodeURIComponent(query)}`;
 export const getLoginWithCallbackRoute = (callbackUrl) =>
   `/login?callbackUrl=${callbackUrl}`;

@@ -20,7 +20,7 @@ export default function SignupPage() {
     // Rediriger si les inscriptions sont désactivées
     if (!loading && !settings.allowRegistration) {
       showToast("Les inscriptions sont actuellement désactivées", "error");
-      router.push("/");
+      router.push(ROUTES.HOME);
     }
   }, [settings.allowRegistration, loading, router, showToast]);
 
@@ -36,7 +36,7 @@ export default function SignupPage() {
 
       if (result.success) {
         showToast("Compte créé avec succès !", "success");
-        router.push("/");
+        router.push(ROUTES.HOME);
       } else {
         showToast(
           result.error || "Erreur lors de la création du compte",

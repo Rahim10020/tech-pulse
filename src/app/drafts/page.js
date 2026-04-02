@@ -256,7 +256,7 @@ export default function DraftsPage() {
           </div>
 
           <button
-            onClick={() => router.push("/create")}
+            onClick={() => router.push(ROUTES.CREATE)}
             className="btn-primary flex items-center space-x-2"
           >
             <Plus className="w-4 h-4" />

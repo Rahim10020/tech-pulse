@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import { validateEmail } from "@/lib/validations";
 
 export default function ForgotPasswordPage({ isLoading }) {
@@ -148,7 +149,7 @@ export default function ForgotPasswordPage({ isLoading }) {
                 Entrer le code
               </Link>
               <Link
-                href="/login"
+                href={ROUTES.LOGIN}
                 className="inline-block bg-gray-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-600 transition-colors"
               >
                 Retour à la connexion

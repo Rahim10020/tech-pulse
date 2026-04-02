@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ROUTES } from "@/lib/routes";
+import { ROUTES, getSearchRoute } from "@/lib/routes";
 import {
   Search,
   Menu,
@@ -131,7 +131,9 @@ export default function Header() {
                 className="bg-gray-100 text-gray-900 pl-10 pr-4 py-2 h6-title focus:outline-none focus:ring-2 focus:ring-gray-300 w-64 transition-colors"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && e.target.value.trim()) {
-                    window.location.href = `/search?q=${encodeURIComponent(e.target.value.trim())}`;
+                    window.location.href = getSearchRoute(
+                      e.target.value.trim(),
+                    );
                   }
                 }}
               />

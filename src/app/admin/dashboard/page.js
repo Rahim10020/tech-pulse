@@ -622,7 +622,7 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="h3-title text-gray-900">Articles récents</h3>
                     <button
-                      onClick={() => router.push("/admin/articles")}
+                      onClick={() => router.push(ROUTES.ADMIN_ARTICLES)}
                       className="btn-secondary text-sm flex items-center gap-1"
                     >
                       Voir tout

@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -93,7 +94,7 @@ export default function AdminEditArticlePage() {
           });
         } else if (response.status === 404) {
           showToast("Article non trouvé", "error");
-          router.push("/admin/articles");
+          router.push(ROUTES.ADMIN_ARTICLES);
         } else {
           showToast("Erreur lors du chargement de l'article", "error");
         }
@@ -183,7 +184,7 @@ export default function AdminEditArticlePage() {
         // Rediriger vers la liste si on vient de publier
         if (publishNow) {
           setTimeout(() => {
-            router.push("/admin/articles");
+            router.push(ROUTES.ADMIN_ARTICLES);
           }, 1500);
         }
       } else {
@@ -234,7 +235,7 @@ export default function AdminEditArticlePage() {
       );
       if (!confirmLeave) return;
     }
-    router.push("/admin/articles");
+    router.push(ROUTES.ADMIN_ARTICLES);
   };
 
   // Déterminer si on peut publier

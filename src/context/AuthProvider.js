@@ -8,6 +8,7 @@ import {
   useEffect,
   useCallback,
 } from "react";
+import { ROUTES } from "@/lib/routes";
 import { isAdmin } from "@/lib/auth-roles";
 
 const AuthContext = createContext();
@@ -174,7 +175,7 @@ export function AuthProvider({ children }) {
       setUser(null);
 
       // Optionnel : rediriger vers la page d'accueil
-      window.location.href = "/";
+      window.location.href = ROUTES.HOME;
     } catch (error) {
       console.error("Logout error:", error);
       // Même en cas d'erreur, déconnecter localement

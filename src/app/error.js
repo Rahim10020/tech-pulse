@@ -1,14 +1,15 @@
 // src/app/error.js - Page d'erreur pour pixelpulse
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
+import { useEffect } from "react";
+import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
+import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 
 export default function Error({ error, reset }) {
   useEffect(() => {
     // Log l'erreur pour le debugging
-    console.error('App Error:', error);
+    console.error("App Error:", error);
   }, [error]);
 
   return (
@@ -26,15 +27,18 @@ export default function Error({ error, reset }) {
 
         {/* Message d'erreur - Utilisation de body-text */}
         <p className="body-text text-gray-600 mb-8">
-          Nous rencontrons un problème technique. Veuillez réessayer ou retourner à la page d&apos;accueil.
+          Nous rencontrons un problème technique. Veuillez réessayer ou
+          retourner à la page d&apos;accueil.
         </p>
 
         {/* Détails de l'erreur en mode développement */}
-        {process.env.NODE_ENV === 'development' && error && (
+        {process.env.NODE_ENV === "development" && error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
-            <h3 className="h6-title text-red-800 mb-2">Détails de l&apos;erreur :</h3>
+            <h3 className="h6-title text-red-800 mb-2">
+              Détails de l&apos;erreur :
+            </h3>
             <pre className="small-text text-red-700 overflow-auto">
-              {error.message || 'Erreur inconnue'}
+              {error.message || "Erreur inconnue"}
             </pre>
           </div>
         )}
@@ -60,8 +64,11 @@ export default function Error({ error, reset }) {
 
         {/* Message de support - Utilisation de small-text */}
         <p className="small-text text-gray-500 mt-8">
-          Si le problème persiste, veuillez{' '}
-          <Link href="/contact" className="text-gray-700 hover:text-gray-900 underline">
+          Si le problème persiste, veuillez{" "}
+          <Link
+            href={ROUTES.CONTACT}
+            className="text-gray-700 hover:text-gray-900 underline"
+          >
             nous contacter
           </Link>
         </p>
