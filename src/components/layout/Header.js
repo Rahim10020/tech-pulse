@@ -188,10 +188,10 @@ export default function Header() {
                         </p>
                         <p className="small-text text-gray-500">
                           {user.role === "admin"
-                            ? "👑 Admin"
+                            ? "Admin"
                             : user.role === "publisher"
-                              ? "✍️ Auteur"
-                              : "👤 Lecteur"}
+                              ? "Auteur"
+                              : "Lecteur"}
                         </p>
                       </div>
 
@@ -273,7 +273,7 @@ export default function Header() {
                       <div className="border-t border-gray-100 "></div>
                       <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 h6-title text-gray-700 "
+                        className="flex items-center w-full px-4 py-2 h6-title text-red-700 "
                       >
                         <LogOut className="w-4 h-4 mr-3" />
                         Déconnexion
