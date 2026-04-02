@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function SignupForm({ onSubmit, isLoading = false }) {
   const [formData, setFormData] = useState({
+    name: "",
     username: "",
     email: "",
     password: "",
@@ -32,6 +33,12 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
 
   const validateForm = () => {
     const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Le nom est requis";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Le nom doit contenir au moins 2 caractères";
+    }
 
     if (!formData.username.trim()) {
       newErrors.username = "Le nom d'utilisateur est requis";
@@ -68,6 +75,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
 
     if (validateForm()) {
       onSubmit({
+        name: formData.name.trim(),
         username: formData.username.trim(),
         email: formData.email.trim(),
         password: formData.password,
@@ -122,6 +130,20 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+        {/* Name Field */}
+        <Input
+          label="Nom complet"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          error={errors.name}
+          placeholder=""
+          disabled={isLoading}
+          autoComplete="name"
+          className="h5-title"
+        />
+
         {/* Username Field */}
         <Input
           label="Nom d'utilisateur"
