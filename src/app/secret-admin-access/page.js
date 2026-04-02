@@ -108,7 +108,7 @@ export default function SecretAdminAccess() {
                       href={ROUTES.PROFILE_EDIT}
                       className="btn-primary w-full justify-center bg-teal-600 hover:bg-teal-700 block text-center"
                     >
-                      📊 Administration
+                      Administration
                     </Link>
                     <Link
                       href={ROUTES.CREATE}
@@ -120,7 +120,7 @@ export default function SecretAdminAccess() {
                       href={ROUTES.ADMIN_MANAGE_USERS}
                       className="btn-secondary w-full justify-center block text-center"
                     >
-                      👥 Gérer les utilisateurs
+                      Gérer les utilisateurs
                     </Link>
                   </div>
                 ) : (
@@ -141,13 +141,13 @@ export default function SecretAdminAccess() {
                         onClick={() => logout()}
                         className="btn-secondary"
                       >
-                        🚪 Se déconnecter
+                        Se déconnecter
                       </button>
                       <Link
                         href={ROUTES.CONTACT}
                         className="btn-primary inline-block"
                       >
-                        📧 Contacter l&apos;admin
+                        Contacter l&apos;admin
                       </Link>
                     </div>
                   </div>
