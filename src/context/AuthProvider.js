@@ -1,8 +1,14 @@
 // src/context/AuthProvider.js - Système d'auth avec PostgreSQL
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { isAdmin } from '@/lib/auth-roles';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import { isAdmin } from "@/lib/auth-roles";
 
 const AuthContext = createContext();
 
@@ -26,9 +32,9 @@ export function AuthProvider({ children }) {
       setLoading(true);
 
       // Appeler l'API /me pour vérifier le token dans les cookies
-      const response = await fetch('/api/auth/me', {
-        method: 'GET',
-        credentials: 'include' // Important pour inclure les cookies
+      const response = await fetch("/api/auth/me", {
+        method: "GET",
+        credentials: "include", // Important pour inclure les cookies
       });
 
       if (response.ok) {
@@ -38,7 +44,7 @@ export function AuthProvider({ children }) {
         setUser(null);
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error("Auth check failed:", error);
       setUser(null);
     } finally {
       setLoading(false);
@@ -54,8 +60,8 @@ export function AuthProvider({ children }) {
 
     try {
       setMessagesLoading(true);
-      const response = await fetch('/api/contact?unread=true&limit=1', {
-        credentials: 'include',
+      const response = await fetch("/api/contact?unread=true&limit=1", {
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -65,7 +71,7 @@ export function AuthProvider({ children }) {
         setUnreadCount(0);
       }
     } catch (err) {
-      console.error('Error fetching unread messages count:', err);
+      console.error("Error fetching unread messages count:", err);
       setUnreadCount(0);
     } finally {
       setMessagesLoading(false);
@@ -101,12 +107,12 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include', // Important pour les cookies
+        credentials: "include", // Important pour les cookies
         body: JSON.stringify({ email, password }),
       });
 
@@ -119,24 +125,24 @@ export function AuthProvider({ children }) {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: 'Erreur de connexion au serveur' };
+      console.error("Login error:", error);
+      return { success: false, error: "Erreur de connexion au serveur" };
     } finally {
       setLoading(false);
     }
   };
 
-  const signup = async (name, username, email, password) => {
+  const signup = async (username, email, password) => {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include', // Important pour les cookies
-        body: JSON.stringify({ name, username, email, password }),
+        credentials: "include", // Important pour les cookies
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
@@ -148,8 +154,8 @@ export function AuthProvider({ children }) {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      console.error('Signup error:', error);
-      return { success: false, error: 'Erreur lors de la création du compte' };
+      console.error("Signup error:", error);
+      return { success: false, error: "Erreur lors de la création du compte" };
     } finally {
       setLoading(false);
     }
@@ -160,17 +166,17 @@ export function AuthProvider({ children }) {
       setLoading(true);
 
       // Appeler l'API de déconnexion
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include' // Important pour les cookies
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include", // Important pour les cookies
       });
 
       setUser(null);
 
       // Optionnel : rediriger vers la page d'accueil
-      window.location.href = '/';
+      window.location.href = "/";
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
       // Même en cas d'erreur, déconnecter localement
       setUser(null);
     } finally {
@@ -182,12 +188,12 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/auth/profile', {
-        method: 'PUT',
+      const response = await fetch("/api/auth/profile", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(profileData),
       });
 
@@ -195,13 +201,16 @@ export function AuthProvider({ children }) {
 
       if (data.success) {
         setUser(data.user);
-        return { success: true, message: 'Profil mis à jour avec succès' };
+        return { success: true, message: "Profil mis à jour avec succès" };
       } else {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      console.error('Profile update error:', error);
-      return { success: false, error: 'Erreur lors de la mise à jour du profil' };
+      console.error("Profile update error:", error);
+      return {
+        success: false,
+        error: "Erreur lors de la mise à jour du profil",
+      };
     } finally {
       setLoading(false);
     }
@@ -211,12 +220,12 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/auth/change-password', {
-        method: 'PUT',
+      const response = await fetch("/api/auth/change-password", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({ currentPassword, newPassword }),
       });
 
@@ -228,8 +237,11 @@ export function AuthProvider({ children }) {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      console.error('Password change error:', error);
-      return { success: false, error: 'Erreur lors du changement de mot de passe' };
+      console.error("Password change error:", error);
+      return {
+        success: false,
+        error: "Erreur lors du changement de mot de passe",
+      };
     } finally {
       setLoading(false);
     }
@@ -238,11 +250,13 @@ export function AuthProvider({ children }) {
   // Fonction pour vérifier la disponibilité d'un email
   const checkEmailAvailability = async (email) => {
     try {
-      const response = await fetch(`/api/auth/check-availability?email=${encodeURIComponent(email)}`);
+      const response = await fetch(
+        `/api/auth/check-availability?email=${encodeURIComponent(email)}`,
+      );
       const data = await response.json();
       return data.available;
     } catch (error) {
-      console.error('Error checking email availability:', error);
+      console.error("Error checking email availability:", error);
       return false;
     }
   };
@@ -250,18 +264,20 @@ export function AuthProvider({ children }) {
   // Fonction pour vérifier la disponibilité d'un username
   const checkUsernameAvailability = async (username) => {
     try {
-      const response = await fetch(`/api/auth/check-availability?username=${encodeURIComponent(username)}`);
+      const response = await fetch(
+        `/api/auth/check-availability?username=${encodeURIComponent(username)}`,
+      );
       const data = await response.json();
       return data.available;
     } catch (error) {
-      console.error('Error checking username availability:', error);
+      console.error("Error checking username availability:", error);
       return false;
     }
   };
 
   // Fonction pour marquer des messages comme lus
   const markMessagesAsRead = useCallback((count = 1) => {
-    setUnreadCount(prev => Math.max(0, prev - count));
+    setUnreadCount((prev) => Math.max(0, prev - count));
   }, []);
 
   // Fonction pour rafraîchir manuellement
@@ -285,14 +301,10 @@ export function AuthProvider({ children }) {
     messagesLoading,
     fetchUnreadCount,
     markMessagesAsRead,
-    refreshUnreadCount
+    refreshUnreadCount,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 // Hook useAuth dans le même fichier
@@ -305,7 +317,7 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

@@ -175,7 +175,7 @@ export default function Header() {
                     className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 focus:outline-none focus:ring-2 focus:ring-gray-300 flex items-center justify-center"
                   >
                     <span className="text-white font-medium text-sm">
-                      {user.name?.charAt(0) || "U"}
+                      {user.username?.charAt(0) || "U"}
                     </span>
                   </button>
 
@@ -183,7 +183,9 @@ export default function Header() {
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                       {/* Informations utilisateur */}
                       <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="h5-title text-gray-900">{user.name}</p>
+                        <p className="h5-title text-gray-900">
+                          {user.username}
+                        </p>
                         <p className="small-text text-gray-500">
                           {user.role === "admin"
                             ? "👑 Admin"

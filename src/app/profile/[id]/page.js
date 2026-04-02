@@ -1,9 +1,9 @@
 /** @description Page de profil public d'un utilisateur */
-import { notFound } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import UserProfile from '@/components/articles/UserProfile';
-import { getAuthorById } from '@/lib/authors';
-import { getArticlesByAuthor } from '@/lib/articles';
+import { notFound } from "next/navigation";
+import Header from "@/components/layout/Header";
+import UserProfile from "@/components/articles/UserProfile";
+import { getAuthorById } from "@/lib/authors";
+import { getArticlesByAuthor } from "@/lib/articles";
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -11,12 +11,12 @@ export async function generateMetadata({ params }) {
 
   if (!user) {
     return {
-      title: 'Profil non trouvé - pixelpulse',
+      title: "Profil non trouvé - pixelpulse",
     };
   }
 
   return {
-    title: `${user.name} - pixelpulse`,
+    title: `${user.username} - pixelpulse`,
     description: user.bio,
   };
 }

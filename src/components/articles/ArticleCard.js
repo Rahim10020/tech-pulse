@@ -79,7 +79,7 @@ const ArticleMeta = React.memo(function ArticleMeta({
   categoryTextColor,
   horizontal,
 }) {
-  const authorName = typeof author === "object" ? author.name : author;
+  const authorName = typeof author === "object" ? author.username : author;
   const authorInitial = authorName?.charAt(0);
 
   if (horizontal) {

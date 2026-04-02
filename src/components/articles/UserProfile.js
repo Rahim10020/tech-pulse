@@ -1,10 +1,24 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useAuth } from '@/context/AuthProvider';
-import { Shield, MapPin, Globe, ExternalLink, Calendar, Twitter, Linkedin, Github, Settings, LogOut, Eye, Heart, MessageCircle } from 'lucide-react';
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useAuth } from "@/context/AuthProvider";
+import {
+  Shield,
+  MapPin,
+  Globe,
+  ExternalLink,
+  Calendar,
+  Twitter,
+  Linkedin,
+  Github,
+  Settings,
+  LogOut,
+  Eye,
+  Heart,
+  MessageCircle,
+} from "lucide-react";
 
 /**
  * UserProfile component displays a user's profile with articles, comments, likes, and profile management.
@@ -38,7 +52,7 @@ export default function UserProfile({ user, articles }) {
         setUserComments(data.comments || []);
       }
     } catch (error) {
-      console.error('Erreur chargement commentaires:', error);
+      console.error("Erreur chargement commentaires:", error);
     } finally {
       setLoading(false);
     }
@@ -55,7 +69,7 @@ export default function UserProfile({ user, articles }) {
         setUserLikes(data.likes || []);
       }
     } catch (error) {
-      console.error('Erreur chargement likes:', error);
+      console.error("Erreur chargement likes:", error);
     } finally {
       setLoading(false);
     }
@@ -78,11 +92,9 @@ export default function UserProfile({ user, articles }) {
             {/* Avatar et nom */}
             <div className="text-center mb-6">
               <div className="w-24 h-24 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                {user.name.charAt(0).toUpperCase()}
+                {user.username.charAt(0).toUpperCase()}
               </div>
-              <h1 className="h3-title text-gray-900 mb-1">
-                {user.name}
-              </h1>
+              <h1 className="h3-title text-gray-900 mb-1">{user.username}</h1>
               <p className="body-text text-gray-600">@{user.username}</p>
               {user.role === "admin" && (
                 <div className="flex items-center justify-center mt-2">
@@ -106,12 +118,8 @@ export default function UserProfile({ user, articles }) {
             {/* Statistiques */}
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center">
-                <div className="h4-title text-gray-900">
-                  {articles.length}
-                </div>
-                <div className="small-text text-gray-500">
-                  Articles
-                </div>
+                <div className="h4-title text-gray-900">{articles.length}</div>
+                <div className="small-text text-gray-500">Articles</div>
               </div>
               <div className="text-center">
                 <div className="h4-title text-gray-900">
@@ -119,20 +127,16 @@ export default function UserProfile({ user, articles }) {
                     .reduce((total, article) => total + (article.views || 0), 0)
                     .toLocaleString()}
                 </div>
-                <div className="small-text text-gray-500">
-                  Vues totales
-                </div>
+                <div className="small-text text-gray-500">Vues totales</div>
               </div>
               <div className="text-center">
                 <div className="h4-title text-gray-900">
                   {articles.reduce(
                     (total, article) => total + (article.likes || 0),
-                    0
+                    0,
                   )}
                 </div>
-                <div className="small-text text-gray-500">
-                  Likes reçus
-                </div>
+                <div className="small-text text-gray-500">Likes reçus</div>
               </div>
             </div>
 
@@ -141,7 +145,9 @@ export default function UserProfile({ user, articles }) {
               {user.location && (
                 <div className="flex items-center">
                   <MapPin className="w-4 h-4 mr-2 text-gray-600" />
-                  <span className="body-text text-gray-600">{user.location}</span>
+                  <span className="body-text text-gray-600">
+                    {user.location}
+                  </span>
                 </div>
               )}
 
@@ -177,9 +183,7 @@ export default function UserProfile({ user, articles }) {
             {/* Réseaux sociaux */}
             {(user.twitter || user.linkedin || user.github) && (
               <div className="border-t pt-4">
-                <h3 className="h5-title text-gray-900 mb-3">
-                  Réseaux sociaux
-                </h3>
+                <h3 className="h5-title text-gray-900 mb-3">Réseaux sociaux</h3>
                 <div className="flex space-x-3">
                   {user.twitter && (
                     <a
@@ -187,9 +191,9 @@ export default function UserProfile({ user, articles }) {
                         user.twitter.startsWith("http")
                           ? user.twitter
                           : `https://twitter.com/${user.twitter.replace(
-                            "@",
-                            ""
-                          )}`
+                              "@",
+                              "",
+                            )}`
                       }
                       target="_blank"
                       rel="noopener noreferrer"
@@ -262,10 +266,11 @@ export default function UserProfile({ user, articles }) {
             <nav className="-mb-px flex">
               <button
                 onClick={() => setActiveTab("articles")}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${activeTab === "articles"
-                  ? "border-teal-500 text-teal-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === "articles"
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
                 <span className="h6-title">
                   Articles publiés ({articles.length})
@@ -273,25 +278,23 @@ export default function UserProfile({ user, articles }) {
               </button>
               <button
                 onClick={() => setActiveTab("comments")}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${activeTab === "comments"
-                  ? "border-teal-500 text-teal-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === "comments"
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
-                <span className="h6-title">
-                  Commentaires
-                </span>
+                <span className="h6-title">Commentaires</span>
               </button>
               <button
                 onClick={() => setActiveTab("likes")}
-                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${activeTab === "likes"
-                  ? "border-teal-500 text-teal-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                className={`py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === "likes"
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
-                <span className="h6-title">
-                  Likes ({userLikes.length})
-                </span>
+                <span className="h6-title">Likes ({userLikes.length})</span>
               </button>
             </nav>
           </div>
@@ -313,9 +316,11 @@ export default function UserProfile({ user, articles }) {
                           <div className="flex items-center text-sm text-gray-500 mb-3 space-x-4">
                             {article.category && (
                               <span
-                                className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${article.category?.color || "bg-gray-100"
-                                  } ${article.category?.textColor || "text-gray-600"
-                                  }`}
+                                className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                                  article.category?.color || "bg-gray-100"
+                                } ${
+                                  article.category?.textColor || "text-gray-600"
+                                }`}
                               >
                                 {article.category.name}
                               </span>
@@ -325,7 +330,7 @@ export default function UserProfile({ user, articles }) {
                             </span>
                             <span className="small-text">
                               {new Date(article.publishedAt).toLocaleDateString(
-                                "fr-FR"
+                                "fr-FR",
                               )}
                             </span>
                           </div>
@@ -354,7 +359,9 @@ export default function UserProfile({ user, articles }) {
                             </div>
                             <div className="flex items-center space-x-1 small-text text-gray-500">
                               <MessageCircle className="w-4 h-4" />
-                              <span>{article.commentsCount || 0} commentaires</span>
+                              <span>
+                                {article.commentsCount || 0} commentaires
+                              </span>
                             </div>
                           </div>
 
@@ -390,10 +397,13 @@ export default function UserProfile({ user, articles }) {
                             />
                           ) : (
                             <div
-                              className={`w-full h-full ${article.imageColor || "bg-gray-200"
-                                } flex items-center justify-center`}
+                              className={`w-full h-full ${
+                                article.imageColor || "bg-gray-200"
+                              } flex items-center justify-center`}
                             >
-                              <span className="text-white text-xs font-semibold opacity-50">IMG</span>
+                              <span className="text-white text-xs font-semibold opacity-50">
+                                IMG
+                              </span>
                             </div>
                           )}
                         </div>
@@ -409,7 +419,8 @@ export default function UserProfile({ user, articles }) {
                       Aucun article publi&eacute;
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n&apos;a pas encore publié d&apos;articles.
+                      Cet utilisateur n&apos;a pas encore publié
+                      d&apos;articles.
                     </p>
                   </div>
                 )}
@@ -441,7 +452,9 @@ export default function UserProfile({ user, articles }) {
                               {comment.author?.name || "Utilisateur"}
                             </span>
                             <span className="small-text text-gray-500">
-                              {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
+                              {new Date(comment.createdAt).toLocaleDateString(
+                                "fr-FR",
+                              )}
                             </span>
                           </div>
                           <p className="body-text text-gray-700 mb-3">
@@ -467,7 +480,8 @@ export default function UserProfile({ user, articles }) {
                       Aucun commentaire
                     </h3>
                     <p className="body-text text-gray-500">
-                      Cet utilisateur n&apos;a pas encore commenté d&apos;articles.
+                      Cet utilisateur n&apos;a pas encore commenté
+                      d&apos;articles.
                     </p>
                   </div>
                 )}
@@ -509,7 +523,9 @@ export default function UserProfile({ user, articles }) {
                             </div>
                           </div>
                           <span className="small-text text-gray-500">
-                            {new Date(like.createdAt).toLocaleDateString("fr-FR")}
+                            {new Date(like.createdAt).toLocaleDateString(
+                              "fr-FR",
+                            )}
                           </span>
                         </div>
                       ))}
@@ -518,9 +534,7 @@ export default function UserProfile({ user, articles }) {
                 ) : (
                   <div className="text-center py-12">
                     <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="h3-title text-gray-900 mb-2">
-                      Aucun like
-                    </h3>
+                    <h3 className="h3-title text-gray-900 mb-2">Aucun like</h3>
                     <p className="body-text text-gray-500">
                       Cet utilisateur n&apos;a pas encore liké d&apos;articles.
                     </p>

@@ -1,11 +1,12 @@
 // lib/auth-db.js - Corrections pour inclure le rôle partout
 import bcrypt from "bcryptjs";
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 // Créer un nouvel utilisateur avec rôle par défaut
 export async function createUser(userData) {
   try {
     const { name, username, email, password } = userData;
+    const resolvedName = name || username;
 
     // Vérifier si l'email existe déjà
     const existingEmail = await prisma.user.findUnique({
@@ -31,7 +32,7 @@ export async function createUser(userData) {
     // Créer l'utilisateur AVEC un rôle par défaut
     const user = await prisma.user.create({
       data: {
-        name,
+        name: resolvedName,
         username,
         email,
         password: hashedPassword,
@@ -234,7 +235,7 @@ export async function changeUserPassword(userId, currentPassword, newPassword) {
     // Vérifier le mot de passe actuel
     const isCurrentPasswordValid = await bcrypt.compare(
       currentPassword,
-      user.password
+      user.password,
     );
 
     if (!isCurrentPasswordValid) {

@@ -1,16 +1,18 @@
 /** @description Page d'affichage d'un article spécifique */
-import { notFound } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import ArticleDetail from '@/components/articles/ArticleDetail';
+import { notFound } from "next/navigation";
+import Header from "@/components/layout/Header";
+import ArticleDetail from "@/components/articles/ArticleDetail";
 
 export async function generateMetadata({ params }) {
   try {
     const { slug } = await params; // Ajouter await ici
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${slug}`);
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/articles/${slug}`,
+    );
 
     if (!response.ok) {
       return {
-        title: 'Article not found - pixelpulse',
+        title: "Article not found - pixelpulse",
       };
     }
 
@@ -22,14 +24,14 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: article.title,
         description: article.description,
-        type: 'article',
+        type: "article",
         publishedTime: article.publishedAt,
-        authors: [article.author.name],
+        authors: [article.author.username],
       },
     };
   } catch (error) {
     return {
-      title: 'Article not found - pixelpulse',
+      title: "Article not found - pixelpulse",
     };
   }
 }
@@ -37,7 +39,9 @@ export async function generateMetadata({ params }) {
 export default async function ArticlePage({ params }) {
   try {
     const { slug } = await params; // Ajouter await ici
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/articles/${slug}`);
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/articles/${slug}`,
+    );
 
     if (!response.ok) {
       notFound();

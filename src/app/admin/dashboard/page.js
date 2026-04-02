@@ -132,18 +132,24 @@ export default function AdminDashboard() {
   const loadRecentContent = async () => {
     try {
       // Charger les articles récents
-      const articlesResponse = await fetch("/api/admin/articles?limit=5&sortBy=updatedAt&sortOrder=desc", {
-        credentials: "include",
-      });
+      const articlesResponse = await fetch(
+        "/api/admin/articles?limit=5&sortBy=updatedAt&sortOrder=desc",
+        {
+          credentials: "include",
+        },
+      );
       if (articlesResponse.ok) {
         const articlesData = await articlesResponse.json();
         setRecentArticles(articlesData.articles);
       }
 
       // Charger les catégories populaires
-      const categoriesResponse = await fetch("/api/admin/categories?sortBy=articles&sortOrder=desc&limit=5", {
-        credentials: "include",
-      });
+      const categoriesResponse = await fetch(
+        "/api/admin/categories?sortBy=articles&sortOrder=desc&limit=5",
+        {
+          credentials: "include",
+        },
+      );
       if (categoriesResponse.ok) {
         const categoriesData = await categoriesResponse.json();
         setTopCategories(categoriesData.categories);
@@ -200,24 +206,26 @@ export default function AdminDashboard() {
       });
       if (response.ok) {
         const data = await response.json();
-        setSettings(data.settings || {
-          siteName: "pixelpulse",
-          siteDescription: "",
-          siteUrl: "",
-          contactEmail: "",
-          contactPhone: "",
-          contactAddress: "",
-          socialTwitter: "",
-          socialLinkedin: "",
-          socialGithub: "",
-          analyticsCode: "",
-          seoTitle: "",
-          seoDescription: "",
-          seoKeywords: "",
-          maintenanceMode: false,
-          allowComments: true,
-          allowRegistration: true,
-        });
+        setSettings(
+          data.settings || {
+            siteName: "pixelpulse",
+            siteDescription: "",
+            siteUrl: "",
+            contactEmail: "",
+            contactPhone: "",
+            contactAddress: "",
+            socialTwitter: "",
+            socialLinkedin: "",
+            socialGithub: "",
+            analyticsCode: "",
+            seoTitle: "",
+            seoDescription: "",
+            seoKeywords: "",
+            maintenanceMode: false,
+            allowComments: true,
+            allowRegistration: true,
+          },
+        );
       }
     } catch (error) {
       console.error("Error loading settings:", error);
@@ -235,9 +243,11 @@ export default function AdminDashboard() {
         body: JSON.stringify({ isRead: !isRead }),
       });
       if (response.ok) {
-        setMessages(messages.map(msg =>
-          msg.id === messageId ? { ...msg, isRead: !isRead } : msg
-        ));
+        setMessages(
+          messages.map((msg) =>
+            msg.id === messageId ? { ...msg, isRead: !isRead } : msg,
+          ),
+        );
         // Update the global unread count
         if (!isRead) {
           // If marking as read, decrease count by 1
@@ -273,8 +283,8 @@ export default function AdminDashboard() {
         },
       });
       if (response.ok) {
-        const deletedMessage = messages.find(m => m.id === messageId);
-        setMessages(messages.filter(msg => msg.id !== messageId));
+        const deletedMessage = messages.find((m) => m.id === messageId);
+        setMessages(messages.filter((msg) => msg.id !== messageId));
         if (deletedMessage && !deletedMessage.isRead) {
           // Update the global unread count
           markMessagesAsRead(1);
@@ -305,10 +315,16 @@ export default function AdminDashboard() {
         body: JSON.stringify({ role: newRole }),
       });
       if (response.ok) {
-        setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
+        setUsers(
+          users.map((u) => (u.id === userId ? { ...u, role: newRole } : u)),
+        );
         showToast("Rôle utilisateur mis à jour", "success");
       } else {
-        showToast((await response.json()).error || "Erreur lors du changement du rôle utilisateur", "error");
+        showToast(
+          (await response.json()).error ||
+            "Erreur lors du changement du rôle utilisateur",
+          "error",
+        );
       }
     } catch (error) {
       console.error("Error changing user role:", error);
@@ -331,7 +347,10 @@ export default function AdminDashboard() {
       if (response.ok) {
         showToast("Paramètres sauvegardés avec succès", "success");
       } else {
-        showToast((await response.json()).error || "Erreur lors de la sauvegarde", "error");
+        showToast(
+          (await response.json()).error || "Erreur lors de la sauvegarde",
+          "error",
+        );
       }
     } catch (error) {
       console.error("Error saving settings:", error);
@@ -343,7 +362,7 @@ export default function AdminDashboard() {
 
   const handleSettingsChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -388,16 +407,22 @@ export default function AdminDashboard() {
               { id: "overview", label: "Vue d'ensemble", icon: BarChart3 },
               { id: "content", label: "Contenu", icon: FileText },
               { id: "users", label: "Utilisateurs", icon: Users },
-              { id: "messages", label: "Messages", icon: MessageSquare, badge: stats.unreadMessages },
+              {
+                id: "messages",
+                label: "Messages",
+                icon: MessageSquare,
+                badge: stats.unreadMessages,
+              },
               { id: "settings", label: "Paramètres", icon: Settings },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 whitespace-nowrap ${activeTab === tab.id
-                  ? "border-teal-500 text-teal-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
                 <tab.icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -421,7 +446,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Utilisateurs</p>
-                      <p className="h3-title text-gray-900">{stats.totalUsers}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.totalUsers}
+                      </p>
                     </div>
                     <Users className="w-8 h-8 text-blue-500" />
                   </div>
@@ -430,7 +457,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Articles</p>
-                      <p className="h3-title text-gray-900">{stats.totalArticles}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.totalArticles}
+                      </p>
                     </div>
                     <FileText className="w-8 h-8 text-green-500" />
                   </div>
@@ -439,7 +468,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Vues totales</p>
-                      <p className="h3-title text-gray-900">{stats.totalViews?.toLocaleString() || 0}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.totalViews?.toLocaleString() || 0}
+                      </p>
                     </div>
                     <Eye className="w-8 h-8 text-purple-500" />
                   </div>
@@ -448,7 +479,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Messages non lus</p>
-                      <p className="h3-title text-gray-900">{stats.unreadMessages}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.unreadMessages}
+                      </p>
                     </div>
                     <MessageSquare className="w-8 h-8 text-red-500" />
                   </div>
@@ -457,34 +490,44 @@ export default function AdminDashboard() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card p-6">
-                  <h3 className="h3-title text-gray-900 mb-4">Activités récentes</h3>
+                  <h3 className="h3-title text-gray-900 mb-4">
+                    Activités récentes
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
                         Nouvel utilisateur inscrit
                       </span>
-                      <span className="small-text text-gray-400">Il y a 2 heures</span>
+                      <span className="small-text text-gray-400">
+                        Il y a 2 heures
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
                         Article publié
                       </span>
-                      <span className="small-text text-gray-400">Il y a 4 heures</span>
+                      <span className="small-text text-gray-400">
+                        Il y a 4 heures
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                       <span className="small-text text-gray-600">
                         Nouveau message de contact
                       </span>
-                      <span className="small-text text-gray-400">Il y a 10 heures</span>
+                      <span className="small-text text-gray-400">
+                        Il y a 10 heures
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="card p-6">
-                  <h3 className="h3-title text-gray-900 mb-4">Actions rapides</h3>
+                  <h3 className="h3-title text-gray-900 mb-4">
+                    Actions rapides
+                  </h3>
                   <div className="space-y-3">
                     <button
                       onClick={() => router.push("/admin/articles")}
@@ -540,7 +583,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Articles publiés</p>
-                      <p className="h3-title text-gray-900">{stats.publishedArticles || 0}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.publishedArticles || 0}
+                      </p>
                     </div>
                     <Globe className="w-8 h-8 text-green-500" />
                   </div>
@@ -549,7 +594,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Brouillons</p>
-                      <p className="h3-title text-gray-900">{stats.draftArticles || 0}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.draftArticles || 0}
+                      </p>
                     </div>
                     <Clock className="w-8 h-8 text-orange-500" />
                   </div>
@@ -558,7 +605,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="h6-title text-gray-600">Catégories</p>
-                      <p className="h3-title text-gray-900">{stats.totalCategories || 0}</p>
+                      <p className="h3-title text-gray-900">
+                        {stats.totalCategories || 0}
+                      </p>
                     </div>
                     <Tag className="w-8 h-8 text-purple-500" />
                   </div>
@@ -583,9 +632,14 @@ export default function AdminDashboard() {
                   {recentArticles.length > 0 ? (
                     <div className="space-y-3">
                       {recentArticles.slice(0, 5).map((article) => (
-                        <div key={article.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div
+                          key={article.id}
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                        >
                           <div className="flex-1">
-                            <h4 className="h6-title text-gray-900 line-clamp-1">{article.title}</h4>
+                            <h4 className="h6-title text-gray-900 line-clamp-1">
+                              {article.title}
+                            </h4>
                             <div className="flex items-center gap-2 mt-1">
                               {article.published ? (
                                 <span className="badge bg-green-100 text-green-800 flex items-center gap-1">
@@ -599,12 +653,16 @@ export default function AdminDashboard() {
                                 </span>
                               )}
                               <span className="small-text text-gray-500">
-                                {new Date(article.updatedAt).toLocaleDateString("fr-FR")}
+                                {new Date(article.updatedAt).toLocaleDateString(
+                                  "fr-FR",
+                                )}
                               </span>
                             </div>
                           </div>
                           <button
-                            onClick={() => router.push(`/admin/articles/${article.id}/edit`)}
+                            onClick={() =>
+                              router.push(`/admin/articles/${article.id}/edit`)
+                            }
                             className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-white"
                           >
                             <Edit className="w-4 h-4" />
@@ -615,7 +673,9 @@ export default function AdminDashboard() {
                   ) : (
                     <div className="text-center py-8">
                       <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                      <p className="body-text text-gray-500">Aucun article récent</p>
+                      <p className="body-text text-gray-500">
+                        Aucun article récent
+                      </p>
                     </div>
                   )}
                 </div>
@@ -623,7 +683,9 @@ export default function AdminDashboard() {
                 {/* Catégories populaires */}
                 <div className="card p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="h3-title text-gray-900">Catégories populaires</h3>
+                    <h3 className="h3-title text-gray-900">
+                      Catégories populaires
+                    </h3>
                     <button
                       onClick={() => router.push("/admin/categories")}
                       className="btn-secondary text-sm flex items-center gap-1"
@@ -636,19 +698,29 @@ export default function AdminDashboard() {
                   {topCategories.length > 0 ? (
                     <div className="space-y-3">
                       {topCategories.slice(0, 5).map((category) => (
-                        <div key={category.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div
+                          key={category.id}
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                        >
                           <div className="flex items-center gap-3">
-                            <div className={`${category.color} ${category.textColor} p-2 rounded-lg`}>
+                            <div
+                              className={`${category.color} ${category.textColor} p-2 rounded-lg`}
+                            >
                               <Folder className="w-4 h-4" />
                             </div>
                             <div>
-                              <h4 className="h6-title text-gray-900">{category.name}</h4>
+                              <h4 className="h6-title text-gray-900">
+                                {category.name}
+                              </h4>
                               <p className="small-text text-gray-500">
-                                {category.articlesCount} article{category.articlesCount !== 1 ? 's' : ''}
+                                {category.articlesCount} article
+                                {category.articlesCount !== 1 ? "s" : ""}
                               </p>
                             </div>
                           </div>
-                          <span className={`badge ${category.color} ${category.textColor}`}>
+                          <span
+                            className={`badge ${category.color} ${category.textColor}`}
+                          >
                             {category.articlesCount}
                           </span>
                         </div>
@@ -657,7 +729,9 @@ export default function AdminDashboard() {
                   ) : (
                     <div className="text-center py-8">
                       <Tag className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                      <p className="body-text text-gray-500">Aucune catégorie</p>
+                      <p className="body-text text-gray-500">
+                        Aucune catégorie
+                      </p>
                     </div>
                   )}
                 </div>
@@ -668,7 +742,9 @@ export default function AdminDashboard() {
           {/* Gestion des utilisateurs */}
           {activeTab === "users" && (
             <div className="space-y-6">
-              <h2 className="h2-title text-gray-900">Gestion des utilisateurs</h2>
+              <h2 className="h2-title text-gray-900">
+                Gestion des utilisateurs
+              </h2>
               {/* Code existant pour la gestion des utilisateurs */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
@@ -696,21 +772,31 @@ export default function AdminDashboard() {
               ) : users.length > 0 ? (
                 <div className="card divide-y divide-gray-200">
                   {users.map((user) => (
-                    <div key={user.id} className="p-4 flex items-center justify-between">
+                    <div
+                      key={user.id}
+                      className="p-4 flex items-center justify-between"
+                    >
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white font-medium">
-                          {user.name.charAt(0).toUpperCase()}
+                          {user.username.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <h3 className="h5-title text-gray-900">{user.name}</h3>
+                          <h3 className="h5-title text-gray-900">
+                            {user.username}
+                          </h3>
                           <p className="small-text text-gray-600">
                             @{user.username} • {user.email}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className={`badge ${user.role === "admin" ? "bg-teal-100 text-teal-800" : "bg-gray-100 text-gray-800"
-                          }`}>
+                        <span
+                          className={`badge ${
+                            user.role === "admin"
+                              ? "bg-teal-100 text-teal-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
                           {user.role === "admin" ? "Admin" : "Lecteur"}
                         </span>
                         {user.id !== user.id && (
@@ -725,7 +811,9 @@ export default function AdminDashboard() {
                               </button>
                             ) : (
                               <button
-                                onClick={() => changeUserRole(user.id, "reader")}
+                                onClick={() =>
+                                  changeUserRole(user.id, "reader")
+                                }
                                 className="p-1 text-orange-600 hover:bg-orange-50 rounded"
                                 title="Rétrograder en lecteur"
                               >
@@ -741,7 +829,9 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-12 card">
                   <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">Aucun utilisateur trouvé.</p>
+                  <p className="body-text text-gray-500">
+                    Aucun utilisateur trouvé.
+                  </p>
                 </div>
               )}
             </div>
@@ -765,22 +855,33 @@ export default function AdminDashboard() {
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`card p-4 ${!message.isRead ? "border-l-4 border-l-teal-500 bg-teal-50" : ""
-                        }`}
+                      className={`card p-4 ${
+                        !message.isRead
+                          ? "border-l-4 border-l-teal-500 bg-teal-50"
+                          : ""
+                      }`}
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <h3 className="h5-title text-gray-900">{message.subject}</h3>
+                          <h3 className="h5-title text-gray-900">
+                            {message.subject}
+                          </h3>
                           <p className="small-text text-gray-600">
                             De: {message.name} ({message.email})
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => toggleMessageRead(message.id, message.isRead)}
-                            className={`p-1 ${message.isRead ? 'text-gray-300 cursor-not-allowed' : 'text-gray-400 hover:text-gray-600'}`}
+                            onClick={() =>
+                              toggleMessageRead(message.id, message.isRead)
+                            }
+                            className={`p-1 ${message.isRead ? "text-gray-300 cursor-not-allowed" : "text-gray-400 hover:text-gray-600"}`}
                             disabled={message.isRead}
-                            title={message.isRead ? "Message déjà lu" : "Marquer comme lu"}
+                            title={
+                              message.isRead
+                                ? "Message déjà lu"
+                                : "Marquer comme lu"
+                            }
                           >
                             {message.isRead ? (
                               <EyeOff className="w-4 h-4" />
@@ -797,7 +898,9 @@ export default function AdminDashboard() {
                           </button>
                         </div>
                       </div>
-                      <p className="body-text text-gray-700 mb-2">{message.message}</p>
+                      <p className="body-text text-gray-700 mb-2">
+                        {message.message}
+                      </p>
                       <p className="small-text text-gray-500">
                         {new Date(message.createdAt).toLocaleString()}
                       </p>
@@ -807,7 +910,9 @@ export default function AdminDashboard() {
               ) : (
                 <div className="text-center py-12 card">
                   <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">Aucun message de contact.</p>
+                  <p className="body-text text-gray-500">
+                    Aucun message de contact.
+                  </p>
                 </div>
               )}
             </div>
@@ -827,7 +932,9 @@ export default function AdminDashboard() {
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Nom du site</label>
+                        <label className="h6-title block mb-2">
+                          Nom du site
+                        </label>
                         <input
                           type="text"
                           name="siteName"
@@ -838,7 +945,9 @@ export default function AdminDashboard() {
                         />
                       </div>
                       <div>
-                        <label className="h6-title block mb-2">URL du site</label>
+                        <label className="h6-title block mb-2">
+                          URL du site
+                        </label>
                         <input
                           type="url"
                           name="siteUrl"
@@ -850,7 +959,9 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Description du site</label>
+                      <label className="h6-title block mb-2">
+                        Description du site
+                      </label>
                       <textarea
                         name="siteDescription"
                         value={settings.siteDescription || ""}
@@ -872,7 +983,9 @@ export default function AdminDashboard() {
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="h6-title block mb-2">Email de contact</label>
+                        <label className="h6-title block mb-2">
+                          Email de contact
+                        </label>
                         <input
                           type="email"
                           name="contactEmail"
@@ -970,7 +1083,9 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Description SEO</label>
+                      <label className="h6-title block mb-2">
+                        Description SEO
+                      </label>
                       <textarea
                         name="seoDescription"
                         value={settings.seoDescription || ""}
@@ -981,7 +1096,9 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div>
-                      <label className="h6-title block mb-2">Mots-clés SEO</label>
+                      <label className="h6-title block mb-2">
+                        Mots-clés SEO
+                      </label>
                       <input
                         type="text"
                         name="seoKeywords"
@@ -1019,7 +1136,9 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Autoriser les commentaires</label>
+                      <label className="h6-title ml-2">
+                        Autoriser les commentaires
+                      </label>
                     </div>
                     <div className="flex items-center">
                       <input
@@ -1029,7 +1148,9 @@ export default function AdminDashboard() {
                         onChange={handleSettingsChange}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
-                      <label className="h6-title ml-2">Autoriser l&apos;inscription</label>
+                      <label className="h6-title ml-2">
+                        Autoriser l&apos;inscription
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -1041,7 +1162,9 @@ export default function AdminDashboard() {
                     Analyses
                   </h2>
                   <div>
-                    <label className="h6-title block mb-2">Code Google Analytics</label>
+                    <label className="h6-title block mb-2">
+                      Code Google Analytics
+                    </label>
                     <textarea
                       name="analyticsCode"
                       value={settings.analyticsCode || ""}

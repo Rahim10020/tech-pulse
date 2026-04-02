@@ -1,8 +1,12 @@
-import { NextResponse } from 'next/server';
-import { createToken } from '@/lib/auth';
-import { createUser } from '@/lib/auth-db';
-import { withRateLimit } from '@/lib/rate-limit';
-import { validateEmail, validatePassword, validateUsername } from '@/lib/validations';
+import { NextResponse } from "next/server";
+import { createToken } from "@/lib/auth";
+import { createUser } from "@/lib/auth-db";
+import { withRateLimit } from "@/lib/rate-limit";
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "@/lib/validations";
 
 /**
  * POST /api/auth/signup
@@ -12,7 +16,6 @@ import { validateEmail, validatePassword, validateUsername } from '@/lib/validat
  * @returns {NextResponse} Response with created user data and JWT token in httpOnly cookie
  *
  * Request body:
- * - name: string (required) - User's full name
  * - username: string (required) - Unique username (3+ chars, alphanumeric + _)
  * - email: string (required) - Valid email address
  * - password: string (required) - Password (8+ characters, must contain uppercase, lowercase, and number)
@@ -30,16 +33,16 @@ import { validateEmail, validatePassword, validateUsername } from '@/lib/validat
  */
 async function signupHandler(request) {
   try {
-    const { name, username, email, password } = await request.json();
+    const { username, email, password } = await request.json();
 
     // Validation des données
-    if (!name || !username || !email || !password) {
+    if (!username || !email || !password) {
       return NextResponse.json(
         {
-          error: 'Tous les champs sont requis',
-          code: 'MISSING_FIELDS'
+          error: "Tous les champs sont requis",
+          code: "MISSING_FIELDS",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -47,10 +50,10 @@ async function signupHandler(request) {
     if (!validateEmail(email)) {
       return NextResponse.json(
         {
-          error: 'Format d\'email invalide',
-          code: 'INVALID_EMAIL'
+          error: "Format d'email invalide",
+          code: "INVALID_EMAIL",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -60,9 +63,9 @@ async function signupHandler(request) {
       return NextResponse.json(
         {
           error: usernameValidation.errors[0],
-          code: 'INVALID_USERNAME'
+          code: "INVALID_USERNAME",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -71,28 +74,28 @@ async function signupHandler(request) {
     if (!passwordValidation.isValid) {
       return NextResponse.json(
         {
-          error: passwordValidation.errors.join(', '),
-          code: 'WEAK_PASSWORD'
+          error: passwordValidation.errors.join(", "),
+          code: "WEAK_PASSWORD",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Créer l'utilisateur dans PostgreSQL
     const result = await createUser({
-      name,
+      name: username,
       username,
       email,
-      password
+      password,
     });
 
     if (!result.success) {
       return NextResponse.json(
         {
           error: result.error,
-          code: 'USER_CREATION_FAILED'
+          code: "USER_CREATION_FAILED",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -103,36 +106,36 @@ async function signupHandler(request) {
       userId: user.id,
       email: user.email,
       username: user.username,
-      role: user.role || 'reader'
+      role: user.role || "reader",
     });
 
     // Créer la réponse avec le token dans un cookie httpOnly
     const response = NextResponse.json({
       success: true,
       user,
-      message: 'Compte créé avec succès'
+      message: "Compte créé avec succès",
     });
 
-    response.cookies.set('token', token, {
+    response.cookies.set("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60, // 7 jours
-      path: '/'
+      path: "/",
     });
 
     return response;
   } catch (error) {
-    console.error('Signup error:', error);
+    console.error("Signup error:", error);
     return NextResponse.json(
       {
-        error: 'Erreur interne du serveur',
-        code: 'INTERNAL_ERROR'
+        error: "Erreur interne du serveur",
+        code: "INTERNAL_ERROR",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 // ✅ APPLIQUER LE RATE LIMITING
-export const POST = withRateLimit('signup')(signupHandler);
+export const POST = withRateLimit("signup")(signupHandler);

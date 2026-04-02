@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import ArticleActions from './ArticleActions';
-import InteractiveComments from '../comments/InteractiveComments';
-import NotFound from '../../app/not-found';
+import { useState } from "react";
+import Link from "next/link";
+import ArticleActions from "./ArticleActions";
+import InteractiveComments from "../comments/InteractiveComments";
+import NotFound from "../../app/not-found";
 
 /**
  * ArticleDetail component displays a full article with content, actions, and comments section.
@@ -14,30 +14,34 @@ import NotFound from '../../app/not-found';
  * @returns {JSX.Element} The article detail page element
  */
 export default function ArticleDetail({ article }) {
-
   // Calculer le nombre total initial (commentaires + réponses)
   const calculateInitialCount = () => {
     if (!Array.isArray(article.comments)) return 0;
-    return article.comments.reduce((total, comment) =>
-      total + 1 + (comment.replies ? comment.replies.length : 0), 0
+    return article.comments.reduce(
+      (total, comment) =>
+        total + 1 + (comment.replies ? comment.replies.length : 0),
+      0,
     );
   };
 
   const [commentsCount, setCommentsCount] = useState(calculateInitialCount());
 
   if (!article) {
-    return NotFound()
+    return NotFound();
   }
-
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <nav className="text-sm font-sans text-gray-500 mb-6">
-          <Link href="/" className="hover:text-gray-700">Accueil</Link>
+          <Link href="/" className="hover:text-gray-700">
+            Accueil
+          </Link>
           <span className="mx-2">/</span>
-          <Link href="/articles" className="hover:text-gray-700">Articles</Link>
+          <Link href="/articles" className="hover:text-gray-700">
+            Articles
+          </Link>
         </nav>
 
         {/* Article Header */}
@@ -53,10 +57,12 @@ export default function ArticleDetail({ article }) {
               href={`/author/${article.author.username}`}
               className="mx-1 text-gray-900 hover:text-teal-600 transition-colors font-medium"
             >
-              {article.author.name}
+              {article.author.username}
             </Link>
             <span className="mx-2">•</span>
-            <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
+            <span>
+              {new Date(article.publishedAt).toLocaleDateString("fr-FR")}
+            </span>
             <span className="mx-2">•</span>
             <span>{article.readTime} min de lecture</span>
           </div>
@@ -72,7 +78,9 @@ export default function ArticleDetail({ article }) {
             {/* Contenu dynamique de l'article */}
             <div
               className="space-y-6 text-gray-700 font-sans prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br>') }}
+              dangerouslySetInnerHTML={{
+                __html: article.content.replace(/\n/g, "<br>"),
+              }}
             />
           </div>
         </div>
@@ -80,14 +88,10 @@ export default function ArticleDetail({ article }) {
         {/* Actions & Comments */}
         <div className="bg-transparent p-6">
           {/* Actions */}
-          <ArticleActions
-            article={article}
-            commentsCount={commentsCount}
-          />
+          <ArticleActions article={article} commentsCount={commentsCount} />
 
           {/* Comments Section */}
           <div id="comments-section">
-
             <InteractiveComments
               articleSlug={article.slug}
               initialComments={article.comments || []}
@@ -95,7 +99,6 @@ export default function ArticleDetail({ article }) {
               totalCount={commentsCount}
             />
           </div>
-
         </div>
       </div>
     </div>

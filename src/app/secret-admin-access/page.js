@@ -1,10 +1,10 @@
 /** @description Page d'accès administrateur secret */
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthProvider';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthProvider";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SecretAdminAccess() {
   const { user, loading, logout } = useAuth();
@@ -16,9 +16,9 @@ export default function SecretAdminAccess() {
   useEffect(() => {
     if (!loading) {
       if (user === null) {
-        router.push('/login');
-      } else if (user && user.role === 'admin') {
-        router.push('/profile/edit');
+        router.push("/login");
+      } else if (user && user.role === "admin") {
+        router.push("/profile/edit");
       }
     }
   }, [user, loading, router]);
@@ -32,19 +32,26 @@ export default function SecretAdminAccess() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="container-sm">
         <div className="max-w-md mx-auto space-y-8">
-
           {/* Header avec animation */}
           <div className="text-center">
             <div className="animate-pulse">
               <div className="w-16 h-16 bg-teal-600 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
                 </svg>
               </div>
             </div>
-            <h1 className="h1-title text-gray-900 mb-2">
-              Zone Administrateur
-            </h1>
+            <h1 className="h1-title text-gray-900 mb-2">Zone Administrateur</h1>
             <p className="body-text text-gray-600">
               Accès sécurisé pour la gestion du blog pixelpulse
             </p>
@@ -53,27 +60,27 @@ export default function SecretAdminAccess() {
           {/* Panel d'accès avec animation */}
           {showAdminPanel && (
             <div className="card p-6 space-y-6 animate-fade-in">
-
               {/* Status actuel */}
               <div className="text-center">
                 {user ? (
                   <div className="space-y-2">
                     <p className="text-teal-600 font-medium body-text">
-                      ✓ Connecté en tant que {user.name}
+                      ✓ Connecté en tant que {user.username}
                     </p>
                     <p className="small-text text-gray-500">
-                      Rôle : {user.role === 'admin' ? '👑 Administrateur' : '👤 Lecteur'}
+                      Rôle :{" "}
+                      {user.role === "admin"
+                        ? "👑 Administrateur"
+                        : "👤 Lecteur"}
                     </p>
-                    {user.role === 'admin' && (
+                    {user.role === "admin" && (
                       <p className="text-orange-500 small-text">
                         Redirection vers le dashboard...
                       </p>
                     )}
                   </div>
                 ) : (
-                  <p className="text-gray-500 body-text">
-                    Non connecté
-                  </p>
+                  <p className="text-gray-500 body-text">Non connecté</p>
                 )}
               </div>
 
@@ -94,7 +101,7 @@ export default function SecretAdminAccess() {
                       ✍️ Créer un compte
                     </Link>
                   </>
-                ) : user.role === 'admin' ? (
+                ) : user.role === "admin" ? (
                   <div className="space-y-3">
                     <Link
                       href="/profile/edit"
@@ -122,8 +129,10 @@ export default function SecretAdminAccess() {
                         ⚠️ Accès limité
                       </p>
                       <p className="small-text text-orange-700 leading-relaxed">
-                        Vous êtes connecté mais n&apos;avez pas les permissions d&apos;administrateur.
-                        Pour accéder en tant qu&apos;administrateur, déconnectez-vous et reconnectez-vous avec un compte admin.
+                        Vous êtes connecté mais n&apos;avez pas les permissions
+                        d&apos;administrateur. Pour accéder en tant
+                        qu&apos;administrateur, déconnectez-vous et
+                        reconnectez-vous avec un compte admin.
                       </p>
                     </div>
                     <div className="flex gap-3 justify-center">
@@ -159,7 +168,8 @@ export default function SecretAdminAccess() {
           {/* Warning de sécurité */}
           <div className="text-center">
             <p className="small-text text-gray-400">
-              Cette page est confidentielle. L&apos;URL ne doit pas être partagée.
+              Cette page est confidentielle. L&apos;URL ne doit pas être
+              partagée.
             </p>
           </div>
         </div>

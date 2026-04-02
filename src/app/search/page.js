@@ -669,14 +669,16 @@ function SearchAuthorCard({ author, query }) {
     <div className="bg-white border border-gray-200 p-4 hover:shadow-md transition-shadow">
       <div className="text-center">
         <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center mx-auto mb-3">
-          <span className="text-white font-bold">{author.name.charAt(0)}</span>
+          <span className="text-white font-bold">
+            {author.username.charAt(0)}
+          </span>
         </div>
 
         <h3 className="h5-title text-gray-900 mb-1">
           <a
             href={`/author/${author.username}`}
             dangerouslySetInnerHTML={{
-              __html: highlightText(author.name, query),
+              __html: highlightText(author.username, query),
             }}
           />
         </h3>

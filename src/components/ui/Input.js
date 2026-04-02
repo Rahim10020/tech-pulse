@@ -14,6 +14,7 @@ const Input = forwardRef(
       type = "text",
       icon,
       showPasswordToggle = false,
+      required = false,
       ...props
     },
     ref,
@@ -39,6 +40,7 @@ const Input = forwardRef(
             )}
           >
             {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
         <div className="relative">
@@ -50,6 +52,7 @@ const Input = forwardRef(
           <input
             ref={ref}
             type={inputType}
+            required={required}
             className={clsx(
               "input-field",
               error && "input-error",

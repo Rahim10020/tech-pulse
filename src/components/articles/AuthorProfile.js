@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from 'react';
-import { Twitter, Linkedin, Github, MapPin, Calendar, Globe } from 'lucide-react';
+import { useState } from "react";
+import {
+  Twitter,
+  Linkedin,
+  Github,
+  MapPin,
+  Calendar,
+  Globe,
+} from "lucide-react";
 
 /**
  * AuthorProfile component displays an author's profile with bio, stats, articles, and social links.
@@ -11,7 +18,7 @@ import { Twitter, Linkedin, Github, MapPin, Calendar, Globe } from 'lucide-react
  * @returns {JSX.Element} The author profile element
  */
 export default function AuthorProfile({ author }) {
-  const [activeTab, setActiveTab] = useState('articles');
+  const [activeTab, setActiveTab] = useState("articles");
 
   // Articles viennent maintenant d'author.articles (depuis l'API)
   const articles = author.articles || [];
@@ -26,12 +33,10 @@ export default function AuthorProfile({ author }) {
             <div className="text-center mb-4">
               <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center mb-4">
                 <span className="text-white font-bold text-2xl font-poppins">
-                  {author.name.charAt(0)}
+                  {author.username.charAt(0)}
                 </span>
               </div>
-              <h1 className="h3-title text-gray-900 mb-1">
-                {author.name}
-              </h1>
+              <h1 className="h3-title text-gray-900 mb-1">{author.username}</h1>
               <p className="text-gray-500 text-sm font-sans">
                 @{author.username}
               </p>
@@ -50,26 +55,23 @@ export default function AuthorProfile({ author }) {
                 <div className="text-xl p-2 font-bold text-gray-900 font-sans">
                   {author.stats?.articles || articles.length}
                 </div>
-                <div className="h6-title text-gray-500">
-                  Articles
-                </div>
+                <div className="h6-title text-gray-500">Articles</div>
               </div>
               <div className="border-2 border-gray-200 rounded-lg p-4">
                 <div className="text-xl font-bold text-gray-900 font-sans">
                   {author.stats?.comments || 0}
                 </div>
-                <div className="h6-title text-gray-500">
-                  Commentaires
-                </div>
+                <div className="h6-title text-gray-500">Commentaires</div>
               </div>
               <div className="border-2 border-gray-200 rounded-lg p-4">
                 <div className="text-xl font-bold text-gray-900 font-sans">
                   {/* Calculer les likes totaux des articles */}
-                  {articles.reduce((total, article) => total + (article.likes || 0), 0)}
+                  {articles.reduce(
+                    (total, article) => total + (article.likes || 0),
+                    0,
+                  )}
                 </div>
-                <div className="h6-title text-gray-500">
-                  Likes reçus
-                </div>
+                <div className="h6-title text-gray-500">Likes reçus</div>
               </div>
             </div>
 
@@ -144,29 +146,32 @@ export default function AuthorProfile({ author }) {
           <div className="border-b border-gray-200 mb-6">
             <nav className="-mb-px flex space-x-8">
               <button
-                onClick={() => setActiveTab('articles')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${activeTab === 'articles'
-                  ? 'border-teal-500 text-teal-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                onClick={() => setActiveTab("articles")}
+                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${
+                  activeTab === "articles"
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
                 Articles ({articles.length})
               </button>
               <button
-                onClick={() => setActiveTab('likes')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${activeTab === 'likes'
-                  ? 'border-teal-500 text-teal-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                onClick={() => setActiveTab("likes")}
+                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${
+                  activeTab === "likes"
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
                 Likes reçus
               </button>
               <button
-                onClick={() => setActiveTab('comments')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${activeTab === 'comments'
-                  ? 'border-teal-500 text-teal-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                onClick={() => setActiveTab("comments")}
+                className={`py-2 px-1 border-b-2 font-medium text-sm font-poppins transition-colors ${
+                  activeTab === "comments"
+                    ? "border-teal-500 text-teal-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
               >
                 Commentaires ({author.stats?.comments || 0})
               </button>
@@ -175,16 +180,21 @@ export default function AuthorProfile({ author }) {
 
           {/* Tab Content */}
           <div>
-            {activeTab === 'articles' && (
+            {activeTab === "articles" && (
               <div className="space-y-6">
                 {articles.length > 0 ? (
                   articles.map((article) => (
-                    <div key={article.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                    <div
+                      key={article.id}
+                      className="bg-white rounded-lg border border-gray-200 p-6"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center text-sm text-gray-500 mb-2 font-sans">
-                            <span className={`inline-block px-2 py-1 rounded-full text-xs ${article.category?.color || 'bg-gray-100'} ${article.category?.textColor || 'text-gray-600'} mr-3`}>
-                              {article.category?.name || 'Sans catégorie'}
+                            <span
+                              className={`inline-block px-2 py-1 rounded-full text-xs ${article.category?.color || "bg-gray-100"} ${article.category?.textColor || "text-gray-600"} mr-3`}
+                            >
+                              {article.category?.name || "Sans catégorie"}
                             </span>
                             <span>{article.readTime} de lecture</span>
                           </div>
@@ -198,8 +208,14 @@ export default function AuthorProfile({ author }) {
                           </p>
                           <div className="flex items-center space-x-4 text-sm text-gray-500 font-sans">
                             <span>{article.likes || 0} likes</span>
-                            <span>{article.commentsCount || 0} commentaires</span>
-                            <span>{new Date(article.publishedAt).toLocaleDateString('fr-FR')}</span>
+                            <span>
+                              {article.commentsCount || 0} commentaires
+                            </span>
+                            <span>
+                              {new Date(article.publishedAt).toLocaleDateString(
+                                "fr-FR",
+                              )}
+                            </span>
                           </div>
 
                           {/* Tags si disponibles */}
@@ -216,7 +232,9 @@ export default function AuthorProfile({ author }) {
                             </div>
                           )}
                         </div>
-                        <div className={`w-20 h-20 ${article.imageColor || 'bg-gray-200'} rounded-lg ml-6 flex-shrink-0`}>
+                        <div
+                          className={`w-20 h-20 ${article.imageColor || "bg-gray-200"} rounded-lg ml-6 flex-shrink-0`}
+                        >
                           {/* Placeholder pour image */}
                         </div>
                       </div>
@@ -224,27 +242,36 @@ export default function AuthorProfile({ author }) {
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-gray-500 font-sans">Aucun article publié pour le moment.</p>
+                    <p className="text-gray-500 font-sans">
+                      Aucun article publié pour le moment.
+                    </p>
                   </div>
                 )}
               </div>
             )}
 
-            {activeTab === 'likes' && (
+            {activeTab === "likes" && (
               <div className="text-center py-12">
                 <div className="text-4xl font-bold text-gray-900 mb-2 font-sans">
-                  {articles.reduce((total, article) => total + (article.likes || 0), 0)}
+                  {articles.reduce(
+                    (total, article) => total + (article.likes || 0),
+                    0,
+                  )}
                 </div>
-                <p className="text-gray-500 font-sans">Likes reçus au total sur tous les articles</p>
+                <p className="text-gray-500 font-sans">
+                  Likes reçus au total sur tous les articles
+                </p>
               </div>
             )}
 
-            {activeTab === 'comments' && (
+            {activeTab === "comments" && (
               <div className="text-center py-12">
                 <div className="text-4xl font-bold text-gray-900 mb-2 font-sans">
                   {author.stats?.comments || 0}
                 </div>
-                <p className="text-gray-500 font-sans">Commentaires écrits sur le blog</p>
+                <p className="text-gray-500 font-sans">
+                  Commentaires écrits sur le blog
+                </p>
               </div>
             )}
           </div>

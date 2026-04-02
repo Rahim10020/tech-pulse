@@ -28,7 +28,6 @@ export default function SignupPage() {
 
     try {
       const result = await signup(
-        formData.name,
         formData.username,
         formData.email,
         formData.password,

@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { Bell, MessageSquare, Search, Menu, X, User, Settings, LogOut } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { Button } from '@/components/ui/Button';
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import {
+  Bell,
+  MessageSquare,
+  Search,
+  Menu,
+  X,
+  User,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
+import { Button } from "@/components/ui/Button";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +25,7 @@ export default function Navigation() {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    router.push("/");
     setIsProfileMenuOpen(false);
   };
 
@@ -37,13 +46,13 @@ export default function Navigation() {
         <nav className="hidden md:flex items-center space-x-8">
           <Link
             href="/"
-            className={`h6-title ${isActiveLink('/') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+            className={`h6-title ${isActiveLink("/") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
           >
             Home
           </Link>
           <Link
             href="/articles"
-            className={`h6-title ${isActiveLink('/articles') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+            className={`h6-title ${isActiveLink("/articles") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
           >
             Articles
           </Link>
@@ -51,19 +60,19 @@ export default function Navigation() {
             <>
               <Link
                 href="/create"
-                className={`h6-title ${isActiveLink('/create') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+                className={`h6-title ${isActiveLink("/create") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
               >
                 Create
               </Link>
               <Link
                 href="/notifications"
-                className={`h6-title ${isActiveLink('/notifications') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+                className={`h6-title ${isActiveLink("/notifications") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
               >
                 Notifications
               </Link>
               <Link
                 href="/messages"
-                className={`h6-title ${isActiveLink('/messages') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+                className={`h6-title ${isActiveLink("/messages") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
               >
                 Messages
               </Link>
@@ -71,7 +80,7 @@ export default function Navigation() {
           )}
           <Link
             href="/about"
-            className={`h6-title ${isActiveLink('/about') ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'}`}
+            className={`h6-title ${isActiveLink("/about") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
           >
             About
           </Link>
@@ -108,10 +117,16 @@ export default function Navigation() {
                   className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400"
                 >
                   {user.avatar ? (
-                    <Image src={user.avatar} alt={user.name} width={40} height={40} className="w-full h-full rounded-full object-cover" />
+                    <Image
+                      src={user.avatar}
+                      alt={user.username}
+                      width={40}
+                      height={40}
+                      className="w-full h-full rounded-full object-cover"
+                    />
                   ) : (
                     <span className="text-white font-medium text-sm">
-                      {user.name?.charAt(0) || user.email?.charAt(0) || 'U'}
+                      {user.username?.charAt(0) || user.email?.charAt(0) || "U"}
                     </span>
                   )}
                 </Button>
@@ -120,7 +135,9 @@ export default function Navigation() {
                 {isProfileMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="h5-title text-gray-900">{user.name || 'User'}</p>
+                      <p className="h5-title text-gray-900">
+                        {user.username || "User"}
+                      </p>
                       <p className="small-text text-gray-500">{user.email}</p>
                     </div>
                     <Link
@@ -152,18 +169,10 @@ export default function Navigation() {
             </>
           ) : (
             <>
-              <Button
-                href="/login"
-                variant="ghost"
-                className="h6-title"
-              >
+              <Button href="/login" variant="ghost" className="h6-title">
                 Sign In
               </Button>
-              <Button
-                href="/signup"
-                variant="primary"
-                className="h6-title"
-              >
+              <Button href="/signup" variant="primary" className="h6-title">
                 Sign Up
               </Button>
             </>
@@ -176,7 +185,11 @@ export default function Navigation() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden"
           >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </Button>
         </div>
       </div>
@@ -185,26 +198,44 @@ export default function Navigation() {
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 px-6 py-4">
           <nav className="space-y-4">
-            <Link href="/" className="block h6-title text-gray-700 hover:text-gray-900">
+            <Link
+              href="/"
+              className="block h6-title text-gray-700 hover:text-gray-900"
+            >
               Home
             </Link>
-            <Link href="/articles" className="block h6-title text-gray-700 hover:text-gray-900">
+            <Link
+              href="/articles"
+              className="block h6-title text-gray-700 hover:text-gray-900"
+            >
               Articles
             </Link>
             {user && (
               <>
-                <Link href="/create" className="block h6-title text-gray-700 hover:text-gray-900">
+                <Link
+                  href="/create"
+                  className="block h6-title text-gray-700 hover:text-gray-900"
+                >
                   Create
                 </Link>
-                <Link href="/notifications" className="block h6-title text-gray-700 hover:text-gray-900">
+                <Link
+                  href="/notifications"
+                  className="block h6-title text-gray-700 hover:text-gray-900"
+                >
                   Notifications
                 </Link>
-                <Link href="/messages" className="block h6-title text-gray-700 hover:text-gray-900">
+                <Link
+                  href="/messages"
+                  className="block h6-title text-gray-700 hover:text-gray-900"
+                >
                   Messages
                 </Link>
               </>
             )}
-            <Link href="/about" className="block h6-title text-gray-700 hover:text-gray-900">
+            <Link
+              href="/about"
+              className="block h6-title text-gray-700 hover:text-gray-900"
+            >
               About
             </Link>
 

@@ -3,9 +3,9 @@
  * Displays detailed information about a specific author including their articles and bio.
  * Supports both username and ID-based routing.
  */
-import { notFound } from 'next/navigation';
-import Header from '@/components/layout/Header';
-import AuthorProfile from '@/components/articles/AuthorProfile';
+import { notFound } from "next/navigation";
+import Header from "@/components/layout/Header";
+import AuthorProfile from "@/components/articles/AuthorProfile";
 
 // Fonction pour récupérer l'auteur via API (côté serveur)
 async function getAuthorData(identifier) {
@@ -16,7 +16,9 @@ async function getAuthorData(identifier) {
       ? `/api/authors?type=single&id=${identifier}`
       : `/api/authors?type=single&username=${identifier}`;
 
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}${endpoint}`);
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL || "http://localhost:3000"}${endpoint}`,
+    );
 
     if (!response.ok) {
       return null;
@@ -24,7 +26,7 @@ async function getAuthorData(identifier) {
 
     return await response.json();
   } catch (error) {
-    console.error('Error fetching author:', error);
+    console.error("Error fetching author:", error);
     return null;
   }
 }
@@ -35,12 +37,12 @@ export async function generateMetadata({ params }) {
 
   if (!author) {
     return {
-      title: 'Author not found - pixelpulse',
+      title: "Author not found - pixelpulse",
     };
   }
 
   return {
-    title: `${author.name} - pixelpulse`,
+    title: `${author.username} - pixelpulse`,
     description: author.bio,
   };
 }
