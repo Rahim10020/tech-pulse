@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Input from "../ui/Input";
+import { Input } from "@/components/ui/Input";
 
 export default function ProfileForm({
   initialData,
