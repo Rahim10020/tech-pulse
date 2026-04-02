@@ -11,7 +11,6 @@ export default function LoadingSpinner() {
       <Image src="/logo.png" alt="Logo pixelpulse" width={100} height={100} />
 
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mt-4"></div>
-
     </div>
   );
 }
