@@ -5,8 +5,7 @@ import { prisma } from "@/lib/prisma";
 // Créer un nouvel utilisateur avec rôle par défaut
 export async function createUser(userData) {
   try {
-    const { name, username, email, password } = userData;
-    const resolvedName = name || username;
+    const { username, email, password } = userData;
 
     // Vérifier si l'email existe déjà
     const existingEmail = await prisma.user.findUnique({
@@ -32,7 +31,6 @@ export async function createUser(userData) {
     // Créer l'utilisateur AVEC un rôle par défaut
     const user = await prisma.user.create({
       data: {
-        name: resolvedName,
         username,
         email,
         password: hashedPassword,
@@ -40,7 +38,6 @@ export async function createUser(userData) {
       },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,
@@ -67,7 +64,6 @@ export async function verifyCredentials(email, password) {
       where: { email },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         password: true,
@@ -121,7 +117,6 @@ export async function getUserById(userId) {
       where: { id: parseInt(userId) },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,
@@ -152,7 +147,6 @@ export async function getUserByEmail(email) {
       where: { email },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,
@@ -179,7 +173,6 @@ export async function updateUserProfile(userId, profileData) {
   try {
     // Filtrer les champs autorisés pour la mise à jour
     const allowedFields = {
-      ...(profileData.name && { name: profileData.name }),
       ...(profileData.bio && { bio: profileData.bio }),
       ...(profileData.location && { location: profileData.location }),
       ...(profileData.website && { website: profileData.website }),
@@ -194,7 +187,6 @@ export async function updateUserProfile(userId, profileData) {
       data: allowedFields,
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,

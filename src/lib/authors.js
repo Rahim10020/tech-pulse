@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 // lib/authors.js - Fonctions pour les auteurs avec Prisma
 
@@ -8,7 +8,6 @@ export async function getAllAuthors() {
     const authors = await prisma.user.findMany({
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,
@@ -24,27 +23,27 @@ export async function getAllAuthors() {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
+            comments: true,
+          },
+        },
       },
       orderBy: {
-        name: 'asc'
-      }
+        username: "asc",
+      },
     });
 
-    return authors.map(author => ({
+    return authors.map((author) => ({
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
-      }
+        comments: author._count.comments,
+      },
     }));
   } catch (error) {
-    console.error('Error fetching authors:', error);
+    console.error("Error fetching authors:", error);
     return [];
   }
 }
@@ -56,7 +55,6 @@ export async function getAuthorById(id) {
       where: { id: parseInt(id) },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,
@@ -72,13 +70,13 @@ export async function getAuthorById(id) {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
-      }
+            comments: true,
+          },
+        },
+      },
     });
 
     if (!author) {
@@ -89,11 +87,11 @@ export async function getAuthorById(id) {
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
-      }
+        comments: author._count.comments,
+      },
     };
   } catch (error) {
-    console.error('Error fetching author by ID:', error);
+    console.error("Error fetching author by ID:", error);
     return null;
   }
 }
@@ -105,7 +103,6 @@ export async function getAuthorByUsername(username) {
       where: { username },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         bio: true,
@@ -121,13 +118,13 @@ export async function getAuthorByUsername(username) {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
-      }
+            comments: true,
+          },
+        },
+      },
     });
 
     if (!author) {
@@ -138,11 +135,11 @@ export async function getAuthorByUsername(username) {
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
-      }
+        comments: author._count.comments,
+      },
     };
   } catch (error) {
-    console.error('Error fetching author by username:', error);
+    console.error("Error fetching author by username:", error);
     return null;
   }
 }
@@ -157,13 +154,13 @@ export async function getAuthorByEmail(email) {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
-      }
+            comments: true,
+          },
+        },
+      },
     });
 
     if (!author) {
@@ -174,11 +171,11 @@ export async function getAuthorByEmail(email) {
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
-      }
+        comments: author._count.comments,
+      },
     };
   } catch (error) {
-    console.error('Error fetching author by email:', error);
+    console.error("Error fetching author by email:", error);
     return null;
   }
 }
@@ -192,30 +189,30 @@ export async function getTopAuthors(limit = 5) {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
+            comments: true,
+          },
+        },
       },
       orderBy: {
         articles: {
-          _count: 'desc'
-        }
+          _count: "desc",
+        },
       },
-      take: limit
+      take: limit,
     });
 
-    return authors.map(author => ({
+    return authors.map((author) => ({
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
-      }
+        comments: author._count.comments,
+      },
     }));
   } catch (error) {
-    console.error('Error fetching top authors:', error);
+    console.error("Error fetching top authors:", error);
     return [];
   }
 }
@@ -227,10 +224,10 @@ export async function getAuthorsWithRecentArticles(limit = 5) {
       include: {
         articles: {
           where: {
-            published: true
+            published: true,
           },
           orderBy: {
-            publishedAt: 'desc'
+            publishedAt: "desc",
           },
           take: 3,
           select: {
@@ -238,46 +235,46 @@ export async function getAuthorsWithRecentArticles(limit = 5) {
             title: true,
             slug: true,
             publishedAt: true,
-            readTime: true
-          }
+            readTime: true,
+          },
         },
         _count: {
           select: {
             articles: {
               where: {
-                published: true
-              }
-            }
-          }
-        }
+                published: true,
+              },
+            },
+          },
+        },
       },
       where: {
         articles: {
           some: {
-            published: true
-          }
-        }
+            published: true,
+          },
+        },
       },
       orderBy: {
         articles: {
-          _count: 'desc'
-        }
+          _count: "desc",
+        },
       },
-      take: limit
+      take: limit,
     });
 
-    return authors.map(author => ({
+    return authors.map((author) => ({
       ...author,
       stats: {
-        articles: author._count.articles
+        articles: author._count.articles,
       },
-      recentArticles: author.articles.map(article => ({
+      recentArticles: author.articles.map((article) => ({
         ...article,
-        publishedAt: article.publishedAt.toISOString().split('T')[0]
-      }))
+        publishedAt: article.publishedAt.toISOString().split("T")[0],
+      })),
     }));
   } catch (error) {
-    console.error('Error fetching authors with recent articles:', error);
+    console.error("Error fetching authors with recent articles:", error);
     return [];
   }
 }
@@ -293,47 +290,47 @@ export async function searchAuthors(query, limit = 10) {
           {
             name: {
               contains: searchTerm,
-              mode: 'insensitive'
-            }
+              mode: "insensitive",
+            },
           },
           {
             username: {
               contains: searchTerm,
-              mode: 'insensitive'
-            }
+              mode: "insensitive",
+            },
           },
           {
             bio: {
               contains: searchTerm,
-              mode: 'insensitive'
-            }
-          }
-        ]
+              mode: "insensitive",
+            },
+          },
+        ],
       },
       include: {
         _count: {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
+            comments: true,
+          },
+        },
       },
-      take: limit
+      take: limit,
     });
 
-    return authors.map(author => ({
+    return authors.map((author) => ({
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
-      }
+        comments: author._count.comments,
+      },
     }));
   } catch (error) {
-    console.error('Error searching authors:', error);
+    console.error("Error searching authors:", error);
     return [];
   }
 }
@@ -344,21 +341,23 @@ export async function updateAuthorProfile(id, data) {
     const author = await prisma.user.update({
       where: { id: parseInt(id) },
       data: {
-        ...(data.name && { name: data.name }),
         ...(data.bio && { bio: data.bio }),
         ...(data.location && { location: data.location }),
         ...(data.website && { website: data.website }),
         ...(data.twitter && { twitter: data.twitter }),
         ...(data.linkedin && { linkedin: data.linkedin }),
         ...(data.github && { github: data.github }),
-        ...(data.avatar && { avatar: data.avatar })
-      }
+        ...(data.avatar && { avatar: data.avatar }),
+      },
     });
 
     return { success: true, author };
   } catch (error) {
-    console.error('Error updating author profile:', error);
-    return { success: false, message: 'Erreur lors de la mise à jour du profil' };
+    console.error("Error updating author profile:", error);
+    return {
+      success: false,
+      message: "Erreur lors de la mise à jour du profil",
+    };
   }
 }
 
@@ -370,7 +369,7 @@ export async function getAuthorProfile(username) {
       include: {
         articles: {
           where: {
-            published: true
+            published: true,
           },
           include: {
             category: {
@@ -378,37 +377,37 @@ export async function getAuthorProfile(username) {
                 name: true,
                 slug: true,
                 color: true,
-                textColor: true
-              }
+                textColor: true,
+              },
             },
             tags: {
               select: {
                 name: true,
-                slug: true
-              }
+                slug: true,
+              },
             },
             _count: {
               select: {
                 likes: true,
-                comments: true
-              }
-            }
+                comments: true,
+              },
+            },
           },
           orderBy: {
-            publishedAt: 'desc'
-          }
+            publishedAt: "desc",
+          },
         },
         _count: {
           select: {
             articles: {
               where: {
-                published: true
-              }
+                published: true,
+              },
             },
-            comments: true
-          }
-        }
-      }
+            comments: true,
+          },
+        },
+      },
     });
 
     if (!author) {
@@ -419,17 +418,17 @@ export async function getAuthorProfile(username) {
       ...author,
       stats: {
         articles: author._count.articles,
-        comments: author._count.comments
+        comments: author._count.comments,
       },
-      articles: author.articles.map(article => ({
+      articles: author.articles.map((article) => ({
         ...article,
         likes: article._count.likes,
         commentsCount: article._count.comments,
-        publishedAt: article.publishedAt.toISOString().split('T')[0]
-      }))
+        publishedAt: article.publishedAt.toISOString().split("T")[0],
+      })),
     };
   } catch (error) {
-    console.error('Error fetching author profile:', error);
+    console.error("Error fetching author profile:", error);
     return null;
   }
 }
@@ -438,7 +437,7 @@ export async function getAuthorProfile(username) {
 export async function isUsernameAvailable(username, excludeUserId = null) {
   try {
     const existingUser = await prisma.user.findUnique({
-      where: { username }
+      where: { username },
     });
 
     if (!existingUser) {
@@ -452,7 +451,7 @@ export async function isUsernameAvailable(username, excludeUserId = null) {
 
     return false;
   } catch (error) {
-    console.error('Error checking username availability:', error);
+    console.error("Error checking username availability:", error);
     return false;
   }
 }
@@ -461,7 +460,7 @@ export async function isUsernameAvailable(username, excludeUserId = null) {
 export async function isEmailAvailable(email, excludeUserId = null) {
   try {
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (!existingUser) {
@@ -475,7 +474,7 @@ export async function isEmailAvailable(email, excludeUserId = null) {
 
     return false;
   } catch (error) {
-    console.error('Error checking email availability:', error);
+    console.error("Error checking email availability:", error);
     return false;
   }
 }

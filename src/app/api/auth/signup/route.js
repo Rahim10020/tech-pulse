@@ -83,7 +83,6 @@ async function signupHandler(request) {
 
     // Créer l'utilisateur dans PostgreSQL
     const result = await createUser({
-      name: username,
       username,
       email,
       password,

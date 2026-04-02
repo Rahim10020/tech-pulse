@@ -1,18 +1,18 @@
 // lib/auth.js - Compatible avec Edge Runtime et Node.js
-import { SignJWT, jwtVerify } from 'jose';
-import NextAuth from 'next-auth';
-import Google from 'next-auth/providers/google';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { prisma } from '@/lib/prisma';
+import { SignJWT, jwtVerify } from "jose";
+import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/lib/prisma";
 
 const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 
 // Validation stricte au chargement - BLOQUANTE pour la sécurité
 if (!JWT_SECRET) {
   throw new Error(
-    '❌ JWT_SECRET manquant dans les variables d\'environnement.\n' +
-    'Ajoutez JWT_SECRET dans votre fichier .env avec au moins 64 caractères aléatoires.'
+    "❌ JWT_SECRET manquant dans les variables d'environnement.\n" +
+      "Ajoutez JWT_SECRET dans votre fichier .env avec au moins 64 caractères aléatoires.",
   );
 }
 
@@ -20,14 +20,14 @@ if (!JWT_SECRET) {
 if (JWT_SECRET.length < 64) {
   throw new Error(
     `❌ JWT_SECRET trop court (${JWT_SECRET.length} caractères).\n` +
-    'Pour une sécurité optimale avec HS256, utilisez au moins 64 caractères.\n' +
-    'Générez une clé sécurisée : openssl rand -base64 64'
+      "Pour une sécurité optimale avec HS256, utilisez au moins 64 caractères.\n" +
+      "Générez une clé sécurisée : openssl rand -base64 64",
   );
 }
 
 // Convertir l'expiration en secondes
 function parseExpiresIn(expiresIn) {
-  if (typeof expiresIn === 'number') return expiresIn;
+  if (typeof expiresIn === "number") return expiresIn;
 
   const match = expiresIn.match(/^(\d+)([dwh])$/);
   if (!match) return 7 * 24 * 60 * 60; // 7 jours par défaut
@@ -36,10 +36,14 @@ function parseExpiresIn(expiresIn) {
   const value = parseInt(num);
 
   switch (unit) {
-    case 'd': return value * 24 * 60 * 60;
-    case 'w': return value * 7 * 24 * 60 * 60;
-    case 'h': return value * 60 * 60;
-    default: return value;
+    case "d":
+      return value * 24 * 60 * 60;
+    case "w":
+      return value * 7 * 24 * 60 * 60;
+    case "h":
+      return value * 60 * 60;
+    default:
+      return value;
   }
 }
 
@@ -47,7 +51,7 @@ function parseExpiresIn(expiresIn) {
 export async function createToken(payload) {
   try {
     if (!JWT_SECRET) {
-      throw new Error('JWT_SECRET manquant');
+      throw new Error("JWT_SECRET manquant");
     }
     const secret = new TextEncoder().encode(JWT_SECRET);
     const expiresInSeconds = parseExpiresIn(JWT_EXPIRES_IN);
@@ -60,48 +64,48 @@ export async function createToken(payload) {
     };
 
     const jwt = await new SignJWT(enhancedPayload)
-      .setProtectedHeader({ alg: 'HS256' })
+      .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime(Math.floor(Date.now() / 1000) + expiresInSeconds)
-      .setIssuer('pixelpulse-app')
-      .setAudience('pixelpulse-users')
+      .setIssuer("pixelpulse-app")
+      .setAudience("pixelpulse-users")
       .sign(secret);
 
     return jwt;
   } catch (error) {
-    console.error('Erreur création token JWT:', error);
-    throw new Error('Impossible de créer le token d\'authentification');
+    console.error("Erreur création token JWT:", error);
+    throw new Error("Impossible de créer le token d'authentification");
   }
 }
 
 // Vérifier un token JWT avec jose (compatible Edge Runtime)
 export async function verifyToken(token) {
   try {
-    if (!token || typeof token !== 'string') {
+    if (!token || typeof token !== "string") {
       return null;
     }
     if (!JWT_SECRET) {
-      console.error('JWT_SECRET manquant');
+      console.error("JWT_SECRET manquant");
       return null;
     }
     const secret = new TextEncoder().encode(JWT_SECRET);
 
     const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-      issuer: 'pixelpulse-app',
-      audience: 'pixelpulse-users'
+      algorithms: ["HS256"],
+      issuer: "pixelpulse-app",
+      audience: "pixelpulse-users",
     });
 
     // jwtVerify vérifie automatiquement l'expiration (exp claim)
     // Pas besoin de vérification manuelle de l'âge du token
     return payload;
   } catch (error) {
-    if (error.code === 'ERR_JWT_EXPIRED') {
-      console.log('Token expiré');
-    } else if (error.code === 'ERR_JWT_INVALID') {
-      console.log('Token invalide');
+    if (error.code === "ERR_JWT_EXPIRED") {
+      console.log("Token expiré");
+    } else if (error.code === "ERR_JWT_INVALID") {
+      console.log("Token invalide");
     } else {
-      console.error('Erreur vérification token:', error.message);
+      console.error("Erreur vérification token:", error.message);
     }
     return null;
   }
@@ -110,7 +114,7 @@ export async function verifyToken(token) {
 // Fonction pour décoder un token sans vérification (pour la blacklist)
 export function decodeToken(token) {
   try {
-    const parts = token.split('.');
+    const parts = token.split(".");
     if (parts.length !== 3) return null;
 
     const payload = JSON.parse(atob(parts[1]));
@@ -138,28 +142,29 @@ export function isTokenBlacklisted(token) {
 // Middleware amélioré avec vérification blacklist
 export function withAuth(handler) {
   return async (req, res) => {
-    const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
+    const token =
+      req.cookies.token || req.headers.authorization?.replace("Bearer ", "");
 
     if (!token) {
       return res.status(401).json({
-        error: 'Token d\'authentification requis',
-        code: 'MISSING_TOKEN'
+        error: "Token d'authentification requis",
+        code: "MISSING_TOKEN",
       });
     }
 
     // Vérifier si le token est blacklisté
     if (isTokenBlacklisted(token)) {
       return res.status(401).json({
-        error: 'Token révoqué',
-        code: 'REVOKED_TOKEN'
+        error: "Token révoqué",
+        code: "REVOKED_TOKEN",
       });
     }
 
     const decoded = await verifyToken(token);
     if (!decoded) {
       return res.status(401).json({
-        error: 'Token invalide ou expiré',
-        code: 'INVALID_TOKEN'
+        error: "Token invalide ou expiré",
+        code: "INVALID_TOKEN",
       });
     }
 
@@ -174,29 +179,31 @@ export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     // Only include Google provider if credentials are properly configured
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET &&
-      process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id' &&
-      process.env.GOOGLE_CLIENT_SECRET !== 'your-google-client-secret'
-      ? [Google({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      })]
-      : []
-    ),
+    ...(process.env.GOOGLE_CLIENT_ID &&
+    process.env.GOOGLE_CLIENT_SECRET &&
+    process.env.GOOGLE_CLIENT_ID !== "your-google-client-id" &&
+    process.env.GOOGLE_CLIENT_SECRET !== "your-google-client-secret"
+      ? [
+          Google({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          }),
+        ]
+      : []),
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account.provider === 'google') {
+      if (account.provider === "google") {
         try {
           // Check if user exists with this Google ID
           let existingUser = await prisma.user.findUnique({
-            where: { googleId: profile.sub }
+            where: { googleId: profile.sub },
           });
 
           if (!existingUser) {
             // Check if user exists with this email
             existingUser = await prisma.user.findUnique({
-              where: { email: profile.email }
+              where: { email: profile.email },
             });
 
             if (existingUser) {
@@ -205,22 +212,23 @@ export const authOptions = {
                 where: { id: existingUser.id },
                 data: {
                   googleId: profile.sub,
-                  provider: 'google',
+                  provider: "google",
                   avatar: profile.picture || existingUser.avatar,
-                }
+                },
               });
             } else {
               // Create new user
-              const username = profile.email.split('@')[0] + Math.random().toString(36).substring(2, 8);
+              const username =
+                profile.email.split("@")[0] +
+                Math.random().toString(36).substring(2, 8);
               existingUser = await prisma.user.create({
                 data: {
-                  name: profile.name,
                   username: username,
                   email: profile.email,
                   googleId: profile.sub,
-                  provider: 'google',
+                  provider: "google",
                   avatar: profile.picture,
-                }
+                },
               });
             }
           }
@@ -229,7 +237,7 @@ export const authOptions = {
           user.role = existingUser.role;
           return true;
         } catch (error) {
-          console.error('Error during Google sign in:', error);
+          console.error("Error during Google sign in:", error);
           return false;
         }
       }
@@ -251,11 +259,11 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: '/login',
-    error: '/login',
+    signIn: "/login",
+    error: "/login",
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   secret: JWT_SECRET,
 };

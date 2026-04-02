@@ -1,53 +1,56 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Input } from '@/components/ui/Input';
+import { useState } from "react";
 
-export default function ProfileForm({ initialData, onSubmit, onPasswordChange, isLoading }) {
+export default function ProfileForm({
+  initialData,
+  onSubmit,
+  onPasswordChange,
+  isLoading,
+}) {
   const [formData, setFormData] = useState({
-    name: initialData?.name || '',
-    bio: initialData?.bio || '',
-    location: initialData?.location || '',
-    website: initialData?.website || '',
-    twitter: initialData?.twitter || '',
-    linkedin: initialData?.linkedin || '',
-    github: initialData?.github || '',
+    bio: initialData?.bio || "",
+    location: initialData?.location || "",
+    website: initialData?.website || "",
+    twitter: initialData?.twitter || "",
+    linkedin: initialData?.linkedin || "",
+    github: initialData?.github || "",
   });
 
   const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setPasswordData(prev => ({
+    setPasswordData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -55,12 +58,8 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Le nom est requis';
-    }
-
-    if (formData.website && !formData.website.startsWith('http')) {
-      newErrors.website = 'L\'URL doit commencer par http:// ou https://';
+    if (formData.website && !formData.website.startsWith("http")) {
+      newErrors.website = "L'URL doit commencer par http:// ou https://";
     }
 
     setErrors(newErrors);
@@ -71,19 +70,20 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
     const newErrors = {};
 
     if (!passwordData.currentPassword) {
-      newErrors.currentPassword = 'Le mot de passe actuel est requis';
+      newErrors.currentPassword = "Le mot de passe actuel est requis";
     }
 
     if (!passwordData.newPassword) {
-      newErrors.newPassword = 'Le nouveau mot de passe est requis';
+      newErrors.newPassword = "Le nouveau mot de passe est requis";
     } else if (passwordData.newPassword.length < 6) {
-      newErrors.newPassword = 'Le mot de passe doit contenir au moins 6 caractères';
+      newErrors.newPassword =
+        "Le mot de passe doit contenir au moins 6 caractères";
     }
 
     if (!passwordData.confirmPassword) {
-      newErrors.confirmPassword = 'La confirmation du mot de passe est requise';
+      newErrors.confirmPassword = "La confirmation du mot de passe est requise";
     } else if (passwordData.newPassword !== passwordData.confirmPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+      newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
     }
 
     setErrors(newErrors);
@@ -107,25 +107,6 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
         </h2>
 
         <div className="grid gap-4">
-          {/* Nom */}
-          <div>
-            <label htmlFor="name" className="h5-title text-gray-700 mb-4">
-              Nom complet
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className={`input-field ${errors.name ? 'border-red-500' : ''}`}
-              placeholder="Votre nom complet"
-            />
-            {errors.name && (
-              <p className="small-text text-red-600 mt-1">{errors.name}</p>
-            )}
-          </div>
-
           {/* Bio */}
           <div>
             <label htmlFor="bio" className="h5-title text-gray-700 mb-4">
@@ -178,7 +159,7 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
               name="website"
               value={formData.website}
               onChange={handleChange}
-              className={`input-field ${errors.website ? 'border-red-500' : ''}`}
+              className={`input-field ${errors.website ? "border-red-500" : ""}`}
               placeholder="https://votresite.com"
             />
             {errors.website && (
@@ -253,9 +234,7 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
 
       {/* Changement de mot de passe */}
       <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="h3-title text-gray-900 mb-6">
-          Changer le mot de passe
-        </h2>
+        <h2 className="h3-title text-gray-900 mb-6">Changer le mot de passe</h2>
 
         <div className="grid gap-4">
           {/* Mot de passe actuel */}
@@ -313,7 +292,7 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
                 <span>Changement...</span>
               </div>
             ) : (
-              'Changer le mot de passe'
+              "Changer le mot de passe"
             )}
           </button>
         </div>
@@ -330,18 +309,14 @@ export default function ProfileForm({ initialData, onSubmit, onPasswordChange, i
           Annuler
         </button>
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="btn-primary"
-        >
+        <button type="submit" disabled={isLoading} className="btn-primary">
           {isLoading ? (
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               <span>Mise à jour...</span>
             </div>
           ) : (
-            'Sauvegarder'
+            "Sauvegarder"
           )}
         </button>
       </div>

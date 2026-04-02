@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 // lib/articles.js
 
@@ -7,7 +7,6 @@ const includeRelations = {
   author: {
     select: {
       id: true,
-      name: true,
       username: true,
       avatar: true,
       bio: true,
@@ -66,8 +65,8 @@ async function getDefaultCategory() {
   // Chercher une catégorie par défaut existante
   let defaultCategory = await prisma.category.findFirst({
     where: {
-      slug: "non-classe"
-    }
+      slug: "non-classe",
+    },
   });
 
   // Si elle n'existe pas, la créer
@@ -78,8 +77,8 @@ async function getDefaultCategory() {
         slug: "non-classe",
         description: "Articles sans catégorie spécifique",
         color: "bg-gray-100",
-        textColor: "text-gray-800"
-      }
+        textColor: "text-gray-800",
+      },
     });
   }
 
@@ -106,15 +105,14 @@ export async function getArticleBySlug(slug, userId = null) {
         _count: {
           select: {
             likes: true,
-            comments: true
-          }
+            comments: true,
+          },
         },
         comments: {
           include: {
             author: {
               select: {
                 id: true,
-                name: true,
                 username: true,
                 avatar: true,
               },
@@ -124,7 +122,6 @@ export async function getArticleBySlug(slug, userId = null) {
                 author: {
                   select: {
                     id: true,
-                    name: true,
                     username: true,
                     avatar: true,
                   },
@@ -147,9 +144,9 @@ export async function getArticleBySlug(slug, userId = null) {
     await incrementArticleViews(article.id);
 
     // Calculer si l'utilisateur a liké l'article
-    const isLikedByUser = userId ?
-      article.likes.some(like => like.userId === userId) :
-      false;
+    const isLikedByUser = userId
+      ? article.likes.some((like) => like.userId === userId)
+      : false;
 
     // Formatter la réponse avec les nouvelles données
     return {
@@ -183,7 +180,6 @@ export async function getArticleById(id) {
             author: {
               select: {
                 id: true,
-                name: true,
                 username: true,
                 avatar: true,
               },
@@ -635,7 +631,6 @@ export async function addComment(articleId, userId, content, parentId = null) {
         author: {
           select: {
             id: true,
-            name: true,
             username: true,
             avatar: true,
           },
@@ -704,17 +699,16 @@ export async function createDraft(draftData) {
         published: false, // Brouillon = non publié
         // publishedAt prendra la valeur par défaut (now()) mais sera ignorée car published=false
         author: {
-          connect: { id: parseInt(authorId) }
+          connect: { id: parseInt(authorId) },
         },
         category: {
-          connect: { id: categoryData.id }
-        }
+          connect: { id: categoryData.id },
+        },
       },
       include: {
         author: {
           select: {
             id: true,
-            name: true,
             username: true,
             avatar: true,
           },
@@ -816,17 +810,16 @@ export async function createArticle(articleData) {
         published: true,
         publishedAt: new Date(),
         author: {
-          connect: { id: parseInt(authorId) }
+          connect: { id: parseInt(authorId) },
         },
         category: {
-          connect: { id: categoryData.id }
-        }
+          connect: { id: categoryData.id },
+        },
       },
       include: {
         author: {
           select: {
             id: true,
-            name: true,
             username: true,
             avatar: true,
           },
@@ -909,7 +902,8 @@ export async function publishDraft(articleId, authorId) {
     if (!draft.category || draft.category.slug === "non-classe") {
       return {
         success: false,
-        error: "Une catégorie valide est requise pour publier. Veuillez modifier le brouillon et choisir une catégorie."
+        error:
+          "Une catégorie valide est requise pour publier. Veuillez modifier le brouillon et choisir une catégorie.",
       };
     }
 
@@ -927,7 +921,6 @@ export async function publishDraft(articleId, authorId) {
       include: {
         author: {
           select: {
-            name: true,
             username: true,
           },
         },
@@ -966,7 +959,15 @@ export async function updateDraft(articleId, authorId, updateData) {
       return { success: false, error: "Brouillon non trouvé" };
     }
 
-    const { title, content, description, category, readTime, featured, imageUrl } = updateData;
+    const {
+      title,
+      content,
+      description,
+      category,
+      readTime,
+      featured,
+      imageUrl,
+    } = updateData;
 
     // Déterminer la catégorie
     let categoryId = existingDraft.categoryId;
@@ -990,7 +991,9 @@ export async function updateDraft(articleId, authorId, updateData) {
       data: {
         ...(title !== undefined && { title: title.trim() }),
         ...(content !== undefined && { content: content.trim() }),
-        ...(description !== undefined && { description: description?.trim() || null }),
+        ...(description !== undefined && {
+          description: description?.trim() || null,
+        }),
         ...(readTime && { readTime }),
         ...(featured !== undefined && { featured }),
         ...(imageUrl !== undefined && { imageUrl: imageUrl || null }),
@@ -1000,7 +1003,6 @@ export async function updateDraft(articleId, authorId, updateData) {
       include: {
         author: {
           select: {
-            name: true,
             username: true,
           },
         },
@@ -1026,7 +1028,8 @@ export async function updateDraft(articleId, authorId, updateData) {
 // **FONCTION CORRIGÉE - Mettre à jour ou créer un brouillon (pour auto-save)**
 export async function updateOrCreateDraft(draftData, existingDraftId = null) {
   try {
-    const { title, content, description, category, readTime, authorId } = draftData;
+    const { title, content, description, category, readTime, authorId } =
+      draftData;
 
     // Si on a un brouillon existant, le mettre à jour
     if (existingDraftId) {
@@ -1077,7 +1080,8 @@ export async function deleteDraft(draftId, userId) {
     if (!draft) {
       return {
         success: false,
-        error: "Brouillon non trouvé ou vous n'êtes pas autorisé à le supprimer",
+        error:
+          "Brouillon non trouvé ou vous n'êtes pas autorisé à le supprimer",
       };
     }
 

@@ -443,13 +443,13 @@ export default function UserProfile({ user, articles }) {
                       <div className="flex items-start space-x-4">
                         <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full flex items-center justify-center flex-shrink-0">
                           <span className="text-white font-medium text-sm">
-                            {comment.author?.name?.charAt(0) || "U"}
+                            {comment.author?.username?.charAt(0) || "U"}
                           </span>
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-2">
                             <span className="h5-title text-gray-900">
-                              {comment.author?.name || "Utilisateur"}
+                              {comment.author?.username || "Utilisateur"}
                             </span>
                             <span className="small-text text-gray-500">
                               {new Date(comment.createdAt).toLocaleDateString(
@@ -518,7 +518,7 @@ export default function UserProfile({ user, articles }) {
                                 {like.article?.title || "Article"}
                               </Link>
                               <p className="small-text text-gray-600">
-                                Par {like.article?.author?.name || "Auteur"}
+                                Par {like.article?.author?.username || "Auteur"}
                               </p>
                             </div>
                           </div>

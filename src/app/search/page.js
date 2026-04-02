@@ -628,7 +628,7 @@ function SearchArticleCard({ article, query }) {
             <div className="flex items-center space-x-4 small-text text-gray-500">
               <span className="flex items-center">
                 <User className="w-3 h-3 mr-1" />
-                {article.author?.name}
+                {article.author?.username}
               </span>
               <span className="flex items-center">
                 <Calendar className="w-3 h-3 mr-1" />

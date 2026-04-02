@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 // PATCH - Modifier un utilisateur (admin seulement)
 export async function PATCH(request, { params }) {
@@ -15,7 +15,7 @@ export async function PATCH(request, { params }) {
     if (!token) {
       return NextResponse.json(
         { error: "Token d'authentification requis" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -31,7 +31,7 @@ export async function PATCH(request, { params }) {
     if (!adminUser || !isAdmin(adminUser)) {
       return NextResponse.json(
         { error: "Accès non autorisé" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -43,7 +43,7 @@ export async function PATCH(request, { params }) {
     if (!targetUser) {
       return NextResponse.json(
         { error: "Utilisateur non trouvé" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -55,7 +55,7 @@ export async function PATCH(request, { params }) {
     ) {
       return NextResponse.json(
         { error: "Vous ne pouvez pas modifier votre propre rôle" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -64,13 +64,11 @@ export async function PATCH(request, { params }) {
       where: { id: parseInt(id) },
       data: {
         ...(updateData.role && { role: updateData.role }),
-        ...(updateData.name && { name: updateData.name }),
         ...(updateData.bio && { bio: updateData.bio }),
         updatedAt: new Date(),
       },
       select: {
         id: true,
-        name: true,
         username: true,
         email: true,
         role: true,
@@ -88,7 +86,7 @@ export async function PATCH(request, { params }) {
     console.error("Error updating user:", error);
     return NextResponse.json(
       { error: "Erreur lors de la mise à jour de l'utilisateur" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -103,7 +101,7 @@ export async function DELETE(request, { params }) {
     if (!token) {
       return NextResponse.json(
         { error: "Token d'authentification requis" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -119,7 +117,7 @@ export async function DELETE(request, { params }) {
     if (!adminUser || !isAdmin(adminUser)) {
       return NextResponse.json(
         { error: "Accès non autorisé" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -131,7 +129,7 @@ export async function DELETE(request, { params }) {
     if (!targetUser) {
       return NextResponse.json(
         { error: "Utilisateur non trouvé" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -139,7 +137,7 @@ export async function DELETE(request, { params }) {
     if (targetUser.id === adminUser.id) {
       return NextResponse.json(
         { error: "Vous ne pouvez pas supprimer votre propre compte" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -156,7 +154,7 @@ export async function DELETE(request, { params }) {
     console.error("Error deleting user:", error);
     return NextResponse.json(
       { error: "Erreur lors de la suppression de l'utilisateur" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

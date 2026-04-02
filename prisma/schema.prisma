@@ -12,7 +12,6 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(100)
   username  String   @unique @db.VarChar(50)
   email     String   @unique @db.VarChar(255)
   password  String?  @db.VarChar(255) // Made optional for OAuth users

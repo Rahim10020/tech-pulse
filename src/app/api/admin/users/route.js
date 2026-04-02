@@ -2,8 +2,8 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { isAdmin } from "@/lib/auth-roles";
-import { prisma } from '@/lib/prisma';
-import { validatePaginationParams } from '@/lib/validation-utils';
+import { prisma } from "@/lib/prisma";
+import { validatePaginationParams } from "@/lib/validation-utils";
 
 // GET - Récupérer la liste des utilisateurs (admin seulement)
 export async function GET(request) {
@@ -13,7 +13,7 @@ export async function GET(request) {
     if (!token) {
       return NextResponse.json(
         { error: "Token d'authentification requis" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -29,13 +29,16 @@ export async function GET(request) {
     if (!user || !isAdmin(user)) {
       return NextResponse.json(
         { error: "Accès non autorisé" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     // Récupérer les paramètres de requête
     const { searchParams } = new URL(request.url);
-    const { page, limit } = validatePaginationParams(searchParams, { page: 1, limit: 20 });
+    const { page, limit } = validatePaginationParams(searchParams, {
+      page: 1,
+      limit: 20,
+    });
     const search = searchParams.get("search") || "";
     const role = searchParams.get("role") || "";
 
@@ -46,7 +49,6 @@ export async function GET(request) {
 
     if (search) {
       where.OR = [
-        { name: { contains: search, mode: "insensitive" } },
         { username: { contains: search, mode: "insensitive" } },
         { email: { contains: search, mode: "insensitive" } },
       ];
@@ -62,7 +64,6 @@ export async function GET(request) {
         where,
         select: {
           id: true,
-          name: true,
           username: true,
           email: true,
           role: true,
@@ -104,7 +105,7 @@ export async function GET(request) {
     console.error("Error fetching users:", error);
     return NextResponse.json(
       { error: "Erreur lors de la récupération des utilisateurs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
