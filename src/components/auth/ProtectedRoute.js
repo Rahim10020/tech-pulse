@@ -1,3 +1,10 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
+import { LoadingSpinner } from "@/components/ui";
+
 /**
  * ProtectedRoute component that wraps children and redirects to login if user is not authenticated.
  * Shows loading spinner while checking authentication status.
@@ -12,14 +19,14 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [user, loading, router]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen bg-gray-50">
+        <LoadingSpinner />
       </div>
     );
   }

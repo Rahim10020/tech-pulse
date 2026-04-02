@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
+import { LoadingSpinner } from "@/components/ui";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { isAdmin } from "@/lib/auth-roles";
@@ -276,8 +277,8 @@ export default function AdminArticlesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+      <div className="min-h-screen bg-gray-50">
+        <LoadingSpinner />
       </div>
     );
   }
