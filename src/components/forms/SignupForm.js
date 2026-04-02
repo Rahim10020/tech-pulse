@@ -55,9 +55,36 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
 
     if (!formData.password) {
       newErrors.password = "Le mot de passe est requis";
-    } else if (formData.password.length < 6) {
-      newErrors.password =
-        "Le mot de passe doit contenir au moins 6 caractères";
+    } else {
+      const passwordErrors = [];
+
+      if (formData.password.length < 8) {
+        passwordErrors.push(
+          "Le mot de passe doit contenir au moins 8 caractères",
+        );
+      }
+
+      if (!/(?=.*[a-z])/.test(formData.password)) {
+        passwordErrors.push(
+          "Le mot de passe doit contenir au moins une lettre minuscule",
+        );
+      }
+
+      if (!/(?=.*[A-Z])/.test(formData.password)) {
+        passwordErrors.push(
+          "Le mot de passe doit contenir au moins une lettre majuscule",
+        );
+      }
+
+      if (!/(?=.*\d)/.test(formData.password)) {
+        passwordErrors.push(
+          "Le mot de passe doit contenir au moins un chiffre",
+        );
+      }
+
+      if (passwordErrors.length > 0) {
+        newErrors.password = passwordErrors.join(", ");
+      }
     }
 
     if (!formData.confirmPassword) {
