@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -97,7 +98,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
 
         <div className="text-right">
           <Link
-            href="/forgot-password"
+            href={ROUTES.FORGOT_PASSWORD}
             className="small-text text-gray-500 hover:text-gray-700 underline"
           >
             Mot de passe oublié ?
@@ -116,7 +117,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
         <p className="small-text text-center text-gray-500 mt-4">
           Vous n&apos;avez pas de compte ?{" "}
           <Link
-            href="/signup"
+            href={ROUTES.SIGNUP}
             className="text-teal-600 hover:text-teal-700 underline"
           >
             S&apos;inscrire

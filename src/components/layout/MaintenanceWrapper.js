@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 import { useSettings } from "@/hooks/useSettings";
 import { useAuth } from "@/context/AuthProvider";
 import { isAdmin } from "@/lib/auth-roles";
@@ -17,7 +18,7 @@ export default function MaintenanceWrapper({ children }) {
       // Rediriger vers la page de maintenance si le mode maintenance est activé
       // et que l'utilisateur n'est pas admin
       if (window.location.pathname !== "/maintenance") {
-        router.push("/maintenance");
+        router.push(ROUTES.MAINTENANCE);
       }
     } else if (
       !loading &&
@@ -25,7 +26,7 @@ export default function MaintenanceWrapper({ children }) {
       window.location.pathname === "/maintenance"
     ) {
       // Rediriger vers la page d'accueil si le mode maintenance est désactivé
-      router.push("/");
+      router.push(ROUTES.HOME);
     }
   }, [settings.maintenanceMode, loading, user, router]);
 

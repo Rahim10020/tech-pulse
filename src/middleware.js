@@ -1,35 +1,44 @@
 // middleware.js - Middleware corrigé pour Edge Runtime
 import { NextResponse } from "next/server";
-import { jwtVerify } from 'jose';
+import { jwtVerify } from "jose";
+import { ROUTES } from "@/lib/routes";
 
 // Routes qui nécessitent une authentification
-const protectedRoutes = ["/profile/edit", "/create", "/drafts"];
+const protectedRoutes = [ROUTES.PROFILE_EDIT, ROUTES.CREATE, ROUTES.DRAFTS];
 
 // Routes d'authentification (rediriger si déjà connecté)
-const authRoutes = ["/login", "/signup", "/forgot-password"];
+const authRoutes = [ROUTES.LOGIN, ROUTES.SIGNUP, ROUTES.FORGOT_PASSWORD];
 
 // Routes publiques (toujours accessibles)
-const publicRoutes = ["/", "/articles", "/categories", "/about", "/contact"];
+const publicRoutes = [
+  ROUTES.HOME,
+  ROUTES.ARTICLES,
+  ROUTES.CATEGORIES,
+  ROUTES.ABOUT,
+  ROUTES.CONTACT,
+];
 
 // Routes d'administration (nécessitent un rôle admin)
-const adminRoutes = ["/admin"];
+const adminRoutes = [ROUTES.ADMIN_DASHBOARD.split("/")[1]];
+// Correct: Routes d'administration
+const adminRoutesPrefix = ["/admin"];
 
 // Routes de maintenance (toujours accessibles)
-const maintenanceRoutes = ["/maintenance", "/api/settings"];
+const maintenanceRoutes = [ROUTES.MAINTENANCE, "/api/settings"];
 
 // Routes qui nécessitent seulement d'être connecté
-const authOnlyRoutes = ["/secret-admin-access"];
+const authOnlyRoutes = [ROUTES.SECRET_ADMIN_ACCESS];
 
 // Fonction de vérification JWT compatible Edge Runtime
 async function verifyTokenEdge(token) {
   try {
-    if (!token || typeof token !== 'string') {
+    if (!token || typeof token !== "string") {
       return null;
     }
 
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
-      console.error('JWT_SECRET manquant');
+      console.error("JWT_SECRET manquant");
       return null;
     }
 
@@ -37,21 +46,21 @@ async function verifyTokenEdge(token) {
     const secret = new TextEncoder().encode(JWT_SECRET);
 
     const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-      issuer: 'pixelpulse-app',
-      audience: 'pixelpulse-users'
+      algorithms: ["HS256"],
+      issuer: "pixelpulse-app",
+      audience: "pixelpulse-users",
     });
 
     // jwtVerify vérifie automatiquement l'expiration (exp claim)
     // Pas besoin de vérification manuelle de l'âge du token
     return payload;
   } catch (error) {
-    if (error.code === 'ERR_JWT_EXPIRED') {
-      console.log('Token expiré');
-    } else if (error.code === 'ERR_JWT_INVALID') {
-      console.log('Token invalide');
+    if (error.code === "ERR_JWT_EXPIRED") {
+      console.log("Token expiré");
+    } else if (error.code === "ERR_JWT_INVALID") {
+      console.log("Token invalide");
     } else {
-      console.error('Erreur vérification token:', error.message);
+      console.error("Erreur vérification token:", error.message);
     }
     return null;
   }
@@ -62,7 +71,7 @@ export async function middleware(request) {
   const token = request.cookies.get("token")?.value;
 
   // Log en mode debug uniquement, sans exposer de données sensibles
-  if (process.env.DEBUG === 'true') {
+  if (process.env.DEBUG === "true") {
     console.log("Middleware:", {
       pathname,
       hasToken: !!token,
@@ -101,7 +110,9 @@ export async function middleware(request) {
         });
       } else {
         // Token invalide, le supprimer
-        const response = NextResponse.redirect(new URL("/", request.url));
+        const response = NextResponse.redirect(
+          new URL(ROUTES.HOME, request.url),
+        );
         response.cookies.delete("token");
         return response;
       }
@@ -117,7 +128,7 @@ export async function middleware(request) {
   // Permettre l'accès aux routes publiques
   if (
     publicRoutes.some(
-      (route) => pathname === route || pathname.startsWith(route + "/")
+      (route) => pathname === route || pathname.startsWith(route + "/"),
     )
   ) {
     return NextResponse.next();
@@ -135,16 +146,14 @@ export async function middleware(request) {
     // Si pas authentifié du tout, rediriger vers la page de login
     if (!isAuthenticated) {
       console.log("Not authenticated, redirecting to login page");
-      return NextResponse.redirect(
-        new URL("/login", request.url)
-      );
+      return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
     }
 
     // Si authentifié mais pas admin, rediriger avec message d'erreur
     if (!isAdmin) {
       console.log("Not admin, access denied:", { userRole: user?.role });
       return NextResponse.redirect(
-        new URL("/?error=access-denied", request.url)
+        new URL(`${ROUTES.HOME}?error=access-denied`, request.url),
       );
     }
 
@@ -163,7 +172,7 @@ export async function middleware(request) {
     protectedRoutes.some((route) => pathname.startsWith(route)) &&
     !isAuthenticated
   ) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL(ROUTES.LOGIN, request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -173,7 +182,7 @@ export async function middleware(request) {
     authRoutes.some((route) => pathname.startsWith(route)) &&
     isAuthenticated
   ) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL(ROUTES.HOME, request.url));
   }
 
   return NextResponse.next();

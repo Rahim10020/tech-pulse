@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES, getArticleRoute } from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { useAutoSave } from "@/hooks/useAutoSave";
@@ -28,12 +29,11 @@ export default function CreateArticlePage() {
     title: "",
     content: "",
     description: "",
-    category: "",// sera traite comme "non-classe"
+    category: "", // sera traite comme "non-classe"
     tags: [],
     readTime: "",
     featured: false,
   });
-
 
   // Fonction pour extraire la première image du contenu HTML
   const extractFirstImageFromContent = useCallback((htmlContent) => {
@@ -41,18 +41,19 @@ export default function CreateArticlePage() {
 
     // Créer un parser DOM temporaire
     const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const doc = parser.parseFromString(htmlContent, "text/html");
 
     // Chercher la première image
-    const firstImg = doc.querySelector('img');
+    const firstImg = doc.querySelector("img");
 
     if (!firstImg) return null;
 
-    const src = firstImg.getAttribute('src') || firstImg.src || '';
+    const src = firstImg.getAttribute("src") || firstImg.src || "";
     if (!src) return null;
 
     // Accepter soit un chemin local d'upload, soit une URL absolue http(s)
-    const isLocalUpload = src.startsWith('/uploads/') || src.includes('/uploads/');
+    const isLocalUpload =
+      src.startsWith("/uploads/") || src.includes("/uploads/");
     const isHttpUrl = /^https?:\/\//i.test(src);
 
     if (isLocalUpload || isHttpUrl) {
@@ -74,7 +75,7 @@ export default function CreateArticlePage() {
 
   // Fonction pour mettre à jour les données du formulaire
   const updateFormData = useCallback((field, value) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const newData = { ...prev, [field]: value };
       setHasUnsavedChanges(true);
       return newData;
@@ -85,42 +86,45 @@ export default function CreateArticlePage() {
   const readingTime = calculateReadingTime(formData.content);
 
   // fonction d'autosave
-  const handleAutoSave = useCallback(async (data) => {
-    try {
-      // Extraire la première image du contenu pour les brouillons aussi
-      const imageUrl = extractFirstImageFromContent(data.content);
+  const handleAutoSave = useCallback(
+    async (data) => {
+      try {
+        // Extraire la première image du contenu pour les brouillons aussi
+        const imageUrl = extractFirstImageFromContent(data.content);
 
-      const response = await fetch("/api/drafts/auto-save", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          ...data,
-          imageUrl,
-          readTime: calculateReadingTime(data.content),
-          existingDraftId: currentDraftId,
-        }),
-      });
+        const response = await fetch("/api/drafts/auto-save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            ...data,
+            imageUrl,
+            readTime: calculateReadingTime(data.content),
+            existingDraftId: currentDraftId,
+          }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (result.success) {
-        if (result.isNew) {
-          setCurrentDraftId(result.article.id);
+        if (result.success) {
+          if (result.isNew) {
+            setCurrentDraftId(result.article.id);
+          }
+          setHasUnsavedChanges(false);
+          return result;
+        } else {
+          console.error("Auto-save API error:", result.error);
+          throw new Error(result.error);
         }
-        setHasUnsavedChanges(false);
-        return result;
-      } else {
-        console.error("Auto-save API error:", result.error);
-        throw new Error(result.error);
+      } catch (err) {
+        console.error("Auto-save failed:", err);
+        throw err;
       }
-    } catch (err) {
-      console.error("Auto-save failed:", err);
-      throw err;
-    }
-  }, [currentDraftId, calculateReadingTime, extractFirstImageFromContent]);
+    },
+    [currentDraftId, calculateReadingTime, extractFirstImageFromContent],
+  );
 
   // Hook de sauvegarde automatique
   const { isSaving, forceSave, lastSaved } = useAutoSave(formData, {
@@ -135,35 +139,38 @@ export default function CreateArticlePage() {
   });
 
   // Gestionnaire pour l'upload d'images depuis Tiptap
-  const handleTiptapImageUpload = useCallback(async (file) => {
-    try {
-      const formDataUpload = new FormData();
-      formDataUpload.append("file", file);
+  const handleTiptapImageUpload = useCallback(
+    async (file) => {
+      try {
+        const formDataUpload = new FormData();
+        formDataUpload.append("file", file);
 
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        credentials: "include",
-        body: formDataUpload,
-      });
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          credentials: "include",
+          body: formDataUpload,
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-        setHasUnsavedChanges(true);
-        return data;
-      } else {
-        throw new Error(data.error);
+        if (data.success) {
+          setHasUnsavedChanges(true);
+          return data;
+        } else {
+          throw new Error(data.error);
+        }
+      } catch (err) {
+        error("Erreur lors de l'upload de l'image");
+        throw err;
       }
-    } catch (err) {
-      error("Erreur lors de l'upload de l'image");
-      throw err;
-    }
-  }, [error]);
+    },
+    [error],
+  );
 
   // Rediriger si non connecté
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.push(ROUTES.LOGIN);
     }
   }, [user, loading, router]);
 
@@ -174,7 +181,9 @@ export default function CreateArticlePage() {
         const response = await fetch("/api/categories?type=all");
         const data = await response.json();
         // Filtrer pour exclure la catégorie "non-classe" des options
-        const filteredCategories = data.categories.filter(cat => cat.slug !== "non-classe");
+        const filteredCategories = data.categories.filter(
+          (cat) => cat.slug !== "non-classe",
+        );
         setCategories(filteredCategories);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -187,14 +196,14 @@ export default function CreateArticlePage() {
   // Mettre à jour automatiquement le temps de lecture
   useEffect(() => {
     if (readingTime && readingTime !== formData.readTime) {
-      setFormData(prev => ({ ...prev, readTime: readingTime }));
+      setFormData((prev) => ({ ...prev, readTime: readingTime }));
     }
   }, [readingTime, formData.readTime]);
 
   // Écouter l'événement de sauvegarde forcée (Ctrl+S)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === 's') {
+      if (e.ctrlKey && e.key === "s") {
         e.preventDefault();
         if (formData.title.trim()) {
           handleSaveDraft();
@@ -202,8 +211,8 @@ export default function CreateArticlePage() {
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [formData.title, handleSaveDraft]);
 
   // Avertir avant de quitter si changements non sauvegardés
@@ -266,7 +275,7 @@ export default function CreateArticlePage() {
           setCurrentDraftId(null);
         }
 
-        router.push(`/articles/${data.article.slug}`);
+        router.push(getArticleRoute(data.article.slug));
       } else {
         error(data.error || "Erreur lors de la publication");
       }
@@ -300,7 +309,7 @@ export default function CreateArticlePage() {
   const handleBack = () => {
     if (hasUnsavedChanges) {
       const confirmLeave = window.confirm(
-        "Vous avez des modifications non sauvegardées. Êtes-vous sûr de vouloir quitter ?"
+        "Vous avez des modifications non sauvegardées. Êtes-vous sûr de vouloir quitter ?",
       );
       if (!confirmLeave) return;
     }
@@ -308,22 +317,32 @@ export default function CreateArticlePage() {
   };
 
   // Fonction pour gérer les changements de contenu
-  const handleContentChange = useCallback((newContent) => {
-    updateFormData("content", newContent);
-  }, [updateFormData]);
+  const handleContentChange = useCallback(
+    (newContent) => {
+      updateFormData("content", newContent);
+    },
+    [updateFormData],
+  );
 
   // Gestionnaire pour les changements de titre
-  const handleTitleChange = useCallback((e) => {
-    updateFormData("title", e.target.value);
-  }, [updateFormData]);
+  const handleTitleChange = useCallback(
+    (e) => {
+      updateFormData("title", e.target.value);
+    },
+    [updateFormData],
+  );
 
   // Gestionnaire pour les changements de catégorie
-  const handleCategoryChange = useCallback((e) => {
-    updateFormData("category", e.target.value);
-  }, [updateFormData]);
+  const handleCategoryChange = useCallback(
+    (e) => {
+      updateFormData("category", e.target.value);
+    },
+    [updateFormData],
+  );
 
   // Détermine si on peut publier
-  const canPublish = formData.title.trim() &&
+  const canPublish =
+    formData.title.trim() &&
     formData.content.trim() &&
     formData.category &&
     !isSubmitting;
@@ -369,7 +388,9 @@ export default function CreateArticlePage() {
                   className="search-input-field cursor-pointer"
                 >
                   <option value="">
-                    {currentDraftId ? "Brouillon (non classé)" : "Sélectionner une catégorie..."}
+                    {currentDraftId
+                      ? "Brouillon (non classé)"
+                      : "Sélectionner une catégorie..."}
                   </option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.slug}>
@@ -382,13 +403,23 @@ export default function CreateArticlePage() {
               {/* Bouton d'aide stylé */}
               <div className="relative group">
                 <button className="p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </button>
                 {/* Tooltip au survol */}
                 <div className="absolute left-0 top-full mt-2 w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                  <h4 className="font-semibold text-gray-900 mb-2">Guide rapide</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Guide rapide
+                  </h4>
                   <div className="text-sm text-gray-600 space-y-2">
                     <p>📝 Sauvegarde automatique toutes les 30s</p>
                     <p>💾 Ctrl+S pour sauvegarder manuellement</p>
@@ -455,7 +486,10 @@ export default function CreateArticlePage() {
                   <button
                     type="button"
                     onClick={handleSaveDraft}
-                    disabled={isSavingDraft || (!formData.title.trim() && !formData.content.trim())}
+                    disabled={
+                      isSavingDraft ||
+                      (!formData.title.trim() && !formData.content.trim())
+                    }
                     className="btn-secondary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     title="Sauvegarder en brouillon (Ctrl+S)"
                   >
@@ -473,7 +507,11 @@ export default function CreateArticlePage() {
                     type="submit"
                     disabled={!canPublish}
                     className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    title={!formData.category ? "Sélectionnez une catégorie pour publier" : ""}
+                    title={
+                      !formData.category
+                        ? "Sélectionnez une catégorie pour publier"
+                        : ""
+                    }
                   >
                     {isSubmitting ? (
                       <>
@@ -487,13 +525,15 @@ export default function CreateArticlePage() {
                 </div>
 
                 {/* Message d'aide */}
-                {!formData.category && (formData.title.trim() || formData.content.trim()) && (
-                  <div className="mt-3 text-right">
-                    <p className="small-text text-orange-600">
-                      💡 Sélectionnez une catégorie pour pouvoir publier votre article
-                    </p>
-                  </div>
-                )}
+                {!formData.category &&
+                  (formData.title.trim() || formData.content.trim()) && (
+                    <div className="mt-3 text-right">
+                      <p className="small-text text-orange-600">
+                        💡 Sélectionnez une catégorie pour pouvoir publier votre
+                        article
+                      </p>
+                    </div>
+                  )}
               </div>
             </form>
           </div>

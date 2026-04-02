@@ -4,6 +4,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
+import { ROUTES } from "@/lib/routes";
 import { ArrowRight, Github, Twitter, Linkedin } from "lucide-react";
 
 export default function AboutPage() {
@@ -86,7 +87,7 @@ function HeroSection() {
             className="flex flex-wrap justify-center gap-4"
           >
             <motion.a
-              href="/articles"
+              href={ROUTES.ARTICLES}
               className="btn-primary flex items-center text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -95,7 +96,7 @@ function HeroSection() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </motion.a>
             <motion.a
-              href="/contact"
+              href={ROUTES.CONTACT}
               className="btn-secondary text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -830,7 +831,7 @@ function CTASection() {
             viewport={{ once: true }}
           >
             <motion.a
-              href="/articles"
+              href={ROUTES.ARTICLES}
               className="bg-white text-gray-900 px-8 py-3 font-medium hover:bg-gray-100 transition-colors text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -838,7 +839,7 @@ function CTASection() {
               Découvrir les articles
             </motion.a>
             <motion.a
-              href="/contact"
+              href={ROUTES.CONTACT}
               className="border-2 border-white text-white px-8 py-3 font-medium hover:underline text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

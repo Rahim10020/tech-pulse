@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { getArticlesWithQueryRoute } from "@/lib/routes";
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -50,15 +51,15 @@ export default function CategoryFilter({ activeCategory = "all" }) {
       params.set("category", categorySlug);
     }
 
-    router.push(`/articles?${params.toString()}`);
+    router.push(getArticlesWithQueryRoute(params.toString()));
   };
 
   const totalArticles = categories.reduce(
     (sum, cat) => sum + (Number(cat.count) || 0),
-    0
+    0,
   );
   const visibleCategories = categories.filter(
-    (cat) => (Number(cat.count) || 0) > 0
+    (cat) => (Number(cat.count) || 0) > 0,
   );
   const allCategories = [
     { id: 0, name: "Tous", slug: "all", count: totalArticles },

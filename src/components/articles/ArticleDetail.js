@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ROUTES, getArticleRoute } from "@/lib/routes";
 import ArticleActions from "./ArticleActions";
 import InteractiveComments from "../comments/InteractiveComments";
 import NotFound from "../../app/not-found";
@@ -35,11 +36,11 @@ export default function ArticleDetail({ article }) {
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <nav className="text-sm font-sans text-gray-500 mb-6">
-          <Link href="/" className="hover:text-gray-700">
+          <Link href={ROUTES.HOME} className="hover:text-gray-700">
             Accueil
           </Link>
-          <span className="mx-2">/</span>
-          <Link href="/articles" className="hover:text-gray-700">
+          <span className="text-gray-300">/</span>
+          <Link href={ROUTES.ARTICLES} className="hover:text-gray-700">
             Articles
           </Link>
         </nav>

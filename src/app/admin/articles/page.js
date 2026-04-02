@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES, getAdminEditArticleRoute } from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import { LoadingSpinner } from "@/components/ui";
 import { useAuth } from "@/context/AuthProvider";
@@ -63,7 +64,7 @@ export default function AdminArticlesPage() {
   // Redirection si non admin
   useEffect(() => {
     if (!loading && (!user || !isAdmin(user))) {
-      router.push("/");
+      router.push(ROUTES.HOME);
     }
   }, [user, loading, router]);
 
@@ -311,7 +312,7 @@ export default function AdminArticlesPage() {
               Actualiser
             </button>
             <button
-              onClick={() => router.push("/create")}
+              onClick={() => router.push(ROUTES.CREATE)}
               className="btn-primary flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
@@ -545,7 +546,7 @@ export default function AdminArticlesPage() {
                             <button
                               onClick={() =>
                                 router.push(
-                                  `/admin/articles/${article.id}/edit`,
+                                  getAdminEditArticleRoute(article.id),
                                 )
                               }
                               className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-gray-100"
@@ -645,7 +646,7 @@ export default function AdminArticlesPage() {
                   : "Vous n'avez pas encore créé d'articles."}
               </p>
               <button
-                onClick={() => router.push("/create")}
+                onClick={() => router.push(ROUTES.CREATE)}
                 className="btn-primary flex items-center gap-2 mx-auto"
               >
                 <Plus className="w-4 h-4" />

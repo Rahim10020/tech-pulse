@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { useSettings } from "@/hooks/useSettings";
+import { ROUTES } from "@/lib/routes";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import {
   MessageCircle,
@@ -427,7 +428,7 @@ export default function InteractiveComments({
 
                   {!user && (
                     <span className="small-text text-blue-600">
-                      <a href="/login" className="hover:underline">
+                      <a href={ROUTES.LOGIN} className="hover:underline">
                         Connectez-vous
                       </a>{" "}
                       pour participer à la discussion
@@ -482,7 +483,7 @@ export default function InteractiveComments({
             </p>
             {!user && (
               <a
-                href="/login"
+                href={ROUTES.LOGIN}
                 className="btn-primary inline-flex items-center space-x-2"
               >
                 <MessageCircle className="w-4 h-4" />

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthProvider";
 import {
@@ -241,7 +242,7 @@ export default function UserProfile({ user, articles }) {
             {isOwnProfile && (
               <div className="border-t pt-4 space-y-3">
                 <Link
-                  href="/profile/edit"
+                  href={ROUTES.PROFILE_EDIT}
                   className="flex items-center justify-center w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
                 >
                   <Settings className="w-4 h-4 mr-2" />

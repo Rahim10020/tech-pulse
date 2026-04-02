@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, TrendingUp, Users, BookOpen } from "lucide-react";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import { useEffect, useState, useRef } from "react";
 
 export default function HeroSection() {
@@ -128,7 +129,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-8 mb-12"
           >
-            <Link href="/articles" className="block">
+            <Link href={ROUTES.ARTICLES} className="block">
               <motion.button
                 whileHover={{
                   scale: 1.03,
@@ -141,7 +142,7 @@ export default function HeroSection() {
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
-            <Link href="/about" className="block">
+            <Link href={ROUTES.ABOUT} className="block">
               <motion.button
                 whileHover={{
                   scale: 1.03,

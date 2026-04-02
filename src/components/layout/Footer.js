@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
@@ -81,7 +82,7 @@ export default function Footer() {
         >
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-block">
+            <Link href={ROUTES.HOME} className="inline-block">
               <motion.div
                 className="flex items-center space-x-2 group"
                 whileHover={{ scale: 1.02 }}

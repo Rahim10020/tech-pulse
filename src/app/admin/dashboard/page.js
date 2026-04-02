@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES, getAdminEditArticleRoute } from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -94,7 +95,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin(user))) {
-      router.push("/");
+      router.push(ROUTES.HOME);
     }
   }, [user, loading, router]);
 
@@ -530,14 +531,14 @@ export default function AdminDashboard() {
                   </h3>
                   <div className="space-y-3">
                     <button
-                      onClick={() => router.push("/admin/articles")}
+                      onClick={() => router.push(ROUTES.ADMIN_ARTICLES)}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
                       <span className="body-text">Gérer les articles</span>
                       <FileText className="w-4 h-4 text-gray-400" />
                     </button>
                     <button
-                      onClick={() => router.push("/admin/categories")}
+                      onClick={() => router.push(ROUTES.ADMIN_CATEGORIES)}
                       className="w-full flex items-center justify-between p-3 text-left card hover:bg-gray-50 transition-colors"
                     >
                       <span className="body-text">Gérer les catégories</span>
@@ -569,7 +570,7 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <h2 className="h2-title text-gray-900">Gestion du contenu</h2>
                 <button
-                  onClick={() => router.push("/create")}
+                  onClick={() => router.push(ROUTES.CREATE)}
                   className="btn-primary flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
@@ -661,7 +662,7 @@ export default function AdminDashboard() {
                           </div>
                           <button
                             onClick={() =>
-                              router.push(`/admin/articles/${article.id}/edit`)
+                              router.push(getAdminEditArticleRoute(article.id))
                             }
                             className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-white"
                           >
@@ -687,7 +688,7 @@ export default function AdminDashboard() {
                       Catégories populaires
                     </h3>
                     <button
-                      onClick={() => router.push("/admin/categories")}
+                      onClick={() => router.push(ROUTES.ADMIN_CATEGORIES)}
                       className="btn-secondary text-sm flex items-center gap-1"
                     >
                       Gérer

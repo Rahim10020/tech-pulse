@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { ROUTES } from "@/lib/routes";
 import {
   Bell,
   MessageSquare,
@@ -25,7 +26,7 @@ export default function Navigation() {
 
   const handleLogout = () => {
     logout();
-    router.push("/");
+    router.push(ROUTES.HOME);
     setIsProfileMenuOpen(false);
   };
 
@@ -35,7 +36,7 @@ export default function Navigation() {
     <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href={ROUTES.HOME} className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gray-900 flex items-center justify-center rounded">
             <span className="text-white font-bold text-sm">TP</span>
           </div>
@@ -45,22 +46,22 @@ export default function Navigation() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link
-            href="/"
-            className={`h6-title ${isActiveLink("/") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
+            href={ROUTES.HOME}
+            className={`h6-title ${isActiveLink(ROUTES.HOME) ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
           >
             Home
           </Link>
           <Link
-            href="/articles"
-            className={`h6-title ${isActiveLink("/articles") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
+            href={ROUTES.ARTICLES}
+            className={`h6-title ${isActiveLink(ROUTES.ARTICLES) ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
           >
             Articles
           </Link>
           {user && (
             <>
               <Link
-                href="/create"
-                className={`h6-title ${isActiveLink("/create") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
+                href={ROUTES.CREATE}
+                className={`h6-title ${isActiveLink(ROUTES.CREATE) ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
               >
                 Create
               </Link>
@@ -79,8 +80,8 @@ export default function Navigation() {
             </>
           )}
           <Link
-            href="/about"
-            className={`h6-title ${isActiveLink("/about") ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
+            href={ROUTES.ABOUT}
+            className={`h6-title ${isActiveLink(ROUTES.ABOUT) ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
           >
             About
           </Link>
@@ -169,10 +170,14 @@ export default function Navigation() {
             </>
           ) : (
             <>
-              <Button href="/login" variant="ghost" className="h6-title">
+              <Button href={ROUTES.LOGIN} variant="ghost" className="h6-title">
                 Sign In
               </Button>
-              <Button href="/signup" variant="primary" className="h6-title">
+              <Button
+                href={ROUTES.SIGNUP}
+                variant="primary"
+                className="h6-title"
+              >
                 Sign Up
               </Button>
             </>
@@ -199,13 +204,13 @@ export default function Navigation() {
         <div className="md:hidden bg-white border-t border-gray-200 px-6 py-4">
           <nav className="space-y-4">
             <Link
-              href="/"
+              href={ROUTES.HOME}
               className="block h6-title text-gray-700 hover:text-gray-900"
             >
               Home
             </Link>
             <Link
-              href="/articles"
+              href={ROUTES.ARTICLES}
               className="block h6-title text-gray-700 hover:text-gray-900"
             >
               Articles
@@ -213,7 +218,7 @@ export default function Navigation() {
             {user && (
               <>
                 <Link
-                  href="/create"
+                  href={ROUTES.CREATE}
                   className="block h6-title text-gray-700 hover:text-gray-900"
                 >
                   Create
@@ -233,7 +238,7 @@ export default function Navigation() {
               </>
             )}
             <Link
-              href="/about"
+              href={ROUTES.ABOUT}
               className="block h6-title text-gray-700 hover:text-gray-900"
             >
               About

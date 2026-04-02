@@ -1,60 +1,61 @@
 /** @description Page de réinitialisation du mot de passe via token */
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Input } from '@/components/ui/Input';
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
+import Image from "next/image";
+import { Input } from "@/components/ui/Input";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
   const params = useParams();
   const token = params.token;
   const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: ''
+    password: "",
+    confirmPassword: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    setError('');
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setError("Les mots de passe ne correspondent pas");
       setIsLoading(false);
       return;
     }
 
     if (formData.password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères');
+      setError("Le mot de passe doit contenir au moins 8 caractères");
       setIsLoading(false);
       return;
     }
 
     try {
       // Logique de réinitialisation du mot de passe
-      const response = await fetch('/api/auth/reset-password', {
-        method: 'POST',
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           token,
-          password: formData.password
+          password: formData.password,
         }),
       });
 
@@ -62,10 +63,10 @@ export default function ResetPasswordPage() {
         setIsSuccess(true);
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Une erreur est survenue');
+        setError(errorData.message || "Une erreur est survenue");
       }
     } catch (error) {
-      setError('Erreur réseau. Veuillez réessayer.');
+      setError("Erreur réseau. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
@@ -77,11 +78,13 @@ export default function ResetPasswordPage() {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/">
-            <Image src="/logo.png"
+            <Image
+              src="/logo.png"
               alt="Logo pixelpulse"
               width={40}
               height={40}
-              className="h-10" />
+              className="h-10"
+            />
           </Link>
         </div>
       </header>
@@ -91,8 +94,12 @@ export default function ResetPasswordPage() {
         {!isSuccess ? (
           <>
             <div className="text-center mb-12">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Définir un nouveau mot de passe</h1>
-              <p className="text-gray-600">Veuillez entrer votre nouveau mot de passe ci-dessous.</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Définir un nouveau mot de passe
+              </h1>
+              <p className="text-gray-600">
+                Veuillez entrer votre nouveau mot de passe ci-dessous.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -129,23 +136,36 @@ export default function ResetPasswordPage() {
                 disabled={isLoading}
                 className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
+                {isLoading ? "Mise à jour..." : "Mettre à jour le mot de passe"}
               </button>
             </form>
           </>
         ) : (
           <div className="text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-8 h-8 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Mot de passe mis à jour !</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Mot de passe mis à jour !
+            </h1>
             <p className="text-gray-600 mb-8">
-              Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.
+              Votre mot de passe a été mis à jour avec succès. Vous pouvez
+              maintenant vous connecter avec votre nouveau mot de passe.
             </p>
             <Link
-              href="/login"
+              href={ROUTES.LOGIN}
               className="inline-block bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors"
             >
               Se connecter

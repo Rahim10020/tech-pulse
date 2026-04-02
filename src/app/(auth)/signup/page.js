@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { useSettings } from "@/hooks/useSettings";
@@ -60,7 +61,10 @@ export default function SignupPage() {
           <p className="text-gray-600 mb-6">
             Les inscriptions sont actuellement désactivées sur ce site.
           </p>
-          <button onClick={() => router.push("/")} className="btn-primary">
+          <button
+            onClick={() => router.push(ROUTES.HOME)}
+            className="btn-primary"
+          >
             Retour à l&apos;accueil
           </button>
         </div>

@@ -224,7 +224,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         <p className="small-text text-center text-gray-500 mt-4">
           Vous avez déjà un compte ?{" "}
           <a
-            href="/login"
+            href={ROUTES.LOGIN}
             className="text-teal-600 hover:text-teal-700 underline"
           >
             Se connecter

@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES, getProfileRoute } from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import ProfileForm from "@/components/forms/ProfileForm";
 import { useAuth } from "@/context/AuthProvider";
@@ -17,7 +18,7 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     if (!user) {
-      router.push("/login");
+      router.push(ROUTES.LOGIN);
     }
   }, [user, router]);
 
@@ -29,7 +30,7 @@ export default function EditProfilePage() {
 
       if (result.success) {
         showToast("Profil mis à jour avec succès !", "success");
-        router.push(`/profile/${user.id}`);
+        router.push(getProfileRoute(user.id));
       } else {
         showToast(result.error || "Erreur lors de la mise à jour", "error");
       }
@@ -44,14 +45,20 @@ export default function EditProfilePage() {
     setIsLoading(true);
 
     try {
-      const result = await changePassword(passwordData.currentPassword, passwordData.newPassword);
+      const result = await changePassword(
+        passwordData.currentPassword,
+        passwordData.newPassword,
+      );
 
       if (result.success) {
         showToast("Mot de passe changé avec succès !", "success");
         // Clear password fields after successful change
         // This would require passing a reset function from ProfileForm
       } else {
-        showToast(result.error || "Erreur lors du changement de mot de passe", "error");
+        showToast(
+          result.error || "Erreur lors du changement de mot de passe",
+          "error",
+        );
       }
     } catch (error) {
       showToast("Une erreur est survenue", "error");
@@ -79,11 +86,8 @@ export default function EditProfilePage() {
       <div className="container-sm py-8">
         {/* Header avec bouton retour */}
         <div className="flex items-center mb-8">
-
           <div>
-            <h1 className="h1-title text-gray-900">
-              Éditer mon profil
-            </h1>
+            <h1 className="h1-title text-gray-900">Éditer mon profil</h1>
             <p className="body-text text-gray-600 mt-2">
               Mettez à jour vos informations personnelles
             </p>
@@ -109,8 +113,8 @@ export default function EditProfilePage() {
           </h3>
           <div className="space-y-2 small-text text-blue-700">
             <p>
-              • Votre nom d&apos;utilisateur et email ne peuvent pas être modifiés
-              depuis cette page
+              • Votre nom d&apos;utilisateur et email ne peuvent pas être
+              modifiés depuis cette page
             </p>
             <p>
               • Les informations de votre profil sont publiques et visibles par
@@ -121,7 +125,8 @@ export default function EditProfilePage() {
               de profil public
             </p>
             <p>
-              • Vous pouvez changer votre mot de passe dans la section ci-dessous
+              • Vous pouvez changer votre mot de passe dans la section
+              ci-dessous
             </p>
           </div>
         </div>

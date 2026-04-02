@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 import Link from "next/link";
 
 export default function SecretAdminAccess() {
@@ -16,9 +17,9 @@ export default function SecretAdminAccess() {
   useEffect(() => {
     if (!loading) {
       if (user === null) {
-        router.push("/login");
+        router.push(ROUTES.LOGIN);
       } else if (user && user.role === "admin") {
-        router.push("/profile/edit");
+        router.push(ROUTES.PROFILE_EDIT);
       }
     }
   }, [user, loading, router]);
@@ -89,13 +90,13 @@ export default function SecretAdminAccess() {
                 {!user ? (
                   <>
                     <Link
-                      href="/login"
+                      href={ROUTES.LOGIN}
                       className="btn-primary w-full justify-center block text-center"
                     >
                       🔑 Se connecter
                     </Link>
                     <Link
-                      href="/signup"
+                      href={ROUTES.SIGNUP}
                       className="btn-secondary w-full justify-center block text-center"
                     >
                       ✍️ Créer un compte
@@ -104,19 +105,19 @@ export default function SecretAdminAccess() {
                 ) : user.role === "admin" ? (
                   <div className="space-y-3">
                     <Link
-                      href="/profile/edit"
+                      href={ROUTES.PROFILE_EDIT}
                       className="btn-primary w-full justify-center bg-teal-600 hover:bg-teal-700 block text-center"
                     >
                       📊 Administration
                     </Link>
                     <Link
-                      href="/create"
+                      href={ROUTES.CREATE}
                       className="btn-primary w-full justify-center bg-orange-500 hover:bg-orange-600 block text-center"
                     >
                       ✍️ Écrire un article
                     </Link>
                     <Link
-                      href="/admin/manage-users"
+                      href={ROUTES.ADMIN_MANAGE_USERS}
                       className="btn-secondary w-full justify-center block text-center"
                     >
                       👥 Gérer les utilisateurs
@@ -143,7 +144,7 @@ export default function SecretAdminAccess() {
                         🚪 Se déconnecter
                       </button>
                       <Link
-                        href="/contact"
+                        href={ROUTES.CONTACT}
                         className="btn-primary inline-block"
                       >
                         📧 Contacter l&apos;admin
@@ -156,7 +157,7 @@ export default function SecretAdminAccess() {
               {/* Lien de retour */}
               <div className="text-center pt-4 border-t border-gray-200">
                 <Link
-                  href="/"
+                  href={ROUTES.HOME}
                   className="text-gray-500 hover:text-gray-700 transition-colors duration-200 small-text"
                 >
                   ← Retour au blog

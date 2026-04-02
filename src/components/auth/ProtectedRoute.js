@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { LoadingSpinner } from "@/components/ui";
 
@@ -19,7 +20,7 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.push(ROUTES.LOGIN);
     }
   }, [user, loading, router]);
 

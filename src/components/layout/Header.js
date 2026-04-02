@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 import {
   Search,
   Menu,
@@ -66,7 +67,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/">
+          <Link href={ROUTES.HOME}>
             <Image
               src="/logo.png"
               alt={`Logo ${settings.siteName || "pixelpulse"}`}
@@ -78,9 +79,9 @@ export default function Header() {
           {/* Navigation Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
-              href="/"
+              href={ROUTES.HOME}
               className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/")
+                isActiveLink(ROUTES.HOME)
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
               }`}
@@ -88,9 +89,9 @@ export default function Header() {
               Accueil
             </Link>
             <Link
-              href="/articles"
+              href={ROUTES.ARTICLES}
               className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/articles")
+                isActiveLink(ROUTES.ARTICLES)
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
               }`}
@@ -98,9 +99,9 @@ export default function Header() {
               Articles
             </Link>
             <Link
-              href="/categories"
+              href={ROUTES.CATEGORIES}
               className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/categories")
+                isActiveLink(ROUTES.CATEGORIES)
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
               }`}
@@ -108,9 +109,9 @@ export default function Header() {
               Catégories
             </Link>
             <Link
-              href="/about"
+              href={ROUTES.ABOUT}
               className={`h6-title text-gray-700 hover:text-gray-900 transition-colors relative pb-1 ${
-                isActiveLink("/about")
+                isActiveLink(ROUTES.ABOUT)
                   ? 'text-gray-900 after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-teal-600'
                   : ""
               }`}
@@ -140,7 +141,7 @@ export default function Header() {
               <>
                 {/* Bouton Publier - Visible pour les admins et publishers */}
                 {(isAdmin(user) || isPublisher(user)) && (
-                  <Link href="/create" className="hidden sm:flex">
+                  <Link href={ROUTES.CREATE} className="hidden sm:flex">
                     <Button
                       variant="primary"
                       size="sm"
@@ -155,7 +156,7 @@ export default function Header() {
                 {/* Messages Badge - Seulement pour les admins */}
                 {isAdmin(user) && (
                   <Link
-                    href="/admin/dashboard"
+                    href={ROUTES.ADMIN_DASHBOARD}
                     className="relative cursor-pointer hover:text-gray-900 transition-colors"
                     title="Messages de contact"
                   >
@@ -207,7 +208,7 @@ export default function Header() {
                       {/* Lien Écrire un article */}
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
-                          href="/create"
+                          href={ROUTES.CREATE}
                           className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
@@ -219,7 +220,7 @@ export default function Header() {
                       {/* Mes brouillons */}
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
-                          href="/drafts"
+                          href={ROUTES.DRAFTS}
                           className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                           onClick={() => setIsProfileMenuOpen(false)}
                         >
@@ -245,7 +246,7 @@ export default function Header() {
                         <>
                           <div className="border-t border-gray-100 "></div>
                           <Link
-                            href="/admin/dashboard"
+                            href={ROUTES.ADMIN_DASHBOARD}
                             className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                             onClick={() => setIsProfileMenuOpen(false)}
                           >
@@ -262,7 +263,7 @@ export default function Header() {
 
                       {/* Lien Paramètres */}
                       <Link
-                        href="/profile/edit"
+                        href={ROUTES.PROFILE_EDIT}
                         className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
@@ -284,7 +285,7 @@ export default function Header() {
               </>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link href="/contact">
+                <Link href={ROUTES.CONTACT}>
                   <button className="btn-primary">Contact</button>
                 </Link>
               </div>
@@ -317,28 +318,30 @@ export default function Header() {
             >
               <nav className="py-4 space-y-2 border-t border-gray-200 mt-4">
                 <Link
-                  href="/"
+                  href={ROUTES.HOME}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/") ? "bg-teal-50 " : "text-gray-700 "
+                    isActiveLink(ROUTES.HOME) ? "bg-teal-50 " : "text-gray-700 "
                   }`}
                 >
                   Accueil
                 </Link>
                 <Link
-                  href="/articles"
+                  href={ROUTES.ARTICLES}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/articles") ? "bg-teal-50 " : "text-gray-700 "
+                    isActiveLink(ROUTES.ARTICLES)
+                      ? "bg-teal-50 "
+                      : "text-gray-700 "
                   }`}
                 >
                   Articles
                 </Link>
                 <Link
-                  href="/categories"
+                  href={ROUTES.CATEGORIES}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/categories")
+                    isActiveLink(ROUTES.CATEGORIES)
                       ? "bg-teal-50 "
                       : "text-gray-700 "
                   }`}
@@ -346,17 +349,19 @@ export default function Header() {
                   Catégories
                 </Link>
                 <Link
-                  href="/about"
+                  href={ROUTES.ABOUT}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium transition-colors ${
-                    isActiveLink("/about") ? "bg-teal-50 " : "text-gray-700 "
+                    isActiveLink(ROUTES.ABOUT)
+                      ? "bg-teal-50 "
+                      : "text-gray-700 "
                   }`}
                 >
                   À propos
                 </Link>
                 {!user && (
                   <Link
-                    href="/contact"
+                    href={ROUTES.CONTACT}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 rounded-lg font-medium text-gray-700 "
                   >

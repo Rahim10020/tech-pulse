@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ROUTES, getArticleRoute, getCreateDraftRoute } from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import Header from "@/components/layout/Header";
@@ -43,7 +44,7 @@ export default function DraftsPage() {
   // Rediriger si non connecté
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.push(ROUTES.LOGIN);
     }
   }, [user, loading, router]);
 
@@ -69,7 +70,9 @@ export default function DraftsPage() {
         // Charger les catégories
         const categoriesResponse = await fetch("/api/categories?type=all");
         const categoriesData = await categoriesResponse.json();
-        setCategories(categoriesData.success ? categoriesData.categories || [] : []);
+        setCategories(
+          categoriesData.success ? categoriesData.categories || [] : [],
+        );
       } catch (err) {
         console.error("Error fetching drafts:", err);
         error("Erreur lors du chargement des données");
@@ -92,14 +95,14 @@ export default function DraftsPage() {
         (draft) =>
           draft.title.toLowerCase().includes(query) ||
           draft.content.toLowerCase().includes(query) ||
-          draft.category?.name.toLowerCase().includes(query)
+          draft.category?.name.toLowerCase().includes(query),
       );
     }
 
     // Filtrer par catégorie
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (draft) => draft.category?.slug === selectedCategory
+        (draft) => draft.category?.slug === selectedCategory,
       );
     }
 
@@ -140,7 +143,7 @@ export default function DraftsPage() {
         setSelectedDrafts((prev) => prev.filter((id) => id !== draftId));
 
         // Rediriger vers l'article publié
-        router.push(`/articles/${data.article.slug}`);
+        router.push(getArticleRoute(data.article.slug));
       } else {
         error(data.error || "Erreur lors de la publication");
       }
@@ -185,7 +188,7 @@ export default function DraftsPage() {
     if (action === "delete") {
       if (
         !confirm(
-          `Êtes-vous sûr de vouloir supprimer ${selectedDrafts.length} brouillon(s) ?`
+          `Êtes-vous sûr de vouloir supprimer ${selectedDrafts.length} brouillon(s) ?`,
         )
       ) {
         return;
@@ -197,8 +200,8 @@ export default function DraftsPage() {
             fetch(`/api/drafts/${id}`, {
               method: "DELETE",
               credentials: "include",
-            })
-          )
+            }),
+          ),
         );
 
         success(`${selectedDrafts.length} brouillon(s) supprimé(s)`);
@@ -215,7 +218,7 @@ export default function DraftsPage() {
     setSelectedDrafts((prev) =>
       prev.includes(draftId)
         ? prev.filter((id) => id !== draftId)
-        : [...prev, draftId]
+        : [...prev, draftId],
     );
   };
 
@@ -244,9 +247,7 @@ export default function DraftsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="h1-title text-gray-900 mb-2">
-              Mes brouillons
-            </h1>
+            <h1 className="h1-title text-gray-900 mb-2">Mes brouillons</h1>
             <p className="body-text text-gray-600">
               {drafts.length} brouillon{drafts.length !== 1 ? "s" : ""} •
               {filteredDrafts.length} affiché
@@ -344,7 +345,7 @@ export default function DraftsPage() {
                 : "Aucun brouillon ne correspond à vos critères de recherche."}
             </p>
             <button
-              onClick={() => router.push("/create")}
+              onClick={() => router.push(ROUTES.CREATE)}
               className="btn-primary inline-flex items-center space-x-2"
             >
               <Plus className="w-4 h-4" />
@@ -385,7 +386,7 @@ export default function DraftsPage() {
                 draft={draft}
                 isSelected={selectedDrafts.includes(draft.id)}
                 onSelect={() => toggleDraftSelection(draft.id)}
-                onEdit={() => router.push(`/create?draft=${draft.id}`)}
+                onEdit={() => router.push(getCreateDraftRoute(draft.id))}
                 onPublish={() => handlePublishDraft(draft.id)}
                 onDelete={() => handleDeleteDraft(draft.id)}
               />

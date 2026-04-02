@@ -29,24 +29,24 @@ export default function ForgotPasswordPage({ isLoading }) {
     }
 
     try {
-      const response = await fetch('/api/auth/forgot-password', {
-        method: 'POST',
+      const response = await fetch("/api/auth/forgot-password", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setResetCode(data.resetCode || '');
+        setResetCode(data.resetCode || "");
         setIsSubmitted(true);
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Une erreur est survenue');
+        setError(errorData.message || "Une erreur est survenue");
       }
     } catch (error) {
-      setError('Erreur réseau. Veuillez réessayer.');
+      setError("Erreur réseau. Veuillez réessayer.");
     }
   };
 
@@ -61,7 +61,8 @@ export default function ForgotPasswordPage({ isLoading }) {
                 Réinitialiser votre mot de passe
               </h1>
               <p className="text-gray-600 font-poppins text-sm">
-                Entrez votre adresse email et nous vous enverrons un code pour réinitialiser votre mot de passe.
+                Entrez votre adresse email et nous vous enverrons un code pour
+                réinitialiser votre mot de passe.
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -91,7 +92,7 @@ export default function ForgotPasswordPage({ isLoading }) {
 
               <div className="text-center">
                 <Link
-                  href="/login"
+                  href={ROUTES.LOGIN}
                   className="text-sm text-gray-500 hover:text-gray-700"
                 >
                   ← Retour à la connexion
@@ -124,7 +125,7 @@ export default function ForgotPasswordPage({ isLoading }) {
             </p>
 
             {/* Afficher le code en développement */}
-            {process.env.NODE_ENV === 'development' && resetCode && (
+            {process.env.NODE_ENV === "development" && resetCode && (
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
                 <p className="text-yellow-800 text-sm mb-2">
                   🔧 Mode développement - Code de test :
@@ -133,14 +134,15 @@ export default function ForgotPasswordPage({ isLoading }) {
                   {resetCode}
                 </div>
                 <p className="text-yellow-700 text-xs mt-2">
-                  Ce code est affiché uniquement en développement pour faciliter les tests
+                  Ce code est affiché uniquement en développement pour faciliter
+                  les tests
                 </p>
               </div>
             )}
 
             <div className="space-y-4">
               <Link
-                href="/reset-password"
+                href={ROUTES.RESET_PASSWORD}
                 className="inline-block bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors mr-4"
               >
                 Entrer le code
