@@ -85,7 +85,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
       <button
         type="button"
         onClick={handleGoogleLogin}
-        className="w-full bg-gray-200 py-2 text-gray-700 hover:shadow-sm hover:text-gray-900 flex items-center justify-center gap-2"
+        className="w-full mb-6 bg-gray-200 py-2 text-gray-700 hover:shadow-sm hover:text-gray-900 flex items-center justify-center gap-2"
         disabled={isLoading}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ export default function SignupForm({ onSubmit, isLoading = false }) {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 mt-6">
         {/* Username Field */}
         <Input
           label="Nom d'utilisateur"

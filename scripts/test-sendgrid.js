@@ -60,7 +60,7 @@ async function testSendGrid() {
 
         // Vérifier la connexion
         await transporter.verify();
-        console.log('✅ Connexion SMTP réussie !');
+        console.log('Connexion SMTP réussie !');
 
         // Test d'envoi d'email
         console.log('\n📧 Test d\'envoi d\'email...');

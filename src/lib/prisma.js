@@ -26,10 +26,10 @@ if (process.env.NODE_ENV !== 'production') {
 export async function checkDatabaseConnection() {
     try {
         await prismaClient.$queryRaw`SELECT 1`;
-        console.log('✅ Connexion à la base de données établie');
+        console.log(' Connexion à la base de données établie');
         return true;
     } catch (error) {
-        console.error('❌ Impossible de se connecter à la base de données:', error);
+        console.error(' Impossible de se connecter à la base de données:', error);
         return false;
     }
 }
