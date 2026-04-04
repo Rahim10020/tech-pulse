@@ -69,6 +69,8 @@ export default function AdminDashboard() {
   const [usersLoading, setUsersLoading] = useState(false);
   const [recentArticles, setRecentArticles] = useState([]);
   const [topCategories, setTopCategories] = useState([]);
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [activitiesLoading, setActivitiesLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [settings, setSettings] = useState({
@@ -136,6 +138,23 @@ export default function AdminDashboard() {
       console.error("Error loading recent content:", error);
     }
   };
+
+  const loadRecentActivities = useCallback(async () => {
+    setActivitiesLoading(true);
+    try {
+      const response = await fetch("/api/admin/recent-activities", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setRecentActivities(data.activities || []);
+      }
+    } catch (error) {
+      console.error("Error loading recent activities:", error);
+    } finally {
+      setActivitiesLoading(false);
+    }
+  }, []);
 
   const loadMessages = useCallback(async () => {
     setMessagesLoading(true);
@@ -219,8 +238,9 @@ export default function AdminDashboard() {
       loadStats();
       loadSettings();
       loadRecentContent();
+      loadRecentActivities();
     }
-  }, [user, loadSettings]);
+  }, [user, loadSettings, loadRecentActivities]);
 
   useEffect(() => {
     if (user && isAdmin(user)) {
@@ -369,6 +389,34 @@ export default function AdminDashboard() {
     }));
   };
 
+  const formatTimeAgoFr = (date) => {
+    const now = new Date();
+    const diffMs = now - new Date(date);
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "À l'instant";
+    if (diffMins < 60) return `Il y a ${diffMins}m`;
+    if (diffHours < 24) return `Il y a ${diffHours}h`;
+    if (diffDays < 7) return `Il y a ${diffDays}j`;
+    return new Date(date).toLocaleDateString("fr-FR");
+  };
+
+  const getActivityIcon = (type) => {
+    const iconClass = "w-4 h-4";
+    switch (type) {
+      case "user_signup":
+        return <Users className={`${iconClass} text-green-500`} />;
+      case "article_published":
+        return <FileText className={`${iconClass} text-blue-500`} />;
+      case "message_received":
+        return <MessageSquare className={`${iconClass} text-orange-500`} />;
+      default:
+        return <Activity className={`${iconClass} text-gray-500`} />;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -495,33 +543,39 @@ export default function AdminDashboard() {
                     Activités récentes
                   </h3>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="small-text text-gray-600">
-                        Nouvel utilisateur inscrit
-                      </span>
-                      <span className="small-text text-gray-400">
-                        Il y a 2 heures
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="small-text text-gray-600">
-                        Article publié
-                      </span>
-                      <span className="small-text text-gray-400">
-                        Il y a 4 heures
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                      <span className="small-text text-gray-600">
-                        Nouveau message de contact
-                      </span>
-                      <span className="small-text text-gray-400">
-                        Il y a 10 heures
-                      </span>
-                    </div>
+                    {activitiesLoading ? (
+                      <div className="text-center py-6">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-600 mx-auto"></div>
+                      </div>
+                    ) : recentActivities.length > 0 ? (
+                      recentActivities.map((activity) => (
+                        <div
+                          key={activity.id}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="flex items-center justify-center">
+                            {getActivityIcon(activity.type)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="small-text text-gray-600">
+                              {activity.description}
+                            </span>
+                            <p className="text-xs text-gray-500 truncate">
+                              {activity.details}
+                            </p>
+                          </div>
+                          <span className="small-text text-gray-400 whitespace-nowrap">
+                            {formatTimeAgoFr(activity.timestamp)}
+                          </span>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-6">
+                        <p className="small-text text-gray-500">
+                          Aucune activité récente
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
