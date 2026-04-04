@@ -160,7 +160,7 @@ export default function ProfileForm({
               name="website"
               value={formData.website}
               onChange={handleChange}
-              className={`input-field ${errors.website ? "border-red-500" : ""}`}
+              className={`text-sm input-field ${errors.website ? "border-red-500" : ""}`}
               placeholder="https://votresite.com"
             />
             {errors.website && (
@@ -174,7 +174,7 @@ export default function ProfileForm({
               Twitter
             </label>
             <div className="flex">
-              <span className="inline-flex items-center px-3 small-text text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+              <span className="inline-flex items-center px-3 text-md text-gray-500 bg-gray-50 border-2 border-r-0 border-gray-300 rounded-l-md">
                 @
               </span>
               <input
@@ -183,7 +183,7 @@ export default function ProfileForm({
                 name="twitter"
                 value={formData.twitter}
                 onChange={handleChange}
-                className="flex-1 input-field rounded-l-none"
+                className="text-sm flex-1 input-field rounded-l-none"
                 placeholder="votre_pseudo"
               />
             </div>
@@ -195,7 +195,7 @@ export default function ProfileForm({
               LinkedIn
             </label>
             <div className="flex">
-              <span className="inline-flex items-center px-3 small-text text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+              <span className="inline-flex items-center px-3 text-md text-gray-500 bg-gray-50 border-2 border-r-0 border-gray-300 rounded-l-md">
                 linkedin.com/in/
               </span>
               <input
@@ -204,7 +204,7 @@ export default function ProfileForm({
                 name="linkedin"
                 value={formData.linkedin}
                 onChange={handleChange}
-                className="flex-1 input-field rounded-l-none"
+                className="text-sm flex-1 input-field rounded-l-none"
                 placeholder="votre-profil"
               />
             </div>
@@ -216,7 +216,7 @@ export default function ProfileForm({
               GitHub
             </label>
             <div className="flex">
-              <span className="inline-flex items-center px-3 small-text text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+              <span className="inline-flex items-center px-3 text-md text-gray-500 bg-gray-50 border-2 border-r-0 border-gray-300 rounded-l-md">
                 github.com/
               </span>
               <input
@@ -225,7 +225,7 @@ export default function ProfileForm({
                 name="github"
                 value={formData.github}
                 onChange={handleChange}
-                className="flex-1 input-field rounded-l-none"
+                className="text-sm flex-1 input-field rounded-l-none"
                 placeholder="votre-username"
               />
             </div>
