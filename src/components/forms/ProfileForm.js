@@ -109,8 +109,8 @@ export default function ProfileForm({
 
         <div className="grid gap-4">
           {/* Bio */}
-          <div>
-            <label htmlFor="bio" className="h5-title text-gray-700 mb-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="bio" className="h5-title text-gray-700">
               Biographie
             </label>
             <textarea
@@ -119,14 +119,14 @@ export default function ProfileForm({
               value={formData.bio}
               onChange={handleChange}
               rows={4}
-              className="input-field"
+              className="input-field text-sm"
               placeholder="Parlez-nous de vous..."
             />
           </div>
 
           {/* Localisation */}
-          <div>
-            <label htmlFor="location" className="h5-title text-gray-700 mb-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="location" className="h5-title text-gray-700">
               Localisation
             </label>
             <input
@@ -135,7 +135,7 @@ export default function ProfileForm({
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="input-field"
+              className="input-field text-sm"
               placeholder="Ville, Pays"
             />
           </div>
