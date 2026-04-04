@@ -178,9 +178,7 @@ export default function AdminDashboard() {
   const loadSettings = useCallback(async () => {
     try {
       const response = await fetch("/api/admin/settings", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
@@ -238,8 +236,8 @@ export default function AdminDashboard() {
     try {
       const response = await fetch(`/api/contact/${messageId}`, {
         method: "PATCH",
+        credentials: "include",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ isRead: !isRead }),
@@ -280,8 +278,9 @@ export default function AdminDashboard() {
     try {
       const response = await fetch(`/api/contact/${messageId}`, {
         method: "DELETE",
+        credentials: "include",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
         },
       });
       if (response.ok) {
@@ -310,8 +309,8 @@ export default function AdminDashboard() {
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: "PATCH",
+        credentials: "include",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ role: newRole }),
@@ -340,8 +339,8 @@ export default function AdminDashboard() {
     try {
       const response = await fetch("/api/admin/settings", {
         method: "PUT",
+        credentials: "include",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(settings),
