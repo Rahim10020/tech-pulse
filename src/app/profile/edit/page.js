@@ -107,11 +107,11 @@ export default function EditProfilePage() {
         </div>
 
         {/* Informations supplémentaires */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="h4-title text-blue-800 mb-3">
+        <div className="mt-8 bg-gray-200 border p-4">
+          <h3 className="h4-title text-gray-800 mb-3">
             Informations importantes
           </h3>
-          <div className="space-y-2 small-text text-blue-700">
+          <div className="space-y-2 small-text text-gray-700">
             <p>
               • Votre nom d&apos;utilisateur et email ne peuvent pas être
               modifiés depuis cette page
