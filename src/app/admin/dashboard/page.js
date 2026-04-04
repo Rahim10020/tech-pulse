@@ -642,7 +642,7 @@ export default function AdminDashboard() {
                         {stats.publishedArticles || 0}
                       </p>
                     </div>
-                    <Globe className="w-8 h-8 text-green-500" />
+                    <Globe className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
                 <div className="card p-6">
@@ -653,7 +653,7 @@ export default function AdminDashboard() {
                         {stats.draftArticles || 0}
                       </p>
                     </div>
-                    <Clock className="w-8 h-8 text-orange-500" />
+                    <Clock className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
                 <div className="card p-6">
@@ -664,7 +664,7 @@ export default function AdminDashboard() {
                         {stats.totalCategories || 0}
                       </p>
                     </div>
-                    <Tag className="w-8 h-8 text-purple-500" />
+                    <Tag className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
               </div>
