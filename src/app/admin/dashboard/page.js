@@ -93,30 +93,7 @@ export default function AdminDashboard() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
 
-  useEffect(() => {
-    if (!loading && (!user || !isAdmin(user))) {
-      router.push(ROUTES.HOME);
-    }
-  }, [user, loading, router]);
-
-  useEffect(() => {
-    if (user && isAdmin(user)) {
-      loadStats();
-      loadSettings();
-      loadRecentContent();
-    }
-  }, [user, loadSettings]);
-
-  useEffect(() => {
-    if (user && isAdmin(user)) {
-      if (activeTab === "messages") {
-        loadMessages();
-      } else if (activeTab === "users") {
-        loadUsers();
-      }
-    }
-  }, [activeTab, user, searchTerm, roleFilter, loadMessages, loadUsers]);
-
+  // Define all callback and async functions BEFORE useEffect
   const loadStats = async () => {
     try {
       const response = await fetch("/api/admin/stats", {
@@ -232,6 +209,30 @@ export default function AdminDashboard() {
       console.error("Error loading settings:", error);
     }
   }, []);
+
+  useEffect(() => {
+    if (!loading && (!user || !isAdmin(user))) {
+      router.push(ROUTES.HOME);
+    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (user && isAdmin(user)) {
+      loadStats();
+      loadSettings();
+      loadRecentContent();
+    }
+  }, [user, loadSettings]);
+
+  useEffect(() => {
+    if (user && isAdmin(user)) {
+      if (activeTab === "messages") {
+        loadMessages();
+      } else if (activeTab === "users") {
+        loadUsers();
+      }
+    }
+  }, [activeTab, user, searchTerm, roleFilter, loadMessages, loadUsers]);
 
   const toggleMessageRead = async (messageId, isRead) => {
     try {
