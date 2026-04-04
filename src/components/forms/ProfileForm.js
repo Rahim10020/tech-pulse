@@ -102,7 +102,7 @@ export default function ProfileForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Informations de base */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-white border p-6">
         <h2 className="h3-title text-gray-900 mb-6">
           Informations personnelles
         </h2>
@@ -143,7 +143,7 @@ export default function ProfileForm({
       </div>
 
       {/* Liens et réseaux sociaux */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-white border p-6">
         <h2 className="h3-title text-gray-900 mb-4">
           Liens et réseaux sociaux
         </h2>
@@ -234,7 +234,7 @@ export default function ProfileForm({
       </div>
 
       {/* Changement de mot de passe */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-white border p-6">
         <h2 className="h3-title text-gray-900 mb-6">Changer le mot de passe</h2>
 
         <div className="grid gap-4">
@@ -300,7 +300,7 @@ export default function ProfileForm({
       </div>
 
       {/* Boutons d'action */}
-      <div className="flex justify-between items-center bg-white rounded-lg shadow-sm border p-6">
+      <div className="flex justify-end items-center gap-4 bg-white border p-6">
         <button
           type="button"
           onClick={() => window.history.back()}

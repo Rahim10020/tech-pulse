@@ -88,7 +88,7 @@ export default function EditProfilePage() {
         <div className="flex items-center mb-8">
           <div>
             <h1 className="h1-title text-gray-900">Éditer mon profil</h1>
-            <p className="body-text text-gray-600 mt-2">
+            <p className="body-text text-gray-500 mt-2">
               Mettez à jour vos informations personnelles
             </p>
           </div>

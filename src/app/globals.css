@@ -48,7 +48,7 @@ body {
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-colors;
+    @apply inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-gray-700 bg-white border-2 border-gray-800 hover:bg-gray-50 transition-colors;
   }
 
   .card {
