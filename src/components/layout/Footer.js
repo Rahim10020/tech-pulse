@@ -96,7 +96,7 @@ export default function Footer() {
                 />
               </motion.div>
             </Link>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 text-sm max-w-sm leading-relaxed">
               Votre source d&apos;information tech de confiance. Découvrez les
               dernières tendances en IA, développement web, cybersécurité et
               plus encore.
@@ -127,8 +127,8 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([title, links], index) => (
             <motion.div key={title} variants={item} className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-              <ul className="space-y-3">
+              <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+              <ul className="space-y-2">
                 {links.map((link, linkIndex) => (
                   <motion.li
                     key={link.name}
@@ -138,7 +138,7 @@ export default function Footer() {
                   >
                     <Link
                       href={link.href}
-                      className="group relative text-gray-600 hover:text-teal-600 transition-colors duration-300"
+                      className="group relative text-sm text-gray-600 hover:text-teal-600 transition-colors duration-300"
                     >
                       <motion.span className="inline-block relative group-hover:translate-x-1 transition-transform duration-300">
                         {link.name}
@@ -159,14 +159,14 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-3">
-              <p>{currentYear}</p>
+              <p className="text-sm">{currentYear}</p>
               <Image
                 src="/logo.png"
                 alt={`Logo ${settings.siteName || "pixelpulse"}`}
-                width={90}
-                height={90}
+                width={80}
+                height={80}
               />
-              <p>Tous droits réservés.</p>
+              <p className="text-sm">Tous droits réservés.</p>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600">
