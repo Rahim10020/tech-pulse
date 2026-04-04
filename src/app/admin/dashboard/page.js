@@ -42,6 +42,7 @@ import {
   Calendar,
   ArrowRight,
 } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui";
 
 export default function AdminDashboard() {
   const { user, loading, markMessagesAsRead, refreshUnreadCount } = useAuth();
@@ -418,11 +419,7 @@ export default function AdminDashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (!user || !isAdmin(user)) return null;
@@ -803,18 +800,18 @@ export default function AdminDashboard() {
                 Gestion des utilisateurs
               </h2>
               {/* Code existant pour la gestion des utilisateurs */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <input
                   type="text"
                   placeholder="Rechercher par nom, email ou username..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="input-field flex-1"
+                  className="input-field"
                 />
                 <select
                   value={roleFilter}
                   onChange={(e) => setRoleFilter(e.target.value)}
-                  className="input-field"
+                  className="input-field cursor-pointer max-w-xs"
                 >
                   <option value="all">Tous les rôles</option>
                   <option value="admin">Administrateurs</option>
@@ -884,11 +881,13 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 card">
-                  <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="body-text text-gray-500">
-                    Aucun utilisateur trouvé.
-                  </p>
+                <div className="mt-32">
+                  <div className="flex flex-col gap-2">
+                    <Users className="w-12 h-12 text-gray-300" />
+                    <p className="body-text text-gray-500">
+                      Aucun utilisateur trouvé.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>

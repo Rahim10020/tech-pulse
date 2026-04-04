@@ -9,6 +9,7 @@ import ProfileForm from "@/components/forms/ProfileForm";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { ArrowLeft } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui";
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -72,11 +73,7 @@ export default function EditProfilePage() {
   };
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
@@ -95,8 +92,8 @@ export default function EditProfilePage() {
         </div>
 
         {/* Formulaire de profil */}
-        <div className="">
-          <div className="">
+        <div>
+          <div>
             <ProfileForm
               initialData={user}
               onSubmit={handleUpdateProfile}
