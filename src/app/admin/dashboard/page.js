@@ -451,7 +451,7 @@ export default function AdminDashboard() {
                         {stats.totalUsers}
                       </p>
                     </div>
-                    <Users className="w-8 h-8 text-blue-500" />
+                    <Users className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
                 <div className="card p-6">
@@ -462,7 +462,7 @@ export default function AdminDashboard() {
                         {stats.totalArticles}
                       </p>
                     </div>
-                    <FileText className="w-8 h-8 text-green-500" />
+                    <FileText className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
                 <div className="card p-6">
@@ -473,7 +473,7 @@ export default function AdminDashboard() {
                         {stats.totalViews?.toLocaleString() || 0}
                       </p>
                     </div>
-                    <Eye className="w-8 h-8 text-purple-500" />
+                    <Eye className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
                 <div className="card p-6">
@@ -484,7 +484,7 @@ export default function AdminDashboard() {
                         {stats.unreadMessages}
                       </p>
                     </div>
-                    <MessageSquare className="w-8 h-8 text-red-500" />
+                    <MessageSquare className="w-4 h-4 text-green-500" />
                   </div>
                 </div>
               </div>

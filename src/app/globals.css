@@ -52,7 +52,7 @@ body {
   }
 
   .card {
-    @apply bg-white rounded-sm border border-gray-200 shadow-sm hover:shadow-md transition-all;
+    @apply bg-white rounded-sm border border-gray-200 shadow-sm transition-all;
   }
 
   .card-noborder {
