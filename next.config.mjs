@@ -2,29 +2,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ["lucide-react"],
   },
   images: {
     domains: [
-      'images.unsplash.com',
-      'via.placeholder.com',
-      'blob.vercel-storage.com',
-      '63rj7xefobpbdvlx.public.blob.vercel-storage.com'
+      "images.unsplash.com",
+      "via.placeholder.com",
+      "blob.vercel-storage.com",
+      "63rj7xefobpbdvlx.public.blob.vercel-storage.com",
     ],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '63rj7xefobpbdvlx.public.blob.vercel-storage.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "63rj7xefobpbdvlx.public.blob.vercel-storage.com",
+        pathname: "/**",
       },
     ],
   },
   // Configuration importante pour Tailwind
-  transpilePackages: [],
+  transpilePackages: ["framer-motion", "motion-dom", "motion-utils"],
   eslint: {
     // Activer la validation ESLint pendant les builds pour assurer la qualité du code
     ignoreDuringBuilds: false,
-    dirs: ['src/app', 'src/lib', 'src/components', 'src/context']
+    dirs: ["src/app", "src/lib", "src/components", "src/context"],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
