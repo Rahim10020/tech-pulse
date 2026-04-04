@@ -248,6 +248,7 @@ export default function ProfileForm({
             error={errors.currentPassword}
             placeholder="Votre mot de passe actuel"
             showPasswordToggle={true}
+            className="placeholder:text-sm"
           />
 
           {/* Nouveau mot de passe */}
@@ -260,6 +261,7 @@ export default function ProfileForm({
             error={errors.newPassword}
             placeholder="Votre nouveau mot de passe"
             showPasswordToggle={true}
+            className="placeholder:text-sm"
           />
 
           {/* Confirmation du mot de passe */}
@@ -272,11 +274,12 @@ export default function ProfileForm({
             error={errors.confirmPassword}
             placeholder="Confirmer votre nouveau mot de passe"
             showPasswordToggle={true}
+            className="placeholder:text-sm"
           />
         </div>
 
         {/* Bouton de changement de mot de passe */}
-        <div className="mt-6">
+        <div className="flex justify-end mt-6">
           <button
             type="button"
             onClick={() => {

@@ -36,7 +36,7 @@ const Input = forwardRef(
             className={clsx(
               "label",
               error && "label-error",
-              "text-gray-400 text-sm",
+              "text-gray-600 text-sm",
             )}
           >
             {label}
