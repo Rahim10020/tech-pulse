@@ -544,7 +544,7 @@ export default function AdminDashboard() {
                   </h3>
                   <div className="space-y-3">
                     {activitiesLoading ? (
-                      <div className="text-center py-6">
+                      <div className="text-center mt-24">
                         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-600 mx-auto"></div>
                       </div>
                     ) : recentActivities.length > 0 ? (
@@ -689,7 +689,7 @@ export default function AdminDashboard() {
                       {recentArticles.slice(0, 5).map((article) => (
                         <div
                           key={article.id}
-                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                          className="flex items-center justify-between p-3 bg-gray-50"
                         >
                           <div className="flex-1">
                             <h4 className="h6-title text-gray-900 line-clamp-1">
@@ -718,7 +718,7 @@ export default function AdminDashboard() {
                             onClick={() =>
                               router.push(getAdminEditArticleRoute(article.id))
                             }
-                            className="p-2 text-gray-400 hover:text-blue-600 rounded-lg hover:bg-white"
+                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-white"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
@@ -726,11 +726,13 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-8">
-                      <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                      <p className="body-text text-gray-500">
-                        Aucun article récent
-                      </p>
+                    <div className="mt-32">
+                      <div className="flex flex-col items-center gap-4">
+                        <FileText className="w-12 h-12 text-gray-300" />
+                        <p className="body-text text-gray-500">
+                          Aucun article récent
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>
