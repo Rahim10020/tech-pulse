@@ -421,21 +421,21 @@ export default function CreateArticlePage() {
                   </svg>
                 </button>
                 {/* Tooltip au survol */}
-                <div className="absolute left-0 top-full mt-2 w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                <div className="absolute left-0 top-full mt-2 w-70 p-4 bg-white border border-gray-200 rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                   <h4 className="font-semibold text-gray-600 mb-3">
                     Guide rapide
                   </h4>
                   <div className="space-y-2.5">
-                    <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                    <div className="flex items-center gap-2 text-xs font-normal text-gray-700">
+                      <FileText className="w-2 h-2 text-gray-600 flex-shrink-0" />
                       <span>Sauvegarde automatique toutes les 30s</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <Save className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                    <div className="flex items-center gap-2 text-xs text-gray-700">
+                      <Save className="w-2 h-2 text-gray-600 flex-shrink-0" />
                       <span>Ctrl+S pour sauvegarder manuellement</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <Folder className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                    <div className="flex items-center gap-2 text-xs text-gray-700">
+                      <Folder className="w-2 h-2 text-gray-600 flex-shrink-0" />
                       <span>Catégorie obligatoire pour publier</span>
                     </div>
                   </div>
@@ -443,12 +443,12 @@ export default function CreateArticlePage() {
               </div>
 
               {/* Informations de l'article */}
-              <div className="text-right">
-                <div className="small-text text-gray-600">
+              <div className="flex flex-col items-start">
+                <div className="text-xs font-normal text-gray-600">
                   Temps de lecture:{" "}
                   <span className="font-medium">{readingTime}</span>
                 </div>
-                <div className="small-text text-gray-500">
+                <div className="text-xs font-normal text-gray-500">
                   {
                     formData.content
                       .replace(/<[^>]*>/g, "")

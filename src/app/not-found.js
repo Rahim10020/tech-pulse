@@ -23,7 +23,7 @@ export default function NotFound() {
             alt="Logo pixelpulse"
             width={40}
             height={40}
-            className="h-10"
+            className="h-10 w-auto"
           />
         </div>
 

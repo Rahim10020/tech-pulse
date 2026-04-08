@@ -1,11 +1,26 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-import DropCursor from '@tiptap/extension-dropcursor';
-import { Bold, Italic, Strikethrough, Code, Heading1, Heading2, Heading3, List, ListOrdered, Quote, LinkIcon, ImageIcon, Undo, Redo } from 'lucide-react';
+import { useState, useEffect, useCallback } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import DropCursor from "@tiptap/extension-dropcursor";
+import {
+  Bold,
+  Italic,
+  Strikethrough,
+  Code,
+  Heading1,
+  Heading2,
+  Heading3,
+  List,
+  ListOrdered,
+  Quote,
+  LinkIcon,
+  ImageIcon,
+  Undo,
+  Redo,
+} from "lucide-react";
 
 /**
  * TiptapEditor component provides a rich text editor using Tiptap with toolbar for formatting.
@@ -36,6 +51,8 @@ export default function TiptapEditor({
         heading: {
           levels: [1, 2, 3],
         },
+        link: false,
+        dropcursor: false,
       }),
       Image.configure({
         HTMLAttributes: {
@@ -62,10 +79,14 @@ export default function TiptapEditor({
     },
     editorProps: {
       attributes: {
-        class: "prose prose-lg max-w-none focus:outline-none min-h-[400px] px-4 py-3",
+        class:
+          "prose prose-lg max-w-none focus:outline-none min-h-[400px] px-4 py-3",
       },
       handleDrop: (view, event, slice, moved) => {
-        if (!moved && event.dataTransfer?.files?.[0]?.type.startsWith("image/")) {
+        if (
+          !moved &&
+          event.dataTransfer?.files?.[0]?.type.startsWith("image/")
+        ) {
           event.preventDefault();
           handleImageUpload(event.dataTransfer.files[0], view, event);
           return true;
@@ -99,13 +120,14 @@ export default function TiptapEditor({
               left: event.clientX,
               top: event.clientY,
             });
-            coords?.pos && view.dispatch(
-              view.state.tr.replaceWith(
-                coords.pos,
-                coords.pos,
-                view.state.schema.nodes.image.create(imageNode)
-              )
-            );
+            coords?.pos &&
+              view.dispatch(
+                view.state.tr.replaceWith(
+                  coords.pos,
+                  coords.pos,
+                  view.state.schema.nodes.image.create(imageNode),
+                ),
+              );
           } else {
             editor?.chain().focus().setImage(imageNode).run();
           }
@@ -114,7 +136,7 @@ export default function TiptapEditor({
         console.error("Erreur lors de l'upload d'image:", error);
       }
     },
-    [onImageUpload, editor]
+    [onImageUpload, editor],
   );
 
   const handleImageButtonClick = () => {
@@ -123,7 +145,7 @@ export default function TiptapEditor({
     input.accept = "image/*";
     input.onchange = async (e) => {
       const file = e.target.files[0];
-      file && await handleImageUpload(file);
+      file && (await handleImageUpload(file));
     };
     input.click();
   };
@@ -133,12 +155,18 @@ export default function TiptapEditor({
   const toggleItalic = () => editor?.chain().focus().toggleItalic().run();
   const toggleStrike = () => editor?.chain().focus().toggleStrike().run();
   const toggleCode = () => editor?.chain().focus().toggleCode().run();
-  const toggleHeading1 = () => editor?.chain().focus().toggleHeading({ level: 1 }).run();
-  const toggleHeading2 = () => editor?.chain().focus().toggleHeading({ level: 2 }).run();
-  const toggleHeading3 = () => editor?.chain().focus().toggleHeading({ level: 3 }).run();
-  const toggleBulletList = () => editor?.chain().focus().toggleBulletList().run();
-  const toggleOrderedList = () => editor?.chain().focus().toggleOrderedList().run();
-  const toggleBlockquote = () => editor?.chain().focus().toggleBlockquote().run();
+  const toggleHeading1 = () =>
+    editor?.chain().focus().toggleHeading({ level: 1 }).run();
+  const toggleHeading2 = () =>
+    editor?.chain().focus().toggleHeading({ level: 2 }).run();
+  const toggleHeading3 = () =>
+    editor?.chain().focus().toggleHeading({ level: 3 }).run();
+  const toggleBulletList = () =>
+    editor?.chain().focus().toggleBulletList().run();
+  const toggleOrderedList = () =>
+    editor?.chain().focus().toggleOrderedList().run();
+  const toggleBlockquote = () =>
+    editor?.chain().focus().toggleBlockquote().run();
   const undo = () => editor?.chain().focus().undo().run();
   const redo = () => editor?.chain().focus().redo().run();
 
@@ -334,18 +362,42 @@ export default function TiptapEditor({
         }
 
         .tiptap-editor .ProseMirror {
-          h1 { @apply text-3xl font-bold my-4; }
-          h2 { @apply text-2xl font-bold my-3; }
-          h3 { @apply text-xl font-bold my-2; }
-          strong { @apply font-bold; }
-          em { @apply italic; }
-          code { @apply bg-gray-100 px-1 rounded font-mono text-sm; }
-          blockquote { @apply border-l-4 border-gray-300 pl-4 my-2 italic text-gray-600; }
-          ul { @apply list-disc pl-6 my-2; }
-          ol { @apply list-decimal pl-6 my-2; }
-          li { @apply mb-1; }
-          a { @apply text-teal-600 hover:text-teal-700 underline; }
-          img { @apply w-full h-96 object-cover rounded-lg my-6 shadow-sm; }
+          h1 {
+            @apply text-3xl font-bold my-4;
+          }
+          h2 {
+            @apply text-2xl font-bold my-3;
+          }
+          h3 {
+            @apply text-xl font-bold my-2;
+          }
+          strong {
+            @apply font-bold;
+          }
+          em {
+            @apply italic;
+          }
+          code {
+            @apply bg-gray-100 px-1 rounded font-mono text-sm;
+          }
+          blockquote {
+            @apply border-l-4 border-gray-300 pl-4 my-2 italic text-gray-600;
+          }
+          ul {
+            @apply list-disc pl-6 my-2;
+          }
+          ol {
+            @apply list-decimal pl-6 my-2;
+          }
+          li {
+            @apply mb-1;
+          }
+          a {
+            @apply text-teal-600 hover:text-teal-700 underline;
+          }
+          img {
+            @apply w-full h-96 object-cover rounded-lg my-6 shadow-sm;
+          }
         }
       `}</style>
     </>
@@ -361,7 +413,13 @@ function ToolbarGroup({ children }) {
   );
 }
 
-function ToolbarButton({ onClick, active, icon: Icon, tooltip, disabled = false }) {
+function ToolbarButton({
+  onClick,
+  active,
+  icon: Icon,
+  tooltip,
+  disabled = false,
+}) {
   return (
     <button
       type="button"
@@ -370,14 +428,8 @@ function ToolbarButton({ onClick, active, icon: Icon, tooltip, disabled = false 
       title={tooltip}
       className={`
         p-2 rounded-lg transition-colors
-        ${active
-          ? 'bg-teal-600 text-white'
-          : 'text-gray-700 hover:bg-gray-200'
-        }
-        ${disabled
-          ? 'opacity-50 cursor-not-allowed'
-          : 'cursor-pointer'
-        }
+        ${active ? "bg-teal-600 text-white" : "text-gray-700 hover:bg-gray-200"}
+        ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
       `}
     >
       <Icon className="w-4 h-4" />
