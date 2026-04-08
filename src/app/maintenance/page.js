@@ -32,7 +32,7 @@ export default function MaintenancePage() {
 
         <dl className="grid grid-cols-1 gap-6 text-sm sm:grid-cols-2">
           <div>
-            <dt className="mb-1 uppercase tracking-[0.18em] text-gray-500">
+            <dt className="mb-1 uppercase text-gray-500">
               Site
             </dt>
             <dd className="text-xl font-medium">
@@ -41,9 +41,7 @@ export default function MaintenancePage() {
           </div>
 
           <div>
-            <dt className="mb-1 uppercase tracking-[0.18em] text-gray-500">
-              Disponibilite
-            </dt>
+            <dt className="mb-1 uppercase text-gray-500">Disponibilite</dt>
             <dd className="text-xl font-medium">Retour prochainement</dd>
           </div>
         </dl>

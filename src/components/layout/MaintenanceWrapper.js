@@ -14,14 +14,21 @@ export default function MaintenanceWrapper({ children }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  const bypassMaintenanceRoutes = [
+    ROUTES.MAINTENANCE,
+    ROUTES.SECRET_ADMIN_ACCESS,
+  ];
   const isMaintenanceRoute = pathname === ROUTES.MAINTENANCE;
+  const isBypassMaintenanceRoute = bypassMaintenanceRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
   const isNonAdminUser = !user || !isAdmin(user);
 
   useEffect(() => {
     if (!loading && settings.maintenanceMode && isNonAdminUser) {
       // Rediriger vers la page de maintenance si le mode maintenance est activé
       // et que l'utilisateur n'est pas admin
-      if (!isMaintenanceRoute) {
+      if (!isBypassMaintenanceRoute) {
         router.push(ROUTES.MAINTENANCE);
       }
     } else if (!loading && !settings.maintenanceMode && isMaintenanceRoute) {
@@ -33,6 +40,7 @@ export default function MaintenanceWrapper({ children }) {
     loading,
     isNonAdminUser,
     isMaintenanceRoute,
+    isBypassMaintenanceRoute,
     router,
   ]);
 
@@ -46,7 +54,7 @@ export default function MaintenanceWrapper({ children }) {
   }
 
   // Si mode maintenance et utilisateur non admin, afficher la page de maintenance
-  if (settings.maintenanceMode && isNonAdminUser && !isMaintenanceRoute) {
+  if (settings.maintenanceMode && isNonAdminUser && !isBypassMaintenanceRoute) {
     return null; // La redirection sera gérée par useEffect
   }
 
