@@ -373,7 +373,7 @@ export default function CreateArticlePage() {
           <div
             className={`sticky ${isEditorMode ? "top-0" : "top-20"} bg-white z-10 border-b border-gray-200 p-4 mb-6`}
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
               <div className="flex-1">
                 <h1 className="h1-title text-gray-900 mb-2">
                   Créer un article
@@ -384,7 +384,6 @@ export default function CreateArticlePage() {
                   hasUnsavedChanges={hasUnsavedChanges}
                 />
               </div>
-
               {/* Sélection de catégorie */}
               <div className="md:w-64">
                 <select
@@ -405,6 +404,23 @@ export default function CreateArticlePage() {
                 </select>
               </div>
 
+              {/* Informations de l'article */}
+              <div className="flex flex-col items-start">
+                <div className="text-xs font-normal text-gray-600">
+                  Temps de lecture:{" "}
+                  <span className="font-medium">{readingTime}</span>
+                </div>
+                <div className="text-xs font-normal text-gray-500">
+                  {
+                    formData.content
+                      .replace(/<[^>]*>/g, "")
+                      .split(/\s+/)
+                      .filter((word) => word.length > 0).length
+                  }{" "}
+                  mots
+                </div>
+              </div>
+
               {/* Bouton d'aide stylé */}
               <div className="relative group">
                 <button className="p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
@@ -421,7 +437,7 @@ export default function CreateArticlePage() {
                   </svg>
                 </button>
                 {/* Tooltip au survol */}
-                <div className="absolute left-0 top-full mt-2 w-70 p-4 bg-white border border-gray-200 rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                <div className="absolute left-0 top-full mt-2 w-80 p-4 bg-white border border-gray-200 rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                   <h4 className="font-semibold text-gray-600 mb-3">
                     Guide rapide
                   </h4>
@@ -439,23 +455,6 @@ export default function CreateArticlePage() {
                       <span>Catégorie obligatoire pour publier</span>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Informations de l'article */}
-              <div className="flex flex-col items-start">
-                <div className="text-xs font-normal text-gray-600">
-                  Temps de lecture:{" "}
-                  <span className="font-medium">{readingTime}</span>
-                </div>
-                <div className="text-xs font-normal text-gray-500">
-                  {
-                    formData.content
-                      .replace(/<[^>]*>/g, "")
-                      .split(/\s+/)
-                      .filter((word) => word.length > 0).length
-                  }{" "}
-                  mots
                 </div>
               </div>
             </div>

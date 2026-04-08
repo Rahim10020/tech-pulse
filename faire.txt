@@ -1,2 +1,3 @@
 - apres tester encore toutes les fonctionnalites
 
+- 💡 Sélectionnez une catégorie pour pouvoir publier votre article
