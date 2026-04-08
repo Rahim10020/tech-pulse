@@ -13,7 +13,7 @@ export default function MaintenancePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-md mx-auto text-center p-8">
+      <div className="max-w-7xl mx-auto text-center p-8">
         <div className="mb-8">
           <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
@@ -30,7 +30,7 @@ export default function MaintenancePage() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-6xl font-bold text-gray-900 mb-2">
             Site en maintenance
           </h1>
           <p className="text-gray-600 mb-6">
@@ -40,7 +40,9 @@ export default function MaintenancePage() {
         </div>
 
         <div className="text-sm text-gray-500">
-          <p>Site: {settings.siteName || "pixelpulse"}</p>
+          <p className="text-3xl font-normal">
+            Site: {settings.siteName || "pixelpulse"}
+          </p>
           {settings.contactEmail && (
             <p className="mt-2">
               Contact:{" "}
