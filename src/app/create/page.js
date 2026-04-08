@@ -384,6 +384,7 @@ export default function CreateArticlePage() {
                   hasUnsavedChanges={hasUnsavedChanges}
                 />
               </div>
+
               {/* Sélection de catégorie */}
               <div className="md:w-64">
                 <select
@@ -425,7 +426,7 @@ export default function CreateArticlePage() {
               <div className="relative group shrink-0">
                 <button className="p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
                   <svg
-                    className="w-5 h-5"
+                    className="w-3 h-3"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >

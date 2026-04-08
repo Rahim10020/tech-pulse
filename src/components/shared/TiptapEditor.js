@@ -25,14 +25,6 @@ import {
 /**
  * TiptapEditor component provides a rich text editor using Tiptap with toolbar for formatting.
  * Supports images, links, headings, lists, and other rich text features.
- *
- * @param {Object} props - The component props
- * @param {string} props.content - Initial HTML content for the editor
- * @param {Function} props.onChange - Callback when content changes, receives HTML string
- * @param {string} [props.placeholder='Commencez à écrire votre article...'] - Placeholder text
- * @param {string} [props.className=''] - Additional CSS classes
- * @param {Function} props.onImageUpload - Callback for image uploads, should return {fileUrl, originalName}
- * @returns {JSX.Element} The rich text editor element
  */
 export default function TiptapEditor({
   content,
