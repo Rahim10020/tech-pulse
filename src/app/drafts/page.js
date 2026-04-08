@@ -7,7 +7,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTES, getArticleRoute, getCreateDraftRoute } from "@/lib/routes";
+import {
+  ROUTES,
+  getArticleRoute,
+  getCreateDraftRoute,
+  getCreateEditorRoute,
+} from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import Header from "@/components/layout/Header";
@@ -256,7 +261,13 @@ export default function DraftsPage() {
           </div>
 
           <button
-            onClick={() => router.push(ROUTES.CREATE)}
+            onClick={() =>
+              window.open(
+                getCreateEditorRoute(),
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
             className="btn-primary flex items-center space-x-2"
           >
             <Plus className="w-4 h-4" />
@@ -345,7 +356,13 @@ export default function DraftsPage() {
                 : "Aucun brouillon ne correspond à vos critères de recherche."}
             </p>
             <button
-              onClick={() => router.push(ROUTES.CREATE)}
+              onClick={() =>
+                window.open(
+                  getCreateEditorRoute(),
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
               className="btn-primary inline-flex items-center space-x-2"
             >
               <Plus className="w-4 h-4" />

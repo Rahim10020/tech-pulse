@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTES, getAdminEditArticleRoute } from "@/lib/routes";
+import {
+  ROUTES,
+  getAdminEditArticleRoute,
+  getCreateEditorRoute,
+} from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import { LoadingSpinner } from "@/components/ui";
 import { useAuth } from "@/context/AuthProvider";
@@ -312,7 +316,13 @@ export default function AdminArticlesPage() {
               Actualiser
             </button>
             <button
-              onClick={() => router.push(ROUTES.CREATE)}
+              onClick={() =>
+                window.open(
+                  getCreateEditorRoute(),
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
               className="btn-primary flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
@@ -646,7 +656,13 @@ export default function AdminArticlesPage() {
                   : "Vous n'avez pas encore créé d'articles."}
               </p>
               <button
-                onClick={() => router.push(ROUTES.CREATE)}
+                onClick={() =>
+                  window.open(
+                    getCreateEditorRoute(),
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
                 className="btn-primary flex items-center gap-2 mx-auto"
               >
                 <Plus className="w-4 h-4" />

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ROUTES } from "@/lib/routes";
+import { ROUTES, getCreateEditorRoute } from "@/lib/routes";
 import {
   Bell,
   MessageSquare,
@@ -60,7 +60,9 @@ export default function Navigation() {
           {user && (
             <>
               <Link
-                href={ROUTES.CREATE}
+                href={getCreateEditorRoute()}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`h6-title ${isActiveLink(ROUTES.CREATE) ? "text-gray-900" : "text-gray-700 hover:text-gray-900"}`}
               >
                 Create
@@ -218,7 +220,9 @@ export default function Navigation() {
             {user && (
               <>
                 <Link
-                  href={ROUTES.CREATE}
+                  href={getCreateEditorRoute()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block h6-title text-gray-700 hover:text-gray-900"
                 >
                   Create

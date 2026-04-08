@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ROUTES, getSearchRoute } from "@/lib/routes";
+import { ROUTES, getCreateEditorRoute, getSearchRoute } from "@/lib/routes";
 import {
   Search,
   Menu,
@@ -143,7 +143,12 @@ export default function Header() {
               <>
                 {/* Bouton Publier - Visible pour les admins et publishers */}
                 {(isAdmin(user) || isPublisher(user)) && (
-                  <Link href={ROUTES.CREATE} className="hidden sm:flex">
+                  <Link
+                    href={getCreateEditorRoute()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden sm:flex"
+                  >
                     <Button
                       variant="primary"
                       size="sm"
@@ -210,7 +215,9 @@ export default function Header() {
                       {/* Lien Écrire un article */}
                       {(isAdmin(user) || isPublisher(user)) && (
                         <Link
-                          href={ROUTES.CREATE}
+                          href={getCreateEditorRoute()}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center px-4 py-2 h6-title text-gray-700 hover:bg-gray-50 "
                           onClick={() => setIsProfileMenuOpen(false)}
                         >

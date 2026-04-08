@@ -6,7 +6,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ROUTES, getArticleRoute } from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -20,6 +20,8 @@ export default function CreateArticlePage() {
   const { user, loading } = useAuth();
   const { success, error } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isEditorMode = searchParams.get("editor") === "1";
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -362,13 +364,15 @@ export default function CreateArticlePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      {!isEditorMode && <Header />}
 
       {/* Contenu principal */}
-      <div className="container py-4 pt-10">
+      <div className={`container py-4 ${isEditorMode ? "pt-4" : "pt-10"}`}>
         <div className="flex flex-col">
           {/* Page Header */}
-          <div className="sticky top-20 bg-white z-10 border-b border-gray-200 p-4 mb-6">
+          <div
+            className={`sticky ${isEditorMode ? "top-0" : "top-20"} bg-white z-10 border-b border-gray-200 p-4 mb-6`}
+          >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex-1">
                 <h1 className="h1-title text-gray-900 mb-2">

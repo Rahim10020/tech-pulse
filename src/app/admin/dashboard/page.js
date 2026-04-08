@@ -7,7 +7,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTES, getAdminEditArticleRoute } from "@/lib/routes";
+import {
+  ROUTES,
+  getAdminEditArticleRoute,
+  getCreateEditorRoute,
+} from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -782,7 +786,13 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <h2 className="h2-title text-gray-900">Gestion du contenu</h2>
                 <button
-                  onClick={() => router.push(ROUTES.CREATE)}
+                  onClick={() =>
+                    window.open(
+                      getCreateEditorRoute(),
+                      "_blank",
+                      "noopener,noreferrer",
+                    )
+                  }
                   className="btn-primary flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />

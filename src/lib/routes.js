@@ -41,7 +41,14 @@ export const getArticleRoute = (slug) => `/articles/${slug}`;
 export const getCategoryRoute = (category) => `/categories/${category}`;
 export const getProfileRoute = (userId) => `/profile/${userId}`;
 export const getAdminEditArticleRoute = (id) => `/admin/articles/${id}/edit`;
-export const getCreateDraftRoute = (draftId) => `/create?draft=${draftId}`;
+export const getCreateEditorRoute = () => `${ROUTES.CREATE}?editor=1`;
+export const getCreateDraftRoute = (draftId, options = {}) => {
+  const params = new URLSearchParams({ draft: String(draftId) });
+  if (options.editor) {
+    params.set("editor", "1");
+  }
+  return `${ROUTES.CREATE}?${params.toString()}`;
+};
 export const getArticlesWithQueryRoute = (query) => `/articles?${query}`;
 export const getSearchRoute = (query) =>
   `/search?q=${encodeURIComponent(query)}`;

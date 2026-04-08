@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/lib/routes";
+import { ROUTES, getCreateEditorRoute } from "@/lib/routes";
 import Link from "next/link";
 
 export default function SecretAdminAccess() {
@@ -111,7 +111,9 @@ export default function SecretAdminAccess() {
                       Administration
                     </Link>
                     <Link
-                      href={ROUTES.CREATE}
+                      href={getCreateEditorRoute()}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="btn-primary w-full justify-center bg-orange-500 hover:bg-orange-600 block text-center"
                     >
                       ✍️ Écrire un article
