@@ -167,6 +167,25 @@ export default function CreateArticlePage() {
     [error],
   );
 
+  // fonction de sauvegarde manuelle
+  const handleSaveDraft = useCallback(async () => {
+    if (!formData.title.trim() && !formData.content.trim()) {
+      error("Au moins un titre ou du contenu est requis pour sauvegarder");
+      return;
+    }
+
+    setIsSavingDraft(true);
+    try {
+      await forceSave();
+      success("Brouillon sauvegardé avec succès!");
+    } catch (err) {
+      console.error("Error saving draft:", err);
+      error("Erreur lors de la sauvegarde du brouillon");
+    } finally {
+      setIsSavingDraft(false);
+    }
+  }, [formData.title, formData.content, error, success, forceSave]);
+
   // Rediriger si non connecté
   useEffect(() => {
     if (!loading && !user) {
@@ -286,25 +305,6 @@ export default function CreateArticlePage() {
       setIsSubmitting(false);
     }
   };
-
-  // fonction de sauvegarde manuelle
-  const handleSaveDraft = useCallback(async () => {
-    if (!formData.title.trim() && !formData.content.trim()) {
-      error("Au moins un titre ou du contenu est requis pour sauvegarder");
-      return;
-    }
-
-    setIsSavingDraft(true);
-    try {
-      await forceSave();
-      success("Brouillon sauvegardé avec succès!");
-    } catch (err) {
-      console.error("Error saving draft:", err);
-      error("Erreur lors de la sauvegarde du brouillon");
-    } finally {
-      setIsSavingDraft(false);
-    }
-  }, [formData.title, formData.content, error, success, forceSave]);
 
   const handleBack = () => {
     if (hasUnsavedChanges) {
