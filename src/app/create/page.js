@@ -14,6 +14,7 @@ import { useAutoSave } from "@/hooks/useAutoSave";
 import SaveIndicator from "@/components/shared/SaveIndicator";
 import TiptapEditor from "@/components/shared/TiptapEditor";
 import Header from "@/components/layout/Header";
+import { FileText, Save, Folder } from "lucide-react";
 
 export default function CreateArticlePage() {
   const { user, loading } = useAuth();
@@ -417,13 +418,22 @@ export default function CreateArticlePage() {
                 </button>
                 {/* Tooltip au survol */}
                 <div className="absolute left-0 top-full mt-2 w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                  <h4 className="font-semibold text-gray-900 mb-2">
+                  <h4 className="font-semibold text-gray-600 mb-3">
                     Guide rapide
                   </h4>
-                  <div className="text-sm text-gray-600 space-y-2">
-                    <p>📝 Sauvegarde automatique toutes les 30s</p>
-                    <p>💾 Ctrl+S pour sauvegarder manuellement</p>
-                    <p>📂 Catégorie obligatoire pour publier</p>
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                      <span>Sauvegarde automatique toutes les 30s</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <Save className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                      <span>Ctrl+S pour sauvegarder manuellement</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <Folder className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                      <span>Catégorie obligatoire pour publier</span>
+                    </div>
                   </div>
                 </div>
               </div>
