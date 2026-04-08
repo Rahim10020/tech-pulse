@@ -5,3 +5,7 @@ voila ce que je veux faire :
     on va ouvrir ca sur un nouvel
     onglet le header de l'app ne sera plus la et le sous header(Creer un article....) 
     qui est sticky deviendra le header
+
+
+-supposons que je modifie une settings dans admin/dashboard settings, 
+et j'oublie de save settings comment on regle ca proprement ? fais moi un plan

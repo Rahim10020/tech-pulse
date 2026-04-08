@@ -7,53 +7,62 @@
 "use client";
 
 import { useSettings } from "@/hooks/useSettings";
+import { Clock3, Mail, TriangleAlert } from "lucide-react";
 
 export default function MaintenancePage() {
   const { settings } = useSettings();
+  const lastUpdate = new Date().toLocaleString("fr-FR", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-7xl mx-auto text-center p-8">
-        <div className="mb-8">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg
-              className="w-8 h-8 text-orange-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
-              />
-            </svg>
-          </div>
-          <h1 className="text-6xl font-bold text-gray-900 mb-2">
-            Site en maintenance
-          </h1>
-          <p className="text-gray-600 mb-6">
-            {settings.siteDescription ||
-              "Nous travaillons actuellement sur des améliorations. Veuillez revenir plus tard."}
-          </p>
-        </div>
+    <div className="min-h-screen bg-white text-black">
+      <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col justify-center px-6 py-16 sm:px-10 lg:px-14">
+        <h1 className="max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
+          Site temporairement indisponible
+        </h1>
 
-        <div className="text-sm text-gray-500">
-          <p className="text-3xl font-normal">
-            Site: {settings.siteName || "pixelpulse"}
-          </p>
-          {settings.contactEmail && (
-            <p className="mt-2">
-              Contact:{" "}
-              <a
-                href={`mailto:${settings.contactEmail}`}
-                className="text-teal-600 hover:underline"
-              >
-                {settings.contactEmail}
-              </a>
-            </p>
-          )}
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-gray-700 sm:text-lg">
+          {settings.siteDescription ||
+            "Nous effectuons actuellement une mise a jour afin d'ameliorer votre experience. Merci pour votre patience."}
+        </p>
+
+        <div className="my-10 h-px w-full bg-black/15" />
+
+        <dl className="grid grid-cols-1 gap-6 text-sm sm:grid-cols-2">
+          <div>
+            <dt className="mb-1 uppercase tracking-[0.18em] text-gray-500">
+              Site
+            </dt>
+            <dd className="text-xl font-medium">
+              {settings.siteName || "pixelpulse"}
+            </dd>
+          </div>
+
+          <div>
+            <dt className="mb-1 uppercase tracking-[0.18em] text-gray-500">
+              Disponibilite
+            </dt>
+            <dd className="text-xl font-medium">Retour prochainement</dd>
+          </div>
+        </dl>
+
+        {settings.contactEmail && (
+          <div className="mt-10 inline-flex w-fit items-center gap-2 border-b border-black pb-1 text-sm text-black">
+            <Mail className="h-4 w-4" />
+            <a
+              href={`mailto:${settings.contactEmail}`}
+              className="underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            >
+              {settings.contactEmail}
+            </a>
+          </div>
+        )}
+
+        <div className="mt-10 flex items-center gap-2 border-t border-black/15 pt-6 text-xs uppercase tracking-[0.16em] text-gray-500">
+          <Clock3 className="h-4 w-4" />
+          <span>Derniere mise a jour: {lastUpdate}</span>
         </div>
       </div>
     </div>
