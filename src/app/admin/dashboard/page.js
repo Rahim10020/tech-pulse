@@ -44,6 +44,47 @@ import {
 } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui";
 
+const DEFAULT_SETTINGS = {
+  siteName: "pixelpulse",
+  siteDescription: "",
+  siteUrl: "",
+  contactEmail: "",
+  contactPhone: "",
+  contactAddress: "",
+  socialTwitter: "",
+  socialLinkedin: "",
+  socialGithub: "",
+  analyticsCode: "",
+  seoTitle: "",
+  seoDescription: "",
+  seoKeywords: "",
+  maintenanceMode: false,
+  allowComments: true,
+  allowRegistration: true,
+};
+
+const AUTO_SAVE_CHECKBOX_FIELDS = [
+  "maintenanceMode",
+  "allowComments",
+  "allowRegistration",
+];
+
+const MANUAL_SAVE_FIELDS = [
+  "siteName",
+  "siteDescription",
+  "siteUrl",
+  "contactEmail",
+  "contactPhone",
+  "contactAddress",
+  "socialTwitter",
+  "socialLinkedin",
+  "socialGithub",
+  "analyticsCode",
+  "seoTitle",
+  "seoDescription",
+  "seoKeywords",
+];
+
 export default function AdminDashboard() {
   const { user, loading, markMessagesAsRead, refreshUnreadCount } = useAuth();
   const { showToast } = useToast();
@@ -74,27 +115,32 @@ export default function AdminDashboard() {
   const [activitiesLoading, setActivitiesLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-  const [settings, setSettings] = useState({
-    siteName: "pixelpulse",
-    siteDescription: "",
-    siteUrl: "",
-    contactEmail: "",
-    contactPhone: "",
-    contactAddress: "",
-    socialTwitter: "",
-    socialLinkedin: "",
-    socialGithub: "",
-    analyticsCode: "",
-    seoTitle: "",
-    seoDescription: "",
-    seoKeywords: "",
-    maintenanceMode: false,
-    allowComments: true,
-    allowRegistration: true,
-  });
+  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [savedSettingsSnapshot, setSavedSettingsSnapshot] =
+    useState(DEFAULT_SETTINGS);
   const [savingSettings, setSavingSettings] = useState(false);
+  const [checkboxSaving, setCheckboxSaving] = useState({
+    maintenanceMode: false,
+    allowComments: false,
+    allowRegistration: false,
+  });
+  const [showUnsavedSettingsDialog, setShowUnsavedSettingsDialog] =
+    useState(false);
+  const [pendingTab, setPendingTab] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
+
+  const normalizeSettings = useCallback(
+    (incomingSettings = {}) => ({
+      ...DEFAULT_SETTINGS,
+      ...incomingSettings,
+    }),
+    [],
+  );
+
+  const hasUnsavedTextSettings = MANUAL_SAVE_FIELDS.some(
+    (field) => (settings[field] ?? "") !== (savedSettingsSnapshot[field] ?? ""),
+  );
 
   // Define all callback and async functions BEFORE useEffect
   const loadStats = async () => {
@@ -202,31 +248,14 @@ export default function AdminDashboard() {
       });
       if (response.ok) {
         const data = await response.json();
-        setSettings(
-          data.settings || {
-            siteName: "pixelpulse",
-            siteDescription: "",
-            siteUrl: "",
-            contactEmail: "",
-            contactPhone: "",
-            contactAddress: "",
-            socialTwitter: "",
-            socialLinkedin: "",
-            socialGithub: "",
-            analyticsCode: "",
-            seoTitle: "",
-            seoDescription: "",
-            seoKeywords: "",
-            maintenanceMode: false,
-            allowComments: true,
-            allowRegistration: true,
-          },
-        );
+        const normalizedSettings = normalizeSettings(data.settings);
+        setSettings(normalizedSettings);
+        setSavedSettingsSnapshot(normalizedSettings);
       }
     } catch (error) {
       console.error("Error loading settings:", error);
     }
-  }, []);
+  }, [normalizeSettings]);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin(user))) {
@@ -354,41 +383,173 @@ export default function AdminDashboard() {
     }
   };
 
+  const saveSettings = useCallback(
+    async (settingsToSave) => {
+      setSavingSettings(true);
+      try {
+        const response = await fetch("/api/admin/settings", {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(settingsToSave),
+        });
+        if (response.ok) {
+          const payload = await response.json();
+          const normalizedSettings = normalizeSettings(
+            payload.settings || settingsToSave,
+          );
+          setSettings(normalizedSettings);
+          setSavedSettingsSnapshot(normalizedSettings);
+          showToast("Paramètres sauvegardés avec succès", "success");
+          return true;
+        } else {
+          showToast(
+            (await response.json()).error || "Erreur lors de la sauvegarde",
+            "error",
+          );
+          return false;
+        }
+      } catch (error) {
+        console.error("Error saving settings:", error);
+        showToast("Error while saving", "error");
+        return false;
+      } finally {
+        setSavingSettings(false);
+      }
+    },
+    [normalizeSettings, showToast],
+  );
+
   const handleSettingsSubmit = async (e) => {
     e.preventDefault();
-    setSavingSettings(true);
-    try {
-      const response = await fetch("/api/admin/settings", {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(settings),
-      });
-      if (response.ok) {
-        showToast("Paramètres sauvegardés avec succès", "success");
-      } else {
+    await saveSettings(settings);
+  };
+
+  const autoSaveCheckboxSetting = useCallback(
+    async (name, nextValue, previousValue) => {
+      setCheckboxSaving((prev) => ({ ...prev, [name]: true }));
+
+      try {
+        const response = await fetch("/api/admin/settings", {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ [name]: nextValue }),
+        });
+
+        if (!response.ok) {
+          const errorPayload = await response.json().catch(() => ({}));
+          throw new Error(errorPayload.error || "Auto-save checkbox failed");
+        }
+
+        const payload = await response.json();
+        const normalizedSettings = normalizeSettings(
+          payload.settings || { ...savedSettingsSnapshot, [name]: nextValue },
+        );
+
+        setSettings((prev) => ({ ...prev, [name]: normalizedSettings[name] }));
+        setSavedSettingsSnapshot(normalizedSettings);
+      } catch (error) {
+        console.error(`Error auto-saving ${name}:`, error);
+        setSettings((prev) => ({ ...prev, [name]: previousValue }));
         showToast(
-          (await response.json()).error || "Erreur lors de la sauvegarde",
+          "Erreur lors de la sauvegarde automatique du paramètre",
           "error",
         );
+      } finally {
+        setCheckboxSaving((prev) => ({ ...prev, [name]: false }));
       }
-    } catch (error) {
-      console.error("Error saving settings:", error);
-      showToast("Error while saving", "error");
-    } finally {
-      setSavingSettings(false);
-    }
-  };
+    },
+    [normalizeSettings, savedSettingsSnapshot, showToast],
+  );
 
   const handleSettingsChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (type === "checkbox" && AUTO_SAVE_CHECKBOX_FIELDS.includes(name)) {
+      const previousValue = settings[name];
+      const nextValue = checked;
+
+      setSettings((prev) => ({
+        ...prev,
+        [name]: nextValue,
+      }));
+
+      autoSaveCheckboxSetting(name, nextValue, previousValue);
+      return;
+    }
+
     setSettings((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
+
+  const discardUnsavedTextSettings = useCallback(() => {
+    setSettings((prev) => {
+      const revertedSettings = { ...prev };
+      MANUAL_SAVE_FIELDS.forEach((field) => {
+        revertedSettings[field] = savedSettingsSnapshot[field] ?? "";
+      });
+      return revertedSettings;
+    });
+  }, [savedSettingsSnapshot]);
+
+  const handleTabChange = useCallback(
+    (nextTab) => {
+      if (nextTab === activeTab) return;
+
+      if (activeTab === "settings" && hasUnsavedTextSettings) {
+        setPendingTab(nextTab);
+        setShowUnsavedSettingsDialog(true);
+        return;
+      }
+
+      setActiveTab(nextTab);
+    },
+    [activeTab, hasUnsavedTextSettings],
+  );
+
+  const handleStayOnSettings = () => {
+    setPendingTab(null);
+    setShowUnsavedSettingsDialog(false);
+  };
+
+  const handleDiscardAndLeaveSettings = () => {
+    discardUnsavedTextSettings();
+    if (pendingTab) {
+      setActiveTab(pendingTab);
+    }
+    setPendingTab(null);
+    setShowUnsavedSettingsDialog(false);
+  };
+
+  const handleSaveAndLeaveSettings = async () => {
+    const isSaved = await saveSettings(settings);
+    if (!isSaved) return;
+
+    if (pendingTab) {
+      setActiveTab(pendingTab);
+    }
+    setPendingTab(null);
+    setShowUnsavedSettingsDialog(false);
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (activeTab === "settings" && hasUnsavedTextSettings) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [activeTab, hasUnsavedTextSettings]);
 
   const formatTimeAgoFr = (date) => {
     const now = new Date();
@@ -463,7 +624,7 @@ export default function AdminDashboard() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors relative flex items-center gap-2 whitespace-nowrap ${
                   activeTab === tab.id
                     ? "border-teal-500 text-teal-600"
@@ -1180,6 +1341,7 @@ export default function AdminDashboard() {
                         name="maintenanceMode"
                         checked={settings.maintenanceMode}
                         onChange={handleSettingsChange}
+                        disabled={checkboxSaving.maintenanceMode}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
                       <label className="h6-title ml-2">Mode maintenance</label>
@@ -1190,6 +1352,7 @@ export default function AdminDashboard() {
                         name="allowComments"
                         checked={settings.allowComments}
                         onChange={handleSettingsChange}
+                        disabled={checkboxSaving.allowComments}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
                       <label className="h6-title ml-2">
@@ -1202,6 +1365,7 @@ export default function AdminDashboard() {
                         name="allowRegistration"
                         checked={settings.allowRegistration}
                         onChange={handleSettingsChange}
+                        disabled={checkboxSaving.allowRegistration}
                         className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
                       <label className="h6-title ml-2">
@@ -1239,7 +1403,7 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between">
                   <button
                     type="submit"
-                    disabled={savingSettings}
+                    disabled={savingSettings || !hasUnsavedTextSettings}
                     className="btn-primary flex items-center gap-2 disabled:opacity-50"
                   >
                     {savingSettings ? (
@@ -1254,6 +1418,12 @@ export default function AdminDashboard() {
                       </>
                     )}
                   </button>
+
+                  {hasUnsavedTextSettings && (
+                    <span className="small-text text-orange-600">
+                      Modifications non sauvegardées
+                    </span>
+                  )}
 
                   {settings.maintenanceMode && (
                     <div className="flex items-center gap-2 text-orange-600">
@@ -1279,6 +1449,43 @@ export default function AdminDashboard() {
         onConfirm={confirmDeleteMessage}
         onCancel={cancelDeleteMessage}
       />
+
+      {showUnsavedSettingsDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-lg">
+            <div className="p-6 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Modifications non sauvegardées
+              </h3>
+              <p className="body-text text-gray-600 mt-2">
+                Vous avez modifié des paramètres texte sans sauvegarder.
+                Voulez-vous sauvegarder avant de quitter cet onglet ?
+              </p>
+            </div>
+            <div className="p-6 bg-gray-50 rounded-b-lg flex flex-col sm:flex-row gap-3 sm:justify-end">
+              <button
+                onClick={handleStayOnSettings}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                Rester
+              </button>
+              <button
+                onClick={handleDiscardAndLeaveSettings}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                Quitter sans sauvegarder
+              </button>
+              <button
+                onClick={handleSaveAndLeaveSettings}
+                disabled={savingSettings}
+                className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 disabled:opacity-50 transition-colors"
+              >
+                {savingSettings ? "Sauvegarde..." : "Sauvegarder et quitter"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
