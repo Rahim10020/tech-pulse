@@ -422,7 +422,7 @@ export default function CreateArticlePage() {
               </div>
 
               {/* Bouton d'aide stylé */}
-              <div className="relative group">
+              <div className="relative group shrink-0">
                 <button className="p-2 text-gray-400 hover:text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
                   <svg
                     className="w-5 h-5"
@@ -437,7 +437,7 @@ export default function CreateArticlePage() {
                   </svg>
                 </button>
                 {/* Tooltip au survol */}
-                <div className="absolute left-0 top-full mt-2 w-80 p-4 bg-white border border-gray-200 rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] p-4 bg-white border border-gray-200 rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right z-10">
                   <h4 className="font-semibold text-gray-600 mb-3">
                     Guide rapide
                   </h4>
