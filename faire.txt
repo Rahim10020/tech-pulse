@@ -1,1 +1,7 @@
 - apres tester encore toutes les fonctionnalites
+
+voila ce que je veux faire :
+- quand on va cliquer sur publier ou creer un nouvel article, 
+    on va ouvrir ca sur un nouvel
+    onglet le header de l'app ne sera plus la et le sous header(Creer un article....) 
+    qui est sticky deviendra le header

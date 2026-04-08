@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/routes";
 import { useSettings } from "@/hooks/useSettings";
 import { useAuth } from "@/context/AuthProvider";
@@ -12,23 +12,29 @@ export default function MaintenanceWrapper({ children }) {
   const { settings, loading } = useSettings();
   const { user } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isMaintenanceRoute = pathname === ROUTES.MAINTENANCE;
+  const isNonAdminUser = !user || !isAdmin(user);
 
   useEffect(() => {
-    if (!loading && settings.maintenanceMode && (!user || !isAdmin(user))) {
+    if (!loading && settings.maintenanceMode && isNonAdminUser) {
       // Rediriger vers la page de maintenance si le mode maintenance est activé
       // et que l'utilisateur n'est pas admin
-      if (window.location.pathname !== "/maintenance") {
+      if (!isMaintenanceRoute) {
         router.push(ROUTES.MAINTENANCE);
       }
-    } else if (
-      !loading &&
-      !settings.maintenanceMode &&
-      window.location.pathname === "/maintenance"
-    ) {
+    } else if (!loading && !settings.maintenanceMode && isMaintenanceRoute) {
       // Rediriger vers la page d'accueil si le mode maintenance est désactivé
       router.push(ROUTES.HOME);
     }
-  }, [settings.maintenanceMode, loading, user, router]);
+  }, [
+    settings.maintenanceMode,
+    loading,
+    isNonAdminUser,
+    isMaintenanceRoute,
+    router,
+  ]);
 
   // Afficher un loader pendant le chargement des paramètres
   if (loading) {
@@ -40,7 +46,7 @@ export default function MaintenanceWrapper({ children }) {
   }
 
   // Si mode maintenance et utilisateur non admin, afficher la page de maintenance
-  if (settings.maintenanceMode && (!user || !isAdmin(user))) {
+  if (settings.maintenanceMode && isNonAdminUser && !isMaintenanceRoute) {
     return null; // La redirection sera gérée par useEffect
   }
 
