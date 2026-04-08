@@ -8,4 +8,4 @@ voila ce que je veux faire :
 
 
 -supposons que je modifie une settings dans admin/dashboard settings, 
-et j'oublie de save settings comment on regle ca proprement ? fais moi un plan
+et j'oublie de save settings comment on regle ca proprement ? je parle des checkbox fais moi un plan
