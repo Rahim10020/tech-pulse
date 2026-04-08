@@ -296,7 +296,7 @@ export default function TiptapEditor({
         <div className="relative">
           <EditorContent
             editor={editor}
-            className="min-h-[400px] max-h-[600px] overflow-y-auto tiptap-editor"
+            className="min-h-[650px] max-h-[80vh] overflow-y-auto tiptap-editor"
           />
         </div>
 
