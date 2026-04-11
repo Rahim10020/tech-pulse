@@ -2,3 +2,4 @@
 
 - 💡 Sélectionnez une catégorie pour pouvoir publier votre article
 - coder la page de creation d'article comme celle de dev.to
+- fix bug in admin articles page

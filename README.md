@@ -4,8 +4,6 @@ PixelPulse is a modern and high-performance blog platform designed for developer
 
 ![Screenshot 1](./public/acceuil.png)
 ![Screenshot 2](./public/detail.png)
-![Screenshot 3](./public/tous.png)
-![Screenshot 4](placeholder_screenshot_4.png)
 
 ## 🌐 Live Demo
 
