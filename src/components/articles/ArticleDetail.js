@@ -9,10 +9,6 @@ import NotFound from "../../app/not-found";
 
 /**
  * ArticleDetail component displays a full article with content, actions, and comments section.
- *
- * @param {Object} props - The component props
- * @param {Object} props.article - The article object with title, content, author, comments, etc.
- * @returns {JSX.Element} The article detail page element
  */
 export default function ArticleDetail({ article }) {
   // Calculer le nombre total initial (commentaires + réponses)

@@ -329,7 +329,7 @@ export default function InteractiveComments({
   // Vérifier si les commentaires sont autorisés
   if (!settings.allowComments) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+      <div className="bg-white border border-gray-200 p-6 shadow-sm">
         <div className="text-center py-8">
           <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <h4 className="h4-title text-gray-900 mb-2">
@@ -364,7 +364,7 @@ export default function InteractiveComments({
       </div>
 
       {/* Formulaire de nouveau commentaire */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+      <div className="bg-white border border-gray-200 p-6 shadow-sm">
         <form onSubmit={handleSubmitComment}>
           <div className="flex space-x-4">
             {user ? (
@@ -381,7 +381,7 @@ export default function InteractiveComments({
 
             <div className="flex-1">
               {replyingTo && (
-                <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="mb-3 p-3 bg-blue-50 border border-blue-200">
                   <div className="flex items-center justify-between">
                     <span className="small-text text-blue-700 flex items-center">
                       <Reply className="w-4 h-4 mr-1" />
@@ -413,7 +413,7 @@ export default function InteractiveComments({
                     : "Connectez-vous pour commenter"
                 }
                 disabled={!user}
-                className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                className="w-full p-3 border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                 rows="3"
                 maxLength="500"
               />
@@ -473,12 +473,12 @@ export default function InteractiveComments({
       {/* Liste des commentaires */}
       <div className="space-y-4">
         {comments.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+          <div className="text-center py-12 bg-white border border-gray-200">
             <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h4 className="h4-title text-gray-900 mb-2">
+            <h4 className="h3-title text-gray-900 mb-2">
               Aucun commentaire pour le moment
             </h4>
-            <p className="body-text text-gray-600 mb-4">
+            <p className="text-sm mx-auto max-w-48 text-gray-600 mb-4">
               Soyez le premier à partager votre opinion !
             </p>
             {!user && (
