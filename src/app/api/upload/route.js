@@ -67,7 +67,7 @@ async function uploadHandler(request) {
 
     // Scan de sécurité du contenu
     try {
-      await scanFileContent(buffer, originalName);
+      await scanFileContent(buffer, originalName, validation.mimeType);
     } catch (error) {
       return NextResponse.json(
         {
