@@ -52,13 +52,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <HeroSection />
 
-      <div className="container mx-auto max-w-5xl py-8 -mt-8">
-        <SearchBar
-          placeholder="Rechercher des articles par mots-clés ou catégories"
-          className="mb-8"
-        />
-
-        <h2 className="text-2xl font-poppins font-bold text-gray-900">
+      <div className="container mx-auto max-w-5xl py-8">
+        <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-12">
           Articles récents
         </h2>
 
