@@ -11,7 +11,6 @@ import { ROUTES } from "@/lib/routes";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ArticleCard from "@/components/articles/ArticleCard";
-import SearchBar from "@/components/shared/SearchBar";
 import HeroSection from "@/components/home/HeroSection";
 import { LoadingSpinner } from "@/components/ui";
 
