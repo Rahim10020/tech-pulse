@@ -53,7 +53,7 @@ export default function HomePage() {
       <HeroSection />
 
       <div className="container mx-auto max-w-5xl py-8">
-        <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-12">
+        <h2 className="text-2xl font-poppins font-bold text-gray-900 mb-8">
           Articles récents
         </h2>
 

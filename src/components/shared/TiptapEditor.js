@@ -5,6 +5,7 @@ import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import DropCursor from "@tiptap/extension-dropcursor";
+import CharacterCount from "@tiptap/extension-character-count";
 import {
   Bold,
   Italic,
@@ -63,6 +64,9 @@ export default function TiptapEditor({
       DropCursor.configure({
         color: "#10b981",
         width: 2,
+      }),
+      CharacterCount.configure({
+        limit: 100000,
       }),
     ],
     content,
