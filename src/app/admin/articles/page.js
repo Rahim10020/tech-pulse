@@ -339,7 +339,7 @@ export default function AdminArticlesPage() {
                 <p className="h6-title text-gray-600">Total</p>
                 <p className="h3-title text-gray-900">{stats.total}</p>
               </div>
-              <FileText className="w-8 h-8 text-blue-500" />
+              <FileText className="w-4 h-4 text-green-500" />
             </div>
           </div>
           <div className="card p-6">
@@ -348,7 +348,7 @@ export default function AdminArticlesPage() {
                 <p className="h6-title text-gray-600">Publiés</p>
                 <p className="h3-title text-gray-900">{stats.published}</p>
               </div>
-              <Globe className="w-8 h-8 text-green-500" />
+              <Globe className="w-4 h-4 text-green-500" />
             </div>
           </div>
           <div className="card p-6">
@@ -357,7 +357,7 @@ export default function AdminArticlesPage() {
                 <p className="h6-title text-gray-600">Brouillons</p>
                 <p className="h3-title text-gray-900">{stats.drafts}</p>
               </div>
-              <Clock className="w-8 h-8 text-orange-500" />
+              <Clock className="w-4 h-4 text-green-500" />
             </div>
           </div>
         </div>
@@ -506,12 +506,12 @@ export default function AdminArticlesPage() {
                             )}
 
                             <div className="flex items-center text-sm text-gray-500 space-x-4">
-                              <span className="flex items-center gap-1">
-                                <User className="w-4 h-4" />
+                              <span className="flex items-center  text-xs gap-1">
+                                <User className="w-3 h-3" />
                                 {article.author.username}
                               </span>
-                              <span className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" />
+                              <span className="flex items-center text-xs gap-1">
+                                <Calendar className="w-3 h-3" />
                                 {formatDate(article.updatedAt)}
                               </span>
                               {article.category && (
@@ -521,16 +521,16 @@ export default function AdminArticlesPage() {
                                   {article.category.name}
                                 </span>
                               )}
-                              <span className="flex items-center gap-1">
-                                <Eye className="w-4 h-4" />
+                              <span className="flex items-center text-xs gap-1">
+                                <Eye className="w-3 h-3" />
                                 {article.views || 0}
                               </span>
-                              <span className="flex items-center gap-1">
-                                <Heart className="w-4 h-4" />
+                              <span className="flex items-center text-xs gap-1">
+                                <Heart className="w-3 h-3" />
                                 {article.likes}
                               </span>
-                              <span className="flex items-center gap-1">
-                                <MessageSquare className="w-4 h-4" />
+                              <span className="flex items-center text-xs gap-1">
+                                <MessageSquare className="w-2 h-2" />
                                 {article.commentsCount}
                               </span>
                             </div>
