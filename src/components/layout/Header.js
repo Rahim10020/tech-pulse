@@ -73,6 +73,8 @@ export default function Header() {
               alt={`Logo ${settings.siteName || "pixelpulse"}`}
               width={100}
               height={100}
+              priority
+              className="h-10 w-auto"
             />
           </Link>
 

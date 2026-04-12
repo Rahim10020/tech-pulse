@@ -13,6 +13,8 @@ export default function AuthLayout({ children }) {
               alt="Logo pixelpulse"
               width={100}
               height={100}
+              priority
+              className="h-10 w-auto"
             />
           </Link>
         </div>

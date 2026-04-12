@@ -83,6 +83,7 @@ export default function ResetPasswordPage() {
               alt="Logo pixelpulse"
               width={40}
               height={40}
+              priority
               className="h-10 w-auto"
             />
           </Link>
