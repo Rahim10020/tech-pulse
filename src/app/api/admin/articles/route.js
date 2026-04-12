@@ -92,7 +92,6 @@ export async function GET(request) {
           author: {
             select: {
               id: true,
-              name: true,
               username: true,
               avatar: true,
             },
@@ -304,7 +303,6 @@ export async function POST(request) {
         author: {
           select: {
             id: true,
-            name: true,
             username: true,
             avatar: true,
           },
