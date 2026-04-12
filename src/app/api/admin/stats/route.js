@@ -43,6 +43,7 @@ export async function GET(request) {
       totalComments,
       unreadMessages,
       totalMessages,
+      totalCategories,
       recentActivity,
     ] = await Promise.all([
       // Nombre total d'utilisateurs
@@ -81,13 +82,16 @@ export async function GET(request) {
       // Total des messages de contact
       prisma.contact.count(),
 
+      // Total des catégories
+      prisma.category.count(),
+
       // Activité récente (derniers utilisateurs inscrits)
       prisma.user.findMany({
         take: 5,
         orderBy: { createdAt: "desc" },
         select: {
           id: true,
-          name: true,
+          username: true,
           createdAt: true,
           role: true,
         },
@@ -137,6 +141,11 @@ export async function GET(request) {
       totalComments,
       unreadMessages,
       totalMessages,
+      totalCategories,
+
+      // Alias pour compatibilité frontend existant
+      publishedArticles: totalPublishedArticles,
+      draftArticles: totalDrafts,
 
       // Statistiques mensuelles
       articlesThisMonth,
