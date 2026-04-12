@@ -1,6 +1,5 @@
 /** @description Page de profil public d'un utilisateur */
 import { notFound } from "next/navigation";
-import Header from "@/components/layout/Header";
 import UserProfile from "@/components/articles/UserProfile";
 import { getAuthorById } from "@/lib/authors";
 import { getArticlesByAuthor } from "@/lib/articles";
@@ -32,7 +31,6 @@ export default async function ProfilePage({ params }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <UserProfile user={user} articles={userArticles} />
     </div>
   );

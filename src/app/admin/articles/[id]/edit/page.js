@@ -4,7 +4,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ROUTES } from "@/lib/routes";
-import Header from "@/components/layout/Header";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
 import { isAdmin } from "@/lib/auth-roles";
@@ -262,8 +261,6 @@ export default function AdminEditArticlePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <div className="container-sm py-4 pt-20">
         {/* Header de la page */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">

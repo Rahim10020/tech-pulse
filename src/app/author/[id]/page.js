@@ -4,7 +4,6 @@
  * Supports both username and ID-based routing.
  */
 import { notFound } from "next/navigation";
-import Header from "@/components/layout/Header";
 import AuthorProfile from "@/components/articles/AuthorProfile";
 
 // Fonction pour récupérer l'auteur via API (côté serveur)
@@ -57,7 +56,6 @@ export default async function AuthorPage({ params }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <AuthorProfile author={author} />
     </div>
   );

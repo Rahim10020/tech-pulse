@@ -5,7 +5,6 @@ export const dynamic = "force-dynamic";
 
 const { useState, useEffect, useCallback } = require("react");
 const { useSearchParams, useRouter } = require("next/navigation");
-const Header = require("@/components/layout/Header").default;
 const Image = require("next/image").default;
 const { useSettings } = require("@/hooks/useSettings");
 const {
@@ -207,8 +206,6 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <div className="container py-8">
         {/* Section de recherche */}
         <div className="max-w-4xl mx-auto mb-8">

@@ -1,6 +1,5 @@
 /** @description Page d'affichage d'un article spécifique */
 import { notFound } from "next/navigation";
-import Header from "@/components/layout/Header";
 import ArticleDetail from "@/components/articles/ArticleDetail";
 
 export async function generateMetadata({ params }) {
@@ -51,7 +50,6 @@ export default async function ArticlePage({ params }) {
 
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <ArticleDetail article={article} />
       </div>
     );

@@ -7,7 +7,6 @@ import {
   getAdminEditArticleRoute,
   getCreateEditorRoute,
 } from "@/lib/routes";
-import Header from "@/components/layout/Header";
 import { LoadingSpinner } from "@/components/ui";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -292,8 +291,6 @@ export default function AdminArticlesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <div className="container py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">

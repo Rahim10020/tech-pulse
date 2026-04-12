@@ -15,7 +15,6 @@ import {
 } from "@/lib/routes";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
-import Header from "@/components/layout/Header";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import DraftCard from "@/components/drafts/DraftCard";
 import DraftFilters from "@/components/drafts/DraftFilters";
@@ -246,8 +245,6 @@ export default function DraftsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <div className="container py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

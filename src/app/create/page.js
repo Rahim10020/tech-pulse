@@ -13,7 +13,6 @@ import { useToast } from "@/context/ToastProvider";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import SaveIndicator from "@/components/shared/SaveIndicator";
 import TiptapEditor from "@/components/shared/TiptapEditor";
-import Header from "@/components/layout/Header";
 import { FileText, Save, Folder } from "lucide-react";
 
 export default function CreateArticlePage() {
@@ -364,8 +363,6 @@ export default function CreateArticlePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {!isEditorMode && <Header />}
-
       {/* Contenu principal */}
       <div className={`container py-4 ${isEditorMode ? "pt-4" : "pt-10"}`}>
         <div className="flex flex-col">

@@ -3,15 +3,12 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import Header from "@/components/layout/Header";
 import { ROUTES } from "@/lib/routes";
 import { ArrowRight, Github, Twitter, Linkedin } from "lucide-react";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="max-w-8xl">
         {/* Hero Section avec animation */}
         <HeroSection />

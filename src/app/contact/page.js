@@ -6,7 +6,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Header from "@/components/layout/Header";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useToast } from "@/context/ToastProvider";
@@ -107,8 +106,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="py-7">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

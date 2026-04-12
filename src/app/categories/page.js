@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Header from "@/components/layout/Header";
 import Link from "next/link";
 import { CategoryCardSkeleton } from "@/components/ui/Skeleton";
 import { Code, Database, Cloud, Brain, Smartphone, Globe } from "lucide-react";
@@ -51,7 +50,6 @@ export default function CategoriesPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <div className="container-sm py-6">
           <div className="mb-8">
             <div className="animate-pulse bg-gray-200 rounded h-8 w-48 mb-4"></div>
@@ -70,7 +68,6 @@ export default function CategoriesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <div className="container-sm py-6">
         <div className="mb-8">
           <h1 className="h2-title text-gray-900 mb-4">Categories</h1>

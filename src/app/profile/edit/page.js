@@ -4,7 +4,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ROUTES, getProfileRoute } from "@/lib/routes";
-import Header from "@/components/layout/Header";
 import ProfileForm from "@/components/forms/ProfileForm";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/context/ToastProvider";
@@ -78,8 +77,6 @@ export default function EditProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <div className="container-sm py-8">
         {/* Header avec bouton retour */}
         <div className="flex items-center mb-8">

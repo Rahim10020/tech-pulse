@@ -8,7 +8,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ArticleCard from "@/components/articles/ArticleCard";
 import HeroSection from "@/components/home/HeroSection";
@@ -46,8 +45,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       {/* Hero Section */}
       <HeroSection />
 
