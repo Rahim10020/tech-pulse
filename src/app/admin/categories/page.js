@@ -311,7 +311,7 @@ export default function AdminCategoriesPage() {
                 <p className="h6-title text-gray-600">Total catégories</p>
                 <p className="h3-title text-gray-900">{stats.total}</p>
               </div>
-              <Folder className="w-8 h-8 text-blue-500" />
+              <Folder className="w-4 h-4 text-green-500" />
             </div>
           </div>
           <div className="card p-6">
@@ -320,7 +320,7 @@ export default function AdminCategoriesPage() {
                 <p className="h6-title text-gray-600">Articles total</p>
                 <p className="h3-title text-gray-900">{stats.totalArticles}</p>
               </div>
-              <Tag className="w-8 h-8 text-green-500" />
+              <Tag className="w-4 h-4 text-green-500" />
             </div>
           </div>
           <div className="card p-6">
@@ -333,42 +333,37 @@ export default function AdminCategoriesPage() {
                     : "Aucune"}
                 </p>
               </div>
-              <Star className="w-8 h-8 text-yellow-500" />
+              <Star className="w-4 h-4 text-green-500" />
             </div>
           </div>
         </div>
 
         {/* Filtres et recherche */}
-        <div className="card p-6 mb-6">
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Rechercher par nom ou description..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-field pl-10"
-              />
-            </div>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+          <input
+            type="text"
+            placeholder="Rechercher par nom ou description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="input-field pl-10"
+          />
 
-            <select
-              value={`${sortBy}-${sortOrder}`}
-              onChange={(e) => {
-                const [field, order] = e.target.value.split("-");
-                setSortBy(field);
-                setSortOrder(order);
-              }}
-              className="input-field min-w-[160px]"
-            >
-              <option value="name-asc">Nom A-Z</option>
-              <option value="name-desc">Nom Z-A</option>
-              <option value="articles-desc">Plus d&apos;articles</option>
-              <option value="articles-asc">Moins d&apos;articles</option>
-              <option value="createdAt-desc">Plus récentes</option>
-              <option value="createdAt-asc">Plus anciennes</option>
-            </select>
-          </div>
+          <select
+            value={`${sortBy}-${sortOrder}`}
+            onChange={(e) => {
+              const [field, order] = e.target.value.split("-");
+              setSortBy(field);
+              setSortOrder(order);
+            }}
+            className="input-field min-w-[160px]"
+          >
+            <option value="name-asc">Nom A-Z</option>
+            <option value="name-desc">Nom Z-A</option>
+            <option value="articles-desc">Plus d&apos;articles</option>
+            <option value="articles-asc">Moins d&apos;articles</option>
+            <option value="createdAt-desc">Plus récentes</option>
+            <option value="createdAt-asc">Plus anciennes</option>
+          </select>
         </div>
 
         {/* Liste des catégories */}
