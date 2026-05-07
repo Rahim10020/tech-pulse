@@ -3,3 +3,7 @@
 - 💡 Sélectionnez une catégorie pour pouvoir publier votre article
 - coder la page de creation d'article comme celle de dev.to
 - fix bug in admin articles page
+- revoir la page de profil publique d'un auteur 
+    (- revoir l'ui, 
+     - dans la partie commentaires, afficher le contenu du commentaire et l'article sur lequel l'auteur a commente.)
+- revoir la page des categories (traduire Anglais --> Francais)

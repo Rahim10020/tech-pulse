@@ -5,9 +5,7 @@ PixelPulse is a modern and high-performance blog platform designed for developer
 ![Screenshot 1](./public/acceuil.png)
 ![Screenshot 2](./public/detail.png)
 
-## 🌐 Live Demo
-
-Visit the live version of the project on Vercel: [PixelPulse Live](https://pixelpulse-blog.vercel.app/)
+Visit the live version of the project on Vercel: [pixelpulse-blog Live](https://pixelpulse-blog.vercel.app/)
 
 ## 🔥 Features
 
